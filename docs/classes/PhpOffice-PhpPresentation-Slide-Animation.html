@@ -109,6 +109,9 @@
         </div>
     
     
+            <span class="phpdocumentor-element__extends">
+            Uses
+                            <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html"><abbr title="\PhpOffice\PhpPresentation\Traits\ShapeCollection">ShapeCollection</abbr></a>                    </span>
     </h2>
 
 <div class="phpdocumentor-label-line">
@@ -150,10 +153,11 @@
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#property_shapeCollection">$shapeCollection</a>
+    <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#property_shapeCollection">$shapeCollection</a>
     <span>
-                        &nbsp;: array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;            </span>
+                        &nbsp;: array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;            </span>
 </dt>
+<dd>Collection of shapes.</dd>
 
     </dl>
 
@@ -164,21 +168,36 @@
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#method_addShape">addShape()</a>
+    <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_addShape">addShape()</a>
     <span>
-                                &nbsp;: <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html"><abbr title="\PhpOffice\PhpPresentation\Slide\Animation">Animation</abbr></a>    </span>
+                                &nbsp;: static    </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#method_getShapeCollection">getShapeCollection()</a>
+    <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_getShapeCollection">getShapeCollection()</a>
     <span>
-                                &nbsp;: array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;    </span>
+                                &nbsp;: array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;    </span>
 </dt>
+<dd>Get collection of shapes.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#method_setShapeCollection">setShapeCollection()</a>
+    <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_searchShapes">searchShapes()</a>
     <span>
-                                &nbsp;: <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html"><abbr title="\PhpOffice\PhpPresentation\Slide\Animation">Animation</abbr></a>    </span>
+                                &nbsp;: array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;    </span>
+</dt>
+<dd>Search into collection of shapes for a name or/and a type.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_setShapeCollection">setShapeCollection()</a>
+    <span>
+                                &nbsp;: self    </span>
+</dt>
+<dd>Get collection of shapes.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_unsetShape">unsetShape()</a>
+    <span>
+                                &nbsp;: static    </span>
 </dt>
 
     </dl>
@@ -204,22 +223,23 @@
 >
     <h4 class="phpdocumentor-element__name" id="property_shapeCollection">
         $shapeCollection
-        <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#property_shapeCollection" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#property_shapeCollection" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Slide/Animation.php"><a href="files/src-phppresentation-slide-animation.html"><abbr title="src/PhpPresentation/Slide/Animation.php">Animation.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Traits/ShapeCollection.php"><a href="files/src-phppresentation-traits-shapecollection.html"><abbr title="src/PhpPresentation/Traits/ShapeCollection.php">ShapeCollection.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">29</span>
+    <span class="phpdocumentor-element-found-in__line">31</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Collection of shapes.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span>
+        <span class="phpdocumentor-signature__type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span>
     <span class="phpdocumentor-signature__name">$shapeCollection</span>
      = <span class="phpdocumentor-signature__default-value">[]</span></code>
 
@@ -244,20 +264,20 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_addShape">
         addShape()
-        <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#method_addShape" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_addShape" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Slide/Animation.php"><a href="files/src-phppresentation-slide-animation.html"><abbr title="src/PhpPresentation/Slide/Animation.php">Animation.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Traits/ShapeCollection.php"><a href="files/src-phppresentation-traits-shapecollection.html"><abbr title="src/PhpPresentation/Traits/ShapeCollection.php">ShapeCollection.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">34</span>
+    <span class="phpdocumentor-element-found-in__line">80</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">addShape</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$shape</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html"><abbr title="\PhpOffice\PhpPresentation\Slide\Animation">Animation</abbr></a></span></code>
+                    <span class="phpdocumentor-signature__name">addShape</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$shape</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">static</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -277,7 +297,7 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html"><abbr title="\PhpOffice\PhpPresentation\Slide\Animation">Animation</abbr></a></span>
+        <span class="phpdocumentor-signature__response_type">static</span>
             </section>
 
 </article>
@@ -289,20 +309,21 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_getShapeCollection">
         getShapeCollection()
-        <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#method_getShapeCollection" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_getShapeCollection" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Slide/Animation.php"><a href="files/src-phppresentation-slide-animation.html"><abbr title="src/PhpPresentation/Slide/Animation.php">Animation.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Traits/ShapeCollection.php"><a href="files/src-phppresentation-traits-shapecollection.html"><abbr title="src/PhpPresentation/Traits/ShapeCollection.php">ShapeCollection.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">44</span>
+    <span class="phpdocumentor-element-found-in__line">38</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Get collection of shapes.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getShapeCollection</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span></code>
+                    <span class="phpdocumentor-signature__name">getShapeCollection</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -312,7 +333,60 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_searchShapes">
+        searchShapes()
+        <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_searchShapes" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Traits/ShapeCollection.php"><a href="files/src-phppresentation-traits-shapecollection.html"><abbr title="src/PhpPresentation/Traits/ShapeCollection.php">ShapeCollection.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">48</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Search into collection of shapes for a name or/and a type.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">searchShapes</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$name</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string|null</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$type</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string|null</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span>
             </section>
 
 </article>
@@ -324,20 +398,21 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_setShapeCollection">
         setShapeCollection()
-        <a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#method_setShapeCollection" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_setShapeCollection" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Slide/Animation.php"><a href="files/src-phppresentation-slide-animation.html"><abbr title="src/PhpPresentation/Slide/Animation.php">Animation.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Traits/ShapeCollection.php"><a href="files/src-phppresentation-traits-shapecollection.html"><abbr title="src/PhpPresentation/Traits/ShapeCollection.php">ShapeCollection.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">54</span>
+    <span class="phpdocumentor-element-found-in__line">70</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Get collection of shapes.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">setShapeCollection</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$array</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html"><abbr title="\PhpOffice\PhpPresentation\Slide\Animation">Animation</abbr></a></span></code>
+                    <span class="phpdocumentor-signature__name">setShapeCollection</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$shapeCollection</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -345,8 +420,8 @@
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$array</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span>
+                <span class="phpdocumentor-signature__argument__name">$shapeCollection</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">[]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
@@ -357,7 +432,52 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html"><abbr title="\PhpOffice\PhpPresentation\Slide\Animation">Animation</abbr></a></span>
+        <span class="phpdocumentor-signature__response_type">self</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_unsetShape">
+        unsetShape()
+        <a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_unsetShape" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Traits/ShapeCollection.php"><a href="files/src-phppresentation-traits-shapecollection.html"><abbr title="src/PhpPresentation/Traits/ShapeCollection.php">ShapeCollection.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">90</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">unsetShape</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">static</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$key</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">static</span>
             </section>
 
 </article>
@@ -474,16 +594,18 @@
                             <li class="phpdocumentor-on-this-page-section__title">Properties</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
-                                                    <li><a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#property_shapeCollection">$shapeCollection<a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html"></li>
+                                                    <li><a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#property_shapeCollection">$shapeCollection<a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html"></li>
                                             </ul>
                 </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li><a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#method_addShape">addShape()</a></li>
-                                            <li><a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#method_getShapeCollection">getShapeCollection()</a></li>
-                                            <li><a href="classes/PhpOffice-PhpPresentation-Slide-Animation.html#method_setShapeCollection">setShapeCollection()</a></li>
+                                            <li><a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_addShape">addShape()</a></li>
+                                            <li><a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_getShapeCollection">getShapeCollection()</a></li>
+                                            <li><a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_searchShapes">searchShapes()</a></li>
+                                            <li><a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_setShapeCollection">setShapeCollection()</a></li>
+                                            <li><a href="classes/PhpOffice-PhpPresentation-Traits-ShapeCollection.html#method_unsetShape">unsetShape()</a></li>
                                     </ul>
             </li>
                     </ul>

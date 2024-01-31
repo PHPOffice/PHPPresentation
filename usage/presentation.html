@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.6">
     
     
       
@@ -457,6 +457,30 @@
       Thumbnail
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Thumbnail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-a-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      From a file
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-the-content-of-the-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      From the content of the file
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1408,6 +1432,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Thumbnail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-a-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      From a file
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-the-content-of-the-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      From the content of the file
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1497,6 +1545,8 @@
 <span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setModified</span><span class="p">(</span><span class="nb">mktime</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">2014</span><span class="p">));</span>
 <span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setSubject</span><span class="p">(</span><span class="s1">&#39;My subject&#39;</span><span class="p">);</span>
 <span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setKeywords</span><span class="p">(</span><span class="s1">&#39;my, key, word&#39;</span><span class="p">);</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setStatus</span><span class="p">(</span><span class="s1">&#39;Work in Progress&#39;</span><span class="p">);</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setRevision</span><span class="p">(</span><span class="s1">&#39;Version 1.2.3&#39;</span><span class="p">);</span>
 </code></pre></div>
 <h3 id="custom-properties">Custom Properties</h3>
 <p>You can add custom properties with the method <code>setCustomProperty</code>.</p>
@@ -1610,15 +1660,40 @@
 </code></pre></div>
 <h3 id="thumbnail">Thumbnail</h3>
 <p>You can define the thumbnail of the presentation with the method <code>setThumbnailPath</code>.</p>
+<h4 id="from-a-file">From a file</h4>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\PresentationProperties</span><span class="p">;</span>
 
 <span class="nv">$presentation</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PhpPresentation</span><span class="p">();</span>
 
 <span class="nv">$properties</span> <span class="o">=</span> <span class="nv">$presentation</span><span class="o">-&gt;</span><span class="na">getPresentationProperties</span><span class="p">();</span>
 <span class="c1">// Set path of the thumbnail</span>
-<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setThumbnailPath</span><span class="p">(</span><span class="no">__DIR__</span><span class="o">.</span><span class="s1">&#39;\resources\phppowerpoint_logo.gif&#39;</span><span class="p">);</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setThumbnailPath</span><span class="p">(</span>
+    <span class="no">__DIR__</span><span class="o">.</span><span class="s1">&#39;\resources\phppowerpoint_logo.gif&#39;</span><span class="p">,</span>
+    <span class="nx">PresentationProperties</span><span class="o">::</span><span class="na">THUMBNAIL_FILE</span>
+<span class="p">);</span>
 <span class="c1">// Get path of the thumbnail</span>
 <span class="k">echo</span> <span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">getThumbnailPath</span><span class="p">();</span>
+<span class="c1">// Get content of the thumbnail</span>
+<span class="k">echo</span> <span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">getThumbnail</span><span class="p">();</span>
+</code></pre></div>
+<h4 id="from-the-content-of-the-file">From the content of the file</h4>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\PresentationProperties</span><span class="p">;</span>
+
+<span class="nv">$presentation</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PhpPresentation</span><span class="p">();</span>
+
+<span class="nv">$properties</span> <span class="o">=</span> <span class="nv">$presentation</span><span class="o">-&gt;</span><span class="na">getPresentationProperties</span><span class="p">();</span>
+<span class="c1">// Set path of the thumbnail</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setThumbnailPath</span><span class="p">(</span>
+    <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="nx">PresentationProperties</span><span class="o">::</span><span class="na">THUMBNAIL_DATA</span><span class="p">,</span>
+    <span class="nb">file_get_contents</span><span class="p">(</span><span class="no">__DIR__</span><span class="o">.</span><span class="s1">&#39;\resources\phppowerpoint_logo.gif&#39;</span><span class="p">)</span>
+<span class="p">);</span>
+<span class="c1">// Get content of the thumbnail</span>
+<span class="k">echo</span> <span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">getThumbnail</span><span class="p">();</span>
 </code></pre></div>
 <h3 id="zoom">Zoom</h3>
 <p>You can define the zoom of the presentation with the method <code>setZoom</code>.</p>
@@ -1677,10 +1752,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../assets/javascripts/bundle.e1c3ead8.min.js"></script>
       
     
   </body>

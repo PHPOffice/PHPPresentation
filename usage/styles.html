@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.6">
     
     
       
@@ -776,6 +776,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Baseline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#capitalization" class="md-nav__link">
     <span class="md-ellipsis">
       Capitalization
@@ -788,6 +797,15 @@
   <a href="#format" class="md-nav__link">
     <span class="md-ellipsis">
       Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panose
     </span>
   </a>
   
@@ -1384,6 +1402,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Baseline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#capitalization" class="md-nav__link">
     <span class="md-ellipsis">
       Capitalization
@@ -1396,6 +1423,15 @@
   <a href="#format" class="md-nav__link">
     <span class="md-ellipsis">
       Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panose
     </span>
   </a>
   
@@ -1524,12 +1560,21 @@
 <li><code>name</code></li>
 <li><code>bold</code></li>
 <li><code>italic</code></li>
-<li><code>superScript</code></li>
-<li><code>subScript</code></li>
+<li><code>superScript</code> (deprecated)</li>
+<li><code>subScript</code> (deprecated)</li>
 <li><code>underline</code></li>
 <li><code>strikethrough</code></li>
 <li><code>color</code></li>
-<li><code>capitalization</code></li>
+<li><code>pitchFamily</code></li>
+<li><code>charset</code></li>
+</ul>
+<h3 id="baseline">Baseline</h3>
+<p>The baseline set the position relative to the line.
+The value is a percentage.</p>
+<p>You can use some predefined values :</p>
+<ul>
+<li><code>Font::BASELINE_SUPERSCRIPT</code> (= 300000 = 300%)</li>
+<li><code>Font::BASELINE_SUBSCRIPT</code> (= -250000 = -250%)</li>
 </ul>
 <h3 id="capitalization">Capitalization</h3>
 <p>Some formats are available : </p>
@@ -1566,6 +1611,19 @@
 <span class="nv">$font</span><span class="o">-&gt;</span><span class="na">setFormat</span><span class="p">(</span><span class="nx">Font</span><span class="o">::</span><span class="na">FORMAT_EAST_ASIAN</span><span class="p">);</span>
 <span class="c1">// Get format of font</span>
 <span class="k">echo</span> <span class="nv">$font</span><span class="o">-&gt;</span><span class="na">getFormat</span><span class="p">();</span>
+</code></pre></div>
+<h3 id="panose">Panose</h3>
+<p>The support of Panose 1.0 is only used.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Style\Font</span><span class="p">;</span>
+
+<span class="nv">$font</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Font</span><span class="p">();</span>
+
+<span class="c1">// Set panose of font</span>
+<span class="nv">$font</span><span class="o">-&gt;</span><span class="na">setPanose</span><span class="p">(</span><span class="s1">&#39;4494D72242&#39;</span><span class="p">);</span>
+<span class="c1">// Get panose of font</span>
+<span class="k">echo</span> <span class="nv">$font</span><span class="o">-&gt;</span><span class="na">getPanose</span><span class="p">();</span>
 </code></pre></div>
 <h2 id="bullet">Bullet</h2>
 <ul>
@@ -1623,10 +1681,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../assets/javascripts/bundle.e1c3ead8.min.js"></script>
       
     
   </body>
