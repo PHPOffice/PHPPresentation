@@ -147,7 +147,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
      *
      * @param string $directory Disk caching directory
      *
-     * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
+     * @return PowerPoint2007
      */
     public function setUseDiskCaching(bool $useDiskCaching = false, ?string $directory = null)
     {

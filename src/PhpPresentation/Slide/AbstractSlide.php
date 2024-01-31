@@ -19,8 +19,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide;
 
-use ArrayObject;
-use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\PhpPresentation;
@@ -31,9 +29,12 @@ use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
+use PhpOffice\PhpPresentation\Traits\ShapeCollection;
 
 abstract class AbstractSlide implements ComparableInterface, ShapeContainerInterface
 {
+    use ShapeCollection;
+
     /**
      * @var string
      */
@@ -43,13 +44,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * @var null|Transition
      */
     protected $slideTransition;
-
-    /**
-     * Collection of shapes.
-     *
-     * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    protected $shapeCollection = [];
 
     /**
      * Extent Y.
@@ -106,40 +100,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * @var AbstractBackground
      */
     protected $background;
-
-    /**
-     * Get collection of shapes.
-     *
-     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    public function getShapeCollection()
-    {
-        return $this->shapeCollection;
-    }
-
-    /**
-     * Get collection of shapes.
-     *
-     * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapeCollection
-     *
-     * @return AbstractSlide
-     */
-    public function setShapeCollection($shapeCollection = [])
-    {
-        $this->shapeCollection = $shapeCollection;
-
-        return $this;
-    }
-
-    /**
-     * Add shape to slide.
-     */
-    public function addShape(AbstractShape $shape): AbstractShape
-    {
-        $shape->setContainer($this);
-
-        return $shape;
-    }
 
     /**
      * Get X Offset.

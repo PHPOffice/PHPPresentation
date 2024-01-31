@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation;
 
 use PhpOffice\PhpPresentation\Exception\ShapeContainerAlreadyAssignedException;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Style\Border;
@@ -110,6 +111,13 @@ abstract class AbstractShape implements ComparableInterface
     private $hashIndex;
 
     /**
+     * Name.
+     *
+     * @var string
+     */
+    protected $name = '';
+
+    /**
      * Create a new self.
      */
     public function __construct()
@@ -118,7 +126,8 @@ abstract class AbstractShape implements ComparableInterface
         $this->fill = new Fill();
         $this->shadow = new Shadow();
         $this->border = new Border();
-        $this->border->setLineStyle(Style\Border::LINE_NONE);
+
+        $this->border->setLineStyle(Border::LINE_NONE);
     }
 
     /**
@@ -127,9 +136,20 @@ abstract class AbstractShape implements ComparableInterface
     public function __clone()
     {
         $this->container = null;
-        $this->fill = clone $this->fill;
+        $this->name = $this->name;
         $this->border = clone $this->border;
-        $this->shadow = clone $this->shadow;
+        if (isset($this->fill)) {
+            $this->fill = clone $this->fill;
+        }
+        if (isset($this->shadow)) {
+            $this->shadow = clone $this->shadow;
+        }
+        if (isset($this->placeholder)) {
+            $this->placeholder = clone $this->placeholder;
+        }
+        if (isset($this->hyperlink)) {
+            $this->hyperlink = clone $this->hyperlink;
+        }
     }
 
     /**
@@ -153,21 +173,18 @@ abstract class AbstractShape implements ComparableInterface
             // Add drawing to ShapeContainerInterface
             $this->container = $pValue;
             if (null !== $this->container) {
-                $this->container->getShapeCollection()->append($this);
+                $this->container->addShape($this);
             }
         } else {
             if ($pOverrideOld) {
                 // Remove drawing from old ShapeContainerInterface
-                $iterator = $this->container->getShapeCollection()->getIterator();
-
-                while ($iterator->valid()) {
-                    if ($iterator->current()->getHashCode() == $this->getHashCode()) {
-                        $this->container->getShapeCollection()->offsetUnset($iterator->key());
+                foreach ($this->container->getShapeCollection() as $key => $shape) {
+                    if ($shape->getHashCode() == $this->getHashCode()) {
+                        $this->container->unsetShape($key);
                         $this->container = null;
 
                         break;
                     }
-                    $iterator->next();
                 }
 
                 // Set new \PhpOffice\PhpPresentation\Slide
@@ -176,6 +193,26 @@ abstract class AbstractShape implements ComparableInterface
                 throw new ShapeContainerAlreadyAssignedException(self::class);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get Name.
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set Name.
+     *
+     * @return static
+     */
+    public function setName(string $pValue = ''): self
+    {
+        $this->name = $pValue;
 
         return $this;
     }

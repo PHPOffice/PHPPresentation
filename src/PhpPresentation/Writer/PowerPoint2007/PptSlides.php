@@ -49,7 +49,7 @@ class PptSlides extends AbstractSlide
 
             // Add note slide
             if ($oSlide->getNote() instanceof Note) {
-                if ($oSlide->getNote()->getShapeCollection()->count() > 0) {
+                if (count($oSlide->getNote()->getShapeCollection()) > 0) {
                     $this->oZip->addFromString('ppt/notesSlides/notesSlide' . ($idx + 1) . '.xml', $this->writeNote($oSlide->getNote()));
                 }
             }
@@ -96,16 +96,14 @@ class PptSlides extends AbstractSlide
         ++$relId;
 
         // Write drawing relationships?
-        if ($pSlide->getShapeCollection()->count() > 0) {
-            $collections = [$pSlide->getShapeCollection()->getIterator()];
+        if (count($pSlide->getShapeCollection()) > 0) {
+            $collections = [$pSlide->getShapeCollection()];
 
             // Loop trough images and write relationships
             while (count($collections)) {
-                $iterator = array_shift($collections);
+                $collection = array_shift($collections);
 
-                while ($iterator->valid()) {
-                    $currentShape = $iterator->current();
-
+                foreach ($collection as $currentShape) {
                     if ($currentShape instanceof Media) {
                         // Write relationship for image drawing
                         $currentShape->relationId = 'rId' . $relId;
@@ -124,10 +122,8 @@ class PptSlides extends AbstractSlide
                         $currentShape->relationId = 'rId' . $relId;
                         ++$relId;
                     } elseif ($currentShape instanceof ShapeContainerInterface) {
-                        $collections[] = $currentShape->getShapeCollection()->getIterator();
+                        $collections[] = $currentShape->getShapeCollection();
                     }
-
-                    $iterator->next();
                 }
             }
         }
@@ -141,14 +137,13 @@ class PptSlides extends AbstractSlide
         }
 
         // Write hyperlink relationships?
-        if ($pSlide->getShapeCollection()->count() > 0) {
+        if (count($pSlide->getShapeCollection()) > 0) {
             // Loop trough hyperlinks and write relationships
-            $iterator = $pSlide->getShapeCollection()->getIterator();
-            while ($iterator->valid()) {
+            foreach ($pSlide->getShapeCollection() as $shape) {
                 // Hyperlink on shape
-                if ($iterator->current()->hasHyperlink()) {
+                if ($shape->hasHyperlink()) {
                     // Write relationship for hyperlink
-                    $hyperlink = $iterator->current()->getHyperlink();
+                    $hyperlink = $shape->getHyperlink();
                     $hyperlink->relationId = 'rId' . $relId;
 
                     if (!$hyperlink->isInternal()) {
@@ -161,8 +156,8 @@ class PptSlides extends AbstractSlide
                 }
 
                 // Hyperlink on rich text run
-                if ($iterator->current() instanceof RichText) {
-                    foreach ($iterator->current()->getParagraphs() as $paragraph) {
+                if ($shape instanceof RichText) {
+                    foreach ($shape->getParagraphs() as $paragraph) {
                         foreach ($paragraph->getRichTextElements() as $element) {
                             if ($element instanceof Run || $element instanceof TextElement) {
                                 if ($element->hasHyperlink()) {
@@ -184,14 +179,14 @@ class PptSlides extends AbstractSlide
                 }
 
                 // Hyperlink in table
-                if ($iterator->current() instanceof ShapeTable) {
+                if ($shape instanceof ShapeTable) {
                     // Rows
-                    $countRows = count($iterator->current()->getRows());
+                    $countRows = count($shape->getRows());
                     for ($row = 0; $row < $countRows; ++$row) {
                         // Cells in rows
-                        $countCells = count($iterator->current()->getRow($row)->getCells());
+                        $countCells = count($shape->getRow($row)->getCells());
                         for ($cell = 0; $cell < $countCells; ++$cell) {
-                            $currentCell = $iterator->current()->getRow($row)->getCell($cell);
+                            $currentCell = $shape->getRow($row)->getCell($cell);
                             // Paragraphs in cell
                             foreach ($currentCell->getParagraphs() as $paragraph) {
                                 // RichText in paragraph
@@ -218,13 +213,12 @@ class PptSlides extends AbstractSlide
                     }
                 }
 
-                if ($iterator->current() instanceof Group) {
-                    $iterator2 = $pSlide->getShapeCollection()->getIterator();
-                    while ($iterator2->valid()) {
+                if ($shape instanceof Group) {
+                    foreach ($shape->getShapeCollection() as $subShape) {
                         // Hyperlink on shape
-                        if ($iterator2->current()->hasHyperlink()) {
+                        if ($subShape->hasHyperlink()) {
                             // Write relationship for hyperlink
-                            $hyperlink = $iterator2->current()->getHyperlink();
+                            $hyperlink = $subShape->getHyperlink();
                             $hyperlink->relationId = 'rId' . $relId;
 
                             if (!$hyperlink->isInternal()) {
@@ -237,8 +231,8 @@ class PptSlides extends AbstractSlide
                         }
 
                         // Hyperlink on rich text run
-                        if ($iterator2->current() instanceof RichText) {
-                            foreach ($iterator2->current()->getParagraphs() as $paragraph) {
+                        if ($subShape instanceof RichText) {
+                            foreach ($subShape->getParagraphs() as $paragraph) {
                                 foreach ($paragraph->getRichTextElements() as $element) {
                                     if ($element instanceof Run || $element instanceof TextElement) {
                                         if ($element->hasHyperlink()) {
@@ -260,14 +254,14 @@ class PptSlides extends AbstractSlide
                         }
 
                         // Hyperlink in table
-                        if ($iterator2->current() instanceof ShapeTable) {
+                        if ($subShape instanceof ShapeTable) {
                             // Rows
-                            $countRows = count($iterator2->current()->getRows());
+                            $countRows = count($subShape->getRows());
                             for ($row = 0; $row < $countRows; ++$row) {
                                 // Cells in rows
-                                $countCells = count($iterator2->current()->getRow($row)->getCells());
+                                $countCells = count($subShape->getRow($row)->getCells());
                                 for ($cell = 0; $cell < $countCells; ++$cell) {
-                                    $currentCell = $iterator2->current()->getRow($row)->getCell($cell);
+                                    $currentCell = $subShape->getRow($row)->getCell($cell);
                                     // Paragraphs in cell
                                     foreach ($currentCell->getParagraphs() as $paragraph) {
                                         // RichText in paragraph
@@ -293,39 +287,30 @@ class PptSlides extends AbstractSlide
                                 }
                             }
                         }
-
-                        $iterator2->next();
                     }
                 }
-
-                $iterator->next();
             }
         }
 
         // Write comment relationships
-        if ($pSlide->getShapeCollection()->count() > 0) {
+        if (count($pSlide->getShapeCollection()) > 0) {
             $hasSlideComment = false;
 
             // Loop trough images and write relationships
-            $iterator = $pSlide->getShapeCollection()->getIterator();
-            while ($iterator->valid()) {
-                if ($iterator->current() instanceof Comment) {
+            foreach ($pSlide->getShapeCollection() as $shape) {
+                if ($shape instanceof Comment) {
                     $hasSlideComment = true;
 
                     break;
-                } elseif ($iterator->current() instanceof Group) {
-                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
-                    while ($iterator2->valid()) {
-                        if ($iterator2->current() instanceof Comment) {
+                } elseif ($shape instanceof Group) {
+                    foreach ($shape->getShapeCollection() as $subShape) {
+                        if ($subShape instanceof Comment) {
                             $hasSlideComment = true;
 
                             break 2;
                         }
-                        $iterator2->next();
                     }
                 }
-
-                $iterator->next();
             }
 
             if ($hasSlideComment) {
@@ -334,7 +319,7 @@ class PptSlides extends AbstractSlide
             }
         }
 
-        if ($pSlide->getNote()->getShapeCollection()->count() > 0) {
+        if (count($pSlide->getNote()->getShapeCollection()) > 0) {
             $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide', '../notesSlides/notesSlide' . ($idxSlide + 1) . '.xml');
         }
 
@@ -386,7 +371,7 @@ class PptSlides extends AbstractSlide
                 $objWriter->endElement();
             }
 
-            if ($oBackground instanceof Slide\Background\Image) {
+            if ($oBackground instanceof Image) {
                 // a:blipFill
                 $objWriter->startElement('a:blipFill');
 

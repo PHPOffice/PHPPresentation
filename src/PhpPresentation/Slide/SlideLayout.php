@@ -19,7 +19,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide;
 
-use ArrayObject;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Style\ColorMap;
@@ -62,7 +61,7 @@ class SlideLayout extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * Mapping of colors to the theme.
      *
-     * @var \PhpOffice\PhpPresentation\Style\ColorMap
+     * @var ColorMap
      */
     public $colorMap;
 
@@ -73,8 +72,6 @@ class SlideLayout extends AbstractSlide implements ComparableInterface, ShapeCon
     {
         // Set parent
         $this->slideMaster = $pSlideMaster;
-        // Shape collection
-        $this->shapeCollection = new ArrayObject();
         // Set identifier
         $this->identifier = md5(mt_rand(0, 9999) . time());
         // Set a basic colorMap

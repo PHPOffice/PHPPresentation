@@ -97,7 +97,7 @@ class View3D implements ComparableInterface
      *
      * @param int $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @return View3D
      */
     public function setRotationX($pValue = 0)
     {
@@ -121,7 +121,7 @@ class View3D implements ComparableInterface
      *
      * @param int $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @return View3D
      */
     public function setRotationY($pValue = 0)
     {
@@ -145,7 +145,7 @@ class View3D implements ComparableInterface
      *
      * @param bool $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @return View3D
      */
     public function setRightAngleAxes($value = true)
     {
@@ -169,7 +169,7 @@ class View3D implements ComparableInterface
      *
      * @param int $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @return View3D
      */
     public function setPerspective($value = 30)
     {

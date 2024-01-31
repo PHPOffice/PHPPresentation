@@ -85,7 +85,7 @@ $oCell = $row->nextCell();
 $oCell->createTextRun('R2C1');
 $oCell->getActiveParagraph()->getAlignment()
     ->setMarginLeft(30)
-    ->setTextDirection(\PhpOffice\PhpPresentation\Style\Alignment::TEXT_DIRECTION_VERTICAL_270);
+    ->setTextDirection(PhpOffice\PhpPresentation\Style\Alignment::TEXT_DIRECTION_VERTICAL_270);
 $oCell = $row->nextCell();
 $oCell->createTextRun('R2C2');
 $oCell->getActiveParagraph()->getAlignment()

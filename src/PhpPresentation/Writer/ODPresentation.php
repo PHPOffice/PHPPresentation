@@ -156,7 +156,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
      *
      * @param string $directory Disk caching directory
      *
-     * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
+     * @return ODPresentation
      */
     public function setUseDiskCaching(bool $pValue = false, ?string $directory = null)
     {

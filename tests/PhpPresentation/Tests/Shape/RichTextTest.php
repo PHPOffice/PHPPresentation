@@ -277,7 +277,7 @@ class RichTextTest extends TestCase
         $object = new RichText();
 
         $hash = $object->getActiveParagraph()->getHashCode();
-        $hash .= RichText::WRAP_SQUARE . RichText::AUTOFIT_DEFAULT . RichText::OVERFLOW_OVERFLOW . RichText::OVERFLOW_OVERFLOW . '00104.89.69.64.8';
+        $hash .= RichText::WRAP_SQUARE . RichText::AUTOFIT_DEFAULT . RichText::OVERFLOW_OVERFLOW . RichText::OVERFLOW_OVERFLOW . '00104.89.69.64.80';
         $hash .= md5('00000' . $object->getFill()->getHashCode() . $object->getShadow()->getHashCode() . '' . get_parent_class($object));
         $hash .= get_class($object);
         self::assertEquals(md5($hash), $object->getHashCode());

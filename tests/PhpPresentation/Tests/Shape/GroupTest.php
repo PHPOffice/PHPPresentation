@@ -38,7 +38,7 @@ class GroupTest extends TestCase
         self::assertEquals(0, $object->getOffsetY());
         self::assertEquals(0, $object->getExtentX());
         self::assertEquals(0, $object->getExtentY());
-        self::assertEquals(0, $object->getShapeCollection()->count());
+        self::assertCount(0, $object->getShapeCollection());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setWidth(mt_rand(1, 100)));
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setHeight(mt_rand(1, 100)));
     }
@@ -52,7 +52,7 @@ class GroupTest extends TestCase
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Line', $object->createLineShape(10, 10, 10, 10));
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->createRichTextShape());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->createTableShape());
-        self::assertEquals(5, $object->getShapeCollection()->count());
+        self::assertCount(5, $object->getShapeCollection());
     }
 
     public function testExtentX(): void

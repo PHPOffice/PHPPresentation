@@ -48,14 +48,14 @@ class Cell implements ComparableInterface
     /**
      * Fill.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Fill
+     * @var Fill
      */
     private $fill;
 
     /**
      * Borders.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Borders
+     * @var Borders
      */
     private $borders;
 
@@ -178,7 +178,7 @@ class Cell implements ComparableInterface
      *
      * @param TextElementInterface $pText Rich text element
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return Cell
      */
     public function addText(?TextElementInterface $pText = null)
     {
@@ -276,7 +276,7 @@ class Cell implements ComparableInterface
     /**
      * Get fill.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return Fill
      */
     public function getFill()
     {
@@ -286,7 +286,7 @@ class Cell implements ComparableInterface
     /**
      * Set fill.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return Cell
      */
     public function setFill(Fill $fill)
     {
@@ -298,7 +298,7 @@ class Cell implements ComparableInterface
     /**
      * Get borders.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Borders
+     * @return Borders
      */
     public function getBorders()
     {
@@ -308,7 +308,7 @@ class Cell implements ComparableInterface
     /**
      * Set borders.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return Cell
      */
     public function setBorders(Borders $borders)
     {

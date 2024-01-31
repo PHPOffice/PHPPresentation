@@ -98,6 +98,17 @@ class Paragraph implements ComparableInterface
     }
 
     /**
+     * Magic Method : clone.
+     */
+    public function __clone()
+    {
+        // Clone each text
+        foreach ($this->richTextElements as &$rtElement) {
+            $rtElement = clone $rtElement;
+        }
+    }
+
+    /**
      * Get alignment.
      */
     public function getAlignment(): Alignment

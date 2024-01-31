@@ -19,7 +19,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide;
 
-use ArrayObject;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
@@ -80,8 +79,6 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     {
         // Set parent
         $this->parent = $pParent;
-        // Shape collection
-        $this->shapeCollection = new ArrayObject();
         // Set identifier
         $this->identifier = md5(mt_rand(0, 9999) . time());
         // Set a basic colorMap

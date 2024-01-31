@@ -102,6 +102,20 @@ class DocumentProperties
     private $company;
 
     /**
+     * Revision.
+     *
+     * @var string
+     */
+    private $revision;
+
+    /**
+     * Status.
+     *
+     * @var string
+     */
+    private $status;
+
+    /**
      * Custom Properties.
      *
      * @var array<string, array<string, mixed>>
@@ -124,6 +138,8 @@ class DocumentProperties
         $this->keywords = '';
         $this->category = '';
         $this->company = 'Microsoft Corporation';
+        $this->revision = '';
+        $this->status = '';
     }
 
     /**
@@ -141,7 +157,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setCreator($pValue = '')
     {
@@ -165,7 +181,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setLastModifiedBy($pValue = '')
     {
@@ -189,7 +205,7 @@ class DocumentProperties
      *
      * @param int $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setCreated($pValue = null)
     {
@@ -216,7 +232,7 @@ class DocumentProperties
      *
      * @param int $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setModified($pValue = null)
     {
@@ -243,7 +259,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setTitle($pValue = '')
     {
@@ -267,7 +283,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setDescription($pValue = '')
     {
@@ -291,7 +307,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setSubject($pValue = '')
     {
@@ -315,7 +331,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setKeywords($pValue = '')
     {
@@ -339,7 +355,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setCategory($pValue = '')
     {
@@ -363,7 +379,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setCompany($pValue = '')
     {
@@ -450,6 +466,42 @@ class DocumentProperties
             'value' => $propertyValue,
             'type' => $propertyType,
         ];
+
+        return $this;
+    }
+
+    /**
+     * Get Revision.
+     */
+    public function getRevision(): string
+    {
+        return $this->revision;
+    }
+
+    /**
+     * Set Revision.
+     */
+    public function setRevision(string $pValue = ''): self
+    {
+        $this->revision = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get Status.
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set Status.
+     */
+    public function setStatus(string $pValue = ''): self
+    {
+        $this->status = $pValue;
 
         return $this;
     }

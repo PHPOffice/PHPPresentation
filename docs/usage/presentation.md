@@ -62,6 +62,8 @@ $properties->setCreated(mktime(0, 0, 0, 3, 12, 2014));
 $properties->setModified(mktime(0, 0, 0, 3, 14, 2014));
 $properties->setSubject('My subject');
 $properties->setKeywords('my, key, word');
+$properties->setStatus('Work in Progress');
+$properties->setRevision('Version 1.2.3');
 ```
 
 ### Custom Properties
@@ -203,16 +205,44 @@ echo $properties->getSlideshowType();
 
 You can define the thumbnail of the presentation with the method `setThumbnailPath`.
 
+
+#### From a file
 ``` php
 <?php
+
+use PhpOffice\PhpPresentation\PresentationProperties;
 
 $presentation = new PhpPresentation();
 
 $properties = $presentation->getPresentationProperties();
 // Set path of the thumbnail
-$properties->setThumbnailPath(__DIR__.'\resources\phppowerpoint_logo.gif');
+$properties->setThumbnailPath(
+    __DIR__.'\resources\phppowerpoint_logo.gif',
+    PresentationProperties::THUMBNAIL_FILE
+);
 // Get path of the thumbnail
 echo $properties->getThumbnailPath();
+// Get content of the thumbnail
+echo $properties->getThumbnail();
+```
+
+#### From the content of the file
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\PresentationProperties;
+
+$presentation = new PhpPresentation();
+
+$properties = $presentation->getPresentationProperties();
+// Set path of the thumbnail
+$properties->setThumbnailPath(
+    '',
+    PresentationProperties::THUMBNAIL_DATA,
+    file_get_contents(__DIR__.'\resources\phppowerpoint_logo.gif')
+);
+// Get content of the thumbnail
+echo $properties->getThumbnail();
 ```
 
 ### Zoom

@@ -69,13 +69,13 @@ class NoteTest extends TestCase
     public function testShape(): void
     {
         $object = new Note();
-        self::assertEquals(0, $object->getShapeCollection()->count());
+        self::assertCount(0, $object->getShapeCollection());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->createRichTextShape());
-        self::assertEquals(1, $object->getShapeCollection()->count());
+        self::assertCount(1, $object->getShapeCollection());
 
         $oRichText = new RichText();
-        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->addShape($oRichText));
-        self::assertEquals(2, $object->getShapeCollection()->count());
+        self::assertInstanceOf(Note::class, $object->addShape($oRichText));
+        self::assertCount(2, $object->getShapeCollection());
     }
 
     /**

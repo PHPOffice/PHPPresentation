@@ -78,7 +78,7 @@ class Color implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Color
+     * @return Color
      */
     public function setARGB($pValue = self::COLOR_BLACK)
     {
@@ -146,7 +146,7 @@ class Color implements ComparableInterface
      * @param string $pValue
      * @param string $pAlpha
      *
-     * @return \PhpOffice\PhpPresentation\Style\Color
+     * @return Color
      */
     public function setRGB($pValue = '000000', $pAlpha = 'FF')
     {

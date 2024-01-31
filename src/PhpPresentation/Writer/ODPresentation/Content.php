@@ -27,7 +27,6 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
-use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Media;
@@ -448,10 +447,8 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * Write picture.
-     *
-     * @param AbstractDrawingAdapter $shape
      */
-    protected function writeShapeDrawing(XMLWriter $objWriter, ShapeDrawing\AbstractDrawingAdapter $shape): void
+    protected function writeShapeDrawing(XMLWriter $objWriter, AbstractDrawingAdapter $shape): void
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -565,9 +562,9 @@ class Content extends AbstractDecoratorWriter
                     }
                 }
                 $objWriter->endElement();
-            //===============================================
-            // Bullet list
-            //===============================================
+                //===============================================
+                // Bullet list
+                //===============================================
             } elseif ('bullet' == $paragraph->getBulletStyle()->getBulletType()) {
                 $bCstShpHasBullet = true;
                 // Open the bullet list

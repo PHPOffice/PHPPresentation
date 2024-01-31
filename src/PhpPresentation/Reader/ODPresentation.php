@@ -32,6 +32,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
@@ -71,7 +72,7 @@ class ODPresentation implements ReaderInterface
     protected $arrayCommonStyles = [];
 
     /**
-     * @var \PhpOffice\Common\XMLReader
+     * @var XMLReader
      */
     protected $oXMLReader;
 
@@ -258,7 +259,7 @@ class ODPresentation implements ReaderInterface
         if ($nodeDrawingPageProps instanceof DOMElement) {
             // Read Background Color
             if ($nodeDrawingPageProps->hasAttribute('draw:fill-color') && 'solid' == $nodeDrawingPageProps->getAttribute('draw:fill')) {
-                $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Color();
+                $oBackground = new BackgroundColor();
                 $oColor = new Color();
                 $oColor->setRGB(substr($nodeDrawingPageProps->getAttribute('draw:fill-color'), -6));
                 $oBackground->setColor($oColor);

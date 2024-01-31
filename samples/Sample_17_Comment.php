@@ -14,13 +14,13 @@ $oSlide1 = $objPHPPresentation->getActiveSlide();
 $oSlide1->addShape(clone $oShapeDrawing);
 $oSlide1->addShape(clone $oShapeRichText);
 
-$oAuthor = new \PhpOffice\PhpPresentation\Shape\Comment\Author();
+$oAuthor = new PhpOffice\PhpPresentation\Shape\Comment\Author();
 $oAuthor->setName('Progi1984');
 $oAuthor->setInitials('P');
 
 // Add Comment 1
 echo date('H:i:s') . ' Add Comment 1' . EOL;
-$oComment1 = new \PhpOffice\PhpPresentation\Shape\Comment();
+$oComment1 = new PhpOffice\PhpPresentation\Shape\Comment();
 $oComment1->setText('Text A');
 $oComment1->setOffsetX(10);
 $oComment1->setOffsetY(55);
@@ -30,7 +30,7 @@ $oSlide1->addShape($oComment1);
 
 // Add Comment
 echo date('H:i:s') . ' Add Comment 2' . EOL;
-$oComment2 = new \PhpOffice\PhpPresentation\Shape\Comment();
+$oComment2 = new PhpOffice\PhpPresentation\Shape\Comment();
 $oComment2->setText('Text B');
 $oComment2->setOffsetX(170);
 $oComment2->setOffsetY(180);

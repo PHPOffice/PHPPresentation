@@ -50,9 +50,9 @@ class FillTest extends TestCase
     public function testSetGetEndColor(): void
     {
         $object = new Fill();
-        self::assertInstanceOf(Fill::class, $object->setEndColor(new Color(COLOR::COLOR_BLUE)));
+        self::assertInstanceOf(Fill::class, $object->setEndColor(new Color(Color::COLOR_BLUE)));
         self::assertInstanceOf(Color::class, $object->getEndColor());
-        self::assertEquals(COLOR::COLOR_BLUE, $object->getEndColor()->getARGB());
+        self::assertEquals(Color::COLOR_BLUE, $object->getEndColor()->getARGB());
     }
 
     /**
@@ -86,9 +86,9 @@ class FillTest extends TestCase
     public function testSetGetStartColor(): void
     {
         $object = new Fill();
-        self::assertInstanceOf(Fill::class, $object->setStartColor(new Color(COLOR::COLOR_BLUE)));
+        self::assertInstanceOf(Fill::class, $object->setStartColor(new Color(Color::COLOR_BLUE)));
         self::assertInstanceOf(Color::class, $object->getStartColor());
-        self::assertEquals(COLOR::COLOR_BLUE, $object->getStartColor()->getARGB());
+        self::assertEquals(Color::COLOR_BLUE, $object->getStartColor()->getARGB());
     }
 
     /**

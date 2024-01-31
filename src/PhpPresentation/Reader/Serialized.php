@@ -92,14 +92,13 @@ class Serialized implements ReaderInterface
 
         // Update media links
         for ($i = 0; $i < $file->getSlideCount(); ++$i) {
-            for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
-                    $imgTemp = $file->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $imgPath = 'zip://' . $pFilename . '#media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME);
-                    if ($imgTemp instanceof DrawingFile) {
-                        $imgTemp->setPath($imgPath, false);
+            foreach ($file->getSlide($i)->getShapeCollection() as $shape) {
+                if ($shape instanceof AbstractDrawingAdapter) {
+                    $imgPath = 'zip://' . $pFilename . '#media/' . $shape->getImageIndex() . '/' . pathinfo($shape->getPath(), PATHINFO_BASENAME);
+                    if ($shape instanceof DrawingFile) {
+                        $shape->setPath($imgPath, false);
                     } else {
-                        $imgTemp->setPath($imgPath);
+                        $shape->setPath($imgPath);
                     }
                 }
             }

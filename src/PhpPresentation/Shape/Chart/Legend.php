@@ -89,21 +89,21 @@ class Legend implements ComparableInterface
     /**
      * Border.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Border
+     * @var Border
      */
     private $border;
 
     /**
      * Fill.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Fill
+     * @var Fill
      */
     private $fill;
 
     /**
      * Alignment.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Alignment
+     * @var Alignment
      */
     private $alignment;
 
@@ -133,7 +133,7 @@ class Legend implements ComparableInterface
      *
      * @param bool $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @return Legend
      */
     public function setVisible($value = true)
     {
@@ -157,7 +157,7 @@ class Legend implements ComparableInterface
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @return Legend
      */
     public function setPosition($value = self::POSITION_RIGHT)
     {
@@ -261,7 +261,7 @@ class Legend implements ComparableInterface
     /**
      * Get Border.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return Border
      */
     public function getBorder()
     {
@@ -271,7 +271,7 @@ class Legend implements ComparableInterface
     /**
      * Set Border.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @return Legend
      */
     public function setBorder(Border $border)
     {
@@ -283,7 +283,7 @@ class Legend implements ComparableInterface
     /**
      * Get Fill.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return Fill
      */
     public function getFill()
     {
@@ -293,7 +293,7 @@ class Legend implements ComparableInterface
     /**
      * Set Fill.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @return Legend
      */
     public function setFill(Fill $fill)
     {
@@ -305,7 +305,7 @@ class Legend implements ComparableInterface
     /**
      * Get alignment.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * @return Alignment
      */
     public function getAlignment()
     {
@@ -315,7 +315,7 @@ class Legend implements ComparableInterface
     /**
      * Set alignment.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @return Legend
      */
     public function setAlignment(Alignment $alignment)
     {

@@ -38,7 +38,7 @@ class SlideMasterTest extends TestCase
         $object = new SlideMaster();
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
         self::assertNull($object->getParent());
-        self::assertInstanceOf('\\ArrayObject', $object->getShapeCollection());
+        self::assertIsArray($object->getShapeCollection());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
         /** @var Color $background */
         $background = $object->getBackground();

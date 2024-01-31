@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\Exception\NotAllowedValueException;
 
 /**
@@ -27,6 +28,24 @@ use PhpOffice\PhpPresentation\Exception\NotAllowedValueException;
  */
 class Font implements ComparableInterface
 {
+    // Capitalization type
+    public const CAPITALIZATION_NONE = 'none';
+    public const CAPITALIZATION_SMALL = 'small';
+    public const CAPITALIZATION_ALL = 'all';
+
+    // Charset type
+    public const CHARSET_DEFAULT = 0x01;
+
+    // Format type
+    public const FORMAT_LATIN = 'latin';
+    public const FORMAT_EAST_ASIAN = 'ea';
+    public const FORMAT_COMPLEX_SCRIPT = 'cs';
+
+    // Strike type
+    public const STRIKE_NONE = 'noStrike';
+    public const STRIKE_SINGLE = 'sngStrike';
+    public const STRIKE_DOUBLE = 'dblStrike';
+
     // Underline types
     public const UNDERLINE_NONE = 'none';
     public const UNDERLINE_DASH = 'dash';
@@ -47,13 +66,9 @@ class Font implements ComparableInterface
     public const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
     public const UNDERLINE_WORDS = 'words';
 
-    public const FORMAT_LATIN = 'latin';
-    public const FORMAT_EAST_ASIAN = 'ea';
-    public const FORMAT_COMPLEX_SCRIPT = 'cs';
-
-    public const CAPITALIZATION_NONE = 'none';
-    public const CAPITALIZATION_SMALL = 'small';
-    public const CAPITALIZATION_ALL = 'all';
+    // Script sub and super values
+    public const BASELINE_SUPERSCRIPT = 300000;
+    public const BASELINE_SUBSCRIPT = -250000;
 
     /**
      * Name.
@@ -61,6 +76,27 @@ class Font implements ComparableInterface
      * @var string
      */
     private $name = 'Calibri';
+
+    /**
+     * Panose.
+     *
+     * @var string
+     */
+    private $panose = '';
+
+    /**
+     * Pitch Family.
+     *
+     * @var int
+     */
+    private $pitchFamily = 0;
+
+    /**
+     * Charset.
+     *
+     * @var int
+     */
+    private $charset = self::CHARSET_DEFAULT;
 
     /**
      * Font Size.
@@ -84,18 +120,11 @@ class Font implements ComparableInterface
     private $italic = false;
 
     /**
-     * Superscript.
+     * Baseline.
      *
-     * @var bool
+     * @var int
      */
-    private $superScript = false;
-
-    /**
-     * Subscript.
-     *
-     * @var bool
-     */
-    private $subScript = false;
+    private $baseline = 0;
 
     /**
      * Capitalization.
@@ -114,9 +143,9 @@ class Font implements ComparableInterface
     /**
      * Strikethrough.
      *
-     * @var bool
+     * @var string
      */
-    private $strikethrough = false;
+    private $strikethrough = self::STRIKE_NONE;
 
     /**
      * Foreground color.
@@ -168,6 +197,75 @@ class Font implements ComparableInterface
             $pValue = 'Calibri';
         }
         $this->name = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get panose.
+     */
+    public function getPanose(): string
+    {
+        return $this->panose;
+    }
+
+    /**
+     * Set panose.
+     */
+    public function setPanose(string $pValue): self
+    {
+        if (mb_strlen($pValue) !== 10) {
+            throw new InvalidParameterException('pValue', $pValue, 'The length is not equals to 10');
+        }
+
+        $allowedChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+        foreach (mb_str_split($pValue) as $char) {
+            if (!in_array($char, $allowedChars)) {
+                throw new InvalidParameterException(
+                    'pValue',
+                    $pValue,
+                    sprintf('The character "%s" is not allowed', $char)
+                );
+            }
+        }
+
+        $this->panose = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get pitchFamily.
+     */
+    public function getPitchFamily(): int
+    {
+        return $this->pitchFamily;
+    }
+
+    /**
+     * Set pitchFamily.
+     */
+    public function setPitchFamily(int $pValue): self
+    {
+        $this->pitchFamily = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get charset.
+     */
+    public function getCharset(): int
+    {
+        return $this->charset;
+    }
+
+    /**
+     * Set charset.
+     */
+    public function setCharset(int $pValue): self
+    {
+        $this->charset = $pValue;
 
         return $this;
     }
@@ -246,43 +344,61 @@ class Font implements ComparableInterface
     }
 
     /**
+     * Set Baseline.
+     */
+    public function setBaseline(int $pValue): self
+    {
+        $this->baseline = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get Baseline.
+     */
+    public function getBaseline(): int
+    {
+        return $this->baseline;
+    }
+
+    /**
      * Get SuperScript.
+     *
+     * @deprecated getBaseline() === self::BASELINE_SUPERSCRIPT
      */
     public function isSuperScript(): bool
     {
-        return $this->superScript;
+        return $this->getBaseline() === self::BASELINE_SUPERSCRIPT;
     }
 
     /**
      * Set SuperScript.
+     *
+     * @deprecated setBaseline(self::BASELINE_SUPERSCRIPT)
      */
     public function setSuperScript(bool $pValue = false): self
     {
-        $this->superScript = $pValue;
-
-        // Set SubScript at false only if SuperScript is true
-        if (true === $pValue) {
-            $this->subScript = false;
-        }
-
-        return $this;
+        return $this->setBaseline($pValue ? self::BASELINE_SUPERSCRIPT : ($this->getBaseline() == self::BASELINE_SUBSCRIPT ? $this->getBaseline() : 0));
     }
 
+    /**
+     * Get SubScript.
+     *
+     * @deprecated getBaseline() === self::BASELINE_SUBSCRIPT
+     */
     public function isSubScript(): bool
     {
-        return $this->subScript;
+        return $this->getBaseline() === self::BASELINE_SUBSCRIPT;
     }
 
+    /**
+     * Set SubScript.
+     *
+     * @deprecated setBaseline(self::BASELINE_SUBSCRIPT)
+     */
     public function setSubScript(bool $pValue = false): self
     {
-        $this->subScript = $pValue;
-
-        // Set SuperScript at false only if SubScript is true
-        if (true === $pValue) {
-            $this->superScript = false;
-        }
-
-        return $this;
+        return $this->setBaseline($pValue ? self::BASELINE_SUBSCRIPT : ($this->getBaseline() == self::BASELINE_SUPERSCRIPT ? $this->getBaseline() : 0));
     }
 
     /**
@@ -335,18 +451,43 @@ class Font implements ComparableInterface
 
     /**
      * Get Strikethrough.
+     *
+     * @deprecated Use `getStrikethrough`
      */
     public function isStrikethrough(): bool
+    {
+        return $this->strikethrough !== self::STRIKE_NONE;
+    }
+
+    /**
+     * Get Strikethrough.
+     */
+    public function getStrikethrough(): string
     {
         return $this->strikethrough;
     }
 
     /**
      * Set Strikethrough.
+     *
+     * @deprecated $pValue as boolean
+     *
+     * @param bool|string $pValue
+     *
+     * @return self
      */
-    public function setStrikethrough(bool $pValue = false): self
+    public function setStrikethrough($pValue = false)
     {
-        $this->strikethrough = $pValue;
+        if (is_bool($pValue)) {
+            $pValue = $pValue ? self::STRIKE_SINGLE : self::STRIKE_NONE;
+        }
+        if (in_array($pValue, [
+            self::STRIKE_NONE,
+            self::STRIKE_SINGLE,
+            self::STRIKE_DOUBLE,
+        ])) {
+            $this->strikethrough = $pValue;
+        }
 
         return $this;
     }
@@ -405,8 +546,7 @@ class Font implements ComparableInterface
             . $this->size
             . ($this->bold ? 't' : 'f')
             . ($this->italic ? 't' : 'f')
-            . ($this->superScript ? 't' : 'f')
-            . ($this->subScript ? 't' : 'f')
+            . $this->baseline
             . $this->underline
             . ($this->strikethrough ? 't' : 'f')
             . $this->format

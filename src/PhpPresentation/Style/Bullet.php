@@ -149,7 +149,7 @@ class Bullet implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletType($pValue = self::TYPE_NONE)
     {
@@ -173,7 +173,7 @@ class Bullet implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletFont($pValue = 'Calibri')
     {
@@ -200,7 +200,7 @@ class Bullet implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletChar($pValue = '-')
     {
@@ -224,7 +224,7 @@ class Bullet implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletNumericStyle($pValue = self::NUMERIC_DEFAULT)
     {
@@ -248,7 +248,7 @@ class Bullet implements ComparableInterface
      *
      * @param int|string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletNumericStartAt($pValue = 1)
     {

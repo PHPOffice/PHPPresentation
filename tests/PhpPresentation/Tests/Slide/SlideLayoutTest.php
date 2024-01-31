@@ -37,7 +37,7 @@ class SlideLayoutTest extends TestCase
 
         $object = new SlideLayout($mockSlideMaster);
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
-        self::assertInstanceOf('\\ArrayObject', $object->getShapeCollection());
+        self::assertIsArray($object->getShapeCollection());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
     }
 

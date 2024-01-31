@@ -19,29 +19,23 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide;
 
-use ArrayObject;
-use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
+use PhpOffice\PhpPresentation\Traits\ShapeCollection;
 
 class Note implements ComparableInterface, ShapeContainerInterface
 {
+    use ShapeCollection;
+
     /**
      * Parent slide.
      *
      * @var Slide
      */
     private $parent;
-
-    /**
-     * Collection of shapes.
-     *
-     * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    private $shapeCollection;
 
     /**
      * Note identifier.
@@ -93,31 +87,8 @@ class Note implements ComparableInterface, ShapeContainerInterface
         // Set parent
         $this->parent = $pParent;
 
-        // Shape collection
-        $this->shapeCollection = new ArrayObject();
-
         // Set identifier
         $this->identifier = md5(mt_rand(0, 9999) . time());
-    }
-
-    /**
-     * Get collection of shapes.
-     *
-     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    public function getShapeCollection()
-    {
-        return $this->shapeCollection;
-    }
-
-    /**
-     * Add shape to slide.
-     */
-    public function addShape(AbstractShape $shape): AbstractShape
-    {
-        $shape->setContainer($this);
-
-        return $shape;
     }
 
     /**

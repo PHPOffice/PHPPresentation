@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 /**
@@ -31,15 +32,40 @@ class DocPropsThumbnailTest extends PhpPresentationTestCase
     public function testRender(): void
     {
         $this->assertZipFileNotExists('docProps/thumbnail.jpeg');
+        $this->assertZipXmlElementNotExists('_rels/.rels', '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail"]');
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testFeatureThumbnail(): void
+    public function testFeatureThumbnailFile(): void
     {
         $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
 
-        $this->oPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
+        $this->oPresentation->getPresentationProperties()
+            ->setThumbnailPath($imagePath, PresentationProperties::THUMBNAIL_FILE);
         $this->assertZipFileExists('docProps/thumbnail.jpeg');
+        $this->assertZipXmlElementExists('_rels/.rels', '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail"]');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testFeatureThumbnailFileNotExisting(): void
+    {
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'NotExistingFile.png';
+
+        $this->oPresentation->getPresentationProperties()
+            ->setThumbnailPath($imagePath, PresentationProperties::THUMBNAIL_FILE);
+        $this->assertZipFileNotExists('docProps/thumbnail.jpeg');
+        $this->assertZipXmlElementNotExists('_rels/.rels', '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail"]');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testFeatureThumbnailData(): void
+    {
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
+
+        $this->oPresentation->getPresentationProperties()
+            ->setThumbnailPath('', PresentationProperties::THUMBNAIL_DATA, file_get_contents($imagePath));
+        $this->assertZipFileExists('docProps/thumbnail.jpeg');
+        $this->assertZipXmlElementExists('_rels/.rels', '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail"]');
         $this->assertIsSchemaECMA376Valid();
     }
 }

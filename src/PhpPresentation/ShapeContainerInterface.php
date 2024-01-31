@@ -36,9 +36,16 @@ interface ShapeContainerInterface
     /**
      * Add shape to slide.
      *
-     * @return AbstractShape
+     * @return static
      */
     public function addShape(AbstractShape $shape);
+
+    /**
+     * Unset shape from the collection.
+     *
+     * @return static
+     */
+    public function unsetShape(int $key);
 
     /**
      * Get X Offset.

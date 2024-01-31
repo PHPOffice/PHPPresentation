@@ -72,7 +72,7 @@ class TextElement implements TextElementInterface
      *
      * @param string $pText Text value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @return TextElementInterface
      */
     public function setText($pText = '')
     {
@@ -106,7 +106,7 @@ class TextElement implements TextElementInterface
     /**
      * Set Hyperlink.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
+     * @return TextElement
      */
     public function setHyperlink(?Hyperlink $pHyperlink = null)
     {

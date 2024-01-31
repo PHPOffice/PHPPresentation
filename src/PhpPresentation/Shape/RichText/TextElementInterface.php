@@ -36,7 +36,7 @@ interface TextElementInterface
      *
      * @param string $pText Text value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @return TextElementInterface
      */
     public function setText($pText = '');
 
@@ -55,7 +55,7 @@ interface TextElementInterface
     /**
      * @param string $lang
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @return TextElementInterface
      */
     public function setLanguage($lang);
 

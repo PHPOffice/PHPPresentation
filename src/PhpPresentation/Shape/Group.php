@@ -19,19 +19,14 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape;
 
-use ArrayObject;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
+use PhpOffice\PhpPresentation\Traits\ShapeCollection;
 
 class Group extends AbstractShape implements ShapeContainerInterface
 {
-    /**
-     * Collection of shapes.
-     *
-     * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    private $shapeCollection;
+    use ShapeCollection;
 
     /**
      * Extent X.
@@ -50,29 +45,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
     public function __construct()
     {
         parent::__construct();
-
-        // Shape collection
-        $this->shapeCollection = new ArrayObject();
-    }
-
-    /**
-     * Get collection of shapes.
-     *
-     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    public function getShapeCollection()
-    {
-        return $this->shapeCollection;
-    }
-
-    /**
-     * Add shape to slide.
-     */
-    public function addShape(AbstractShape $shape): AbstractShape
-    {
-        $shape->setContainer($this);
-
-        return $shape;
     }
 
     /**
