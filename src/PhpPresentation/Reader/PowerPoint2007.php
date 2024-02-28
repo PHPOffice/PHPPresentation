@@ -1323,6 +1323,13 @@ class PowerPoint2007 implements ReaderInterface
                             $this->loadHyperlink($document, $oElementHlinkClick, $oText->getHyperlink())
                         );
                     }
+
+                    $oElementFontFormatEastAsian = $document->getElement('a:ea', $oElementrPr);
+                    if (is_object($oElementFontFormatEastAsian)) {
+                        $oText->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+                        $oElementFontFormat = $oElementFontFormatEastAsian;
+                    }
+
                     // Font
                     $oElementFontFormat = null;
                     $oElementFontFormatLatin = $document->getElement('a:latin', $oElementrPr);
@@ -1330,11 +1337,7 @@ class PowerPoint2007 implements ReaderInterface
                         $oText->getFont()->setFormat(Font::FORMAT_LATIN);
                         $oElementFontFormat = $oElementFontFormatLatin;
                     }
-                    $oElementFontFormatEastAsian = $document->getElement('a:ea', $oElementrPr);
-                    if (is_object($oElementFontFormatEastAsian)) {
-                        $oText->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
-                        $oElementFontFormat = $oElementFontFormatEastAsian;
-                    }
+
                     $oElementFontFormatComplexScript = $document->getElement('a:cs', $oElementrPr);
                     if (is_object($oElementFontFormatComplexScript)) {
                         $oText->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
