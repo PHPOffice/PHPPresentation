@@ -493,6 +493,8 @@ class PowerPoint2007 implements ReaderInterface
                         // Background
                         $oBackground = new Slide\Background\Image();
                         $oBackground->setPath($tmpBkgImg);
+                        $extension = pathinfo( $pathImage, PATHINFO_EXTENSION );
+                        $oBackground->setExtension($extension);
                         // Slide Background
                         $oSlide = $this->oPhpPresentation->getActiveSlide();
                         $oSlide->setBackground($oBackground);
