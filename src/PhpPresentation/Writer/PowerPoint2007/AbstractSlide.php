@@ -677,21 +677,18 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('a:' . $element->getFont()->getFormat());
         $objWriter->writeAttribute('typeface', $element->getFont()->getName());
         if ($element->getFont()->getPanose() !== '') {
-            $panose = array_map(function (string $value) {
-                return '0' . $value;
-            }, str_split($element->getFont()->getPanose()));
-
-            $objWriter->writeAttribute('panose', implode('', $panose));
+            $objWriter->writeAttribute('panose', $element->getFont()->getPanose());
         }
         $objWriter->writeAttributeIf(
             $element->getFont()->getPitchFamily() !== 0,
             'pitchFamily',
             $element->getFont()->getPitchFamily()
         );
+        $charset = $element->getFont()->getCharset();
         $objWriter->writeAttributeIf(
             $element->getFont()->getCharset() !== Font::CHARSET_DEFAULT,
             'charset',
-            dechex($element->getFont()->getCharset())
+            $charset
         );
         $objWriter->endElement();
 
