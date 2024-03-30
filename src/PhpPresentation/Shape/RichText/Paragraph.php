@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -355,9 +356,9 @@ class Paragraph implements ComparableInterface
     /**
      * Value in points.
      */
-    public function setSpacingBefore(int $spacingBefore): self
+    public function setSpacingBefore(float $spacingBefore): self
     {
-        $this->spacingBefore = $spacingBefore;
+        $this->spacingBefore = (int)$spacingBefore;
 
         return $this;
     }
