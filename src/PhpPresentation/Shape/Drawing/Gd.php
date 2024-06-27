@@ -19,6 +19,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
+use GdImage;
+
 class Gd extends AbstractDrawingAdapter
 {
     // Rendering functions
@@ -83,7 +85,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * Set image resource.
      *
-     * @param resource|false|\GdImage|null $value
+     * @param resource|false|GdImage|null $value
      *
      * @return $this
      */
