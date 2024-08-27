@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PhpOffice\PhpPresentation\Slide;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -43,7 +44,7 @@ class PhpPresentationTest extends TestCase
 
         self::assertEquals(new DocumentProperties(), $object->getDocumentProperties());
         self::assertEquals(new DocumentLayout(), $object->getLayout());
-        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getSlide());
+        self::assertInstanceOf(Slide::class, $object->getSlide());
         self::assertCount(1, $object->getAllSlides());
         self::assertEquals(0, $object->getIndex($slide));
         self::assertEquals(1, $object->getSlideCount());
@@ -128,5 +129,65 @@ class PhpPresentationTest extends TestCase
 
         $object = new PhpPresentation();
         $object->setActiveSlideIndex(1);
+    }
+
+    public function testAddSlideAtStart(): void
+    {
+        $presentation = new PhpPresentation();
+        $presentation->removeSlideByIndex(0);
+        $slide1 = new Slide($presentation);
+        $slide1->setName('Slide 1');
+        $slide2 = new Slide($presentation);
+        $slide2->setName('Slide 2');
+        $slide3 = new Slide($presentation);
+        $slide3->setName('Slide 3');
+
+        $presentation->addSlide($slide1);
+        $presentation->addSlide($slide2);
+        $presentation->addSlide($slide3, 0);
+
+        self::assertEquals('Slide 3', $presentation->getSlide(0)->getName());
+        self::assertEquals('Slide 1', $presentation->getSlide(1)->getName());
+        self::assertEquals('Slide 2', $presentation->getSlide(2)->getName());
+    }
+
+    public function testAddSlideAtMiddle(): void
+    {
+        $presentation = new PhpPresentation();
+        $presentation->removeSlideByIndex(0);
+        $slide1 = new Slide($presentation);
+        $slide1->setName('Slide 1');
+        $slide2 = new Slide($presentation);
+        $slide2->setName('Slide 2');
+        $slide3 = new Slide($presentation);
+        $slide3->setName('Slide 3');
+
+        $presentation->addSlide($slide1);
+        $presentation->addSlide($slide2);
+        $presentation->addSlide($slide3, 1);
+
+        self::assertEquals('Slide 1', $presentation->getSlide(0)->getName());
+        self::assertEquals('Slide 3', $presentation->getSlide(1)->getName());
+        self::assertEquals('Slide 2', $presentation->getSlide(2)->getName());
+    }
+
+    public function testAddSlideAtEnd(): void
+    {
+        $presentation = new PhpPresentation();
+        $presentation->removeSlideByIndex(0);
+        $slide1 = new Slide($presentation);
+        $slide1->setName('Slide 1');
+        $slide2 = new Slide($presentation);
+        $slide2->setName('Slide 2');
+        $slide3 = new Slide($presentation);
+        $slide3->setName('Slide 3');
+
+        $presentation->addSlide($slide1);
+        $presentation->addSlide($slide2);
+        $presentation->addSlide($slide3);
+
+        self::assertEquals('Slide 1', $presentation->getSlide(0)->getName());
+        self::assertEquals('Slide 2', $presentation->getSlide(1)->getName());
+        self::assertEquals('Slide 3', $presentation->getSlide(2)->getName());
     }
 }
