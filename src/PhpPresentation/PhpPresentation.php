@@ -165,9 +165,13 @@ class PhpPresentation
     /**
      * Add slide.
      */
-    public function addSlide(Slide $slide): Slide
+    public function addSlide(Slide $slide, int $index = -1): Slide
     {
-        $this->slideCollection[] = $slide;
+        if ($index > -1) {
+            array_splice($this->slideCollection, $index, 0, [$slide]);
+        } else {
+            $this->slideCollection[] = $slide;
+        }
 
         return $slide;
     }
