@@ -133,6 +133,9 @@ class DocumentLayout
 
                 break;
             case self::LAYOUT_CUSTOM:
+                $this->layout = self::LAYOUT_CUSTOM;
+
+                break;
             default:
                 $this->layout = self::LAYOUT_CUSTOM;
                 $this->dimensionX = $pValue['cx'];
