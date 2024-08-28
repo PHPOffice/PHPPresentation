@@ -57,6 +57,24 @@ class DocumentLayoutTest extends TestCase
         self::assertEquals(9144000, $object->getCY());
     }
 
+    /**
+     * Test set custom layout.
+     */
+    public function testSetCustomLayoutWithString(): void
+    {
+        $object = new DocumentLayout();
+        $object->setDocumentLayout(DocumentLayout::LAYOUT_CUSTOM);
+        self::assertEquals(DocumentLayout::LAYOUT_CUSTOM, $object->getDocumentLayout());
+        // Default value
+        self::assertEquals(9144000, $object->getCX());
+        self::assertEquals(6858000, $object->getCY());
+
+        $object->setCX(13.333, DocumentLayout::UNIT_CENTIMETER);
+        $object->setCY(7.5, DocumentLayout::UNIT_CENTIMETER);
+        self::assertEquals(4799880, $object->getCX());
+        self::assertEquals(2700000, $object->getCY());
+    }
+
     public function testCX(): void
     {
         $value = mt_rand(1, 100000);
