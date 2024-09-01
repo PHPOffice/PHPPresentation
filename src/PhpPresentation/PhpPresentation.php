@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -118,8 +117,6 @@ class PhpPresentation
 
     /**
      * Set presentation properties.
-     *
-     * @return PhpPresentation
      */
     public function setPresentationProperties(PresentationProperties $value): self
     {
@@ -168,9 +165,13 @@ class PhpPresentation
     /**
      * Add slide.
      */
-    public function addSlide(Slide $slide): Slide
+    public function addSlide(Slide $slide, int $index = -1): Slide
     {
-        $this->slideCollection[] = $slide;
+        if ($index > -1) {
+            array_splice($this->slideCollection, $index, 0, [$slide]);
+        } else {
+            $this->slideCollection[] = $slide;
+        }
 
         return $slide;
     }
@@ -179,8 +180,6 @@ class PhpPresentation
      * Remove slide by index.
      *
      * @param int $index Slide index
-     *
-     * @throws OutOfBoundsException
      */
     public function removeSlideByIndex(int $index = 0): self
     {
@@ -196,8 +195,6 @@ class PhpPresentation
      * Get slide by index.
      *
      * @param int $index Slide index
-     *
-     * @throws OutOfBoundsException
      */
     public function getSlide(int $index = 0): Slide
     {
@@ -257,8 +254,6 @@ class PhpPresentation
      * Set active slide index.
      *
      * @param int $index Active slide index
-     *
-     * @throws OutOfBoundsException
      */
     public function setActiveSlideIndex(int $index = 0): Slide
     {
@@ -316,15 +311,30 @@ class PhpPresentation
     /**
      * Copy presentation (!= clone!).
      */
-    public function copy(): PhpPresentation
+    public function copy(): self
     {
         $copied = clone $this;
 
         $slideCount = count($this->slideCollection);
+
+        // Because the rebindParent() method on AbstractSlide removes the slide
+        // from the parent (current $this which we're cloning) presentation, we
+        // save the collection. This way, after the copying has finished, we can
+        // return the slides to the original presentation.
+        $oldSlideCollection = $this->slideCollection;
+        $newSlideCollection = [];
+
         for ($i = 0; $i < $slideCount; ++$i) {
-            $this->slideCollection[$i] = $this->slideCollection[$i]->copy();
-            $this->slideCollection[$i]->rebindParent($this);
+            $newSlideCollection[$i] = $oldSlideCollection[$i]->copy();
+            $newSlideCollection[$i]->rebindParent($copied);
         }
+
+        // Give the copied presentation a copied slide collection which the
+        // copied slides have been rebind to the copied presentation.
+        $copied->slideCollection = $newSlideCollection;
+
+        // Return the original slides to the original presentation.
+        $this->slideCollection = $oldSlideCollection;
 
         return $copied;
     }

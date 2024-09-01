@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -70,7 +69,7 @@ class PptPresPropsTest extends PhpPresentationTestCase
     /**
      * @return array<array<string>>
      */
-    public function dataProviderShowType(): array
+    public static function dataProviderShowType(): array
     {
         return [
             [

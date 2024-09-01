@@ -1,7 +1,7 @@
 <?php
 /**
  * Header file.
-*/
+ */
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\Autoloader;
 use PhpOffice\PhpPresentation\DocumentLayout;
@@ -29,7 +29,12 @@ Autoloader::register();
 if (is_file(dirname(__DIR__) . '/vendor/autoload.php')) {
     require_once dirname(__DIR__) . '/vendor/autoload.php';
 } else {
-    throw new Exception('Can not find the vendor folder!');
+    if (is_file(__DIR__ . '/../../Common/src/Common/Autoloader.php')) {
+        include_once __DIR__ . '/../../Common/src/Common/Autoloader.php';
+        PhpOffice\Common\Autoloader::register();
+    } else {
+        throw new Exception('Can not find the vendor or the common folder!');
+    }
 }
 // do some checks to make sure the outputs are set correctly.
 if (false === is_dir(__DIR__ . DIRECTORY_SEPARATOR . 'results')) {
@@ -104,7 +109,7 @@ if ($handle = opendir('.')) {
 /**
  * Write documents.
  *
- * @param \PhpOffice\PhpPresentation\PhpPresentation $phpPresentation
+ * @param PhpPresentation $phpPresentation
  * @param string $filename
  * @param array $writers
  *
@@ -117,7 +122,7 @@ function write($phpPresentation, $filename, $writers)
     // Write documents
     foreach ($writers as $writer => $extension) {
         $result .= date('H:i:s') . " Write to {$writer} format";
-        if (!is_null($extension)) {
+        if (null !== $extension) {
             $xmlWriter = IOFactory::createWriter($phpPresentation, $writer);
             $xmlWriter->save(__DIR__ . "/{$filename}.{$extension}");
             rename(__DIR__ . "/{$filename}.{$extension}", __DIR__ . "/results/{$filename}.{$extension}");
@@ -158,7 +163,7 @@ function getEndingNotes($writers)
             $result .= '<p>&nbsp;</p>';
             $result .= '<p>Results: ';
             foreach ($types as $type) {
-                if (!is_null($type)) {
+                if (null !== $type) {
                     $resultFile = 'results/' . SCRIPT_FILENAME . '.' . $type;
                     if (file_exists($resultFile)) {
                         $result .= "<a href='{$resultFile}' class='btn btn-primary'>{$type}</a> ";
@@ -174,12 +179,8 @@ function getEndingNotes($writers)
 
 /**
  * Creates a templated slide.
- *
- * @param PHPPresentation $objPHPPresentation
- *
- * @return \PhpOffice\PhpPresentation\Slide
  */
-function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPPresentation)
+function createTemplatedSlide(PhpPresentation $objPHPPresentation): Slide
 {
     // Create slide
     $slide = $objPHPPresentation->createSlide();
@@ -200,9 +201,10 @@ function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPP
     return $slide;
 }
 
-class PhpPptTree
+class Sample_Header
 {
     protected $oPhpPresentation;
+
     protected $htmlOutput;
 
     public function __construct(PhpPresentation $oPHPPpt)
@@ -230,12 +232,12 @@ class PhpPptTree
         return $this->htmlOutput;
     }
 
-    protected function append($sHTML)
+    protected function append($sHTML): void
     {
         $this->htmlOutput .= $sHTML;
     }
 
-    protected function displayPhpPresentation(PhpPresentation $oPHPPpt)
+    protected function displayPhpPresentation(PhpPresentation $oPHPPpt): void
     {
         $this->append('<li><span><i class="fa fa-folder-open"></i> PhpPresentation</span>');
         $this->append('<ul>');
@@ -265,7 +267,7 @@ class PhpPptTree
         $this->append('</li>');
     }
 
-    protected function displayShape(AbstractShape $shape)
+    protected function displayShape(AbstractShape $shape): void
     {
         if ($shape instanceof Drawing\Gd) {
             $this->append('<li><span class="shape" id="div' . $shape->getHashCode() . '">Shape "Drawing\Gd"</span></li>');
@@ -282,7 +284,7 @@ class PhpPptTree
         }
     }
 
-    protected function displayPhpPresentationInfo(PhpPresentation $oPHPPpt)
+    protected function displayPhpPresentationInfo(PhpPresentation $oPHPPpt): void
     {
         $this->append('<div class="infoBlk" id="divPhpPresentationInfo">');
         $this->append('<dl>');
@@ -324,7 +326,7 @@ class PhpPptTree
                 }
             }
             $oNote = $oSlide->getNote();
-            if ($oNote->getShapeCollection()->count() > 0) {
+            if (count($oNote->getShapeCollection()) > 0) {
                 $this->append('<dt>Notes</dt>');
                 foreach ($oNote->getShapeCollection() as $oShape) {
                     if ($oShape instanceof RichText) {
@@ -348,7 +350,7 @@ class PhpPptTree
         }
     }
 
-    protected function displayShapeInfo(AbstractShape $oShape)
+    protected function displayShapeInfo(AbstractShape $oShape): void
     {
         $this->append('<div class="infoBlk" id="div' . $oShape->getHashCode() . 'Info">');
         $this->append('<dl>');
@@ -360,18 +362,20 @@ class PhpPptTree
         $this->append('<dt>Rotation</dt><dd>' . $oShape->getRotation() . '°</dd>');
         $this->append('<dt>Hyperlink</dt><dd>' . ucfirst(var_export($oShape->hasHyperlink(), true)) . '</dd>');
         $this->append('<dt>Fill</dt>');
-        if (is_null($oShape->getFill())) {
+        if (null === $oShape->getFill()) {
             $this->append('<dd>None</dd>');
         } else {
             switch ($oShape->getFill()->getFillType()) {
-                case \PhpOffice\PhpPresentation\Style\Fill::FILL_NONE:
+                case PhpOffice\PhpPresentation\Style\Fill::FILL_NONE:
                     $this->append('<dd>None</dd>');
+
                     break;
-                case \PhpOffice\PhpPresentation\Style\Fill::FILL_SOLID:
+                case PhpOffice\PhpPresentation\Style\Fill::FILL_SOLID:
                     $this->append('<dd>Solid (');
                     $this->append('Color : #' . $oShape->getFill()->getStartColor()->getRGB());
                     $this->append(' - Alpha : ' . $oShape->getFill()->getStartColor()->getAlpha() . '%');
                     $this->append(')</dd>');
+
                     break;
             }
         }
@@ -438,6 +442,7 @@ class PhpPptTree
                         $this->append('<abbr title="Italic">Italic</abbr> : ' . ($oRichText->getFont()->isItalic() ? 'Y' : 'N') . ' - ');
                         $this->append('<abbr title="Underline">Underline</abbr> : Underline::' . $this->getConstantName('\PhpOffice\PhpPresentation\Style\Font', $oRichText->getFont()->getUnderline()) . ' - ');
                         $this->append('<abbr title="Strikethrough">Strikethrough</abbr> : ' . ($oRichText->getFont()->isStrikethrough() ? 'Y' : 'N') . ' - ');
+                        $this->append('<abbr title="Baseline">Baseline</abbr> : ' . $oRichText->getFont()->getBaseline() . ' - ');
                         $this->append('<abbr title="SubScript">SubScript</abbr> : ' . ($oRichText->getFont()->isSubScript() ? 'Y' : 'N') . ' - ');
                         $this->append('<abbr title="SuperScript">SuperScript</abbr> : ' . ($oRichText->getFont()->isSuperScript() ? 'Y' : 'N'));
                         $this->append('</dd>');
@@ -454,9 +459,9 @@ class PhpPptTree
                 $this->append('</dl></dd></dl>');
             }
             $this->append('</dd>');
-        } else {
-            // Add another shape
         }
+        // Add another shape
+
         $this->append('</dl>');
         $this->append('</div>');
     }
@@ -471,6 +476,7 @@ class PhpPptTree
                 if (empty($startWith) || (!empty($startWith) && 0 === strpos($key, $startWith))) {
                     $constName = $key;
                 }
+
                 break;
             }
         }

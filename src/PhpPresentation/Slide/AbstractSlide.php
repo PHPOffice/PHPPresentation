@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,8 +19,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide;
 
-use ArrayObject;
-use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\PhpPresentation;
@@ -32,108 +29,77 @@ use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
+use PhpOffice\PhpPresentation\Traits\ShapeCollection;
 
 abstract class AbstractSlide implements ComparableInterface, ShapeContainerInterface
 {
+    use ShapeCollection;
+
     /**
      * @var string
      */
     protected $relsIndex;
+
     /**
-     * @var Transition|null
+     * @var null|Transition
      */
     protected $slideTransition;
 
-    /**
-     * Collection of shapes.
-     *
-     * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    protected $shapeCollection = [];
     /**
      * Extent Y.
      *
      * @var int
      */
     protected $extentY;
+
     /**
      * Extent X.
      *
      * @var int
      */
     protected $extentX;
+
     /**
      * Offset X.
      *
      * @var int
      */
     protected $offsetX;
+
     /**
      * Offset Y.
      *
      * @var int
      */
     protected $offsetY;
+
     /**
      * Slide identifier.
      *
      * @var string
      */
     protected $identifier;
+
     /**
      * Hash index.
      *
      * @var int
      */
     protected $hashIndex;
+
     /**
      * Parent presentation.
      *
-     * @var PhpPresentation|null
+     * @var null|PhpPresentation
      */
     protected $parent;
+
     /**
      * Background of the slide.
      *
      * @var AbstractBackground
      */
     protected $background;
-
-    /**
-     * Get collection of shapes.
-     *
-     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    public function getShapeCollection()
-    {
-        return $this->shapeCollection;
-    }
-
-    /**
-     * Get collection of shapes.
-     *
-     * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapeCollection
-     *
-     * @return AbstractSlide
-     */
-    public function setShapeCollection($shapeCollection = [])
-    {
-        $this->shapeCollection = $shapeCollection;
-
-        return $this;
-    }
-
-    /**
-     * Add shape to slide.
-     *
-     * @return AbstractShape
-     */
-    public function addShape(AbstractShape $shape): AbstractShape
-    {
-        $shape->setContainer($this);
-
-        return $shape;
-    }
 
     /**
      * Get X Offset.
@@ -207,7 +173,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {
@@ -315,7 +281,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     /**
      * Re-bind parent.
      */
-    public function rebindParent(PhpPresentation $parent): AbstractSlide
+    public function rebindParent(PhpPresentation $parent): self
     {
         $this->parent->removeSlideByIndex($this->parent->getIndex($this));
         $this->parent = $parent;
@@ -328,7 +294,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
         return $this->background;
     }
 
-    public function setBackground(AbstractBackground $background = null): AbstractSlide
+    public function setBackground(?AbstractBackground $background = null): self
     {
         $this->background = $background;
 
@@ -340,7 +306,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
         return $this->slideTransition;
     }
 
-    public function setTransition(Transition $transition = null): self
+    public function setTransition(?Transition $transition = null): self
     {
         $this->slideTransition = $transition;
 

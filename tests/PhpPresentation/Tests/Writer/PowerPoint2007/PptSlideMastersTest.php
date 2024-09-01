@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -28,6 +27,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptSlideMasters;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,25 +40,36 @@ class PptSlideMastersTest extends TestCase
     public function testWriteSlideMasterRelationships(): void
     {
         $writer = new PptSlideMasters();
-        /** @var \PHPUnit\Framework\MockObject\MockObject|SlideMaster $slideMaster */
-        $slideMaster = $this->getMockBuilder(SlideMaster::class)
-            ->setMethods(['getAllSlideLayouts', 'getRelsIndex', 'getShapeCollection'])
-            ->getMock();
+        /** @var MockBuilder<SlideMaster> $mockBuilder */
+        // @phpstan-ignore-next-line
+        $mockBuilder = $this->getMockBuilder(SlideMaster::class);
+        if (method_exists(get_class($mockBuilder), 'onlyMethods')) {
+            /** @var \PHPUnit\Framework\MockObject\MockObject|SlideMaster $slideMaster */
+            // @phpstan-ignore-next-line
+            $slideMaster = $mockBuilder->onlyMethods(['getAllSlideLayouts', 'getRelsIndex', 'getShapeCollection'])
+                ->getMock();
+        } else {
+            /** @var \PHPUnit\Framework\MockObject\MockObject|SlideMaster $slideMaster */
+            // @phpstan-ignore-next-line
+            $slideMaster = $mockBuilder->setMethods(['getAllSlideLayouts', 'getRelsIndex', 'getShapeCollection'])
+                ->getMock();
+        }
 
         $layouts = [new SlideLayout($slideMaster)];
 
-        $slideMaster->expects($this->once())
+        $slideMaster->expects(self::once())
             ->method('getAllSlideLayouts')
-            ->will($this->returnValue($layouts));
+            ->willReturn($layouts);
 
-        $collection = new ArrayObject();
+        /** @var ArrayObject<int, ShapeDrawingFile> $collection */
+        $collection = [];
         $collection[] = new ShapeDrawingFile();
         $collection[] = new ShapeDrawingFile();
         $collection[] = new ShapeDrawingFile();
 
-        $slideMaster->expects($this->exactly(2))
+        $slideMaster->expects(self::exactly(2))
             ->method('getShapeCollection')
-            ->will($this->returnValue($collection));
+            ->willReturn($collection);
 
         $data = $writer->writeSlideMasterRelationships($slideMaster);
 
@@ -69,13 +80,13 @@ class PptSlideMastersTest extends TestCase
         $xpath->registerNamespace('r', 'http://schemas.openxmlformats.org/package/2006/relationships');
         $list = $xpath->query('//r:Relationship');
 
-        $this->assertEquals(5, $list->length);
+        self::assertEquals(5, $list->length);
 
         foreach (range(0, 4) as $id) {
             /** @var DOMElement $domItem */
             $domItem = $list->item($id);
-            $this->assertInstanceOf(DOMElement::class, $domItem);
-            $this->assertEquals('rId' . (string) ($id + 1), $domItem->getAttribute('Id'));
+            self::assertInstanceOf(DOMElement::class, $domItem);
+            self::assertEquals('rId' . (string) ($id + 1), $domItem->getAttribute('Id'));
         }
     }
 }

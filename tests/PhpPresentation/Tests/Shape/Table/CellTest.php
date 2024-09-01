@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -41,30 +40,30 @@ class CellTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Cell();
-        $this->assertEquals(0, $object->getActiveParagraphIndex());
-        $this->assertCount(1, $object->getParagraphs());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Borders', $object->getBorders());
+        self::assertEquals(0, $object->getActiveParagraphIndex());
+        self::assertCount(1, $object->getParagraphs());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Borders', $object->getBorders());
     }
 
     public function testActiveParagraph(): void
     {
         $object = new Cell();
-        $this->assertEquals(0, $object->getActiveParagraphIndex());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
-        $this->assertCount(2, $object->getParagraphs());
+        self::assertEquals(0, $object->getActiveParagraphIndex());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
+        self::assertCount(2, $object->getParagraphs());
         $value = mt_rand(0, 1);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setActiveParagraph($value));
-        $this->assertEquals($value, $object->getActiveParagraphIndex());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getActiveParagraph());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setActiveParagraph($value));
+        self::assertEquals($value, $object->getActiveParagraphIndex());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getActiveParagraph());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph());
         $value = mt_rand(0, 1);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs([]));
-        $this->assertCount(0, $object->getParagraphs());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
-        $this->assertCount(1, $object->getParagraphs());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs([]));
+        self::assertCount(0, $object->getParagraphs());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
+        self::assertCount(1, $object->getParagraphs());
     }
 
     public function testActiveParagraphException(): void
@@ -93,28 +92,28 @@ class CellTest extends TestCase
         $object = new Cell();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     public function testText(): void
     {
         $object = new Cell();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->addText());
-        $this->assertCount(1, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->addText(new TextElement()));
-        $this->assertCount(2, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText());
-        $this->assertCount(3, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText('ALPHA'));
-        $this->assertCount(4, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->createBreak());
-        $this->assertCount(5, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun());
-        $this->assertCount(6, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
-        $this->assertCount(7, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', $object->getPlainText());
-        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', (string) $object);
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->addText());
+        self::assertCount(1, $object->getActiveParagraph()->getRichTextElements());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->addText(new TextElement()));
+        self::assertCount(2, $object->getActiveParagraph()->getRichTextElements());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText());
+        self::assertCount(3, $object->getActiveParagraph()->getRichTextElements());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText('ALPHA'));
+        self::assertCount(4, $object->getActiveParagraph()->getRichTextElements());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->createBreak());
+        self::assertCount(5, $object->getActiveParagraph()->getRichTextElements());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun());
+        self::assertCount(6, $object->getActiveParagraph()->getRichTextElements());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
+        self::assertCount(7, $object->getActiveParagraph()->getRichTextElements());
+        self::assertEquals('ALPHA' . "\r\n" . 'BETA', $object->getPlainText());
+        self::assertEquals('ALPHA' . "\r\n" . 'BETA', (string) $object);
     }
 
     public function testParagraphs(): void
@@ -127,60 +126,60 @@ class CellTest extends TestCase
             new Paragraph(),
         ];
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs($array));
-        $this->assertCount(3, $object->getParagraphs());
-        $this->assertEquals(2, $object->getActiveParagraphIndex());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs($array));
+        self::assertCount(3, $object->getParagraphs());
+        self::assertEquals(2, $object->getActiveParagraphIndex());
     }
 
     public function testGetSetBorders(): void
     {
         $object = new Cell();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setBorders(new Borders()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Borders', $object->getBorders());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setBorders(new Borders()));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Borders', $object->getBorders());
     }
 
     public function testGetSetColspan(): void
     {
         $object = new Cell();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setColSpan());
-        $this->assertEquals(0, $object->getColSpan());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setColSpan());
+        self::assertEquals(0, $object->getColSpan());
 
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setColSpan($value));
-        $this->assertEquals($value, $object->getColSpan());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setColSpan($value));
+        self::assertEquals($value, $object->getColSpan());
     }
 
     public function testGetSetFill(): void
     {
         $object = new Cell();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setFill(new Fill()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setFill(new Fill()));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
     }
 
     public function testGetSetRowspan(): void
     {
         $object = new Cell();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setRowSpan());
-        $this->assertEquals(0, $object->getRowSpan());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setRowSpan());
+        self::assertEquals(0, $object->getRowSpan());
 
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setRowSpan($value));
-        $this->assertEquals($value, $object->getRowSpan());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setRowSpan($value));
+        self::assertEquals($value, $object->getRowSpan());
     }
 
     public function testGetSetWidth(): void
     {
         $object = new Cell();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setWidth());
-        $this->assertEquals(0, $object->getWidth());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setWidth());
+        self::assertEquals(0, $object->getWidth());
 
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setWidth($value));
-        $this->assertEquals($value, $object->getWidth());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setWidth($value));
+        self::assertEquals($value, $object->getWidth());
     }
 }

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -30,6 +29,9 @@ class PresentationProperties
     public const VIEW_SLIDE_MASTER = 'sldMasterView';
     public const VIEW_SLIDE_SORTER = 'sldSorterView';
     public const VIEW_SLIDE_THUMBNAIL = 'sldThumbnailView';
+
+    public const THUMBNAIL_FILE = 'file';
+    public const THUMBNAIL_DATA = 'data';
 
     /**
      * @var array<int, string>
@@ -71,9 +73,19 @@ class PresentationProperties
     protected $markAsFinal = false;
 
     /**
-     * @var string|null
+     * @var null|string Define the thumbnail content (if content into zip file)
      */
     protected $thumbnail;
+
+    /**
+     * @var null|string Define the thumbnail place
+     */
+    protected $thumbnailPath;
+
+    /**
+     * @var string Define if thumbnail is out of PPT or previouly store into PPT
+     */
+    protected $thumbnailType = self::THUMBNAIL_FILE;
 
     /**
      * Zoom.
@@ -111,28 +123,58 @@ class PresentationProperties
 
     /**
      * Return the thumbnail file path.
-     *
-     * @return string|null
      */
     public function getThumbnailPath(): ?string
     {
-        return $this->thumbnail;
+        return $this->thumbnailPath;
+    }
+
+    /**
+     * Return the content of thumbnail.
+     */
+    public function getThumbnail(): ?string
+    {
+        // Return content of local file
+        if ($this->getThumbnailType() == self::THUMBNAIL_FILE) {
+            if ($this->getThumbnailPath()) {
+                return file_get_contents($this->getThumbnailPath());
+            }
+
+            return null;
+        }
+
+        // Return content of image stored into zip file
+        if ($this->getThumbnailType() == self::THUMBNAIL_DATA) {
+            return $this->thumbnail;
+        }
+
+        return null;
     }
 
     /**
      * Define the path for the thumbnail file / preview picture.
-     *
-     * @param string $path
-     *
-     * @return self
      */
-    public function setThumbnailPath(string $path = ''): self
+    public function setThumbnailPath(string $path = '', string $type = self::THUMBNAIL_FILE, ?string $content = null): self
     {
-        if (file_exists($path)) {
-            $this->thumbnail = $path;
+        if (file_exists($path) && $type == self::THUMBNAIL_FILE) {
+            $this->thumbnailPath = $path;
+            $this->thumbnailType = $type;
+        }
+        if ($content != '' && $type == self::THUMBNAIL_DATA) {
+            $this->thumbnailPath = '';
+            $this->thumbnailType = $type;
+            $this->thumbnail = $content;
         }
 
         return $this;
+    }
+
+    /**
+     * Return the thumbnail type.
+     */
+    public function getThumbnailType(): string
+    {
+        return $this->thumbnailType;
     }
 
     /**
@@ -147,8 +189,6 @@ class PresentationProperties
 
     /**
      * Return if this document is marked as final.
-     *
-     * @return bool
      */
     public function isMarkedAsFinal(): bool
     {
@@ -173,11 +213,6 @@ class PresentationProperties
         return $this->zoom;
     }
 
-    /**
-     * @param string $value
-     *
-     * @return self
-     */
     public function setLastView(string $value = self::VIEW_SLIDE): self
     {
         if (in_array($value, $this->arrayView)) {
@@ -187,9 +222,6 @@ class PresentationProperties
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLastView(): string
     {
         return $this->lastView;
@@ -207,19 +239,11 @@ class PresentationProperties
         return $this->isCommentVisible;
     }
 
-    /**
-     * @return string
-     */
     public function getSlideshowType(): string
     {
         return $this->slideshowType;
     }
 
-    /**
-     * @param string $value
-     *
-     * @return self
-     */
     public function setSlideshowType(string $value = self::SLIDESHOW_TYPE_PRESENT): self
     {
         if (in_array($value, $this->arraySlideshowTypes)) {

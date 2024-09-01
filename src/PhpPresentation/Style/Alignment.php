@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -25,7 +24,7 @@ use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 
 class Alignment implements ComparableInterface
 {
-    /* Horizontal alignment */
+    // Horizontal alignment
     public const HORIZONTAL_GENERAL = 'l';
     public const HORIZONTAL_LEFT = 'l';
     public const HORIZONTAL_RIGHT = 'r';
@@ -33,14 +32,14 @@ class Alignment implements ComparableInterface
     public const HORIZONTAL_JUSTIFY = 'just';
     public const HORIZONTAL_DISTRIBUTED = 'dist';
 
-    /* Vertical alignment */
+    // Vertical alignment
     public const VERTICAL_BASE = 'base';
     public const VERTICAL_AUTO = 'auto';
     public const VERTICAL_BOTTOM = 'b';
     public const VERTICAL_TOP = 't';
     public const VERTICAL_CENTER = 'ctr';
 
-    /* Text direction */
+    // Text direction
     public const TEXT_DIRECTION_HORIZONTAL = 'horz';
     public const TEXT_DIRECTION_VERTICAL_90 = 'vert';
     public const TEXT_DIRECTION_VERTICAL_270 = 'vert270';
@@ -119,7 +118,7 @@ class Alignment implements ComparableInterface
     private $marginBottom = 0;
 
     /**
-     * RTL Direction Support
+     * RTL Direction Support.
      *
      * @var bool
      */
@@ -186,8 +185,6 @@ class Alignment implements ComparableInterface
      * Set Level.
      *
      * @param int $pValue Ranging 0 - 8
-     *
-     * @throws OutOfBoundsException
      */
     public function setLevel(int $pValue = 0): self
     {
@@ -316,19 +313,11 @@ class Alignment implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isRTL(): bool
     {
         return $this->isRTL;
     }
 
-    /**
-     * @param bool $value
-     *
-     * @return self
-     */
     public function setIsRTL(bool $value = false): self
     {
         $this->isRTL = $value;
@@ -361,7 +350,7 @@ class Alignment implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

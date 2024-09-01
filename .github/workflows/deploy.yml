@@ -25,7 +25,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1'
           extensions: mbstring, intl, gd, xml, dom, json, fileinfo, curl, zip, iconv
           coverage: xdebug
       - name: Create directory public/coverage
@@ -39,7 +39,7 @@ jobs:
       - name: Build Coverage Report
         run: XDEBUG_MODE=coverage ./vendor/bin/phpunit -c ./ --coverage-text --coverage-html ./public/coverage
       - name: Build Documentation
-        run: ./phpDocumentor.phar -d ./src -t ./public/docs
+        run: ./phpDocumentor.phar run -d ./src -t ./public/docs
 
       ### Deploy
       - name: Deploy

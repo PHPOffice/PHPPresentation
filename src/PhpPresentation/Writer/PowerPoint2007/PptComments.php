@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -28,9 +27,6 @@ use PhpOffice\PhpPresentation\Slide;
 
 class PptComments extends AbstractDecoratorWriter
 {
-    /**
-     * @return ZipInterface
-     */
     public function render(): ZipInterface
     {
         foreach ($this->getPresentation()->getAllSlides() as $numSlide => $oSlide) {
@@ -44,9 +40,6 @@ class PptComments extends AbstractDecoratorWriter
         return $this->getZip();
     }
 
-    /**
-     * @return string
-     */
     protected function writeSlideComments(Slide $oSlide): string
     {
         /**

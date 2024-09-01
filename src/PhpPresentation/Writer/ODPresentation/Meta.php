@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,9 +25,6 @@ use PhpOffice\PhpPresentation\DocumentProperties;
 
 class Meta extends AbstractDecoratorWriter
 {
-    /**
-     * @return ZipInterface
-     */
     public function render(): ZipInterface
     {
         // Create XML writer
@@ -83,20 +79,24 @@ class Meta extends AbstractDecoratorWriter
                 case DocumentProperties::PROPERTY_TYPE_FLOAT:
                     $objWriter->writeAttribute('meta:value-type', 'float');
                     $objWriter->writeRaw((string) $propertyValue);
+
                     break;
                 case DocumentProperties::PROPERTY_TYPE_BOOLEAN:
                     $objWriter->writeAttribute('meta:value-type', 'boolean');
                     $objWriter->writeRaw($propertyValue ? 'true' : 'false');
+
                     break;
                 case DocumentProperties::PROPERTY_TYPE_DATE:
                     $objWriter->writeAttribute('meta:value-type', 'date');
                     $objWriter->writeRaw(date(DATE_W3C, (int) $propertyValue));
+
                     break;
                 case DocumentProperties::PROPERTY_TYPE_STRING:
                 case DocumentProperties::PROPERTY_TYPE_UNKNOWN:
                 default:
                     $objWriter->writeAttribute('meta:value-type', 'string');
                     $objWriter->writeRaw((string) $propertyValue);
+
                     break;
             }
             $objWriter->endElement();

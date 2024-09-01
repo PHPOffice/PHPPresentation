@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -38,64 +37,64 @@ class SeriesTest extends TestCase
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Fill::class, $object->getFill());
-        $this->assertInstanceOf(Font::class, $object->getFont());
-        $this->assertEquals('Calibri', $object->getFont()->getName());
-        $this->assertEquals(9, $object->getFont()->getSize());
-        $this->assertEquals('Series Title', $object->getTitle());
-        $this->assertIsArray($object->getValues());
-        $this->assertEmpty($object->getValues());
-        $this->assertInstanceOf(Marker::class, $object->getMarker());
-        $this->assertNull($object->getOutline());
-        $this->assertFalse($object->hasShowLegendKey());
+        self::assertInstanceOf(Fill::class, $object->getFill());
+        self::assertInstanceOf(Font::class, $object->getFont());
+        self::assertEquals('Calibri', $object->getFont()->getName());
+        self::assertEquals(9, $object->getFont()->getSize());
+        self::assertEquals('Series Title', $object->getTitle());
+        self::assertIsArray($object->getValues());
+        self::assertEmpty($object->getValues());
+        self::assertInstanceOf(Marker::class, $object->getMarker());
+        self::assertNull($object->getOutline());
+        self::assertFalse($object->hasShowLegendKey());
     }
 
     public function testDataLabelNumFormat(): void
     {
         $object = new Series();
 
-        $this->assertEmpty($object->getDlblNumFormat());
-        $this->assertFalse($object->hasDlblNumFormat());
+        self::assertEmpty($object->getDlblNumFormat());
+        self::assertFalse($object->hasDlblNumFormat());
 
-        $this->assertInstanceOf(Series::class, $object->setDlblNumFormat('#%'));
+        self::assertInstanceOf(Series::class, $object->setDlblNumFormat('#%'));
 
-        $this->assertEquals('#%', $object->getDlblNumFormat());
-        $this->assertTrue($object->hasDlblNumFormat());
+        self::assertEquals('#%', $object->getDlblNumFormat());
+        self::assertTrue($object->hasDlblNumFormat());
 
-        $this->assertInstanceOf(Series::class, $object->setDlblNumFormat());
+        self::assertInstanceOf(Series::class, $object->setDlblNumFormat());
 
-        $this->assertEmpty($object->getDlblNumFormat());
-        $this->assertFalse($object->hasDlblNumFormat());
+        self::assertEmpty($object->getDlblNumFormat());
+        self::assertFalse($object->hasDlblNumFormat());
     }
 
     public function testDataPointFills(): void
     {
         $object = new Series();
 
-        $this->assertIsArray($object->getDataPointFills());
-        $this->assertEmpty($object->getDataPointFills());
+        self::assertIsArray($object->getDataPointFills());
+        self::assertEmpty($object->getDataPointFills());
 
-        $this->assertInstanceOf(Fill::class, $object->getDataPointFill(0));
+        self::assertInstanceOf(Fill::class, $object->getDataPointFill(0));
     }
 
     public function testFill(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setFill());
-        $this->assertNull($object->getFill());
-        $this->assertInstanceOf(Series::class, $object->setFill(new Fill()));
-        $this->assertInstanceOf(Fill::class, $object->getFill());
+        self::assertInstanceOf(Series::class, $object->setFill());
+        self::assertNull($object->getFill());
+        self::assertInstanceOf(Series::class, $object->setFill(new Fill()));
+        self::assertInstanceOf(Fill::class, $object->getFill());
     }
 
     public function testFont(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setFont());
-        $this->assertNull($object->getFont());
-        $this->assertInstanceOf(Series::class, $object->setFont(new Font()));
-        $this->assertInstanceOf(Font::class, $object->getFont());
+        self::assertInstanceOf(Series::class, $object->setFont());
+        self::assertNull($object->getFont());
+        self::assertInstanceOf(Series::class, $object->setFont(new Font()));
+        self::assertInstanceOf(Font::class, $object->getFont());
     }
 
     public function testHashIndex(): void
@@ -103,82 +102,82 @@ class SeriesTest extends TestCase
         $object = new Series();
         $value = mt_rand(1, 100);
 
-        $this->assertEmpty($object->getHashIndex());
-        $this->assertInstanceOf(Series::class, $object->setHashIndex($value));
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEmpty($object->getHashIndex());
+        self::assertInstanceOf(Series::class, $object->setHashIndex($value));
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     public function testHashCode(): void
     {
         $object = new Series();
 
-        $this->assertEquals(md5($object->getFill()->getHashCode() . $object->getFont()->getHashCode() . var_export($object->getValues(), true) . var_export($object, true) . get_class($object)), $object->getHashCode());
+        self::assertEquals(md5($object->getFill()->getHashCode() . $object->getFont()->getHashCode() . var_export($object->getValues(), true) . var_export($object, true) . get_class($object)), $object->getHashCode());
     }
 
     public function testLabelPosition(): void
     {
         $object = new Series();
 
-        $this->assertEmpty($object->getHashIndex());
-        $this->assertInstanceOf(Series::class, $object->setLabelPosition(Series::LABEL_INSIDEBASE));
-        $this->assertEquals(Series::LABEL_INSIDEBASE, $object->getLabelPosition());
+        self::assertEmpty($object->getHashIndex());
+        self::assertInstanceOf(Series::class, $object->setLabelPosition(Series::LABEL_INSIDEBASE));
+        self::assertEquals(Series::LABEL_INSIDEBASE, $object->getLabelPosition());
     }
 
     public function testMarker(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setMarker(new Marker()));
-        $this->assertInstanceOf(Marker::class, $object->getMarker());
+        self::assertInstanceOf(Series::class, $object->setMarker(new Marker()));
+        self::assertInstanceOf(Marker::class, $object->getMarker());
     }
 
     public function testOutline(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setOutline(new Outline()));
-        $this->assertInstanceOf(Outline::class, $object->getOutline());
+        self::assertInstanceOf(Series::class, $object->setOutline(new Outline()));
+        self::assertInstanceOf(Outline::class, $object->getOutline());
     }
 
     public function testShowCategoryName(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setShowCategoryName(true));
-        $this->assertTrue($object->hasShowCategoryName());
-        $this->assertInstanceOf(Series::class, $object->setShowCategoryName(false));
-        $this->assertFalse($object->hasShowCategoryName());
+        self::assertInstanceOf(Series::class, $object->setShowCategoryName(true));
+        self::assertTrue($object->hasShowCategoryName());
+        self::assertInstanceOf(Series::class, $object->setShowCategoryName(false));
+        self::assertFalse($object->hasShowCategoryName());
     }
 
     public function testShowLeaderLines(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setShowLeaderLines(true));
-        $this->assertTrue($object->hasShowLeaderLines());
-        $this->assertInstanceOf(Series::class, $object->setShowLeaderLines(false));
-        $this->assertFalse($object->hasShowLeaderLines());
+        self::assertInstanceOf(Series::class, $object->setShowLeaderLines(true));
+        self::assertTrue($object->hasShowLeaderLines());
+        self::assertInstanceOf(Series::class, $object->setShowLeaderLines(false));
+        self::assertFalse($object->hasShowLeaderLines());
     }
 
     public function testShowLegendKey(): void
     {
         $object = new Series();
 
-        $this->assertFalse($object->hasShowLegendKey());
-        $this->assertInstanceOf(Series::class, $object->setShowLegendKey(true));
-        $this->assertTrue($object->hasShowLegendKey());
-        $this->assertInstanceOf(Series::class, $object->setShowLegendKey(false));
-        $this->assertFalse($object->hasShowLegendKey());
+        self::assertFalse($object->hasShowLegendKey());
+        self::assertInstanceOf(Series::class, $object->setShowLegendKey(true));
+        self::assertTrue($object->hasShowLegendKey());
+        self::assertInstanceOf(Series::class, $object->setShowLegendKey(false));
+        self::assertFalse($object->hasShowLegendKey());
     }
 
     public function testShowPercentage(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setShowPercentage(true));
-        $this->assertTrue($object->hasShowPercentage());
-        $this->assertInstanceOf(Series::class, $object->setShowPercentage(false));
-        $this->assertFalse($object->hasShowPercentage());
+        self::assertInstanceOf(Series::class, $object->setShowPercentage(true));
+        self::assertTrue($object->hasShowPercentage());
+        self::assertInstanceOf(Series::class, $object->setShowPercentage(false));
+        self::assertFalse($object->hasShowPercentage());
     }
 
     public function testShowSeparator(): void
@@ -186,42 +185,42 @@ class SeriesTest extends TestCase
         $value = ';';
         $object = new Series();
 
-        $this->assertFalse($object->hasShowSeparator());
-        $this->assertInstanceOf(Series::class, $object->setSeparator($value));
-        $this->assertEquals($value, $object->getSeparator());
-        $this->assertTrue($object->hasShowSeparator());
-        $this->assertInstanceOf(Series::class, $object->setSeparator(''));
-        $this->assertFalse($object->hasShowPercentage());
+        self::assertFalse($object->hasShowSeparator());
+        self::assertInstanceOf(Series::class, $object->setSeparator($value));
+        self::assertEquals($value, $object->getSeparator());
+        self::assertTrue($object->hasShowSeparator());
+        self::assertInstanceOf(Series::class, $object->setSeparator(''));
+        self::assertFalse($object->hasShowPercentage());
     }
 
     public function testShowSeriesName(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setShowSeriesName(true));
-        $this->assertTrue($object->hasShowSeriesName());
-        $this->assertInstanceOf(Series::class, $object->setShowSeriesName(false));
-        $this->assertFalse($object->hasShowSeriesName());
+        self::assertInstanceOf(Series::class, $object->setShowSeriesName(true));
+        self::assertTrue($object->hasShowSeriesName());
+        self::assertInstanceOf(Series::class, $object->setShowSeriesName(false));
+        self::assertFalse($object->hasShowSeriesName());
     }
 
     public function testShowValue(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setShowValue(true));
-        $this->assertTrue($object->hasShowValue());
-        $this->assertInstanceOf(Series::class, $object->setShowValue(false));
-        $this->assertFalse($object->hasShowValue());
+        self::assertInstanceOf(Series::class, $object->setShowValue(true));
+        self::assertTrue($object->hasShowValue());
+        self::assertInstanceOf(Series::class, $object->setShowValue(false));
+        self::assertFalse($object->hasShowValue());
     }
 
     public function testTitle(): void
     {
         $object = new Series();
 
-        $this->assertInstanceOf(Series::class, $object->setTitle());
-        $this->assertEquals('Series Title', $object->getTitle());
-        $this->assertInstanceOf(Series::class, $object->setTitle('AAAA'));
-        $this->assertEquals('AAAA', $object->getTitle());
+        self::assertInstanceOf(Series::class, $object->setTitle());
+        self::assertEquals('Series Title', $object->getTitle());
+        self::assertInstanceOf(Series::class, $object->setTitle('AAAA'));
+        self::assertEquals('AAAA', $object->getTitle());
     }
 
     public function testValue(): void
@@ -236,14 +235,14 @@ class SeriesTest extends TestCase
             '3' => 'd',
         ];
 
-        $this->assertIsArray($object->getValues());
-        $this->assertEmpty($object->getValues());
-        $this->assertInstanceOf(Series::class, $object->setValues());
-        $this->assertEmpty($object->getValues());
-        $this->assertInstanceOf(Series::class, $object->setValues($array));
-        $this->assertCount(count($array), $object->getValues());
-        $this->assertInstanceOf(Series::class, $object->addValue('4', 'e'));
-        $this->assertCount(count($array) + 1, $object->getValues());
+        self::assertIsArray($object->getValues());
+        self::assertEmpty($object->getValues());
+        self::assertInstanceOf(Series::class, $object->setValues());
+        self::assertEmpty($object->getValues());
+        self::assertInstanceOf(Series::class, $object->setValues($array));
+        self::assertCount(count($array), $object->getValues());
+        self::assertInstanceOf(Series::class, $object->addValue('4', 'e'));
+        self::assertCount(count($array) + 1, $object->getValues());
     }
 
     public function testClone(): void
@@ -252,7 +251,7 @@ class SeriesTest extends TestCase
         $object->setOutline(new Outline());
         $clone = clone $object;
 
-        $this->assertInstanceOf(Series::class, $clone);
-        $this->assertInstanceOf(Outline::class, $clone->getOutline());
+        self::assertInstanceOf(Series::class, $clone);
+        self::assertInstanceOf(Outline::class, $clone->getOutline());
     }
 }

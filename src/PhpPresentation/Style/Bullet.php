@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -27,12 +26,12 @@ use PhpOffice\PhpPresentation\ComparableInterface;
  */
 class Bullet implements ComparableInterface
 {
-    /* Bullet types */
+    // Bullet types
     public const TYPE_NONE = 'none';
     public const TYPE_BULLET = 'bullet';
     public const TYPE_NUMERIC = 'numeric';
 
-    /* Numeric bullet styles */
+    // Numeric bullet styles
     public const NUMERIC_DEFAULT = 'arabicPeriod';
     public const NUMERIC_ALPHALCPARENBOTH = 'alphaLcParenBoth';
     public const NUMERIC_ALPHAUCPARENBOTH = 'alphaUcParenBoth';
@@ -150,7 +149,7 @@ class Bullet implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletType($pValue = self::TYPE_NONE)
     {
@@ -174,7 +173,7 @@ class Bullet implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletFont($pValue = 'Calibri')
     {
@@ -201,7 +200,7 @@ class Bullet implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletChar($pValue = '-')
     {
@@ -225,7 +224,7 @@ class Bullet implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletNumericStyle($pValue = self::NUMERIC_DEFAULT)
     {
@@ -249,7 +248,7 @@ class Bullet implements ComparableInterface
      *
      * @param int|string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     * @return Bullet
      */
     public function setBulletNumericStartAt($pValue = 1)
     {
@@ -281,7 +280,7 @@ class Bullet implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

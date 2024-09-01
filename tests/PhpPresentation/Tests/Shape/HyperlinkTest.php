@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -36,16 +35,16 @@ class HyperlinkTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Hyperlink();
-        $this->assertEmpty($object->getUrl());
-        $this->assertEmpty($object->getTooltip());
+        self::assertEmpty($object->getUrl());
+        self::assertEmpty($object->getTooltip());
 
         $object = new Hyperlink('http://test.com');
-        $this->assertEquals('http://test.com', $object->getUrl());
-        $this->assertEmpty($object->getTooltip());
+        self::assertEquals('http://test.com', $object->getUrl());
+        self::assertEmpty($object->getTooltip());
 
         $object = new Hyperlink('http://test.com', 'Test');
-        $this->assertEquals('http://test.com', $object->getUrl());
-        $this->assertEquals('Test', $object->getTooltip());
+        self::assertEquals('http://test.com', $object->getUrl());
+        self::assertEquals('Test', $object->getTooltip());
     }
 
     /**
@@ -54,13 +53,13 @@ class HyperlinkTest extends TestCase
     public function testGetHashCode(): void
     {
         $object = new Hyperlink();
-        $this->assertEquals(md5(get_class($object)), $object->getHashCode());
+        self::assertEquals(md5(get_class($object)), $object->getHashCode());
 
         $object = new Hyperlink('http://test.com');
-        $this->assertEquals(md5('http://test.com' . get_class($object)), $object->getHashCode());
+        self::assertEquals(md5('http://test.com' . get_class($object)), $object->getHashCode());
 
         $object = new Hyperlink('http://test.com', 'Test');
-        $this->assertEquals(md5('http://test.com' . 'Test' . get_class($object)), $object->getHashCode());
+        self::assertEquals(md5('http://test.com' . 'Test' . get_class($object)), $object->getHashCode());
     }
 
     /**
@@ -71,54 +70,66 @@ class HyperlinkTest extends TestCase
         $object = new Hyperlink();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     public function testGetSetSlideNumber(): void
     {
         $object = new Hyperlink();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setSlideNumber());
-        $this->assertEquals(1, $object->getSlideNumber());
-        $this->assertEquals('ppaction://hlinksldjump', $object->getUrl());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setSlideNumber());
+        self::assertEquals(1, $object->getSlideNumber());
+        self::assertEquals('ppaction://hlinksldjump', $object->getUrl());
 
         $value = mt_rand(1, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setSlideNumber($value));
-        $this->assertEquals($value, $object->getSlideNumber());
-        $this->assertEquals('ppaction://hlinksldjump', $object->getUrl());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setSlideNumber($value));
+        self::assertEquals($value, $object->getSlideNumber());
+        self::assertEquals('ppaction://hlinksldjump', $object->getUrl());
     }
 
     public function testGetSetTooltip(): void
     {
         $object = new Hyperlink();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setTooltip());
-        $this->assertEmpty($object->getTooltip());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setTooltip());
+        self::assertEmpty($object->getTooltip());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setTooltip('TEST'));
-        $this->assertEquals('TEST', $object->getTooltip());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setTooltip('TEST'));
+        self::assertEquals('TEST', $object->getTooltip());
     }
 
     public function testGetSetUrl(): void
     {
         $object = new Hyperlink();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setUrl());
-        $this->assertEmpty($object->getUrl());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setUrl());
+        self::assertEmpty($object->getUrl());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setUrl('http://www.github.com'));
-        $this->assertEquals('http://www.github.com', $object->getUrl());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setUrl('http://www.github.com'));
+        self::assertEquals('http://www.github.com', $object->getUrl());
     }
 
     public function testIsInternal(): void
     {
         $object = new Hyperlink();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setSlideNumber());
-        $this->assertTrue($object->isInternal());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setSlideNumber());
+        self::assertTrue($object->isInternal());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setUrl('http://www.github.com'));
-        $this->assertFalse($object->isInternal());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setUrl('http://www.github.com'));
+        self::assertFalse($object->isInternal());
+    }
+
+    public function testIsTextColorUsed(): void
+    {
+        $object = new Hyperlink();
+        self::assertFalse($object->isTextColorUsed());
+
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setIsTextColorUsed(true));
+        self::assertTrue($object->isTextColorUsed());
+
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setIsTextColorUsed(false));
+        self::assertFalse($object->isTextColorUsed());
     }
 }

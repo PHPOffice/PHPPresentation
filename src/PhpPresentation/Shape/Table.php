@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -63,8 +62,6 @@ class Table extends AbstractGraphic implements ComparableInterface
      * Get row.
      *
      * @param int $row Row number
-     *
-     * @throws OutOfBoundsException
      */
     public function getRow(int $row = 0): Row
     {
@@ -79,11 +76,6 @@ class Table extends AbstractGraphic implements ComparableInterface
         return $this->rows[$row];
     }
 
-    /**
-     * @param int $row
-     *
-     * @return bool
-     */
     public function hasRow(int $row): bool
     {
         return isset($this->rows[$row]);
@@ -101,8 +93,6 @@ class Table extends AbstractGraphic implements ComparableInterface
 
     /**
      * Create row.
-     *
-     * @return Row
      */
     public function createRow(): Row
     {
@@ -112,19 +102,11 @@ class Table extends AbstractGraphic implements ComparableInterface
         return $row;
     }
 
-    /**
-     * @return int
-     */
     public function getNumColumns(): int
     {
         return $this->columnCount;
     }
 
-    /**
-     * @param int $numColumn
-     *
-     * @return self
-     */
     public function setNumColumns(int $numColumn): self
     {
         $this->columnCount = $numColumn;

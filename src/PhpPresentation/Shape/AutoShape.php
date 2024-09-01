@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -25,7 +24,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Outline;
 
 /**
- * AutoShape shape
+ * AutoShape shape.
  *
  * @see : https://github.com/scanny/python-pptx/blob/eaa1e0fd3db28b03a353e116a5c7d2084dd87c26/pptx/enum/shapes.py
  */
@@ -238,19 +237,11 @@ class AutoShape extends AbstractShape implements ComparableInterface
         $this->outline = new Outline();
     }
 
-    /**
-     * @return string
-     */
     public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     *
-     * @return self
-     */
     public function setText(string $text): self
     {
         $this->text = $text;
@@ -258,19 +249,11 @@ class AutoShape extends AbstractShape implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return self
-     */
     public function setType(string $type): self
     {
         $this->type = $type;
@@ -278,19 +261,11 @@ class AutoShape extends AbstractShape implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return Outline
-     */
     public function getOutline(): Outline
     {
         return $this->outline;
     }
 
-    /**
-     * @param Outline $outline
-     *
-     * @return self
-     */
     public function setOutline(Outline $outline): self
     {
         $this->outline = $outline;

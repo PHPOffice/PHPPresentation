@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -43,8 +42,6 @@ class Serialized implements ReaderInterface
 
     /**
      * Does a file support UnserializePhpPresentation ?
-     *
-     * @throws FileNotFoundException
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename): bool
     {
@@ -59,9 +56,6 @@ class Serialized implements ReaderInterface
 
     /**
      * Loads PhpPresentation Serialized file.
-     *
-     * @throws FileNotFoundException
-     * @throws InvalidFileFormatException
      */
     public function load(string $pFilename): PhpPresentation
     {
@@ -72,7 +66,7 @@ class Serialized implements ReaderInterface
 
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new InvalidFileFormatException($pFilename, Serialized::class);
+            throw new InvalidFileFormatException($pFilename, self::class);
         }
 
         return $this->loadSerialized($pFilename);
@@ -80,19 +74,17 @@ class Serialized implements ReaderInterface
 
     /**
      * Load PhpPresentation Serialized file.
-     *
-     * @throws InvalidFileFormatException
      */
     private function loadSerialized(string $pFilename): PhpPresentation
     {
         $oArchive = new ZipArchive();
         if (true !== $oArchive->open($pFilename)) {
-            throw new InvalidFileFormatException($pFilename, Serialized::class);
+            throw new InvalidFileFormatException($pFilename, self::class);
         }
 
         $xmlContent = $oArchive->getFromName('PhpPresentation.xml');
         if (empty($xmlContent)) {
-            throw new InvalidFileFormatException($pFilename, Serialized::class, 'The file PhpPresentation.xml is malformed');
+            throw new InvalidFileFormatException($pFilename, self::class, 'The file PhpPresentation.xml is malformed');
         }
 
         $xmlData = simplexml_load_string($xmlContent);
@@ -100,14 +92,13 @@ class Serialized implements ReaderInterface
 
         // Update media links
         for ($i = 0; $i < $file->getSlideCount(); ++$i) {
-            for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
-                    $imgTemp = $file->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $imgPath = 'zip://' . $pFilename . '#media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME);
-                    if ($imgTemp instanceof DrawingFile) {
-                        $imgTemp->setPath($imgPath, false);
+            foreach ($file->getSlide($i)->getShapeCollection() as $shape) {
+                if ($shape instanceof AbstractDrawingAdapter) {
+                    $imgPath = 'zip://' . $pFilename . '#media/' . $shape->getImageIndex() . '/' . pathinfo($shape->getPath(), PATHINFO_BASENAME);
+                    if ($shape instanceof DrawingFile) {
+                        $shape->setPath($imgPath, false);
                     } else {
-                        $imgTemp->setPath($imgPath);
+                        $shape->setPath($imgPath);
                     }
                 }
             }

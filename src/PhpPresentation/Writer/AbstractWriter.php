@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,7 +19,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer;
 
-use ArrayIterator;
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\HashTable;
@@ -41,12 +39,12 @@ abstract class AbstractWriter
     /**
      * Private PhpPresentation.
      *
-     * @var PhpPresentation|null
+     * @var null|PhpPresentation
      */
     protected $oPresentation;
 
     /**
-     * @var ZipInterface|null
+     * @var null|ZipInterface
      */
     protected $oZipAdapter;
 
@@ -69,11 +67,11 @@ abstract class AbstractWriter
     /**
      * Get PhpPresentation object.
      *
-     * @param PhpPresentation|null $pPhpPresentation PhpPresentation object
+     * @param null|PhpPresentation $pPhpPresentation PhpPresentation object
      *
      * @return self
      */
-    public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
+    public function setPhpPresentation(?PhpPresentation $pPhpPresentation = null)
     {
         $this->oPresentation = $pPhpPresentation;
 
@@ -111,13 +109,13 @@ abstract class AbstractWriter
 
         // Get an array of all slide layouts
         $aSlideLayouts = [];
-        array_walk_recursive($aSlideMasterLayouts, function ($oSlideLayout) use (&$aSlideLayouts) {
+        array_walk_recursive($aSlideMasterLayouts, function ($oSlideLayout) use (&$aSlideLayouts): void {
             $aSlideLayouts[] = $oSlideLayout;
         });
 
         // Loop through PhpPresentation
         foreach (array_merge($this->getPhpPresentation()->getAllSlides(), $aSlideMasters, $aSlideLayouts) as $oSlide) {
-            $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection()->getIterator());
+            $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection());
             $aDrawings = array_merge($aDrawings, $arrayReturn);
         }
 
@@ -125,28 +123,23 @@ abstract class AbstractWriter
     }
 
     /**
-     * @param ArrayIterator<int, AbstractShape> $oIterator
+     * @param array<int, AbstractShape> $collection
      *
      * @return array<int, AbstractShape>
      */
-    private function iterateCollection(ArrayIterator $oIterator): array
+    private function iterateCollection(array $collection): array
     {
         $arrayReturn = [];
-        if ($oIterator->count() <= 0) {
-            return $arrayReturn;
-        }
 
-        while ($oIterator->valid()) {
-            $oShape = $oIterator->current();
+        foreach ($collection as $oShape) {
             if ($oShape instanceof AbstractDrawingAdapter) {
                 $arrayReturn[] = $oShape;
             } elseif ($oShape instanceof Chart) {
                 $arrayReturn[] = $oShape;
             } elseif ($oShape instanceof Group) {
-                $arrayGroup = $this->iterateCollection($oShape->getShapeCollection()->getIterator());
+                $arrayGroup = $this->iterateCollection($oShape->getShapeCollection());
                 $arrayReturn = array_merge($arrayReturn, $arrayGroup);
             }
-            $oIterator->next();
         }
 
         return $arrayReturn;

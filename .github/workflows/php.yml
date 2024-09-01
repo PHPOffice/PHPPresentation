@@ -47,7 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+        php: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
     steps:
         -   name: Setup PHP
             uses: shivammathur/setup-php@v2
@@ -63,19 +63,19 @@ jobs:
             run: ./vendor/bin/phpstan analyse -c phpstan.neon.dist
 
   phpunit:
-    name: PHPUnit
+    name: PHPUnit ${{ matrix.php }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+        php: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
     steps:
       -   name: Setup PHP
           uses: shivammathur/setup-php@v2
           with:
               php-version: ${{ matrix.php }}
               extensions: gd, xml, zip
-              coverage: xdebug
+              coverage: ${{ (matrix.php == '7.3') && 'xdebug' || 'none' }}
 
       -   uses: actions/checkout@v2
 
@@ -83,6 +83,11 @@ jobs:
           run: composer install --ansi --prefer-dist --no-interaction --no-progress
 
       -   name: Run phpunit
+          if: matrix.php != '7.3'
+          run: ./vendor/bin/phpunit -c phpunit.xml.dist --no-coverage
+
+      -   name: Run phpunit
+          if: matrix.php == '7.3'
           run: ./vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/clover.xml
 
       -   name: Upload coverage results to Coveralls
@@ -100,7 +105,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+        php: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
     steps:
       -   name: Setup PHP
           uses: shivammathur/setup-php@v2

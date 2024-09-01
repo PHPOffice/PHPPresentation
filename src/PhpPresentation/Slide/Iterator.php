@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -22,6 +21,7 @@ namespace PhpOffice\PhpPresentation\Slide;
 
 use IteratorIterator;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use ReturnTypeWillChange;
 
 // @phpstan-ignore-next-line
 class Iterator extends IteratorIterator
@@ -49,17 +49,10 @@ class Iterator extends IteratorIterator
     }
 
     /**
-     * Destructor.
-     */
-    public function __destruct()
-    {
-        unset($this->subject);
-    }
-
-    /**
      * Rewind iterator.
      */
-    public function rewind()
+    #[ReturnTypeWillChange]
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -69,6 +62,7 @@ class Iterator extends IteratorIterator
      *
      * @return \PhpOffice\PhpPresentation\Slide
      */
+    #[ReturnTypeWillChange]
     public function current()
     {
         return $this->subject->getSlide($this->position);
@@ -79,6 +73,7 @@ class Iterator extends IteratorIterator
      *
      * @return int
      */
+    #[ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
@@ -87,7 +82,8 @@ class Iterator extends IteratorIterator
     /**
      * Next value.
      */
-    public function next()
+    #[ReturnTypeWillChange]
+    public function next(): void
     {
         ++$this->position;
     }
@@ -97,6 +93,7 @@ class Iterator extends IteratorIterator
      *
      * @return bool
      */
+    #[ReturnTypeWillChange]
     public function valid()
     {
         return $this->position < $this->subject->getSlideCount();

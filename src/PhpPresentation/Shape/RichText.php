@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -22,6 +21,7 @@ namespace PhpOffice\PhpPresentation\Shape;
 
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\NotAllowedValueException;
 use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface;
@@ -45,12 +45,16 @@ class RichText extends AbstractShape implements ComparableInterface
     public const OVERFLOW_CLIP = 'clip';
     public const OVERFLOW_OVERFLOW = 'overflow';
 
+    /** Vertical alignment center */
+    public const VALIGN_CENTER = 1;
+    public const VALIGN_NOTCENTER = 0;
+
     /**
      * Rich text paragraphs.
      *
      * @var array<Paragraph>
      */
-    private $richTextParagraphs;
+    private $richTextParagraphs = [];
 
     /**
      * Active paragraph.
@@ -109,7 +113,7 @@ class RichText extends AbstractShape implements ComparableInterface
     private $columns = 1;
 
     /**
-     * The spacing between columns
+     * The spacing between columns.
      *
      * @var int
      */
@@ -146,30 +150,37 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Horizontal Auto Shrink.
      *
-     * @var bool|null
+     * @var null|bool
      */
     private $autoShrinkHorizontal;
 
     /**
      * Vertical Auto Shrink.
      *
-     * @var bool|null
+     * @var null|bool
      */
     private $autoShrinkVertical;
 
     /**
      * The percentage of the original font size to which the text is scaled.
      *
-     * @var float|null
+     * @var null|float
      */
     private $fontScale;
 
     /**
      * The percentage of the reduction of the line spacing.
      *
-     * @var float|null
+     * @var null|float
      */
     private $lnSpcReduction;
+
+    /**
+     * Define vertical text center position into shape (center,not center).
+     *
+     * @var int
+     */
+    private $verticalAlignCenter = self::VALIGN_NOTCENTER;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\RichText instance.
@@ -186,9 +197,20 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
+     * Magic Method : clone.
+     */
+    public function __clone()
+    {
+        // Call perent clonage for heritage
+        parent::__clone();
+        // Clone each paragraph
+        foreach ($this->richTextParagraphs as &$paragraph) {
+            $paragraph = clone $paragraph;
+        }
+    }
+
+    /**
      * Get active paragraph index.
-     *
-     * @return int
      */
     public function getActiveParagraphIndex(): int
     {
@@ -202,8 +224,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set active paragraph.
-     *
-     * @throws OutOfBoundsException
      */
     public function setActiveParagraph(int $index = 0): Paragraph
     {
@@ -218,8 +238,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get paragraph.
-     *
-     * @throws OutOfBoundsException
      */
     public function getParagraph(int $index = 0): Paragraph
     {
@@ -261,11 +279,9 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Add text.
      *
-     * @param TextElementInterface|null $pText Rich text element
-     *
-     * @return self
+     * @param null|TextElementInterface $pText Rich text element
      */
-    public function addText(TextElementInterface $pText = null): self
+    public function addText(?TextElementInterface $pText = null): self
     {
         $this->richTextParagraphs[$this->activeParagraph]->addText($pText);
 
@@ -276,8 +292,6 @@ class RichText extends AbstractShape implements ComparableInterface
      * Create text (can not be formatted !).
      *
      * @param string $pText Text
-     *
-     * @return RichText\TextElement
      */
     public function createText(string $pText = ''): RichText\TextElement
     {
@@ -286,8 +300,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Create break.
-     *
-     * @return RichText\BreakElement
      */
     public function createBreak(): RichText\BreakElement
     {
@@ -298,8 +310,6 @@ class RichText extends AbstractShape implements ComparableInterface
      * Create text run (can be formatted).
      *
      * @param string $pText Text
-     *
-     * @return RichText\Run
      */
     public function createTextRun(string $pText = ''): RichText\Run
     {
@@ -308,8 +318,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get plain text.
-     *
-     * @return string
      */
     public function getPlainText(): string
     {
@@ -358,8 +366,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get text wrapping.
-     *
-     * @return string
      */
     public function getWrap(): string
     {
@@ -368,10 +374,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set text wrapping.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function setWrap(string $value = self::WRAP_SQUARE): self
     {
@@ -382,8 +384,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get autofit.
-     *
-     * @return string
      */
     public function getAutoFit(): string
     {
@@ -408,22 +408,16 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set autofit.
-     *
-     * @param string $value
-     * @param float|null $fontScale
-     * @param float|null $lnSpcReduction
-     *
-     * @return self
      */
-    public function setAutoFit(string $value = self::AUTOFIT_DEFAULT, float $fontScale = null, float $lnSpcReduction = null): self
+    public function setAutoFit(string $value = self::AUTOFIT_DEFAULT, ?float $fontScale = null, ?float $lnSpcReduction = null): self
     {
         $this->autoFit = $value;
 
-        if (!is_null($fontScale)) {
+        if (null !== $fontScale) {
             $this->fontScale = $fontScale;
         }
 
-        if (!is_null($lnSpcReduction)) {
+        if (null !== $lnSpcReduction) {
             $this->lnSpcReduction = $lnSpcReduction;
         }
 
@@ -432,8 +426,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get horizontal overflow.
-     *
-     * @return string
      */
     public function getHorizontalOverflow(): string
     {
@@ -442,10 +434,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set horizontal overflow.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function setHorizontalOverflow(string $value = self::OVERFLOW_OVERFLOW): self
     {
@@ -456,8 +444,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get vertical overflow.
-     *
-     * @return string
      */
     public function getVerticalOverflow(): string
     {
@@ -466,10 +452,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set vertical overflow.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function setVerticalOverflow(string $value = self::OVERFLOW_OVERFLOW): self
     {
@@ -480,8 +462,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get upright.
-     *
-     * @return bool
      */
     public function isUpright(): bool
     {
@@ -490,10 +470,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set vertical.
-     *
-     * @param bool $value
-     *
-     * @return self
      */
     public function setUpright(bool $value = false): self
     {
@@ -504,8 +480,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get vertical.
-     *
-     * @return bool
      */
     public function isVertical(): bool
     {
@@ -514,10 +488,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set vertical.
-     *
-     * @param bool $value
-     *
-     * @return self
      */
     public function setVertical(bool $value = false): self
     {
@@ -527,9 +497,36 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get columns.
+     * Define the vertical alignment if centered or not.
      *
-     * @return int
+     * @param int $value 1=center 0=not
+     *
+     * @see self::VALIGN_CENTER, self::VALIGN_NOTCENTER
+     */
+    public function setVerticalAlignCenter(int $value): self
+    {
+        if (!in_array(
+            $value,
+            [self::VALIGN_CENTER, self::VALIGN_NOTCENTER]
+        )) {
+            throw new NotAllowedValueException((string) $value, [(string) self::VALIGN_CENTER, (string) self::VALIGN_NOTCENTER]);
+        }
+
+        $this->verticalAlignCenter = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get the vertical alignment center.
+     */
+    public function getVerticalAlignCenter(): int
+    {
+        return $this->verticalAlignCenter;
+    }
+
+    /**
+     * Get columns.
      */
     public function getColumns(): int
     {
@@ -538,12 +535,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set columns.
-     *
-     * @param int $value
-     *
-     * @return self
-     *
-     * @throws OutOfBoundsException
      */
     public function setColumns(int $value = 1): self
     {
@@ -558,8 +549,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get bottom inset.
-     *
-     * @return float
      */
     public function getInsetBottom(): float
     {
@@ -568,10 +557,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set bottom inset.
-     *
-     * @param float $value
-     *
-     * @return self
      */
     public function setInsetBottom(float $value = 4.8): self
     {
@@ -582,8 +567,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get left inset.
-     *
-     * @return float
      */
     public function getInsetLeft(): float
     {
@@ -592,10 +575,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set left inset.
-     *
-     * @param float $value
-     *
-     * @return self
      */
     public function setInsetLeft(float $value = 9.6): self
     {
@@ -606,8 +585,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get right inset.
-     *
-     * @return float
      */
     public function getInsetRight(): float
     {
@@ -616,10 +593,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set left inset.
-     *
-     * @param float $value
-     *
-     * @return self
      */
     public function setInsetRight(float $value = 9.6): self
     {
@@ -630,8 +603,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Get top inset.
-     *
-     * @return float
      */
     public function getInsetTop(): float
     {
@@ -640,10 +611,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set top inset.
-     *
-     * @param float $value
-     *
-     * @return self
      */
     public function setInsetTop(float $value = 4.8): self
     {
@@ -652,7 +619,7 @@ class RichText extends AbstractShape implements ComparableInterface
         return $this;
     }
 
-    public function setAutoShrinkHorizontal(bool $value = null): self
+    public function setAutoShrinkHorizontal(?bool $value = null): self
     {
         $this->autoShrinkHorizontal = $value;
 
@@ -666,10 +633,8 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Set vertical auto shrink.
-     *
-     * @return RichText
      */
-    public function setAutoShrinkVertical(bool $value = null): self
+    public function setAutoShrinkVertical(?bool $value = null): self
     {
         $this->autoShrinkVertical = $value;
 
@@ -685,9 +650,7 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get spacing between columns
-     *
-     * @return int
+     * Get spacing between columns.
      */
     public function getColumnSpacing(): int
     {
@@ -695,11 +658,7 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set spacing between columns
-     *
-     * @param int $value
-     *
-     * @return self
+     * Set spacing between columns.
      */
     public function setColumnSpacing(int $value = 0): self
     {
@@ -736,6 +695,7 @@ class RichText extends AbstractShape implements ComparableInterface
             . $this->leftInset
             . $this->rightInset
             . $this->topInset
+            . $this->verticalAlignCenter
             . parent::getHashCode()
             . __CLASS__
         );

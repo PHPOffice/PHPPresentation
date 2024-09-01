@@ -1,7 +1,7 @@
 <?php
 include_once 'Sample_Header.php';
 $requirements = [
-    'php' => ['PHP 5.3.0', version_compare(phpversion(), '5.3.0', '>=')],
+    'php' => ['PHP 5.3.0', version_compare(PHP_VERSION, '5.3.0', '>=')],
     'xml' => ['PHP extension XML', extension_loaded('xml')],
     'zip' => ['PHP extension ZipArchive (optional)', extension_loaded('zip')],
     'gd' => ['PHP extension GD (optional)', extension_loaded('gd')],
@@ -24,7 +24,7 @@ if (!CLI) {
     echo '<h3>Requirement check:</h3>';
     echo '<ul>';
     foreach ($requirements as $key => $value) {
-        list($label, $result) = $value;
+        [$label, $result] = $value;
         $status = $result ? 'passed' : 'failed';
         echo "<li>{$label} ... <span class='{$status}'>{$status}</span></li>";
     }
@@ -33,7 +33,7 @@ if (!CLI) {
 } else {
     echo 'Requirement check:' . PHP_EOL;
     foreach ($requirements as $key => $value) {
-        list($label, $result) = $value;
+        [$label, $result] = $value;
         $status = $result ? '32m passed' : '31m failed';
         echo "{$label} ... \033[{$status}\033[0m" . PHP_EOL;
     }

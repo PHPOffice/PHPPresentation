@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -32,8 +31,6 @@ class AbstractWriter extends Writer\AbstractWriter
      * public wrapper for protected method.
      *
      * @return AbstractShape[] All drawings in PhpPresentation
-     *
-     * @throws \Exception
      */
     public function allDrawings(): array
     {

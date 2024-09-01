@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -23,7 +22,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar.
  */
-class AbstractTypePie extends AbstractType
+abstract class AbstractTypePie extends AbstractType
 {
     /**
      * Create a new self instance.

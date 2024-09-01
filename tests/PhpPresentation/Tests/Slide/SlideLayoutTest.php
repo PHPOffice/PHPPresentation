@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,9 +36,9 @@ class SlideLayoutTest extends TestCase
         $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
 
         $object = new SlideLayout($mockSlideMaster);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
-        $this->assertInstanceOf('\\ArrayObject', $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
+        self::assertIsArray($object->getShapeCollection());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
     }
 
     public function testLayoutName(): void
@@ -48,13 +47,13 @@ class SlideLayoutTest extends TestCase
         $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
 
         // Expected
-        $expectedLayoutName = 'Title' . rand(1, 100);
+        $expectedLayoutName = 'Title' . mt_rand(1, 100);
 
         $object = new SlideLayout($mockSlideMaster);
 
-        $this->assertNull($object->getLayoutName());
-        $this->assertInstanceOf(SlideLayout::class, $object->setLayoutName($expectedLayoutName));
-        $this->assertEquals($expectedLayoutName, $object->getLayoutName());
+        self::assertNull($object->getLayoutName());
+        self::assertInstanceOf(SlideLayout::class, $object->setLayoutName($expectedLayoutName));
+        self::assertEquals($expectedLayoutName, $object->getLayoutName());
     }
 
     public function testSlideMaster(): void
@@ -64,6 +63,6 @@ class SlideLayoutTest extends TestCase
 
         $object = new SlideLayout($mockSlideMaster);
 
-        $this->assertInstanceOf(SlideMaster::class, $object->getSlideMaster());
+        self::assertInstanceOf(SlideMaster::class, $object->getSlideMaster());
     }
 }

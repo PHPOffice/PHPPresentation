@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,18 +34,18 @@ class DoughnutTest extends TestCase
     {
         $object = new Doughnut();
 
-        $this->assertIsArray($object->getSeries());
-        $this->assertEmpty($object->getSeries());
+        self::assertIsArray($object->getSeries());
+        self::assertEmpty($object->getSeries());
 
         $array = [
             new Series(),
             new Series(),
         ];
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setSeries());
-        $this->assertEmpty($object->getSeries());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setSeries($array));
-        $this->assertCount(count($array), $object->getSeries());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setSeries());
+        self::assertEmpty($object->getSeries());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setSeries($array));
+        self::assertCount(count($array), $object->getSeries());
     }
 
     public function testHoleSize(): void
@@ -54,23 +53,23 @@ class DoughnutTest extends TestCase
         $rand = mt_rand(10, 90);
         $object = new Doughnut();
 
-        $this->assertEquals(50, $object->getHoleSize());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setHoleSize(9));
-        $this->assertEquals(10, $object->getHoleSize());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setHoleSize(91));
-        $this->assertEquals(90, $object->getHoleSize());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setHoleSize($rand));
-        $this->assertEquals($rand, $object->getHoleSize());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setHoleSize());
-        $this->assertEquals(50, $object->getHoleSize());
+        self::assertEquals(50, $object->getHoleSize());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setHoleSize(9));
+        self::assertEquals(10, $object->getHoleSize());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setHoleSize(91));
+        self::assertEquals(90, $object->getHoleSize());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setHoleSize($rand));
+        self::assertEquals($rand, $object->getHoleSize());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setHoleSize());
+        self::assertEquals(50, $object->getHoleSize());
     }
 
     public function testSeries(): void
     {
         $object = new Doughnut();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->addSeries(new Series()));
-        $this->assertCount(1, $object->getSeries());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->addSeries(new Series()));
+        self::assertCount(1, $object->getSeries());
     }
 
     public function testHashCode(): void
@@ -80,6 +79,6 @@ class DoughnutTest extends TestCase
         $object = new Doughnut();
         $object->addSeries($oSeries);
 
-        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
+        self::assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

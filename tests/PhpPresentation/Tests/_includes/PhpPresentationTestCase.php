@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -29,11 +28,15 @@ use LibXMLError;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
+use ZipArchive;
 
 class PhpPresentationTestCase extends TestCase
 {
     /**
-     * @var PhpPresentation|null
+     * @var null|PhpPresentation
      */
     protected $oPresentation;
 
@@ -55,19 +58,19 @@ class PhpPresentationTestCase extends TestCase
     /**
      * DOMDocument object.
      *
-     * @var DOMDocument|null
+     * @var null|DOMDocument
      */
     private $xmlDom;
 
     /**
-     * @var DOMXPath|null
+     * @var null|DOMXPath
      */
     private $xmlXPath;
 
     /**
      * File name.
      *
-     * @var string|null
+     * @var null|string
      */
     private $xmlFile;
 
@@ -104,7 +107,9 @@ class PhpPresentationTestCase extends TestCase
      */
     protected function setUp(): void
     {
-        $this->xmlDisableEntityLoader = libxml_disable_entity_loader(false);
+        if (\PHP_VERSION_ID < 80000) {
+            $this->xmlDisableEntityLoader = libxml_disable_entity_loader(false);
+        }
         $this->workDirectory = sys_get_temp_dir() . '/PhpPresentation_Unit_Test/';
         $this->oPresentation = new PhpPresentation();
         $this->filePath = tempnam(sys_get_temp_dir(), 'PhpPresentation');
@@ -122,7 +127,9 @@ class PhpPresentationTestCase extends TestCase
      */
     protected function tearDown(): void
     {
-        libxml_disable_entity_loader($this->xmlDisableEntityLoader);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader($this->xmlDisableEntityLoader);
+        }
         libxml_use_internal_errors($this->xmlInternalErrors);
         $this->oPresentation = null;
         $this->resetPresentationFile();
@@ -187,6 +194,7 @@ class PhpPresentationTestCase extends TestCase
 
         if (null === $this->xmlXPath) {
             $this->xmlXPath = new DOMXPath($this->xmlDom);
+            $this->xmlXPath->registerNamespace('p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
         }
 
         return $this->xmlXPath->query($xpath);
@@ -204,7 +212,7 @@ class PhpPresentationTestCase extends TestCase
         $xmlWriter = IOFactory::createWriter($oPhpPresentation, $writerName);
         $xmlWriter->save($this->filePath);
 
-        $zip = new \ZipArchive();
+        $zip = new ZipArchive();
         $res = $zip->open($this->filePath);
         if (true === $res) {
             $zip->extractTo($this->workDirectory);
@@ -265,6 +273,22 @@ class PhpPresentationTestCase extends TestCase
         );
     }
 
+    public function assertZipXmlElementAtIndexExists(string $filePath, string $xPath, int $index): void
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        $element = $nodeList->item($index);
+        self::assertNotNull(
+            $element,
+            sprintf(
+                'The element "%s" at index %d doesn\'t exist in the file "%s"',
+                $xPath,
+                $index,
+                $filePath
+            )
+        );
+    }
+
     /**
      * @param string $filePath
      * @param string $xPath
@@ -299,13 +323,35 @@ class PhpPresentationTestCase extends TestCase
     /**
      * @param string $filePath
      * @param string $xPath
+     * @param mixed $value
+     */
+    public function assertZipXmlElementNotEquals($filePath, $xPath, $value): void
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertNotEquals($nodeList->item(0)->nodeValue, $value);
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function assertZipXmlElementAtIndexEquals(string $filePath, string $xPath, int $index, $value): void
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertEquals($nodeList->item($index)->nodeValue, $value);
+    }
+
+    /**
+     * @param string $filePath
+     * @param string $xPath
      * @param int $num
      */
     public function assertZipXmlElementCount($filePath, $xPath, $num): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertEquals($nodeList->length, $num);
+        self::assertEquals($num, $nodeList->length);
     }
 
     /**
@@ -406,10 +452,10 @@ class PhpPresentationTestCase extends TestCase
     {
         // validate all XML files
         $path = realpath($this->workDirectory . '/ppt');
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
 
         foreach ($iterator as $file) {
-            /** @var \SplFileInfo $file */
+            /** @var SplFileInfo $file */
             if ('xml' !== $file->getExtension()) {
                 continue;
             }
@@ -433,10 +479,10 @@ class PhpPresentationTestCase extends TestCase
     {
         // validate all XML files
         $path = realpath($this->workDirectory . '/ppt');
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
 
         foreach ($iterator as $file) {
-            /** @var \SplFileInfo $file */
+            /** @var SplFileInfo $file */
             if ('xml' !== $file->getExtension()) {
                 continue;
             }
@@ -479,11 +525,11 @@ class PhpPresentationTestCase extends TestCase
 
         // validate all XML files
         $path = realpath($this->workDirectory);
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
 
         $isValid = true;
         foreach ($iterator as $file) {
-            /** @var \SplFileInfo $file */
+            /** @var SplFileInfo $file */
             if ('xml' !== $file->getExtension()) {
                 continue;
             }
@@ -530,15 +576,19 @@ class PhpPresentationTestCase extends TestCase
         switch ($error->level) {
             case LIBXML_ERR_WARNING:
                 $errorType = 'warning';
+
                 break;
             case LIBXML_ERR_ERROR:
                 $errorType = 'error';
+
                 break;
             case LIBXML_ERR_FATAL:
                 $errorType = 'fatal';
+
                 break;
             default:
                 $errorType = 'Error';
+
                 break;
         }
         $errorLine = (int) $error->line;

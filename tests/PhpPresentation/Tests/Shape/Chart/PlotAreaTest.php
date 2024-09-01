@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -38,8 +37,8 @@ class PlotAreaTest extends TestCase
     {
         $object = new PlotArea();
 
-        $this->assertInstanceOf(Axis::class, $object->getAxisX());
-        $this->assertInstanceOf(Axis::class, $object->getAxisY());
+        self::assertInstanceOf(Axis::class, $object->getAxisX());
+        self::assertInstanceOf(Axis::class, $object->getAxisY());
     }
 
     public function testHashIndex(): void
@@ -47,9 +46,9 @@ class PlotAreaTest extends TestCase
         $object = new PlotArea();
         $value = mt_rand(1, 100);
 
-        $this->assertEmpty($object->getHashIndex());
-        $this->assertInstanceOf(PlotArea::class, $object->setHashIndex($value));
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEmpty($object->getHashIndex());
+        self::assertInstanceOf(PlotArea::class, $object->setHashIndex($value));
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     public function testHeight(): void
@@ -57,10 +56,10 @@ class PlotAreaTest extends TestCase
         $object = new PlotArea();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf(PlotArea::class, $object->setHeight());
-        $this->assertEquals(0, $object->getHeight());
-        $this->assertInstanceOf(PlotArea::class, $object->setHeight($value));
-        $this->assertEquals($value, $object->getHeight());
+        self::assertInstanceOf(PlotArea::class, $object->setHeight());
+        self::assertEquals(0, $object->getHeight());
+        self::assertInstanceOf(PlotArea::class, $object->setHeight($value));
+        self::assertEquals($value, $object->getHeight());
     }
 
     public function testOffsetX(): void
@@ -68,10 +67,10 @@ class PlotAreaTest extends TestCase
         $object = new PlotArea();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf(PlotArea::class, $object->setOffsetX());
-        $this->assertEquals(0, $object->getOffsetX());
-        $this->assertInstanceOf(PlotArea::class, $object->setOffsetX($value));
-        $this->assertEquals($value, $object->getOffsetX());
+        self::assertInstanceOf(PlotArea::class, $object->setOffsetX());
+        self::assertEquals(0, $object->getOffsetX());
+        self::assertInstanceOf(PlotArea::class, $object->setOffsetX($value));
+        self::assertEquals($value, $object->getOffsetX());
     }
 
     public function testOffsetY(): void
@@ -79,18 +78,18 @@ class PlotAreaTest extends TestCase
         $object = new PlotArea();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf(PlotArea::class, $object->setOffsetY());
-        $this->assertEquals(0, $object->getOffsetY());
-        $this->assertInstanceOf(PlotArea::class, $object->setOffsetY($value));
-        $this->assertEquals($value, $object->getOffsetY());
+        self::assertInstanceOf(PlotArea::class, $object->setOffsetY());
+        self::assertEquals(0, $object->getOffsetY());
+        self::assertInstanceOf(PlotArea::class, $object->setOffsetY($value));
+        self::assertEquals($value, $object->getOffsetY());
     }
 
     public function testType(): void
     {
         $object = new PlotArea();
 
-        $this->assertInstanceOf(PlotArea::class, $object->setType(new Bar3D()));
-        $this->assertInstanceOf(AbstractType::class, $object->getType());
+        self::assertInstanceOf(PlotArea::class, $object->setType(new Bar3D()));
+        self::assertInstanceOf(AbstractType::class, $object->getType());
     }
 
     public function testTypeException(): void
@@ -107,9 +106,9 @@ class PlotAreaTest extends TestCase
         $object = new PlotArea();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf(PlotArea::class, $object->setWidth());
-        $this->assertEquals(0, $object->getWidth());
-        $this->assertInstanceOf(PlotArea::class, $object->setWidth($value));
-        $this->assertEquals($value, $object->getWidth());
+        self::assertInstanceOf(PlotArea::class, $object->setWidth());
+        self::assertEquals(0, $object->getWidth());
+        self::assertInstanceOf(PlotArea::class, $object->setWidth($value));
+        self::assertEquals($value, $object->getWidth());
     }
 }

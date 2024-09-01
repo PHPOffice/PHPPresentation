@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,9 +25,6 @@ use PhpOffice\PhpPresentation\Slide;
 
 class PptTheme extends AbstractDecoratorWriter
 {
-    /**
-     * @return ZipInterface
-     */
     public function render(): ZipInterface
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oMasterSlide) {
@@ -80,7 +76,7 @@ class PptTheme extends AbstractDecoratorWriter
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
 
-        $name = 'Theme' . rand(1, 100);
+        $name = 'Theme' . mt_rand(1, 100);
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');

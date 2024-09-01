@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,47 +36,47 @@ class TextElementTest extends TestCase
     public function testConstruct(): void
     {
         $object = new TextElement();
-        $this->assertEquals('', $object->getText());
+        self::assertEquals('', $object->getText());
 
         $object = new TextElement('AAA');
-        $this->assertEquals('AAA', $object->getText());
+        self::assertEquals('AAA', $object->getText());
     }
 
     public function testFont(): void
     {
         $object = new TextElement();
-        $this->assertNull($object->getFont());
+        self::assertNull($object->getFont());
     }
 
     public function testHyperlink(): void
     {
         $object = new TextElement();
-        $this->assertFalse($object->hasHyperlink());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setHyperlink());
-        $this->assertFalse($object->hasHyperlink());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->getHyperlink());
-        $this->assertTrue($object->hasHyperlink());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setHyperlink(new Hyperlink('http://www.google.fr')));
-        $this->assertTrue($object->hasHyperlink());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->getHyperlink());
+        self::assertFalse($object->hasHyperlink());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setHyperlink());
+        self::assertFalse($object->hasHyperlink());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->getHyperlink());
+        self::assertTrue($object->hasHyperlink());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setHyperlink(new Hyperlink('http://www.google.fr')));
+        self::assertTrue($object->hasHyperlink());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->getHyperlink());
     }
 
     public function testLanguage(): void
     {
         $object = new TextElement();
-        $this->assertNull($object->getLanguage());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setLanguage('en-US'));
-        $this->assertEquals('en-US', $object->getLanguage());
+        self::assertNull($object->getLanguage());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setLanguage('en-US'));
+        self::assertEquals('en-US', $object->getLanguage());
     }
 
     public function testText(): void
     {
         $object = new TextElement();
-        $this->assertEquals('', $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setText());
-        $this->assertEquals('', $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setText('AAA'));
-        $this->assertEquals('AAA', $object->getText());
+        self::assertEquals('', $object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setText());
+        self::assertEquals('', $object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setText('AAA'));
+        self::assertEquals('AAA', $object->getText());
     }
 
     /**
@@ -86,6 +85,6 @@ class TextElementTest extends TestCase
     public function testHashCode(): void
     {
         $object = new TextElement();
-        $this->assertEquals(md5(get_class($object)), $object->getHashCode());
+        self::assertEquals(md5(get_class($object)), $object->getHashCode());
     }
 }

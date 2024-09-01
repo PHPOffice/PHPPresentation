@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -36,6 +35,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use ReflectionClass;
 
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest.
@@ -118,7 +118,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oColor = new Color(Color::COLOR_DARKRED);
-        $oColor->setAlpha(rand(0, 100));
+        $oColor->setAlpha(mt_rand(0, 100));
         $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
         $this->resetPresentationFile();
 
@@ -539,7 +539,7 @@ class ContentTest extends PhpPresentationTestCase
             if (0 == $inc || 180 == $inc || 360 == $inc) {
                 $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '0cm');
             } else {
-                if (($inc > 0 && $inc < 180) || 360 == $inc) {
+                if ($inc < 180) {
                     $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
                 } else {
                     $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '-' . Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
@@ -760,6 +760,40 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeExists('content.xml', $element, 'style:script-type');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:script-type', 'complex');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testStyleFontCapitalization(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_ALL);
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:text-transform');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-transform', 'uppercase');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_SMALL);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:text-transform');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-transform', 'lowercase');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_NONE);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:text-transform');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-transform', 'none');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
@@ -989,7 +1023,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-speed', 'slow');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
-        $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
+        $rcTransition = new ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
         foreach ($arrayConstants as $key => $value) {
             if (0 !== strpos($key, 'TRANSITION_')) {
@@ -1001,147 +1035,195 @@ class ContentTest extends PhpPresentationTestCase
             switch ($key) {
                 case 'TRANSITION_BLINDS_HORIZONTAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'horizontal-stripes');
+
                     break;
                 case 'TRANSITION_BLINDS_VERTICAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'vertical-stripes');
+
                     break;
                 case 'TRANSITION_CHECKER_HORIZONTAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'horizontal-checkerboard');
+
                     break;
                 case 'TRANSITION_CHECKER_VERTICAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'vertical-checkerboard');
+
                     break;
                 case 'TRANSITION_CIRCLE_HORIZONTAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_CIRCLE_VERTICAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_COMB_HORIZONTAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_COMB_VERTICAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_COVER_DOWN':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'uncover-to-bottom');
+
                     break;
                 case 'TRANSITION_COVER_LEFT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'uncover-to-left');
+
                     break;
                 case 'TRANSITION_COVER_LEFT_DOWN':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'uncover-to-lowerleft');
+
                     break;
                 case 'TRANSITION_COVER_LEFT_UP':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'uncover-to-upperleft');
+
                     break;
                 case 'TRANSITION_COVER_RIGHT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'uncover-to-right');
+
                     break;
                 case 'TRANSITION_COVER_RIGHT_DOWN':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'uncover-to-lowerright');
+
                     break;
                 case 'TRANSITION_COVER_RIGHT_UP':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'uncover-to-upperright');
+
                     break;
                 case 'TRANSITION_COVER_UP':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'uncover-to-top');
+
                     break;
                 case 'TRANSITION_CUT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_DIAMOND':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_DISSOLVE':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'dissolve');
+
                     break;
                 case 'TRANSITION_FADE':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'fade-from-center');
+
                     break;
                 case 'TRANSITION_NEWSFLASH':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_PLUS':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'close');
+
                     break;
                 case 'TRANSITION_PULL_DOWN':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'stretch-from-bottom');
+
                     break;
                 case 'TRANSITION_PULL_LEFT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'stretch-from-left');
+
                     break;
                 case 'TRANSITION_PULL_RIGHT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'stretch-from-right');
+
                     break;
                 case 'TRANSITION_PULL_UP':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'stretch-from-top');
+
                     break;
                 case 'TRANSITION_PUSH_DOWN':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'roll-from-bottom');
+
                     break;
                 case 'TRANSITION_PUSH_LEFT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'roll-from-left');
+
                     break;
                 case 'TRANSITION_PUSH_RIGHT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'roll-from-right');
+
                     break;
                 case 'TRANSITION_PUSH_UP':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'roll-from-top');
+
                     break;
                 case 'TRANSITION_RANDOM':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'random');
+
                     break;
                 case 'TRANSITION_RANDOMBAR_HORIZONTAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'horizontal-lines');
+
                     break;
                 case 'TRANSITION_RANDOMBAR_VERTICAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'vertical-lines');
+
                     break;
                 case 'TRANSITION_SPLIT_IN_HORIZONTAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'close-horizontal');
+
                     break;
                 case 'TRANSITION_SPLIT_OUT_HORIZONTAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'open-horizontal');
+
                     break;
                 case 'TRANSITION_SPLIT_IN_VERTICAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'close-vertical');
+
                     break;
                 case 'TRANSITION_SPLIT_OUT_VERTICAL':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'open-vertical');
+
                     break;
                 case 'TRANSITION_STRIPS_LEFT_DOWN':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_STRIPS_LEFT_UP':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_STRIPS_RIGHT_DOWN':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_STRIPS_RIGHT_UP':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_WEDGE':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_WIPE_DOWN':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'fade-from-bottom');
+
                     break;
                 case 'TRANSITION_WIPE_LEFT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'fade-from-left');
+
                     break;
                 case 'TRANSITION_WIPE_RIGHT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'fade-from-right');
+
                     break;
                 case 'TRANSITION_WIPE_UP':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'fade-from-top');
+
                     break;
                 case 'TRANSITION_ZOOM_IN':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
                 case 'TRANSITION_ZOOM_OUT':
                     $this->assertZipXmlAttributeContains('content.xml', $element, 'presentation:transition-style', 'none');
+
                     break;
             }
             $this->assertIsSchemaOpenDocumentValid('1.2');
@@ -1192,9 +1274,9 @@ class ContentTest extends PhpPresentationTestCase
     }
 
     /**
-     * @return array<array<string|bool>>
+     * @return array<array<bool|string>>
      */
-    public function dataProviderShowType(): array
+    public static function dataProviderShowType(): array
     {
         return [
             [
@@ -1240,7 +1322,7 @@ class ContentTest extends PhpPresentationTestCase
     /**
      * @return array<array<bool>>
      */
-    public function dataProviderLoopContinuouslyUntilEsc(): array
+    public static function dataProviderLoopContinuouslyUntilEsc(): array
     {
         return [
             [

@@ -12,13 +12,14 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\RichText;
+
+use PhpOffice\PhpPresentation\Style\Font;
 
 /**
  * Rich text element interface.
@@ -37,14 +38,14 @@ interface TextElementInterface
      *
      * @param string $pText Text value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @return TextElementInterface
      */
     public function setText($pText = '');
 
     /**
      * Get font.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return Font
      */
     public function getFont();
 
@@ -56,7 +57,7 @@ interface TextElementInterface
     /**
      * @param string $lang
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @return TextElementInterface
      */
     public function setLanguage($lang);
 

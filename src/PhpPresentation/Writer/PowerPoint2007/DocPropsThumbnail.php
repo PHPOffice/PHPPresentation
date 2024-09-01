@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,18 +25,15 @@ class DocPropsThumbnail extends AbstractDecoratorWriter
 {
     public function render(): ZipInterface
     {
-        $pathThumbnail = $this->getPresentation()->getPresentationProperties()->getThumbnailPath();
-
-        if ($pathThumbnail) {
-            $fileThumbnail = file_get_contents($pathThumbnail);
-            $gdImage = imagecreatefromstring($fileThumbnail);
+        $thumnbail = $this->getPresentation()->getPresentationProperties()->getThumbnail();
+        if ($thumnbail) {
+            $gdImage = imagecreatefromstring($thumnbail);
             if ($gdImage) {
                 ob_start();
                 imagejpeg($gdImage);
                 $imageContents = ob_get_contents();
                 ob_end_clean();
                 imagedestroy($gdImage);
-
                 $this->getZip()->addFromString('docProps/thumbnail.jpeg', $imageContents);
             }
         }

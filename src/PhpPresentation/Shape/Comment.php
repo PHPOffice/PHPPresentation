@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -30,7 +29,7 @@ use PhpOffice\PhpPresentation\Shape\Comment\Author;
 class Comment extends AbstractShape implements ComparableInterface
 {
     /**
-     * @var Author|null
+     * @var null|Author
      */
     protected $author;
 
@@ -105,7 +104,7 @@ class Comment extends AbstractShape implements ComparableInterface
     /**
      * Comment has not height.
      *
-     * @return int|null
+     * @return null|int
      */
     public function getHeight()
     {
@@ -125,7 +124,7 @@ class Comment extends AbstractShape implements ComparableInterface
     /**
      * Comment has not width.
      *
-     * @return int|null
+     * @return null|int
      */
     public function getWidth()
     {

@@ -95,6 +95,62 @@ $shape->getPlotArea()->getAxisX()->setMinBounds(0);
 $shape->getPlotArea()->getAxisX()->setMaxBounds(200);
 ```
 
+#### Crossing
+
+!!! warning
+    Available only on the PowerPoint2007 Writer
+
+For Axis, `setCrossesAt` can be used to define where it should be crossed by the perpendicular/ horizontal axis.
+The property can be defined by one of the three given constants or as an absolute value on the target axis.
+
+``` php
+use PhpOffice\PhpPresentation\Shape\Axis;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
+
+$bar = new Bar();
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($bar);
+
+// Usage of constant: Horizontal axis will cross the Y-Axis at `0`
+$shape->getPlotArea()->getAxisY()->setCrossesAt(Axis::CROSSES_AUTO);
+
+// Usage of individual value: Horizontal axis will cross the Y-Axis at `3`
+$shape->getPlotArea()->getAxisY()->setCrossesAt('3');
+```
+
+| Constant             | Description              |
+| -------------------- | ------------------------ |
+| `AXIS::CROSSES_AUTO` | Axis crosses at zero.    |
+| `AXIS::CROSSES_MIN`  | Axis crosses at minimum. |
+| `AXIS::CROSSES_MAX`  | Axis crosses at maximum. |
+
+#### Reversed Order
+
+You can reverse the order of a categorial or value axis trought `setIsReversedOrder`.
+
+Notice: If you reverse the order of a axis, this automatically changes the position of the other axis.
+To reset this effect, the axis intersection point on the other axis must be set to `Axis::CROSSES_MAX` using `setCrossesAt`.
+
+``` php
+use PhpOffice\PhpPresentation\Shape\Axis;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
+
+$bar = new Bar();
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($bar);
+
+// default value, will return false
+$shape->getPlotArea()->getAxisY()->isReversedOrder()
+
+// reverse order
+$shape->getPlotArea()->getAxisY()->setIsReversedOrder(true);
+
+// revert the automatic intersection switch on x axis
+$shape->getPlotArea()->getAxisX()->setCrossesAt(Axis::CROSSES_MAX);
+```
+
 #### Outline
 
 You can define outline for each axis (X & Y).
@@ -109,7 +165,8 @@ $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
 $shape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
 ```
-#### Tick Label Position
+#### Tick Label
+##### Position
 
 You can define the tick label position with the `setTickLabelPosition` method.
 For resetting it, you pass `Axis::TICK_LABEL_POSITION_NEXT_TO` as parameter to this method.
@@ -131,6 +188,28 @@ $shape = $slide->createChartShape();
 $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
 ```
+
+##### Font
+
+You can define the tick label font with the `setTickLabelFont` method.
+For resetting it, you pass `null` as parameter to this method.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Font;
+
+$line = new Line();
+$font = new Font();
+$font->setColor(new Color('C00000'))
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->getAxisY()->setTickLabelFont($font);
+```
+
 #### Tick Marks
 
 For Axis Y, you can define tick mark with `setMinorTickMark` & `setMajorTickMark` methods.

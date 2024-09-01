@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,9 +36,16 @@ interface ShapeContainerInterface
     /**
      * Add shape to slide.
      *
-     * @return AbstractShape
+     * @return static
      */
     public function addShape(AbstractShape $shape);
+
+    /**
+     * Unset shape from the collection.
+     *
+     * @return static
+     */
+    public function unsetShape(int $key);
 
     /**
      * Get X Offset.

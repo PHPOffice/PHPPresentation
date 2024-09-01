@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,11 +34,11 @@ class CommentTest extends TestCase
     {
         $object = new Comment();
 
-        $this->assertNull($object->getAuthor());
-        $this->assertNull($object->getText());
-        $this->assertIsInt($object->getDate());
-        $this->assertNull($object->getHeight());
-        $this->assertNull($object->getWidth());
+        self::assertNull($object->getAuthor());
+        self::assertNull($object->getText());
+        self::assertIsInt($object->getDate());
+        self::assertNull($object->getHeight());
+        self::assertNull($object->getWidth());
     }
 
     public function testGetSetAuthor(): void
@@ -49,9 +48,9 @@ class CommentTest extends TestCase
         /** @var Author $oStub */
         $oStub = $this->getMockBuilder(Author::class)->getMock();
 
-        $this->assertNull($object->getAuthor());
-        $this->assertInstanceOf(Comment::class, $object->setAuthor($oStub));
-        $this->assertInstanceOf(Author::class, $object->getAuthor());
+        self::assertNull($object->getAuthor());
+        self::assertInstanceOf(Comment::class, $object->setAuthor($oStub));
+        self::assertInstanceOf(Author::class, $object->getAuthor());
     }
 
     public function testGetSetDate(): void
@@ -59,10 +58,10 @@ class CommentTest extends TestCase
         $expectedDate = time();
 
         $object = new Comment();
-        $this->assertIsInt($object->getDate());
-        $this->assertInstanceOf(Comment::class, $object->setDate($expectedDate));
-        $this->assertEquals($expectedDate, $object->getDate());
-        $this->assertIsInt($object->getDate());
+        self::assertIsInt($object->getDate());
+        self::assertInstanceOf(Comment::class, $object->setDate($expectedDate));
+        self::assertEquals($expectedDate, $object->getDate());
+        self::assertIsInt($object->getDate());
     }
 
     public function testGetSetText(): void
@@ -70,19 +69,19 @@ class CommentTest extends TestCase
         $expectedText = 'AABBCCDD';
 
         $object = new Comment();
-        $this->assertNull($object->getText());
-        $this->assertInstanceOf(Comment::class, $object->setText($expectedText));
-        $this->assertEquals($expectedText, $object->getText());
+        self::assertNull($object->getText());
+        self::assertInstanceOf(Comment::class, $object->setText($expectedText));
+        self::assertEquals($expectedText, $object->getText());
     }
 
     public function testGetSetHeightAndWidtg(): void
     {
         $object = new Comment();
-        $this->assertNull($object->getHeight());
-        $this->assertNull($object->getWidth());
-        $this->assertInstanceOf(Comment::class, $object->setHeight(1));
-        $this->assertInstanceOf(Comment::class, $object->setWidth(1));
-        $this->assertNull($object->getHeight());
-        $this->assertNull($object->getWidth());
+        self::assertNull($object->getHeight());
+        self::assertNull($object->getWidth());
+        self::assertInstanceOf(Comment::class, $object->setHeight(1));
+        self::assertInstanceOf(Comment::class, $object->setWidth(1));
+        self::assertNull($object->getHeight());
+        self::assertNull($object->getWidth());
     }
 }

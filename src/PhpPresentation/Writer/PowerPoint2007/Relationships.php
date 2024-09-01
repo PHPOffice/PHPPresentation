@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -29,8 +28,6 @@ class Relationships extends AbstractDecoratorWriter
 {
     /**
      * Add relationships to ZIP file.
-     *
-     * @return ZipInterface
      */
     public function render(): ZipInterface
     {
@@ -66,17 +63,18 @@ class Relationships extends AbstractDecoratorWriter
         $this->writeRelationship($objWriter, 4, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties', 'docProps/custom.xml');
 
         $idxRelation = 5;
-        // Thumbnail
-        if ($this->getPresentation()->getPresentationProperties()->getThumbnailPath()) {
-            $pathThumbnail = file_get_contents($this->getPresentation()->getPresentationProperties()->getThumbnailPath());
-            $gdImage = imagecreatefromstring($pathThumbnail);
+
+        // Relationship docProps/thumbnail.jpeg
+        $thumnbail = $this->getPresentation()->getPresentationProperties()->getThumbnail();
+        if ($thumnbail) {
+            $gdImage = imagecreatefromstring($thumnbail);
             if ($gdImage) {
                 imagedestroy($gdImage);
                 // Relationship docProps/thumbnail.jpeg
                 $this->writeRelationship($objWriter, $idxRelation, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpeg');
+                // $idxRelation++;
             }
         }
-        // ++$idxRelation
 
         $objWriter->endElement();
 
@@ -134,6 +132,7 @@ class Relationships extends AbstractDecoratorWriter
                     continue;
                 }
                 $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/commentAuthors', 'commentAuthors.xml');
+
                 break 2;
             }
         }

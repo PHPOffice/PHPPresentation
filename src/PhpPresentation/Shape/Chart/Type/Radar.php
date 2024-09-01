@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -25,7 +24,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 class Radar extends AbstractType implements ComparableInterface
 {
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */

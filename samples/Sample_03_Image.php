@@ -17,7 +17,7 @@ $currentSlide = $objPHPPresentation->getActiveSlide();
 
 // Generate an image
 echo date('H:i:s') . ' Generate an image' . EOL;
-$gdImage = @imagecreatetruecolor(140, 20) or exit('Cannot Initialize new GD image stream');
+$gdImage = imagecreatetruecolor(140, 20);
 $textColor = imagecolorallocate($gdImage, 255, 255, 255);
 imagestring($gdImage, 1, 5, 5, 'Created with PHPPresentation', $textColor);
 

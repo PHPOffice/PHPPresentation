@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,14 +25,14 @@ use PhpOffice\PhpPresentation\Style\SchemeColor as StyleSchemeColor;
 class SchemeColor extends AbstractBackground
 {
     /**
-     * @var StyleSchemeColor|null
+     * @var null|StyleSchemeColor
      */
     protected $schemeColor;
 
     /**
      * @return $this
      */
-    public function setSchemeColor(StyleSchemeColor $color = null): self
+    public function setSchemeColor(?StyleSchemeColor $color = null): self
     {
         $this->schemeColor = $color;
 

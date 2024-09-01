@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -43,7 +42,7 @@ class TextElement implements TextElementInterface
     /**
      * Hyperlink.
      *
-     * @var Hyperlink|null
+     * @var null|Hyperlink
      */
     protected $hyperlink;
 
@@ -73,7 +72,7 @@ class TextElement implements TextElementInterface
      *
      * @param string $pText Text value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @return TextElementInterface
      */
     public function setText($pText = '')
     {
@@ -92,12 +91,12 @@ class TextElement implements TextElementInterface
 
     public function hasHyperlink(): bool
     {
-        return !is_null($this->hyperlink);
+        return null !== $this->hyperlink;
     }
 
     public function getHyperlink(): Hyperlink
     {
-        if (is_null($this->hyperlink)) {
+        if (null === $this->hyperlink) {
             $this->hyperlink = new Hyperlink();
         }
 
@@ -107,9 +106,9 @@ class TextElement implements TextElementInterface
     /**
      * Set Hyperlink.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
+     * @return TextElement
      */
-    public function setHyperlink(Hyperlink $pHyperlink = null)
+    public function setHyperlink(?Hyperlink $pHyperlink = null)
     {
         $this->hyperlink = $pHyperlink;
 
@@ -147,6 +146,6 @@ class TextElement implements TextElementInterface
      */
     public function getHashCode(): string
     {
-        return md5($this->text . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
+        return md5($this->text . (null === $this->hyperlink ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
     }
 }

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -49,14 +48,14 @@ class Cell implements ComparableInterface
     /**
      * Fill.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Fill
+     * @var Fill
      */
     private $fill;
 
     /**
      * Borders.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Borders
+     * @var Borders
      */
     private $borders;
 
@@ -128,8 +127,6 @@ class Cell implements ComparableInterface
      * Set active paragraph.
      *
      * @param int $index
-     *
-     * @throws OutOfBoundsException
      */
     public function setActiveParagraph($index = 0): Paragraph
     {
@@ -144,10 +141,6 @@ class Cell implements ComparableInterface
 
     /**
      * Get paragraph.
-     *
-     * @param int $index
-     *
-     * @throws OutOfBoundsException
      */
     public function getParagraph(int $index = 0): Paragraph
     {
@@ -185,9 +178,9 @@ class Cell implements ComparableInterface
      *
      * @param TextElementInterface $pText Rich text element
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return Cell
      */
-    public function addText(TextElementInterface $pText = null)
+    public function addText(?TextElementInterface $pText = null)
     {
         $this->richTextParagraphs[$this->activeParagraph]->addText($pText);
 
@@ -271,8 +264,6 @@ class Cell implements ComparableInterface
      * Set paragraphs.
      *
      * @param array<Paragraph> $paragraphs Array of paragraphs
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setParagraphs(array $paragraphs = []): self
     {
@@ -285,7 +276,7 @@ class Cell implements ComparableInterface
     /**
      * Get fill.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return Fill
      */
     public function getFill()
     {
@@ -295,7 +286,7 @@ class Cell implements ComparableInterface
     /**
      * Set fill.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return Cell
      */
     public function setFill(Fill $fill)
     {
@@ -307,7 +298,7 @@ class Cell implements ComparableInterface
     /**
      * Get borders.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Borders
+     * @return Borders
      */
     public function getBorders()
     {
@@ -317,7 +308,7 @@ class Cell implements ComparableInterface
     /**
      * Set borders.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return Cell
      */
     public function setBorders(Borders $borders)
     {
@@ -393,7 +384,7 @@ class Cell implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

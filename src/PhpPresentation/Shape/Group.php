@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,19 +19,14 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape;
 
-use ArrayObject;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
+use PhpOffice\PhpPresentation\Traits\ShapeCollection;
 
 class Group extends AbstractShape implements ShapeContainerInterface
 {
-    /**
-     * Collection of shapes.
-     *
-     * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    private $shapeCollection;
+    use ShapeCollection;
 
     /**
      * Extent X.
@@ -51,31 +45,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
     public function __construct()
     {
         parent::__construct();
-
-        // Shape collection
-        $this->shapeCollection = new ArrayObject();
-    }
-
-    /**
-     * Get collection of shapes.
-     *
-     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    public function getShapeCollection()
-    {
-        return $this->shapeCollection;
-    }
-
-    /**
-     * Add shape to slide.
-     *
-     * @return AbstractShape
-     */
-    public function addShape(AbstractShape $shape): AbstractShape
-    {
-        $shape->setContainer($this);
-
-        return $shape;
     }
 
     /**
@@ -176,8 +145,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
 
     /**
      * Create rich text shape.
-     *
-     * @return RichText
      */
     public function createRichTextShape(): RichText
     {
@@ -194,8 +161,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
      * @param int $fromY Starting point y offset
      * @param int $toX Ending point x offset
      * @param int $toY Ending point y offset
-     *
-     * @return Line
      */
     public function createLineShape(int $fromX, int $fromY, int $toX, int $toY): Line
     {
@@ -207,8 +172,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
 
     /**
      * Create chart shape.
-     *
-     * @return Chart
      */
     public function createChartShape(): Chart
     {
@@ -220,8 +183,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
 
     /**
      * Create drawing shape.
-     *
-     * @return Drawing\File
      */
     public function createDrawingShape(): Drawing\File
     {
@@ -235,8 +196,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
      * Create table shape.
      *
      * @param int $columns Number of columns
-     *
-     * @return Table
      */
     public function createTableShape(int $columns = 1): Table
     {

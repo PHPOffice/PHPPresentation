@@ -97,11 +97,45 @@ echo $alignment->isRTL();
 - `name`
 - `bold`
 - `italic`
-- `superScript`
-- `subScript`
+- `superScript` (deprecated)
+- `subScript` (deprecated)
 - `underline`
 - `strikethrough`
 - `color`
+- `pitchFamily`
+- `charset`
+
+### Baseline
+
+The baseline set the position relative to the line.
+The value is a percentage.
+
+You can use some predefined values :
+
+* `Font::BASELINE_SUPERSCRIPT` (= 300000 = 300%)
+* `Font::BASELINE_SUBSCRIPT` (= -250000 = -250%)
+
+
+### Capitalization
+
+Some formats are available : 
+
+* `Font::CAPITALIZATION_NONE`
+* `Font::CAPITALIZATION_ALL`
+* `Font::CAPITALIZATION_SMALL`
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Font;
+
+$font = new Font();
+
+// Set capitalization of font
+$font->setCapitalization(Font::CAPITALIZATION_ALL);
+// Get capitalization of font
+echo $font->getCapitalization();
+```
 
 ### Format
 
@@ -123,6 +157,23 @@ $font->setFormat(Font::FORMAT_EAST_ASIAN);
 // Get format of font
 echo $font->getFormat();
 ```
+
+### Panose
+The support of Panose 1.0 is only used.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Font;
+
+$font = new Font();
+
+// Set panose of font
+$font->setPanose('4494D72242');
+// Get panose of font
+echo $font->getPanose();
+```
+
 ## Bullet
 
 - `bulletType`

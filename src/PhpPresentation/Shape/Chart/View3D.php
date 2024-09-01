@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -58,7 +57,7 @@ class View3D implements ComparableInterface
     /**
      * Height Percent.
      *
-     * @var int|null
+     * @var null|int
      */
     private $heightPercent = 100;
 
@@ -98,7 +97,7 @@ class View3D implements ComparableInterface
      *
      * @param int $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @return View3D
      */
     public function setRotationX($pValue = 0)
     {
@@ -122,7 +121,7 @@ class View3D implements ComparableInterface
      *
      * @param int $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @return View3D
      */
     public function setRotationY($pValue = 0)
     {
@@ -146,7 +145,7 @@ class View3D implements ComparableInterface
      *
      * @param bool $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @return View3D
      */
     public function setRightAngleAxes($value = true)
     {
@@ -170,7 +169,7 @@ class View3D implements ComparableInterface
      *
      * @param int $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @return View3D
      */
     public function setPerspective($value = 30)
     {
@@ -237,7 +236,7 @@ class View3D implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

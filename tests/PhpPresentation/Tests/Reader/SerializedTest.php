@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -41,7 +40,7 @@ class SerializedTest extends TestCase
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
         $object = new Serialized();
 
-        $this->assertTrue($object->canRead($file));
+        self::assertTrue($object->canRead($file));
     }
 
     public function testLoadFileNotExists(): void
@@ -86,7 +85,7 @@ class SerializedTest extends TestCase
         ));
 
         $oArchive = new ZipArchive();
-        $oArchive->open($file, ZipArchive::CREATE);
+        $oArchive->open($file, ZipArchive::OVERWRITE);
         $oArchive->addFromString('PhpPresentation.xml', '');
         $oArchive->close();
 

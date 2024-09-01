@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -39,7 +38,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Slide layout.
      *
-     * @var SlideLayout|null
+     * @var null|SlideLayout
      */
     private $slideLayout;
 
@@ -63,23 +62,19 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Name of the title.
      *
-     * @var string|null
+     * @var null|string
      */
     protected $name;
 
     /**
      * Create a new slide.
-     *
-     * @param PhpPresentation $pParent
      */
-    public function __construct(PhpPresentation $pParent = null)
+    public function __construct(?PhpPresentation $pParent = null)
     {
         // Set parent
         $this->parent = $pParent;
-        // Shape collection
-        $this->shapeCollection = new \ArrayObject();
         // Set identifier
-        $this->identifier = md5(rand(0, 9999) . time());
+        $this->identifier = md5(mt_rand(0, mt_getrandmax()) . time());
         // Set Slide Layout
         if ($this->parent instanceof PhpPresentation) {
             $arrayMasterSlides = $this->parent->getAllMasterSlides();
@@ -125,7 +120,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
      *
      * @param int $masterId
      *
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @return Slide
      */
     public function setSlideMasterId($masterId = 1)
     {
@@ -134,10 +129,26 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
         return $this;
     }
 
+    public function __clone()
+    {
+        // Set parent
+        $this->parent = clone $this->parent;
+        // Shape collection
+        foreach ($this->shapeCollection as &$shape) {
+            $shape = clone $shape;
+        }
+        // Transition
+        if (isset($this->slideTransition)) {
+            $this->slideTransition = clone $this->slideTransition;
+        }
+        // Note
+        $this->slideNote = clone $this->slideNote;
+    }
+
     /**
      * Copy slide (!= clone!).
      *
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @return Slide
      */
     public function copy()
     {
@@ -151,9 +162,9 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
         return $this->slideNote;
     }
 
-    public function setNote(Note $note = null): self
+    public function setNote(?Note $note = null): self
     {
-        $this->slideNote = (is_null($note) ? new Note() : $note);
+        $this->slideNote = (null === $note ? new Note() : $note);
         $this->slideNote->setParent($this);
 
         return $this;
@@ -161,8 +172,6 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
 
     /**
      * Get the name of the slide.
-     *
-     * @return string
      */
     public function getName(): ?string
     {
@@ -202,7 +211,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Add an animation to the slide.
      *
-     * @param \PhpOffice\PhpPresentation\Slide\Animation $animation
+     * @param Slide\Animation $animation
      *
      * @return Slide
      */

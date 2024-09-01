@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -25,6 +24,7 @@ use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Animation;
@@ -36,6 +36,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use ReflectionClass;
 
 class PptSlidesTest extends PhpPresentationTestCase
 {
@@ -130,7 +131,7 @@ class PptSlidesTest extends PhpPresentationTestCase
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape1 = $oSlide->createRichTextShape();
-        $oShape2 = $oSlide->createRichTextShape();
+        $oShape2 = $oSlide->createLineShape(10, 10, 10, 10);
         $oAnimation = new Animation();
         $oAnimation->addShape($oShape1);
         $oAnimation->addShape($oShape2);
@@ -142,6 +143,12 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par[1]/p:cTn/p:childTnLst/p:set/p:cBhvr/p:tgtEl/p:spTgt';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spid', 2);
+        $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par[2]/p:cTn/p:childTnLst/p:set/p:cBhvr/p:tgtEl/p:spTgt';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spid', 3);
         $this->assertIsSchemaECMA376Valid();
     }
 
@@ -452,6 +459,36 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testHyperlinkTextColorUsed(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Delta');
+        $oRun->getHyperlink()->setIsTextColorUsed(true);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick/a:extLst';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick/a:extLst/a:ext';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'uri', '{A12FA001-AC4F-418D-AE19-62706E023703}');
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->resetPresentationFile();
+
+        $oRun->getHyperlink()->setIsTextColorUsed(false);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick/a:extLst';
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element);
+    }
+
     public function testListBullet(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -559,9 +596,14 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:nvPr/a:videoFile';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:link', 'rId2');
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:nvPr/p:extLst/p:ext';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:nvPr/p:extLst/p:ext/p14:media';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:embed', 'rId3');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
 
         $this->assertIsSchemaECMA376Valid();
     }
@@ -696,6 +738,97 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testPlaceHolder(): void
+    {
+        $expectedType = Placeholder::PH_TYPE_SLIDENUM;
+        $expectedX = mt_rand(1, 100);
+        $expectedY = mt_rand(1, 100);
+        $expectedW = mt_rand(1, 100);
+        $expectedH = mt_rand(1, 100);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText
+            ->setPlaceHolder(new Placeholder($expectedType))
+            ->setOffsetX($expectedX)
+            ->setOffsetY($expectedY)
+            ->setWidth($expectedW)
+            ->setHeight($expectedH);
+        $oRichText->createTextRun('Test');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'name', 'Placeholder for sldNum');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:nvPr/p:ph';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'type', $expectedType);
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'idx');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:xfrm/a:off';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'x', Drawing::pixelsToEmu($expectedX));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'y', Drawing::pixelsToEmu($expectedY));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:xfrm/a:ext';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cx', Drawing::pixelsToEmu($expectedW));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cy', Drawing::pixelsToEmu($expectedH));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'type', 'slidenum');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld/a:rPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld/a:t';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlElementEquals('ppt/slides/slide1.xml', $element, '<nr.>');
+    }
+
+    public function testPlaceHolderWithIdx(): void
+    {
+        $expectedType = Placeholder::PH_TYPE_DATETIME;
+        $expectedIdx = 1;
+        $expectedX = mt_rand(1, 100);
+        $expectedY = mt_rand(1, 100);
+        $expectedW = mt_rand(1, 100);
+        $expectedH = mt_rand(1, 100);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText
+            ->setPlaceHolder((new Placeholder($expectedType))->setIdx($expectedIdx))
+            ->setOffsetX($expectedX)
+            ->setOffsetY($expectedY)
+            ->setWidth($expectedW)
+            ->setHeight($expectedH);
+        $oRichText->createTextRun('Test');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'name', 'Placeholder for dt');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:nvPr/p:ph';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'type', $expectedType);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'idx', $expectedIdx);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:xfrm/a:off';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'x', Drawing::pixelsToEmu($expectedX));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'y', Drawing::pixelsToEmu($expectedY));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:xfrm/a:ext';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cx', Drawing::pixelsToEmu($expectedW));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cy', Drawing::pixelsToEmu($expectedH));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'type', 'datetime');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld/a:rPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld/a:t';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlElementEquals('ppt/slides/slide1.xml', $element, '03-04-05');
+    }
+
     public function testRichTextAutoFitNormal(): void
     {
         $expectedFontScale = 47.5;
@@ -735,6 +868,53 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testRichTextRunFontCharset(): void
+    {
+        $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';
+        $eastAsianElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:ea';
+        $complexScriptElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:cs';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+        $oRun->getFont()->setCharset(18);
+
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'charset');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'charset', '12');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'charset');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'charset', '12');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'charset');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'charset', '12');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testRichTextRunFontFormat(): void
     {
         $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';
@@ -771,6 +951,100 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $complexScriptElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testRichTextRunFontPanose(): void
+    {
+        $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';
+        $eastAsianElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:ea';
+        $complexScriptElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:cs';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+        $oRun->getFont()->setPanose('4494D72242');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'panose');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'panose', '040409040D0702020402');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'panose');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'panose', '040409040D0702020402');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'panose');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'panose', '040409040D0702020402');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testRichTextRunFontPitchFamily(): void
+    {
+        $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';
+        $eastAsianElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:ea';
+        $complexScriptElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:cs';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+        $oRun->getFont()->setPitchFamily(42);
+
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'pitchFamily');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'pitchFamily', '42');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'pitchFamily');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'pitchFamily', '42');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'pitchFamily');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'pitchFamily', '42');
         $this->assertIsSchemaECMA376Valid();
     }
 
@@ -837,6 +1111,27 @@ class PptSlidesTest extends PhpPresentationTestCase
     public function testSlideLayoutExists(): void
     {
         $this->assertZipFileExists('ppt/slideLayouts/slideLayout1.xml');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testStyleCapitalization(): void
+    {
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('pText');
+        // Default : $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_NONE);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cap', 'none');
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_ALL);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cap', 'all');
         $this->assertIsSchemaECMA376Valid();
     }
 
@@ -1063,7 +1358,7 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spd', 'slow');
         $this->assertIsSchemaECMA376Valid();
 
-        $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
+        $rcTransition = new ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
         foreach ($arrayConstants as $key => $value) {
             if (0 !== strpos($key, 'TRANSITION_')) {
@@ -1076,144 +1371,191 @@ class PptSlidesTest extends PhpPresentationTestCase
             switch ($key) {
                 case 'TRANSITION_BLINDS_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:blinds[@dir=\'horz\']');
+
                     break;
                 case 'TRANSITION_BLINDS_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:blinds[@dir=\'vert\']');
+
                     break;
                 case 'TRANSITION_CHECKER_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:checker[@dir=\'horz\']');
+
                     break;
                 case 'TRANSITION_CHECKER_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:checker[@dir=\'vert\']');
+
                     break;
                 case 'TRANSITION_CIRCLE':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:circle');
+
                     break;
                 case 'TRANSITION_COMB_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:comb[@dir=\'horz\']');
+
                     break;
                 case 'TRANSITION_COMB_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:comb[@dir=\'vert\']');
+
                     break;
                 case 'TRANSITION_COVER_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'d\']');
+
                     break;
                 case 'TRANSITION_COVER_LEFT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'l\']');
+
                     break;
                 case 'TRANSITION_COVER_LEFT_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'ld\']');
+
                     break;
                 case 'TRANSITION_COVER_LEFT_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'lu\']');
+
                     break;
                 case 'TRANSITION_COVER_RIGHT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'r\']');
+
                     break;
                 case 'TRANSITION_COVER_RIGHT_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'rd\']');
+
                     break;
                 case 'TRANSITION_COVER_RIGHT_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'ru\']');
+
                     break;
                 case 'TRANSITION_COVER_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'u\']');
+
                     break;
                 case 'TRANSITION_CUT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cut');
+
                     break;
                 case 'TRANSITION_DIAMOND':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:diamond');
+
                     break;
                 case 'TRANSITION_DISSOLVE':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:dissolve');
+
                     break;
                 case 'TRANSITION_FADE':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:fade');
+
                     break;
                 case 'TRANSITION_NEWSFLASH':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:newsflash');
+
                     break;
                 case 'TRANSITION_PLUS':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:plus');
+
                     break;
                 case 'TRANSITION_PULL_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:pull[@dir=\'d\']');
+
                     break;
                 case 'TRANSITION_PULL_LEFT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:pull[@dir=\'l\']');
+
                     break;
                 case 'TRANSITION_PULL_RIGHT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:pull[@dir=\'r\']');
+
                     break;
                 case 'TRANSITION_PULL_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:pull[@dir=\'u\']');
+
                     break;
                 case 'TRANSITION_PUSH_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:push[@dir=\'d\']');
+
                     break;
                 case 'TRANSITION_PUSH_LEFT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:push[@dir=\'l\']');
+
                     break;
                 case 'TRANSITION_PUSH_RIGHT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:push[@dir=\'r\']');
+
                     break;
                 case 'TRANSITION_PUSH_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:push[@dir=\'u\']');
+
                     break;
                 case 'TRANSITION_RANDOM':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:random');
+
                     break;
                 case 'TRANSITION_RANDOMBAR_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:randomBar[@dir=\'horz\']');
+
                     break;
                 case 'TRANSITION_RANDOMBAR_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:randomBar[@dir=\'vert\']');
+
                     break;
                 case 'TRANSITION_SPLIT_IN_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:split[@dir=\'in\'][@orient=\'horz\']');
+
                     break;
                 case 'TRANSITION_SPLIT_OUT_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:split[@dir=\'out\'][@orient=\'horz\']');
+
                     break;
                 case 'TRANSITION_SPLIT_IN_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:split[@dir=\'in\'][@orient=\'vert\']');
+
                     break;
                 case 'TRANSITION_SPLIT_OUT_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:split[@dir=\'out\'][@orient=\'vert\']');
+
                     break;
                 case 'TRANSITION_STRIPS_LEFT_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:strips[@dir=\'ld\']');
+
                     break;
                 case 'TRANSITION_STRIPS_LEFT_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:strips[@dir=\'lu\']');
+
                     break;
                 case 'TRANSITION_STRIPS_RIGHT_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:strips[@dir=\'rd\']');
+
                     break;
                 case 'TRANSITION_STRIPS_RIGHT_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:strips[@dir=\'ru\']');
+
                     break;
                 case 'TRANSITION_WEDGE':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wedge');
+
                     break;
                 case 'TRANSITION_WIPE_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wipe[@dir=\'d\']');
+
                     break;
                 case 'TRANSITION_WIPE_LEFT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wipe[@dir=\'l\']');
+
                     break;
                 case 'TRANSITION_WIPE_RIGHT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wipe[@dir=\'r\']');
+
                     break;
                 case 'TRANSITION_WIPE_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wipe[@dir=\'u\']');
+
                     break;
                 case 'TRANSITION_ZOOM_IN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:zoom[@dir=\'in\']');
+
                     break;
                 case 'TRANSITION_ZOOM_OUT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:zoom[@dir=\'out\']');
+
                     break;
             }
             $this->assertIsSchemaECMA376Valid();

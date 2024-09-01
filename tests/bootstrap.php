@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,12 +36,12 @@ if (file_exists($vendor . '/autoload.php')) {
     }
 }
 
-spl_autoload_register(function ($class) {
+spl_autoload_register(function ($class): void {
     $class = ltrim($class, '\\');
     $prefix = 'PhpOffice\\PhpPresentation\\Tests';
     if (0 === strpos($class, $prefix)) {
         $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-        $class = join(DIRECTORY_SEPARATOR, ['PhpPresentation', 'Tests', '_includes']) .
+        $class = implode(DIRECTORY_SEPARATOR, ['PhpPresentation', 'Tests', '_includes']) .
         substr($class, strlen($prefix));
         $file = __DIR__ . DIRECTORY_SEPARATOR . $class . '.php';
         if (file_exists($file)) {
@@ -52,4 +51,4 @@ spl_autoload_register(function ($class) {
 });
 
 require_once __DIR__ . '/../src/PhpPresentation/Autoloader.php';
-\PhpOffice\PhpPresentation\Autoloader::register();
+PhpOffice\PhpPresentation\Autoloader::register();

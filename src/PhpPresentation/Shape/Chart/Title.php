@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -74,14 +73,14 @@ class Title implements ComparableInterface
     /**
      * Alignment.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Alignment
+     * @var Alignment
      */
     private $alignment;
 
     /**
      * Font.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Font
+     * @var Font
      */
     private $font;
 
@@ -118,7 +117,7 @@ class Title implements ComparableInterface
      *
      * @param bool $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return Title
      */
     public function setVisible($value = true)
     {
@@ -142,7 +141,7 @@ class Title implements ComparableInterface
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return Title
      */
     public function setText($value = null)
     {
@@ -234,9 +233,9 @@ class Title implements ComparableInterface
     /**
      * Set font.
      *
-     * @param Font|null $pFont Font
+     * @param null|Font $pFont Font
      */
-    public function setFont(Font $pFont = null): self
+    public function setFont(?Font $pFont = null): self
     {
         $this->font = $pFont;
 
@@ -246,7 +245,7 @@ class Title implements ComparableInterface
     /**
      * Get alignment.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * @return Alignment
      */
     public function getAlignment()
     {
@@ -256,7 +255,7 @@ class Title implements ComparableInterface
     /**
      * Set alignment.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return Title
      */
     public function setAlignment(Alignment $alignment)
     {
@@ -281,7 +280,7 @@ class Title implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -30,42 +29,42 @@ class Borders implements ComparableInterface
     /**
      * Left.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Border
+     * @var Border
      */
     private $left;
 
     /**
      * Right.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Border
+     * @var Border
      */
     private $right;
 
     /**
      * Top.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Border
+     * @var Border
      */
     private $top;
 
     /**
      * Bottom.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Border
+     * @var Border
      */
     private $bottom;
 
     /**
      * Diagonal up.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Border
+     * @var Border
      */
     private $diagonalUp;
 
     /**
      * Diagonal down.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Border
+     * @var Border
      */
     private $diagonalDown;
 
@@ -95,7 +94,7 @@ class Borders implements ComparableInterface
     /**
      * Get Left.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return Border
      */
     public function getLeft()
     {
@@ -105,7 +104,7 @@ class Borders implements ComparableInterface
     /**
      * Get Right.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return Border
      */
     public function getRight()
     {
@@ -115,7 +114,7 @@ class Borders implements ComparableInterface
     /**
      * Get Top.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return Border
      */
     public function getTop()
     {
@@ -125,7 +124,7 @@ class Borders implements ComparableInterface
     /**
      * Get Bottom.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return Border
      */
     public function getBottom()
     {
@@ -135,7 +134,7 @@ class Borders implements ComparableInterface
     /**
      * Get Diagonal Up.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return Border
      */
     public function getDiagonalUp()
     {
@@ -145,7 +144,7 @@ class Borders implements ComparableInterface
     /**
      * Get Diagonal Down.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return Border
      */
     public function getDiagonalDown()
     {
@@ -176,7 +175,7 @@ class Borders implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -30,18 +29,16 @@ class Run extends TextElement implements TextElementInterface
     /**
      * Font.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Font
+     * @var Font
      */
     private $font;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\Run instance.
-     *
      * @param string $pText Text
      */
     public function __construct($pText = '')
     {
-        // Initialise variables
+        // Initialize variables
         $this->setText($pText);
         $this->font = new Font();
     }
@@ -57,11 +54,9 @@ class Run extends TextElement implements TextElementInterface
     /**
      * Set font.
      *
-     * @param Font|null $pFont Font
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @return self
      */
-    public function setFont(Font $pFont = null)
+    public function setFont(?Font $pFont = null)
     {
         $this->font = $pFont;
 
@@ -70,8 +65,6 @@ class Run extends TextElement implements TextElementInterface
 
     /**
      * Get hash code.
-     *
-     * @return string Hash code
      */
     public function getHashCode(): string
     {

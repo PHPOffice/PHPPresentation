@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -36,7 +35,7 @@ class SerializedTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Serialized(new PhpPresentation());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
     }
 
     public function testSaveEmpty(): void
@@ -58,7 +57,7 @@ class SerializedTest extends TestCase
         $object = new Serialized($oPhpPresentation);
         $object->save($file);
 
-        $this->assertFileExists($file);
+        self::assertFileExists($file);
     }
 
     public function testSaveNotExistingDir(): void
@@ -88,11 +87,11 @@ class SerializedTest extends TestCase
         $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png');
 
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
-        file_put_contents($file, rand(1, 100));
+        file_put_contents($file, mt_rand(1, 100));
 
         $object = new Serialized($oPhpPresentation);
         $object->save($file);
 
-        $this->assertFileExists($file);
+        self::assertFileExists($file);
     }
 }
