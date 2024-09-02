@@ -19,9 +19,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation;
 
-/**
- * \PhpOffice\PhpPresentation\DocumentProperties.
- */
 class DocumentProperties
 {
     public const PROPERTY_TYPE_BOOLEAN = 'b';
@@ -36,14 +33,14 @@ class DocumentProperties
      *
      * @var string
      */
-    private $creator;
+    private $creator = 'Unknown Creator';
 
     /**
      * LastModifiedBy.
      *
      * @var string
      */
-    private $lastModifiedBy;
+    private $lastModifiedBy = 'Unknown Creator';
 
     /**
      * Created.
@@ -64,56 +61,56 @@ class DocumentProperties
      *
      * @var string
      */
-    private $title;
+    private $title = 'Untitled Presentation';
 
     /**
      * Description.
      *
      * @var string
      */
-    private $description;
+    private $description = '';
 
     /**
      * Subject.
      *
      * @var string
      */
-    private $subject;
+    private $subject = '';
 
     /**
      * Keywords.
      *
      * @var string
      */
-    private $keywords;
+    private $keywords = '';
 
     /**
      * Category.
      *
      * @var string
      */
-    private $category;
+    private $category = '';
 
     /**
      * Company.
      *
      * @var string
      */
-    private $company;
+    private $company = 'Unknown Company';
 
     /**
      * Revision.
      *
      * @var string
      */
-    private $revision;
+    private $revision = '';
 
     /**
      * Status.
      *
      * @var string
      */
-    private $status;
+    private $status = '';
 
     /**
      * Custom Properties.
@@ -123,23 +120,19 @@ class DocumentProperties
     private $customProperties = [];
 
     /**
+     * Generator.
+     *
+     * @var string
+     */
+    private $generator = '';
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\DocumentProperties.
      */
     public function __construct()
     {
-        // Initialise values
-        $this->creator = 'Unknown Creator';
-        $this->lastModifiedBy = $this->creator;
         $this->created = time();
         $this->modified = time();
-        $this->title = 'Untitled Presentation';
-        $this->subject = '';
-        $this->description = '';
-        $this->keywords = '';
-        $this->category = '';
-        $this->company = 'Microsoft Corporation';
-        $this->revision = '';
-        $this->status = '';
     }
 
     /**
@@ -147,7 +140,7 @@ class DocumentProperties
      *
      * @return string
      */
-    public function getCreator()
+    public function getCreator(): string
     {
         return $this->creator;
     }
@@ -157,9 +150,9 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setCreator($pValue = '')
+    public function setCreator(string $pValue = ''): self
     {
         $this->creator = $pValue;
 
@@ -171,7 +164,7 @@ class DocumentProperties
      *
      * @return string
      */
-    public function getLastModifiedBy()
+    public function getLastModifiedBy(): string
     {
         return $this->lastModifiedBy;
     }
@@ -181,9 +174,9 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setLastModifiedBy($pValue = '')
+    public function setLastModifiedBy(string $pValue = ''): self
     {
         $this->lastModifiedBy = $pValue;
 
@@ -195,7 +188,7 @@ class DocumentProperties
      *
      * @return int
      */
-    public function getCreated()
+    public function getCreated(): int
     {
         return $this->created;
     }
@@ -205,9 +198,9 @@ class DocumentProperties
      *
      * @param int $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setCreated($pValue = null)
+    public function setCreated(int $pValue = null): self
     {
         if (null === $pValue) {
             $pValue = time();
@@ -222,7 +215,7 @@ class DocumentProperties
      *
      * @return int
      */
-    public function getModified()
+    public function getModified(): int
     {
         return $this->modified;
     }
@@ -232,9 +225,9 @@ class DocumentProperties
      *
      * @param int $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setModified($pValue = null)
+    public function setModified(int $pValue = null): self
     {
         if (null === $pValue) {
             $pValue = time();
@@ -249,7 +242,7 @@ class DocumentProperties
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -259,9 +252,9 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setTitle($pValue = '')
+    public function setTitle(string $pValue = ''): self
     {
         $this->title = $pValue;
 
@@ -273,7 +266,7 @@ class DocumentProperties
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -283,9 +276,9 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setDescription($pValue = '')
+    public function setDescription(string $pValue = ''): self
     {
         $this->description = $pValue;
 
@@ -297,7 +290,7 @@ class DocumentProperties
      *
      * @return string
      */
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->subject;
     }
@@ -307,9 +300,9 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setSubject($pValue = '')
+    public function setSubject(string $pValue = ''): self
     {
         $this->subject = $pValue;
 
@@ -321,7 +314,7 @@ class DocumentProperties
      *
      * @return string
      */
-    public function getKeywords()
+    public function getKeywords(): string
     {
         return $this->keywords;
     }
@@ -331,9 +324,9 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setKeywords($pValue = '')
+    public function setKeywords(string $pValue = ''): self
     {
         $this->keywords = $pValue;
 
@@ -345,7 +338,7 @@ class DocumentProperties
      *
      * @return string
      */
-    public function getCategory()
+    public function getCategory(): string
     {
         return $this->category;
     }
@@ -355,9 +348,9 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setCategory($pValue = '')
+    public function setCategory(string $pValue = ''): self
     {
         $this->category = $pValue;
 
@@ -369,7 +362,7 @@ class DocumentProperties
      *
      * @return string
      */
-    public function getCompany()
+    public function getCompany(): string
     {
         return $this->company;
     }
@@ -379,9 +372,9 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return DocumentProperties
+     * @return self
      */
-    public function setCompany($pValue = '')
+    public function setCompany(string $pValue = ''): self
     {
         $this->company = $pValue;
 
@@ -502,6 +495,30 @@ class DocumentProperties
     public function setStatus(string $pValue = ''): self
     {
         $this->status = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get Generator.
+     *
+     * @return string
+     */
+    public function getGenerator(): string
+    {
+        return $this->generator;
+    }
+
+    /**
+     * Set Generator.
+     *
+     * @param string $pValue
+     *
+     * @return self
+     */
+    public function setGenerator(string $pValue = ''): self
+    {
+        $this->generator = $pValue;
 
         return $this;
     }
