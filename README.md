@@ -1,15 +1,11 @@
 # ![PHPPresentation](https://raw.githubusercontent.com/mvargasmoran/PHPPresentation/develop/docs/images/PHPPresentationLogo.png "PHPPresentation")
 
-[![Latest Stable Version](https://poser.pugx.org/phpoffice/phppresentation/v/stable.png)](https://packagist.org/packages/phpoffice/phppresentation)
-[![Coverage Status](https://coveralls.io/repos/github/PHPOffice/PHPPresentation/badge.svg?branch=develop)](https://coveralls.io/github/PHPOffice/PHPPresentation?branch=develop)
-[![Total Downloads](https://poser.pugx.org/phpoffice/phppresentation/downloads.png)](https://packagist.org/packages/phpoffice/phppresentation)
-[![License](https://poser.pugx.org/phpoffice/phppresentation/license.png)](https://packagist.org/packages/phpoffice/phppresentation)
-[![BountySource](https://img.shields.io/bountysource/team/phpoffice/activity.svg)](https://www.bountysource.com/teams/phpoffice)
-[![Join the chat at https://gitter.im/PHPOffice/PHPPresentation](https://img.shields.io/badge/Gitter-join%20chat-green.svg)](https://gitter.im/PHPOffice/PHPPresentation)
+[![Latest Stable Version](https://poser.pugx.org/phpoffice/phppresentation/v)](https://packagist.org/packages/phpoffice/phppresentation)
+[![Coverage Status](https://coveralls.io/repos/github/PHPOffice/PHPPresentation/badge.svg?branch=master)](https://coveralls.io/github/PHPOffice/PHPPresentation?branch=master)
+[![Total Downloads](https://poser.pugx.org/phpoffice/phppresentation/downloads)](https://packagist.org/packages/phpoffice/phppresentation)
+[![License](https://poser.pugx.org/phpoffice/phppresentation/license)](https://packagist.org/packages/phpoffice/phppresentation)
 
 Branch Master : [![PHPPresentation](https://github.com/PHPOffice/PHPPresentation/actions/workflows/php.yml/badge.svg?branch=master)](https://github.com/PHPOffice/PHPPresentation/actions/workflows/php.yml)
-
-Branch Develop : [![PHPPresentation](https://github.com/PHPOffice/PHPPresentation/actions/workflows/php.yml/badge.svg?branch=develop)](https://github.com/PHPOffice/PHPPresentation/actions/workflows/php.yml)
 
 PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF).
 
