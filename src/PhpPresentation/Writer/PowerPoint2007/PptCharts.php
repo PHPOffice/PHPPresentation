@@ -253,20 +253,20 @@ class PptCharts extends AbstractDecoratorWriter
         $seriesIndex = 0;
         foreach ($chart->getPlotArea()->getType()->getSeries() as $series) {
             // Title
-            $sheet->setCellValueByColumnAndRow(2 + $seriesIndex, 1, $series->getTitle());
+            $sheet->setCellValue(Coordinate::stringFromColumnIndex(2 + $seriesIndex) . 1, $series->getTitle());
 
             // X-axis
             $axisXData = array_keys($series->getValues());
             $numAxisXData = count($axisXData);
             for ($i = 0; $i < $numAxisXData; ++$i) {
-                $sheet->setCellValueByColumnAndRow(1, $i + 2, $axisXData[$i]);
+                $sheet->setCellValue('A' . ($i + 2), $axisXData[$i]);
             }
 
             // Y-axis
             $axisYData = array_values($series->getValues());
             $numAxisYData = count($axisYData);
             for ($i = 0; $i < $numAxisYData; ++$i) {
-                $sheet->setCellValueByColumnAndRow(2 + $seriesIndex, $i + 2, $axisYData[$i]);
+                $sheet->setCellValue(Coordinate::stringFromColumnIndex(2 + $seriesIndex) . ($i + 2), $axisYData[$i]);
             }
 
             ++$seriesIndex;
