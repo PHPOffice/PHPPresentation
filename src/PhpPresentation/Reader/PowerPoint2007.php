@@ -1205,20 +1205,20 @@ class PowerPoint2007 implements ReaderInterface
             $oElementLineSpacingPoints = $document->getElement('a:lnSpc/a:spcPts', $oSubElement);
             if ($oElementLineSpacingPoints instanceof DOMElement) {
                 $oParagraph->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_POINT);
-                $oParagraph->setLineSpacing((int) $oElementLineSpacingPoints->getAttribute('val') / 100);
+                $oParagraph->setLineSpacing((int) ((int) $oElementLineSpacingPoints->getAttribute('val') / 100));
             }
             $oElementLineSpacingPercent = $document->getElement('a:lnSpc/a:spcPct', $oSubElement);
             if ($oElementLineSpacingPercent instanceof DOMElement) {
                 $oParagraph->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_PERCENT);
-                $oParagraph->setLineSpacing((int) $oElementLineSpacingPercent->getAttribute('val') / 1000);
+                $oParagraph->setLineSpacing((int) ((int) $oElementLineSpacingPercent->getAttribute('val') / 1000));
             }
             $oElementSpacingBefore = $document->getElement('a:spcBef/a:spcPts', $oSubElement);
             if ($oElementSpacingBefore instanceof DOMElement) {
-                $oParagraph->setSpacingBefore((int) $oElementSpacingBefore->getAttribute('val') / 100);
+                $oParagraph->setSpacingBefore((int) ((int) $oElementSpacingBefore->getAttribute('val') / 100));
             }
             $oElementSpacingAfter = $document->getElement('a:spcAft/a:spcPts', $oSubElement);
             if ($oElementSpacingAfter instanceof DOMElement) {
-                $oParagraph->setSpacingAfter((int) $oElementSpacingAfter->getAttribute('val') / 100);
+                $oParagraph->setSpacingAfter((int) ((int) $oElementSpacingAfter->getAttribute('val') / 100));
             }
 
             $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
