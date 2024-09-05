@@ -317,10 +317,8 @@ class Paragraph implements ComparableInterface
 
     /**
      * Value in points.
-     *
-     * @param int $lineSpacing
      */
-    public function setLineSpacing($lineSpacing): self
+    public function setLineSpacing(int $lineSpacing): self
     {
         $this->lineSpacing = $lineSpacing;
 
