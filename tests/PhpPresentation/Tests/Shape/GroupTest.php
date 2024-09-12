@@ -79,10 +79,10 @@ class GroupTest extends TestCase
         $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        self::assertEquals(10, $object->getOffsetX());
+        self::assertEquals($line1->getOffsetX(), $object->getOffsetX());
 
-        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setOffsetX(mt_rand(1, 100)));
-        self::assertEquals(10, $object->getOffsetX());
+        self::assertInstanceOf(Group::class, $object->setOffsetX(mt_rand(1, 100)));
+        self::assertEquals($line1->getOffsetX(), $object->getOffsetX());
     }
 
     public function testOffsetY(): void
@@ -91,10 +91,10 @@ class GroupTest extends TestCase
         $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        self::assertEquals(20, $object->getOffsetY());
+        self::assertEquals($line1->getOffsetY(), $object->getOffsetY());
 
-        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setOffsetY(mt_rand(1, 100)));
-        self::assertEquals(20, $object->getOffsetY());
+        self::assertInstanceOf(Group::class, $object->setOffsetY(mt_rand(1, 100)));
+        self::assertEquals($line1->getOffsetY(), $object->getOffsetY());
     }
 
     public function testExtentsAndOffsetsForOneShape(): void
