@@ -628,7 +628,7 @@ class PowerPoint2007Test extends TestCase
         $arrayShape = (array) $oSlide1->getShapeCollection();
         self::assertCount(1, $arrayShape);
         // Slide 1 : Shape 1
-        /** @var Gd $oShape */
+        /** @var RichText $oShape */
         $oShape = $arrayShape[0];
         self::assertInstanceOf(RichText::class, $oShape);
         self::assertEquals('TextBox 8', $oShape->getName());
