@@ -1214,11 +1214,11 @@ class PowerPoint2007 implements ReaderInterface
             }
             $oElementSpacingBefore = $document->getElement('a:spcBef/a:spcPts', $oSubElement);
             if ($oElementSpacingBefore instanceof DOMElement) {
-                $oParagraph->setSpacingBefore((int) ((int) $oElementSpacingBefore->getAttribute('val') / 100));
+                $oParagraph->setSpacingBefore((int)($oElementSpacingBefore->getAttribute('val') / 100));
             }
             $oElementSpacingAfter = $document->getElement('a:spcAft/a:spcPts', $oSubElement);
             if ($oElementSpacingAfter instanceof DOMElement) {
-                $oParagraph->setSpacingAfter((int) ((int) $oElementSpacingAfter->getAttribute('val') / 100));
+                $oParagraph->setSpacingAfter((int)($oElementSpacingAfter->getAttribute('val') / 100));
             }
 
             $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
@@ -1404,7 +1404,7 @@ class PowerPoint2007 implements ReaderInterface
         $oColor->setRGB($oElement->getAttribute('val'));
         $oElementAlpha = $xmlReader->getElement('a:alpha', $oElement);
         if ($oElementAlpha instanceof DOMElement && $oElementAlpha->hasAttribute('val')) {
-            $alpha = strtoupper(dechex((((int) $oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
+            $alpha = strtoupper(dechex((int)(($oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
             $oColor->setRGB($oElement->getAttribute('val'), $alpha);
         }
 
