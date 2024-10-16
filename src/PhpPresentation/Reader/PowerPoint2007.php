@@ -1218,7 +1218,7 @@ class PowerPoint2007 implements ReaderInterface
             }
             $oElementSpacingAfter = $document->getElement('a:spcAft/a:spcPts', $oSubElement);
             if ($oElementSpacingAfter instanceof DOMElement) {
-                $oParagraph->setSpacingAfter((int)($oElementSpacingAfter->getAttribute('val') / 100));
+                $oParagraph->setSpacingAfter((int)((int)$oElementSpacingAfter->getAttribute('val') / 100));
             }
 
             $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
