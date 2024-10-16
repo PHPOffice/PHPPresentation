@@ -1214,7 +1214,7 @@ class PowerPoint2007 implements ReaderInterface
             }
             $oElementSpacingBefore = $document->getElement('a:spcBef/a:spcPts', $oSubElement);
             if ($oElementSpacingBefore instanceof DOMElement) {
-                $oParagraph->setSpacingBefore((int)($oElementSpacingBefore->getAttribute('val') / 100));
+                $oParagraph->setSpacingBefore((int)((int)$oElementSpacingBefore->getAttribute('val') / 100));
             }
             $oElementSpacingAfter = $document->getElement('a:spcAft/a:spcPts', $oSubElement);
             if ($oElementSpacingAfter instanceof DOMElement) {
