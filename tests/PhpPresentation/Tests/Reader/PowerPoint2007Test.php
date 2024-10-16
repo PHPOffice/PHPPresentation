@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -591,6 +592,71 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
+    }
+
+    public function testLoadFile02(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/issue_00798.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        // Document Properties
+        self::assertEquals('Elja van Tol', $oPhpPresentation->getDocumentProperties()->getCreator());
+        self::assertEquals('Elja van Tol', $oPhpPresentation->getDocumentProperties()->getLastModifiedBy());
+        self::assertEquals('', $oPhpPresentation->getDocumentProperties()->getTitle());
+        self::assertEquals('', $oPhpPresentation->getDocumentProperties()->getSubject());
+        self::assertEquals('', $oPhpPresentation->getDocumentProperties()->getDescription());
+        self::assertEquals('', $oPhpPresentation->getDocumentProperties()->getKeywords());
+        self::assertEquals('', $oPhpPresentation->getDocumentProperties()->getCategory());
+        self::assertEquals('10', $oPhpPresentation->getDocumentProperties()->getRevision());
+        self::assertEquals('', $oPhpPresentation->getDocumentProperties()->getStatus());
+        self::assertIsArray($oPhpPresentation->getDocumentProperties()->getCustomProperties());
+        self::assertCount(0, $oPhpPresentation->getDocumentProperties()->getCustomProperties());
+
+        // Presentation Properties
+        self::assertEquals(PresentationProperties::SLIDESHOW_TYPE_PRESENT, $oPhpPresentation->getPresentationProperties()->getSlideshowType());
+        // Document Layout
+        self::assertEquals('', $oPhpPresentation->getLayout()->getDocumentLayout());
+        self::assertEquals(338.6666666666667, $oPhpPresentation->getLayout()->getCX(DocumentLayout::UNIT_MILLIMETER));
+        self::assertEquals(190.5, $oPhpPresentation->getLayout()->getCY(DocumentLayout::UNIT_MILLIMETER));
+
+        // Slides
+        self::assertCount(1, $oPhpPresentation->getAllSlides());
+
+        // Slide 1
+        $oSlide1 = $oPhpPresentation->getSlide(0);
+        $arrayShape = (array) $oSlide1->getShapeCollection();
+        self::assertCount(1, $arrayShape);
+        // Slide 1 : Shape 1
+        /** @var Gd $oShape */
+        $oShape = $arrayShape[0];
+        self::assertInstanceOf(RichText::class, $oShape);
+        self::assertEquals('TextBox 8', $oShape->getName());
+        self::assertEquals(16, $oShape->getHeight());
+        self::assertEquals(122, $oShape->getWidth());
+        self::assertEquals(573, $oShape->getOffsetX());
+        self::assertEquals(454, $oShape->getOffsetY());
+        $arrayParagraphs = $oShape->getParagraphs();
+        $oParagraph = $arrayParagraphs[0];
+        self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        self::assertFalse($oParagraph->getAlignment()->isRTL());
+        self::assertEquals(0, $oParagraph->getSpacingAfter());
+        self::assertEquals(0, $oParagraph->getSpacingBefore());
+        self::assertEquals(Paragraph::LINE_SPACING_MODE_PERCENT, $oParagraph->getLineSpacingMode());
+        self::assertEquals(100, $oParagraph->getLineSpacing());
+        $arrayRichText = $oParagraph->getRichTextElements();
+        self::assertCount(1, $arrayRichText);
+        // Slide 1 : Shape 2 : Paragraph 1
+        $oRichText = $arrayRichText[0];
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $oRichText);
+        self::assertEquals('Classification: Internal', $oRichText->getText());
+        self::assertFalse($oRichText->getFont()->isBold());
+        self::assertEquals(10, $oRichText->getFont()->getSize());
+        self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        self::assertEquals('Calibri', $oRichText->getFont()->getName());
+        self::assertEquals(Font::FORMAT_COMPLEX_SCRIPT, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
+        self::assertCount(1, $arrayParagraphs);
     }
 
     public function testMarkAsFinal(): void
