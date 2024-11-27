@@ -81,6 +81,10 @@ trait ShapeCollection
     {
         $this->shapeCollection[] = $shape;
 
+        if (method_exists($shape, 'setContainer') && $shape->getContainer() === null) {
+            $shape->setContainer($this);
+        }
+
         return $this;
     }
 
