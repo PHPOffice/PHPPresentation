@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Traits;
 
 use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\ShapeContainerInterface;
 
 trait ShapeCollection
 {
@@ -76,12 +77,13 @@ trait ShapeCollection
 
     /**
      * @return static
+     * @throws ShapeContainerAlreadyAssignedException
      */
     public function addShape(AbstractShape $shape)
     {
         $this->shapeCollection[] = $shape;
 
-        if (method_exists($shape, 'setContainer') && $shape->getContainer() === null) {
+        if ($this instanceof ShapeContainerInterface && $shape->getContainer() === null) {
             $shape->setContainer($this);
         }
 
