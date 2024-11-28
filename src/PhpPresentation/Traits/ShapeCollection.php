@@ -77,7 +77,7 @@ trait ShapeCollection
 
     /**
      * @return static
-     * @throws ShapeContainerAlreadyAssignedException&Throwable
+     * @throws ShapeContainerAlreadyAssignedException&\Throwable
      */
     public function addShape(AbstractShape $shape)
     {
