@@ -42,6 +42,7 @@
         "samples": [
             "php samples/Sample_01_Complex.php",
             "php samples/Sample_01_Simple.php",
+            "php samples/Sample_02_Serialized.php",
             "php samples/Sample_03_Image.php",
             "php samples/Sample_03_Video.php",
             "php samples/Sample_04_Table.php",
