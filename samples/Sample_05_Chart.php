@@ -132,7 +132,7 @@ function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation): void
 
     // Create a bar chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a horizontal bar chart (that should be inserted in a chart shape) ' . EOL;
-    $barChartHorz = clone $objPHPPresentation->getSlide(1)->getShapeCollection()[2]->getPlotArea()->getType();
+    $barChartHorz = clone $objPHPPresentation->getSlide(1)->getShapeCollection()[1]->getPlotArea()->getType();
     $barChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
 
     // Create templated slide
@@ -148,7 +148,7 @@ function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation): void
         ->setWidth(700)
         ->setOffsetX(120)
         ->setOffsetY(80);
-    $shape->setShadow($oShadow);
+//    $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
     $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
@@ -363,7 +363,7 @@ function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation): void
 
     // Create a bar chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a horizontal bar chart (that should be inserted in a chart shape) ' . EOL;
-    $bar3DChartHorz = clone $objPHPPresentation->getSlide(5)->getShapeCollection()[2]->getPlotArea()->getType();
+    $bar3DChartHorz = clone $objPHPPresentation->getSlide(5)->getShapeCollection()[1]->getPlotArea()->getType();
     $bar3DChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
 
     // Create templated slide
@@ -379,7 +379,7 @@ function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation): void
         ->setWidth(700)
         ->setOffsetX(120)
         ->setOffsetY(80);
-    $shape->setShadow($oShadow);
+//    $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
     $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
