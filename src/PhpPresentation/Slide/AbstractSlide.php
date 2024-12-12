@@ -242,6 +242,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     {
         $shape = new File();
         $this->addShape($shape);
+        $shape->setContainer($this);
 
         return $shape;
     }
