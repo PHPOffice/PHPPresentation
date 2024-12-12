@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -29,7 +30,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     protected $arrayChart;
 
     /**
-     * @return \PhpOffice\PhpPresentation\Shape\Chart[]
+     * @return Chart[]
      */
     public function getArrayChart()
     {
@@ -37,7 +38,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * @param \PhpOffice\PhpPresentation\Shape\Chart[] $arrayChart
+     * @param Chart[] $arrayChart
      *
      * @return AbstractDecoratorWriter
      */
