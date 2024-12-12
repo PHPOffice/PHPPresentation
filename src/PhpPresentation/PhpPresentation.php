@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -340,7 +341,7 @@ class PhpPresentation
     }
 
     /**
-     * @return array<int, Slide\SlideMaster>|ArrayObject<int, Slide\SlideMaster>
+     * @return array<int, SlideMaster>|ArrayObject<int, SlideMaster>
      */
     public function getAllMasterSlides()
     {
@@ -348,7 +349,7 @@ class PhpPresentation
     }
 
     /**
-     * @param array<int, Slide\SlideMaster>|ArrayObject<int, Slide\SlideMaster> $slideMasters
+     * @param array<int, SlideMaster>|ArrayObject<int, SlideMaster> $slideMasters
      */
     public function setAllMasterSlides($slideMasters = []): self
     {

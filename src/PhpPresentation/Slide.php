@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of PHPPresentation - A pure PHP library for reading and writing
  * presentations documents.
@@ -55,7 +56,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     private $slideNote;
 
     /**
-     * @var \PhpOffice\PhpPresentation\Slide\Animation[]
+     * @var Slide\Animation[]
      */
     protected $animations = [];
 
@@ -225,7 +226,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Get collection of animations.
      *
-     * @return \PhpOffice\PhpPresentation\Slide\Animation[]
+     * @return Slide\Animation[]
      */
     public function getAnimations()
     {
@@ -235,7 +236,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Set collection of animations.
      *
-     * @param \PhpOffice\PhpPresentation\Slide\Animation[] $array
+     * @param Slide\Animation[] $array
      *
      * @return Slide
      */
