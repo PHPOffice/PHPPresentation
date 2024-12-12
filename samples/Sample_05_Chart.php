@@ -148,7 +148,7 @@ function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation): void
         ->setWidth(700)
         ->setOffsetX(120)
         ->setOffsetY(80);
-//    $shape->setShadow($oShadow);
+    $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
     $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
@@ -379,7 +379,7 @@ function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation): void
         ->setWidth(700)
         ->setOffsetX(120)
         ->setOffsetY(80);
-//    $shape->setShadow($oShadow);
+    $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
     $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
