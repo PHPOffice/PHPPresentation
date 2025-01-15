@@ -168,6 +168,8 @@ class FontTest extends TestCase
         self::assertEquals('', $object->getPanose());
         self::assertInstanceOf(Font::class, $object->setPanose('4494D72242'));
         self::assertEquals('4494D72242', $object->getPanose());
+        self::assertInstanceOf(Font::class, $object->setPanose('020B0604030504040204'));
+        self::assertEquals('2B64354424', $object->getPanose());
     }
 
     /**
@@ -176,7 +178,7 @@ class FontTest extends TestCase
     public function testPanoseExceptionInvalidLength(): void
     {
         $this->expectException(InvalidParameterException::class);
-        $this->expectExceptionMessage('The parameter pValue can\'t have the value "12345" (Validation: The length is not equals to 10)');
+        $this->expectExceptionMessage('The parameter pValue can\'t have the value "12345" (Validation: The length is not correct)');
 
         $object = new Font();
         $object->setPanose('12345');

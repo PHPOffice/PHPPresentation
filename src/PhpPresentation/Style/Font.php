@@ -215,8 +215,12 @@ class Font implements ComparableInterface
      */
     public function setPanose(string $pValue): self
     {
+        if (mb_strlen($pValue) === 20) {
+            $pValue = preg_replace('/.(.)/', '$1', $pValue);
+        }
+
         if (mb_strlen($pValue) !== 10) {
-            throw new InvalidParameterException('pValue', $pValue, 'The length is not equals to 10');
+            throw new InvalidParameterException('pValue', $pValue, 'The length is not correct');
         }
 
         $allowedChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
