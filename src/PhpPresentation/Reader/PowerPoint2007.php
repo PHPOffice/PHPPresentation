@@ -829,6 +829,9 @@ class PowerPoint2007 implements ReaderInterface
                 if (!empty($imageFile)) {
                     if ($oShape instanceof Gd) {
                         $info = getimagesizefromstring($imageFile);
+                        if (!$info) {
+                            return;
+                        }
                         $oShape->setMimeType($info['mime']);
                         $oShape->setRenderingFunction(str_replace('/', '', $info['mime']));
                         $image = @imagecreatefromstring($imageFile);
