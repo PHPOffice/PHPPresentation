@@ -62,6 +62,7 @@ $lineChart = new Line();
 $series = new Series('Downloads', $seriesData);
 $series->setShowSeriesName(true);
 $series->setShowValue(true);
+$series->setLabelPosition(Series::LABEL_BOTTOM);
 $lineChart->addSeries($series);
 
 // Create a shape (chart)
