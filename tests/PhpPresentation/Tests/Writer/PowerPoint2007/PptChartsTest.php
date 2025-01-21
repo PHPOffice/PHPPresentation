@@ -711,7 +711,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists($pathShape, $element, 'rot');
 
         $this->resetPresentationFile();
-        $value = mt_rand(0, 360);
+        $value = mt_rand(1, 360);
         $oShape->getPlotArea()->getAxisX()->setTitleRotation($value);
 
         $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();

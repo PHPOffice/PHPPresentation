@@ -36,10 +36,10 @@ class AbstractSlideTest extends TestCase
     public function testCollection(): void
     {
         /** @var AbstractSlide $stub */
-        $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide');
+        $stub = $this->getMockForAbstractClass(AbstractSlide::class);
 
         $array = [];
-        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
+        self::assertInstanceOf(AbstractSlide::class, $stub->setShapeCollection($array));
         self::assertIsArray($stub->getShapeCollection());
         self::assertCount(count($array), $stub->getShapeCollection());
 
@@ -48,22 +48,22 @@ class AbstractSlideTest extends TestCase
             new RichText(),
             new RichText(),
         ];
-        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
+        self::assertInstanceOf(AbstractSlide::class, $stub->setShapeCollection($array));
         self::assertIsArray($stub->getShapeCollection());
         self::assertCount(count($array), $stub->getShapeCollection());
     }
 
-    public function testsearchShapes(): void
+    public function testSearchShapes(): void
     {
         /** @var AbstractSlide $stub */
-        $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide');
+        $stub = $this->getMockForAbstractClass(AbstractSlide::class);
 
         $array = [
             (new RichText())->setName('AAA'),
             (new Table())->setName('BBB'),
             (new Chart())->setName('AAA'),
         ];
-        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
+        self::assertInstanceOf(AbstractSlide::class, $stub->setShapeCollection($array));
 
         // Search by Name
         $result = $stub->searchShapes('AAA', null);

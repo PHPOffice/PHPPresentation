@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Drawing\File;
+use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\AbstractBackground;
 use PhpOffice\PhpPresentation\Slide\Animation;
@@ -142,5 +144,41 @@ class SlideTest extends TestCase
         self::assertFalse($object->isVisible());
         self::assertInstanceOf(Slide::class, $object->setIsVisible());
         self::assertTrue($object->isVisible());
+    }
+
+    public function testAddShape(): void
+    {
+        $slide = new Slide();
+        self::assertInstanceOf(ShapeContainerInterface::class, $slide);
+        $shape = new File();
+
+        self::assertIsArray($slide->getShapeCollection());
+        self::assertCount(0, $slide->getShapeCollection());
+
+        $slide->addShape($shape);
+        self::assertInstanceOf(File::class, $shape);
+        self::assertEquals($slide, $shape->getContainer());
+        self::assertInstanceOf(Slide::class, $shape->getContainer());
+
+        self::assertIsArray($slide->getShapeCollection());
+        self::assertCount(1, $slide->getShapeCollection());
+        self::assertEquals([$shape], $slide->getShapeCollection());
+    }
+
+    public function testCreateDrawingShape(): void
+    {
+        $slide = new Slide();
+
+        self::assertIsArray($slide->getShapeCollection());
+        self::assertCount(0, $slide->getShapeCollection());
+
+        $shape = $slide->createDrawingShape();
+        self::assertInstanceOf(File::class, $shape);
+        self::assertEquals($slide, $shape->getContainer());
+        self::assertInstanceOf(Slide::class, $shape->getContainer());
+
+        self::assertIsArray($slide->getShapeCollection());
+        self::assertCount(1, $slide->getShapeCollection());
+        self::assertEquals([$shape], $slide->getShapeCollection());
     }
 }
