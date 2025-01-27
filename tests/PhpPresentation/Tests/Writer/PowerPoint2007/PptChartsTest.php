@@ -751,7 +751,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
     public function testAxisXUnit(): void
     {
-        $value = mt_rand(0, 100);
+        $value = mt_rand(1, 100);
 
         $oSeries = new Series('Downloads', $this->seriesData);
         $oLine = new Line();

@@ -424,12 +424,10 @@ class ODPresentation implements ReaderInterface
                 $lineSpacing = $this->getExpressionValue($nodeParagraphProps->getAttribute('fo:margin-bottom'));
             }
             if ($nodeParagraphProps->hasAttribute('fo:margin-bottom')) {
-                $spacingAfter = (float) substr($nodeParagraphProps->getAttribute('fo:margin-bottom'), 0, -2);
-                $spacingAfter = CommonDrawing::centimetersToPoints($spacingAfter);
+                $spacingAfter = self::sizeToPoint($nodeParagraphProps->getAttribute('fo:margin-bottom'));
             }
             if ($nodeParagraphProps->hasAttribute('fo:margin-top')) {
-                $spacingBefore = (float) substr($nodeParagraphProps->getAttribute('fo:margin-top'), 0, -2);
-                $spacingBefore = CommonDrawing::centimetersToPoints($spacingBefore);
+                $spacingBefore = self::sizeToPoint($nodeParagraphProps->getAttribute('fo:margin-top'));
             }
             $oAlignment = new Alignment();
             if ($nodeParagraphProps->hasAttribute('fo:text-align')) {
@@ -773,5 +771,37 @@ class ODPresentation implements ReaderInterface
         }
 
         return substr($expr, 0, -2);
+    }
+
+    /**
+     * Transforms a size in CSS format (eg. 10px, 10px, ...) to points.
+     */
+    protected static function sizeToPoint(string $value): ?float
+    {
+        if ($value == '0') {
+            return 0;
+        }
+        $matches = [];
+        if (preg_match('/^[+-]?([0-9]+\.?[0-9]*)?(px|em|ex|%|in|cm|mm|pt|pc)$/i', $value, $matches)) {
+            $size = (float) $matches[1];
+            $unit = $matches[2];
+
+            switch ($unit) {
+                case 'pt':
+                    return $size;
+                case 'px':
+                    return CommonDrawing::pixelsToPoints((int) $size);
+                case 'cm':
+                    return CommonDrawing::centimetersToPoints($size);
+                case 'mm':
+                    return CommonDrawing::centimetersToPoints($size / 10);
+                case 'in':
+                    return CommonDrawing::inchesToPoints($size);
+                case 'pc':
+                    return CommonDrawing::picasToPoints($size);
+            }
+        }
+
+        return null;
     }
 }

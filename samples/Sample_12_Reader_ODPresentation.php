@@ -2,12 +2,12 @@
 
 set_time_limit(10);
 
-include_once 'Sample_Header.php';
+include_once __DIR__ . '/Sample_Header.php';
 
 use PhpOffice\PhpPresentation\IOFactory;
 
 $pptReader = IOFactory::createReader('ODPresentation');
-$oPHPPresentation = $pptReader->load('resources/Sample_12.odp');
+$oPHPPresentation = $pptReader->load(__DIR__ . '/resources/Sample_12.odp');
 
 $oTree = new PhpPptTree($oPHPPresentation);
 echo $oTree->display();
