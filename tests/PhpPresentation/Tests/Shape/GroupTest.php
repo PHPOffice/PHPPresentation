@@ -48,12 +48,13 @@ class GroupTest extends TestCase
     {
         $object = new Group();
 
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AutoShape', $object->createAutoShape());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $object->createChartShape());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->createDrawingShape());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Line', $object->createLineShape(10, 10, 10, 10));
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->createRichTextShape());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->createTableShape());
-        self::assertCount(5, $object->getShapeCollection());
+        self::assertCount(6, $object->getShapeCollection());
     }
 
     public function testExtentX(): void

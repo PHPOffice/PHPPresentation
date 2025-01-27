@@ -195,6 +195,17 @@ class Group extends AbstractShape implements ShapeContainerInterface
     }
 
     /**
+     * Create geometric shape.
+     */
+    public function createAutoShape(): AutoShape
+    {
+        $shape = new AutoShape();
+        $this->addShape($shape);
+
+        return $shape;
+    }
+
+    /**
      * Create chart shape.
      */
     public function createChartShape(): Chart
