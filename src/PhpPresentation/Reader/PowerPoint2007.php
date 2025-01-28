@@ -888,14 +888,18 @@ class PowerPoint2007 implements ReaderInterface
             }
         }
         $pathEmbed = implode('/', $pathEmbed);
+        $contentEmbed = $this->oZip->getFromName($pathEmbed);
 
         $tmpEmbed = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPPT2007Embed');
 
-        $contentEmbed = $this->oZip->getFromName($pathEmbed);
         file_put_contents($tmpEmbed, $contentEmbed);
 
-        $oShape->setName(basename($embedPath));
-        $oShape->setPath($tmpEmbed, false);
+        $fileName = basename($embedPath);
+
+        $oShape
+            ->setName($fileName)
+            ->setFileName($fileName)
+            ->setPath($tmpEmbed, false);
         return $oShape;
     }
 
