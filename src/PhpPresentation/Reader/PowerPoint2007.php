@@ -823,7 +823,7 @@ class PowerPoint2007 implements ReaderInterface
         if ($oShape instanceof Media) {
             $oShape = $this->loadShapeDrawingEmbed($embedNode, $fileRels, $oShape);
         } else {
-            $oShape = $this->loadShapeDrawingImage($document, $oElement, $fileRels, $oShape);
+            $oShape = $this->loadShapeDrawingImage($document, $node, $fileRels, $oShape);
         }
 
         $oElement = $document->getElement('p:spPr', $node);
@@ -877,7 +877,9 @@ class PowerPoint2007 implements ReaderInterface
             return $oShape;
         }
 
-        $pathEmbed = 'ppt/slides/' . $this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target'];
+        $embedPath = $this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target'];
+
+        $pathEmbed = "ppt/slides/{$embedPath}";
 
         $pathEmbed = explode('/', $pathEmbed);
         foreach ($pathEmbed as $key => $partPath) {
@@ -892,6 +894,7 @@ class PowerPoint2007 implements ReaderInterface
         $contentEmbed = $this->oZip->getFromName($pathEmbed);
         file_put_contents($tmpEmbed, $contentEmbed);
 
+        $oShape->setName(basename($embedPath));
         $oShape->setPath($tmpEmbed, false);
         return $oShape;
     }
