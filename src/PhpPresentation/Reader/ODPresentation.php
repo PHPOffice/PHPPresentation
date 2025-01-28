@@ -661,7 +661,7 @@ class ODPresentation implements ReaderInterface
             }
 
             $filePathParts = explode('/', $filePath);
-            if (!$filePathParts || $filePathParts[0] !== 'Media') {
+            if ($filePathParts[0] !== 'Media') {
                 return;
             }
 
