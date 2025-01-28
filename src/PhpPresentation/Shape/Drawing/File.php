@@ -67,18 +67,11 @@ class File extends AbstractDrawingAdapter
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getFileName(): string
     {
         return $this->fileName;
     }
 
-    /**
-     * @param string $fileName
-     * @return File
-     */
     public function setFileName(string $fileName): self
     {
         $this->fileName = $fileName;
