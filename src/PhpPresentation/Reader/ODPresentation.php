@@ -653,8 +653,13 @@ class ODPresentation implements ReaderInterface
         }
 
         $mediaFile = null;
+        $filePath = null;
         if ($oNodePlugin->hasAttribute('xlink:href')) {
             $filePath = $oNodePlugin->getAttribute('xlink:href');
+            if (!$filePath) {
+                return;
+            }
+
             $filePathParts = explode('/', $filePath);
             if (!$filePathParts || $filePathParts[0] !== 'Media') {
                 return;

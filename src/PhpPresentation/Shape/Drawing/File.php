@@ -79,9 +79,10 @@ class File extends AbstractDrawingAdapter
      * @param string $fileName
      * @return File
      */
-    public function setFileName(string $fileName): File
+    public function setFileName(string $fileName): self
     {
         $this->fileName = $fileName;
+
         return $this;
     }
 

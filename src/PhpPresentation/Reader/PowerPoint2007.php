@@ -868,7 +868,7 @@ class PowerPoint2007 implements ReaderInterface
         $oSlide->addShape($oShape);
     }
 
-    protected function loadShapeDrawingEmbed(DOMElement $oElement, string $fileRels, AbstractDrawingAdapter $oShape): AbstractDrawingAdapter
+    protected function loadShapeDrawingEmbed(DOMElement $oElement, string $fileRels, Media $oShape): Media
     {
         if (!$oElement->hasAttribute('r:embed')) {
             return $oShape;
@@ -900,10 +900,11 @@ class PowerPoint2007 implements ReaderInterface
             ->setName($fileName)
             ->setFileName($fileName)
             ->setPath($tmpEmbed, false);
+
         return $oShape;
     }
 
-    protected function loadShapeDrawingImage(XMLReader $document, DOMElement $node, string $fileRels, AbstractDrawingAdapter $oShape)
+    protected function loadShapeDrawingImage(XMLReader $document, DOMElement $node, string $fileRels, AbstractDrawingAdapter $oShape): AbstractDrawingAdapter
     {
         $oElement = $document->getElement('p:blipFill/a:blip', $node);
         if (!($oElement instanceof DOMElement)) {
