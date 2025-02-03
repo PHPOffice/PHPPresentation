@@ -83,6 +83,11 @@ class ODPresentation implements ReaderInterface
     protected $levelParagraph = 0;
 
     /**
+     * @var bool
+     */
+    protected $loadImages = true;
+
+    /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
      */
     public function canRead(string $pFilename): bool
@@ -116,12 +121,14 @@ class ODPresentation implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file.
      */
-    public function load(string $pFilename): PhpPresentation
+    public function load(string $pFilename, int $flags = 0): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
             throw new InvalidFileFormatException($pFilename, self::class);
         }
+
+        $this->loadImages = !((bool) ($flags & self::SKIP_IMAGES));
 
         return $this->loadFile($pFilename);
     }
@@ -532,7 +539,7 @@ class ODPresentation implements ReaderInterface
         }
         foreach ($this->oXMLReader->getElements('draw:frame', $nodeSlide) as $oNodeFrame) {
             if ($oNodeFrame instanceof DOMElement) {
-                if ($this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
+                if ($this->loadImages && $this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
                     $this->loadShapeDrawing($oNodeFrame);
 
                     continue;

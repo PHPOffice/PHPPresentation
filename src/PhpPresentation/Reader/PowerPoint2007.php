@@ -96,6 +96,11 @@ class PowerPoint2007 implements ReaderInterface
     protected $fileRels;
 
     /**
+     * @var bool
+     */
+    protected $loadImages = true;
+
+    /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
      */
     public function canRead(string $pFilename): bool
@@ -129,12 +134,14 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file.
      */
-    public function load(string $pFilename): PhpPresentation
+    public function load(string $pFilename, int $flags = 0): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
             throw new InvalidFileFormatException($pFilename, self::class);
         }
+
+        $this->loadImages = !((bool) ($flags & self::SKIP_IMAGES));
 
         return $this->loadFile($pFilename);
     }
@@ -1498,7 +1505,7 @@ class PowerPoint2007 implements ReaderInterface
 
                     break;
                 case 'p:pic':
-                    if ($oSlide instanceof AbstractSlide) {
+                    if ($this->loadImages && $oSlide instanceof AbstractSlide) {
                         $this->loadShapeDrawing($xmlReader, $oNode, $oSlide);
                     }
 

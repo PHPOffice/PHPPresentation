@@ -396,6 +396,11 @@ class PowerPoint97 implements ReaderInterface
     private $filename;
 
     /**
+     * @var bool
+     */
+    protected $loadImages = true;
+
+    /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
      */
     public function canRead(string $pFilename): bool
@@ -428,7 +433,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file.
      */
-    public function load(string $pFilename): PhpPresentation
+    public function load(string $pFilename, int $flags = 0): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
@@ -436,6 +441,8 @@ class PowerPoint97 implements ReaderInterface
         }
 
         $this->filename = $pFilename;
+
+        $this->loadImages = !((bool) ($flags & self::SKIP_IMAGES));
 
         return $this->loadFile();
     }
@@ -1581,7 +1588,7 @@ class PowerPoint97 implements ReaderInterface
                 if (isset($shpPrimaryOptions['pib'])) {
                     // isDrawing
                     $drawingPib = $shpPrimaryOptions['pib'];
-                    if (isset($this->arrayPictures[$drawingPib - 1])) {
+                    if ($this->loadImages && isset($this->arrayPictures[$drawingPib - 1])) {
                         $gdImage = imagecreatefromstring($this->arrayPictures[$drawingPib - 1]);
                         $arrayReturn['shape'] = new Drawing\Gd();
                         $arrayReturn['shape']->setImageResource($gdImage);
