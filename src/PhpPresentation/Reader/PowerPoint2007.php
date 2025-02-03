@@ -492,9 +492,9 @@ class PowerPoint2007 implements ReaderInterface
                         file_put_contents($tmpBkgImg, $contentImg);
                         // Background
                         $oBackground = new Slide\Background\Image();
-                        $oBackground->setPath($tmpBkgImg);
-                        $extension = pathinfo( $pathImage, PATHINFO_EXTENSION );
-                        $oBackground->setExtension($extension);
+                        $oBackground
+                            ->setPath($tmpBkgImg)
+                            ->setExtension(pathinfo($pathImage, PATHINFO_EXTENSION));
                         // Slide Background
                         $oSlide = $this->oPhpPresentation->getActiveSlide();
                         $oSlide->setBackground($oBackground);
@@ -1326,24 +1326,22 @@ class PowerPoint2007 implements ReaderInterface
                         );
                     }
 
+                    // Font
+                    $oElementFontFormat = null;
+                    $oElementFontFormatComplexScript = $document->getElement('a:cs', $oElementrPr);
+                    if (is_object($oElementFontFormatComplexScript)) {
+                        $oText->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+                        $oElementFontFormat = $oElementFontFormatComplexScript;
+                    }
                     $oElementFontFormatEastAsian = $document->getElement('a:ea', $oElementrPr);
                     if (is_object($oElementFontFormatEastAsian)) {
                         $oText->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
                         $oElementFontFormat = $oElementFontFormatEastAsian;
                     }
-
-                    // Font
-                    $oElementFontFormat = null;
                     $oElementFontFormatLatin = $document->getElement('a:latin', $oElementrPr);
                     if (is_object($oElementFontFormatLatin)) {
                         $oText->getFont()->setFormat(Font::FORMAT_LATIN);
                         $oElementFontFormat = $oElementFontFormatLatin;
-                    }
-
-                    $oElementFontFormatComplexScript = $document->getElement('a:cs', $oElementrPr);
-                    if (is_object($oElementFontFormatComplexScript)) {
-                        $oText->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
-                        $oElementFontFormat = $oElementFontFormatComplexScript;
                     }
                     if (is_object($oElementFontFormat) && $oElementFontFormat->hasAttribute('typeface')) {
                         $oText->getFont()->setName($oElementFontFormat->getAttribute('typeface'));

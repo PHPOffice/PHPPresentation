@@ -89,12 +89,11 @@ class Image extends AbstractBackground
      * Set Extension.
      *
      * @param string $pValue File Extension
-     *
-     * @return self
      */
-    public function setExtension(string $pValue)
+    public function setExtension(string $pValue): self
     {
         $this->extension = $pValue;
+
         return $this;
     }
 
@@ -111,12 +110,12 @@ class Image extends AbstractBackground
      */
     public function getExtension(): string
     {
-        if($this->extension){
+        if ($this->extension) {
             return $this->extension;
         }
         $exploded = explode('.', $this->getFilename());
-        return $exploded[count($exploded) - 1];
 
+        return $exploded[count($exploded) - 1];
     }
 
     /**
