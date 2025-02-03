@@ -97,6 +97,18 @@ class PowerPoint97Test extends TestCase
         self::assertCount(2, $oSlide->getShapeCollection());
     }
 
+    public function testLoadFile01WithoutImages(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.ppt';
+        $object = new PowerPoint97();
+        $oPhpPresentation = $object->load($file, PowerPoint97::SKIP_IMAGES);
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        self::assertEquals(1, $oPhpPresentation->getSlideCount());
+
+        $oSlide = $oPhpPresentation->getSlide(0);
+        self::assertCount(1, $oSlide->getShapeCollection());
+    }
+
     public function testLoadFile02(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_02.ppt';
