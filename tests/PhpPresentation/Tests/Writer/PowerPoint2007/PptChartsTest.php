@@ -43,6 +43,7 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PptChartsTest extends PhpPresentationTestCase
 {
@@ -103,6 +104,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @dataProvider dataProviderIncludedSpreadsheet
      */
+    #[DataProvider('dataProviderIncludedSpreadsheet')]
     public function testChartIncludeSpreadsheetNullValue(string $chartType, string $chartElementName): void
     {
         $seriesData = array_merge(['Z' => null], $this->seriesData);
@@ -173,6 +175,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @dataProvider dataProviderIncludedSpreadsheet
      */
+    #[DataProvider('dataProviderIncludedSpreadsheet')]
     public function testChartIncludeSpreadsheet(string $chartType, string $chartElementName): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -269,8 +272,18 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
-        /** @var AbstractType $stub */
-        $stub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType');
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractType $stub */
+            $stub = $this->getMockForAbstractClass(AbstractType::class);
+        } else {
+            /** @var AbstractType $stub */
+            $stub = new class() extends AbstractType {
+                public function getHashCode(): string
+                {
+                    return '';
+                }
+            };
+        }
         $oShape->getPlotArea()->setType($stub);
 
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
@@ -826,6 +839,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @dataProvider dataProviderFont
      */
+    #[DataProvider('dataProviderFont')]
     public function testSeriesFont(string $chartType, string $chartElementName): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -1154,6 +1168,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @dataProvider dataProviderMarkerSymbol
      */
+    #[DataProvider('dataProviderMarkerSymbol')]
     public function testTypeLineMarker(string $expectedSymbol): void
     {
         $expectedSize = mt_rand(2, 72);
@@ -1567,6 +1582,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @dataProvider dataProviderMarkerSymbol
      */
+    #[DataProvider('dataProviderMarkerSymbol')]
     public function testTypeScatterMarkerSymbol(string $expectedSymbol): void
     {
         $expectedSize = mt_rand(2, 72);

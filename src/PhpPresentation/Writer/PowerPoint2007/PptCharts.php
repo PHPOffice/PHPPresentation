@@ -734,32 +734,49 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
-            // c:ser > c:dLbls
-            // @link : https://msdn.microsoft.com/en-us/library/documentformat.openxml.drawing.charts.areachartseries.aspx
-            $objWriter->startElement('c:dLbls');
+            // DataLabels
+            if (
+                $series->hasShowSeriesName() ||
+                $series->hasShowCategoryName() ||
+                $series->hasShowLegendKey() ||
+                $series->hasShowValue() ||
+                $series->hasShowPercentage()
+            ) {
+                // c:ser > c:dLbls
+                // @link : https://msdn.microsoft.com/en-us/library/documentformat.openxml.drawing.charts.areachartseries.aspx
+                $objWriter->startElement('c:dLbls');
 
-            // c:ser > c:dLbls > c:showVal
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+                if ($series->hasDlblNumFormat()) {
+                    //c:numFmt
+                    $objWriter->startElement('c:numFmt');
+                    $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                    $objWriter->writeAttribute('sourceLinked', '0');
+                    $objWriter->endElement();
+                }
 
-            // c:ser > c:dLbls > c:showCatName
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+                // c:ser > c:dLbls > c:showVal
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
-            // c:ser > c:dLbls > c:showSerName
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+                // c:ser > c:dLbls > c:showCatName
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
-            // c:ser > c:dLbls > c:showPercent
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+                // c:ser > c:dLbls > c:showSerName
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
-            // c:ser > ##c:dLbls
-            $objWriter->endElement();
+                // c:ser > c:dLbls > c:showPercent
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
-            if (Fill::FILL_NONE != $series->getFill()->getFillType()) {
-                // c:spPr
-                $objWriter->startElement('c:spPr');
-                // Write fill
-                $this->writeFill($objWriter, $series->getFill());
-                // ## c:spPr
+                // c:ser > ##c:dLbls
                 $objWriter->endElement();
+
+                if (Fill::FILL_NONE != $series->getFill()->getFillType()) {
+                    // c:spPr
+                    $objWriter->startElement('c:spPr');
+                    // Write fill
+                    $this->writeFill($objWriter, $series->getFill());
+                    // ## c:spPr
+                    $objWriter->endElement();
+                }
             }
 
             // Write X axis data
@@ -861,94 +878,103 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->endElement();
             }
 
-            // c:dLbls
-            $objWriter->startElement('c:dLbls');
+            // DataLabels
+            if (
+                $series->hasShowSeriesName() ||
+                $series->hasShowCategoryName() ||
+                $series->hasShowLegendKey() ||
+                $series->hasShowValue() ||
+                $series->hasShowPercentage()
+            ) {
+                // c:dLbls
+                $objWriter->startElement('c:dLbls');
 
-            if ($series->hasDlblNumFormat()) {
-                //c:numFmt
-                $objWriter->startElement('c:numFmt');
-                $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
-                $objWriter->writeAttribute('sourceLinked', '0');
+                if ($series->hasDlblNumFormat()) {
+                    // c:numFmt
+                    $objWriter->startElement('c:numFmt');
+                    $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                    $objWriter->writeAttribute('sourceLinked', '0');
+                    $objWriter->endElement();
+                }
+
+                // c:txPr
+                $objWriter->startElement('c:txPr');
+
+                // a:bodyPr
+                $objWriter->writeElement('a:bodyPr');
+
+                // a:lstStyle
+                $objWriter->writeElement('a:lstStyle');
+
+                // a:p
+                $objWriter->startElement('a:p');
+
+                // a:pPr
+                $objWriter->startElement('a:pPr');
+
+                // a:defRPr
+                $objWriter->startElement('a:defRPr');
+                $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+                $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+                $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
+                $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+                $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+                $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
+
+                // a:solidFill
+                $objWriter->startElement('a:solidFill');
+                $this->writeColor($objWriter, $series->getFont()->getColor());
+                $objWriter->endElement();
+
+                // a:latin
+                $objWriter->startElement('a:latin');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+
+                // a:ea
+                $objWriter->startElement('a:ea');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+
+                // >a:defRPr
+                $objWriter->endElement();
+                // >a:pPr
+                $objWriter->endElement();
+
+                // a:endParaRPr
+                $objWriter->startElement('a:endParaRPr');
+                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('dirty', '0');
+                $objWriter->endElement();
+
+                // >a:p
+                $objWriter->endElement();
+                // >a:lstStyle
+                $objWriter->endElement();
+
+                // c:dLblPos
+                $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
+
+                // c:showVal
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+
+                // c:showCatName
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+
+                // c:showSerName
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+
+                // c:showPercent
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+
+                // c:separator
+                $objWriter->writeElement('c:separator', $series->hasShowSeparator() ? $series->getSeparator() : '');
+
+                // c:showLeaderLines
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
                 $objWriter->endElement();
             }
-
-            // c:txPr
-            $objWriter->startElement('c:txPr');
-
-            // a:bodyPr
-            $objWriter->writeElement('a:bodyPr');
-
-            // a:lstStyle
-            $objWriter->writeElement('a:lstStyle');
-
-            // a:p
-            $objWriter->startElement('a:p');
-
-            // a:pPr
-            $objWriter->startElement('a:pPr');
-
-            // a:defRPr
-            $objWriter->startElement('a:defRPr');
-            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
-            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
-
-            // a:solidFill
-            $objWriter->startElement('a:solidFill');
-            $this->writeColor($objWriter, $series->getFont()->getColor());
-            $objWriter->endElement();
-
-            // a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-
-            // a:ea
-            $objWriter->startElement('a:ea');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-
-            // >a:defRPr
-            $objWriter->endElement();
-            // >a:pPr
-            $objWriter->endElement();
-
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
-
-            // >a:p
-            $objWriter->endElement();
-            // >a:lstStyle
-            $objWriter->endElement();
-
-            // c:dLblPos
-            $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
-
-            // c:showVal
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
-
-            // c:showCatName
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
-
-            // c:showSerName
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
-
-            // c:showPercent
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
-
-            // c:separator
-            $objWriter->writeElement('c:separator', $series->hasShowSeparator() ? $series->getSeparator() : '');
-
-            // c:showLeaderLines
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            $objWriter->endElement();
 
             // c:spPr
             if (Fill::FILL_NONE != $series->getFill()->getFillType()) {
@@ -1073,80 +1099,97 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->endElement();
             }
 
-            // c:dLbls
-            $objWriter->startElement('c:dLbls');
+            // DataLabels
+            if (
+                $series->hasShowSeriesName() ||
+                $series->hasShowCategoryName() ||
+                $series->hasShowLegendKey() ||
+                $series->hasShowValue() ||
+                $series->hasShowPercentage()
+            ) {
+                // c:dLbls
+                $objWriter->startElement('c:dLbls');
 
-            // c:txPr
-            $objWriter->startElement('c:txPr');
+                if ($series->hasDlblNumFormat()) {
+                    //c:numFmt
+                    $objWriter->startElement('c:numFmt');
+                    $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                    $objWriter->writeAttribute('sourceLinked', '0');
+                    $objWriter->endElement();
+                }
 
-            // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
+                // c:txPr
+                $objWriter->startElement('c:txPr');
 
-            // a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
+                // a:bodyPr
+                $objWriter->writeElement('a:bodyPr', null);
 
-            // a:p
-            $objWriter->startElement('a:p');
+                // a:lstStyle
+                $objWriter->writeElement('a:lstStyle', null);
 
-            // a:pPr
-            $objWriter->startElement('a:pPr');
+                // a:p
+                $objWriter->startElement('a:p');
 
-            // a:defRPr
-            $objWriter->startElement('a:defRPr');
+                // a:pPr
+                $objWriter->startElement('a:pPr');
 
-            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
-            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
+                // a:defRPr
+                $objWriter->startElement('a:defRPr');
 
-            // Font - a:solidFill
-            $objWriter->startElement('a:solidFill');
+                $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+                $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+                $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
+                $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+                $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+                $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
-            $this->writeColor($objWriter, $series->getFont()->getColor());
+                // Font - a:solidFill
+                $objWriter->startElement('a:solidFill');
 
-            $objWriter->endElement();
+                $this->writeColor($objWriter, $series->getFont()->getColor());
 
-            // Font - a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-            // a:ea
-            $objWriter->startElement('a:ea');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // Font - a:latin
+                $objWriter->startElement('a:latin');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+                // a:ea
+                $objWriter->startElement('a:ea');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // a:endParaRPr
+                $objWriter->startElement('a:endParaRPr');
+                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('dirty', '0');
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // c:showVal
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+                $objWriter->endElement();
 
-            // c:showCatName
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+                // c:showVal
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
-            // c:showSerName
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+                // c:showCatName
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
-            // c:showPercent
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+                // c:showSerName
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
-            // c:showLeaderLines
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+                // c:showPercent
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
-            $objWriter->endElement();
+                // c:showLeaderLines
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
+                $objWriter->endElement();
+            }
 
             // c:spPr
             if (Fill::FILL_NONE != $series->getFill()->getFillType()) {
@@ -1204,9 +1247,7 @@ class PptCharts extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Type Pie.
-     *
-     * @param XMLWriter $objWriter XML Writer
+     * Write Type Doughnut.
      */
     protected function writeTypeDoughnut(XMLWriter $objWriter, Doughnut $subject, bool $includeSheet = false): void
     {
@@ -1278,83 +1319,92 @@ class PptCharts extends AbstractDecoratorWriter
         }
 
         if (isset($series) && is_object($series) && $series instanceof Chart\Series) {
-            // c:dLbls
-            $objWriter->startElement('c:dLbls');
+            // DataLabels
+            if (
+                $series->hasShowSeriesName() ||
+                $series->hasShowCategoryName() ||
+                $series->hasShowLegendKey() ||
+                $series->hasShowValue() ||
+                $series->hasShowPercentage()
+            ) {
+                // c:dLbls
+                $objWriter->startElement('c:dLbls');
 
-            if ($series->hasDlblNumFormat()) {
-                //c:numFmt
-                $objWriter->startElement('c:numFmt');
-                $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
-                $objWriter->writeAttribute('sourceLinked', '0');
+                if ($series->hasDlblNumFormat()) {
+                    // c:numFmt
+                    $objWriter->startElement('c:numFmt');
+                    $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                    $objWriter->writeAttribute('sourceLinked', '0');
+                    $objWriter->endElement();
+                }
+
+                // c:dLbls\c:txPr
+                $objWriter->startElement('c:txPr');
+                $objWriter->writeElement('a:bodyPr', null);
+                $objWriter->writeElement('a:lstStyle', null);
+
+                // c:dLbls\c:txPr\a:p
+                $objWriter->startElement('a:p');
+
+                // c:dLbls\c:txPr\a:p\a:pPr
+                $objWriter->startElement('a:pPr');
+
+                // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr
+                $objWriter->startElement('a:defRPr');
+                $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+                $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+                $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
+                $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+                $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+                $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
+
+                // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:solidFill
+                $objWriter->startElement('a:solidFill');
+                $this->writeColor($objWriter, $series->getFont()->getColor());
+                $objWriter->endElement();
+
+                // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:latin
+                $objWriter->startElement('a:latin');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+                // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:ea
+                $objWriter->startElement('a:ea');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+
+                // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\
+                $objWriter->endElement();
+                // c:dLbls\c:txPr\a:p\a:pPr\
+                $objWriter->endElement();
+
+                // c:dLbls\c:txPr\a:p\a:endParaRPr
+                $objWriter->startElement('a:endParaRPr');
+                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('dirty', '0');
+                $objWriter->endElement();
+
+                // c:dLbls\c:txPr\a:p\
+                $objWriter->endElement();
+                // c:dLbls\c:txPr\
+                $objWriter->endElement();
+
+                $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
+                $separator = $series->getSeparator();
+                if (!empty($separator) && PHP_EOL != $separator) {
+                    // c:dLbls\c:separator
+                    $objWriter->writeElement('c:separator', $separator);
+                }
+
+                // c:dLbls\
                 $objWriter->endElement();
             }
-
-            // c:dLbls\c:txPr
-            $objWriter->startElement('c:txPr');
-            $objWriter->writeElement('a:bodyPr', null);
-            $objWriter->writeElement('a:lstStyle', null);
-
-            // c:dLbls\c:txPr\a:p
-            $objWriter->startElement('a:p');
-
-            // c:dLbls\c:txPr\a:p\a:pPr
-            $objWriter->startElement('a:pPr');
-
-            // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr
-            $objWriter->startElement('a:defRPr');
-            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
-            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
-
-            // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:solidFill
-            $objWriter->startElement('a:solidFill');
-            $this->writeColor($objWriter, $series->getFont()->getColor());
-            $objWriter->endElement();
-
-            // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-            // a:ea
-            $objWriter->startElement('a:ea');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-
-            // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\
-            $objWriter->endElement();
-            // c:dLbls\c:txPr\a:p\a:pPr\
-            $objWriter->endElement();
-
-            // c:dLbls\c:txPr\a:p\a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
-
-            // c:dLbls\c:txPr\a:p\
-            $objWriter->endElement();
-            // c:dLbls\c:txPr\
-            $objWriter->endElement();
-
-            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            $separator = $series->getSeparator();
-            if (!empty($separator) && PHP_EOL != $separator) {
-                // c:dLbls\c:separator
-                $objWriter->writeElement('c:separator', $separator);
-            }
-
-            // c:dLbls\
-            $objWriter->endElement();
         }
 
         $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', '0');
@@ -1415,94 +1465,103 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->endElement();
             }
 
-            // c:dLbls
-            $objWriter->startElement('c:dLbls');
+            // DataLabels
+            if (
+                $series->hasShowSeriesName() ||
+                $series->hasShowCategoryName() ||
+                $series->hasShowLegendKey() ||
+                $series->hasShowValue() ||
+                $series->hasShowPercentage()
+            ) {
+                // c:dLbls
+                $objWriter->startElement('c:dLbls');
 
-            if ($series->hasDlblNumFormat()) {
-                //c:numFmt
-                $objWriter->startElement('c:numFmt');
-                $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
-                $objWriter->writeAttribute('sourceLinked', '0');
+                if ($series->hasDlblNumFormat()) {
+                    // c:numFmt
+                    $objWriter->startElement('c:numFmt');
+                    $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                    $objWriter->writeAttribute('sourceLinked', '0');
+                    $objWriter->endElement();
+                }
+
+                // c:txPr
+                $objWriter->startElement('c:txPr');
+
+                // a:bodyPr
+                $objWriter->writeElement('a:bodyPr', null);
+
+                // a:lstStyle
+                $objWriter->writeElement('a:lstStyle', null);
+
+                // a:p
+                $objWriter->startElement('a:p');
+
+                // a:pPr
+                $objWriter->startElement('a:pPr');
+
+                // a:defRPr
+                $objWriter->startElement('a:defRPr');
+
+                $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+                $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+                $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
+                $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+                $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+                $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
+
+                // Font - a:solidFill
+                $objWriter->startElement('a:solidFill');
+
+                $this->writeColor($objWriter, $series->getFont()->getColor());
+
+                $objWriter->endElement();
+
+                // Font - a:latin
+                $objWriter->startElement('a:latin');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+                // a:ea
+                $objWriter->startElement('a:ea');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+
+                $objWriter->endElement();
+
+                $objWriter->endElement();
+
+                // a:endParaRPr
+                $objWriter->startElement('a:endParaRPr');
+                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('dirty', '0');
+                $objWriter->endElement();
+
+                $objWriter->endElement();
+
+                $objWriter->endElement();
+
+                // c:dLblPos
+                $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
+
+                // c:showLegendKey
+                $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
+
+                // c:showVal
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+
+                // c:showCatName
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+
+                // c:showSerName
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+
+                // c:showPercent
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+
+                // c:showLeaderLines
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
                 $objWriter->endElement();
             }
-
-            // c:txPr
-            $objWriter->startElement('c:txPr');
-
-            // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
-
-            // a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
-
-            // a:p
-            $objWriter->startElement('a:p');
-
-            // a:pPr
-            $objWriter->startElement('a:pPr');
-
-            // a:defRPr
-            $objWriter->startElement('a:defRPr');
-
-            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
-            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
-
-            // Font - a:solidFill
-            $objWriter->startElement('a:solidFill');
-
-            $this->writeColor($objWriter, $series->getFont()->getColor());
-
-            $objWriter->endElement();
-
-            // Font - a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-            // a:ea
-            $objWriter->startElement('a:ea');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            // c:dLblPos
-            $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
-
-            // c:showLegendKey
-            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
-
-            // c:showVal
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
-
-            // c:showCatName
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
-
-            // c:showSerName
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
-
-            // c:showPercent
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
-
-            // c:showLeaderLines
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            $objWriter->endElement();
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());
@@ -1586,83 +1645,100 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->endElement();
             }
 
-            // c:dLbls
-            $objWriter->startElement('c:dLbls');
+            // DataLabels
+            if (
+                $series->hasShowSeriesName() ||
+                $series->hasShowCategoryName() ||
+                $series->hasShowLegendKey() ||
+                $series->hasShowValue() ||
+                $series->hasShowPercentage()
+            ) {
+                // c:dLbls
+                $objWriter->startElement('c:dLbls');
 
-            // c:txPr
-            $objWriter->startElement('c:txPr');
+                if ($series->hasDlblNumFormat()) {
+                    //c:numFmt
+                    $objWriter->startElement('c:numFmt');
+                    $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                    $objWriter->writeAttribute('sourceLinked', '0');
+                    $objWriter->endElement();
+                }
 
-            // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
+                // c:txPr
+                $objWriter->startElement('c:txPr');
 
-            // a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
+                // a:bodyPr
+                $objWriter->writeElement('a:bodyPr', null);
 
-            // a:p
-            $objWriter->startElement('a:p');
+                // a:lstStyle
+                $objWriter->writeElement('a:lstStyle', null);
 
-            // a:pPr
-            $objWriter->startElement('a:pPr');
+                // a:p
+                $objWriter->startElement('a:p');
 
-            // a:defRPr
-            $objWriter->startElement('a:defRPr');
+                // a:pPr
+                $objWriter->startElement('a:pPr');
 
-            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
-            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
+                // a:defRPr
+                $objWriter->startElement('a:defRPr');
 
-            // Font - a:solidFill
-            $objWriter->startElement('a:solidFill');
+                $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+                $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+                $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
+                $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+                $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+                $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
-            $this->writeColor($objWriter, $series->getFont()->getColor());
+                // Font - a:solidFill
+                $objWriter->startElement('a:solidFill');
 
-            $objWriter->endElement();
+                $this->writeColor($objWriter, $series->getFont()->getColor());
 
-            // Font - a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-            // a:ea
-            $objWriter->startElement('a:ea');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // Font - a:latin
+                $objWriter->startElement('a:latin');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+                // a:ea
+                $objWriter->startElement('a:ea');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // a:endParaRPr
+                $objWriter->startElement('a:endParaRPr');
+                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('dirty', '0');
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // c:dLblPos
-            $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
+                $objWriter->endElement();
 
-            // c:showVal
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+                // c:dLblPos
+                $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
 
-            // c:showCatName
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+                // c:showVal
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
-            // c:showSerName
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+                // c:showCatName
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
-            // c:showPercent
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+                // c:showSerName
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
-            // c:showLeaderLines
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+                // c:showPercent
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
-            $objWriter->endElement();
+                // c:showLeaderLines
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
+                $objWriter->endElement();
+            }
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());
@@ -1738,84 +1814,101 @@ class PptCharts extends AbstractDecoratorWriter
             // Marker
             $this->writeSeriesMarker($objWriter, $series->getMarker());
 
-            // c:dLbls
-            $objWriter->startElement('c:dLbls');
+            // DataLabels
+            if (
+                $series->hasShowSeriesName() ||
+                $series->hasShowCategoryName() ||
+                $series->hasShowLegendKey() ||
+                $series->hasShowValue() ||
+                $series->hasShowPercentage()
+            ) {
+                // c:dLbls
+                $objWriter->startElement('c:dLbls');
 
-            // c:txPr
-            $objWriter->startElement('c:txPr');
+                if ($series->hasDlblNumFormat()) {
+                    // c:numFmt
+                    $objWriter->startElement('c:numFmt');
+                    $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                    $objWriter->writeAttribute('sourceLinked', '0');
+                    $objWriter->endElement();
+                }
 
-            // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
+                // c:txPr
+                $objWriter->startElement('c:txPr');
 
-            // a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
+                // a:bodyPr
+                $objWriter->writeElement('a:bodyPr', null);
 
-            // a:p
-            $objWriter->startElement('a:p');
+                // a:lstStyle
+                $objWriter->writeElement('a:lstStyle', null);
 
-            // a:pPr
-            $objWriter->startElement('a:pPr');
+                // a:p
+                $objWriter->startElement('a:p');
 
-            // a:defRPr
-            $objWriter->startElement('a:defRPr');
+                // a:pPr
+                $objWriter->startElement('a:pPr');
 
-            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
-            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
+                // a:defRPr
+                $objWriter->startElement('a:defRPr');
 
-            // Font - a:solidFill
-            $objWriter->startElement('a:solidFill');
+                $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+                $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+                $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
+                $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+                $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+                $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
-            $this->writeColor($objWriter, $series->getFont()->getColor());
+                // Font - a:solidFill
+                $objWriter->startElement('a:solidFill');
 
-            $objWriter->endElement();
+                $this->writeColor($objWriter, $series->getFont()->getColor());
 
-            // Font - a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-            // a:ea
-            $objWriter->startElement('a:ea');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // Font - a:latin
+                $objWriter->startElement('a:latin');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+                // a:ea
+                $objWriter->startElement('a:ea');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // a:endParaRPr
+                $objWriter->startElement('a:endParaRPr');
+                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('dirty', '0');
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // c:dLblPos
-            $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
+                $objWriter->endElement();
 
-            // c:showVal
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+                // c:dLblPos
+                $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
 
-            // c:showCatName
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+                // c:showVal
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
-            // c:showSerName
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+                // c:showCatName
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
-            // c:showPercent
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+                // c:showSerName
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
-            // c:showLeaderLines
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+                // c:showPercent
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
-            // > c:dLbls
-            $objWriter->endElement();
+                // c:showLeaderLines
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
+                // > c:dLbls
+                $objWriter->endElement();
+            }
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());
@@ -1916,83 +2009,100 @@ class PptCharts extends AbstractDecoratorWriter
             // Marker
             $this->writeSeriesMarker($objWriter, $series->getMarker());
 
-            // c:dLbls
-            $objWriter->startElement('c:dLbls');
+            // DataLabels
+            if (
+                $series->hasShowSeriesName() ||
+                $series->hasShowCategoryName() ||
+                $series->hasShowLegendKey() ||
+                $series->hasShowValue() ||
+                $series->hasShowPercentage()
+            ) {
+                // c:dLbls
+                $objWriter->startElement('c:dLbls');
 
-            // c:txPr
-            $objWriter->startElement('c:txPr');
+                if ($series->hasDlblNumFormat()) {
+                    //c:numFmt
+                    $objWriter->startElement('c:numFmt');
+                    $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                    $objWriter->writeAttribute('sourceLinked', '0');
+                    $objWriter->endElement();
+                }
 
-            // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
+                // c:txPr
+                $objWriter->startElement('c:txPr');
 
-            // a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
+                // a:bodyPr
+                $objWriter->writeElement('a:bodyPr', null);
 
-            // a:p
-            $objWriter->startElement('a:p');
+                // a:lstStyle
+                $objWriter->writeElement('a:lstStyle', null);
 
-            // a:pPr
-            $objWriter->startElement('a:pPr');
+                // a:p
+                $objWriter->startElement('a:p');
 
-            // a:defRPr
-            $objWriter->startElement('a:defRPr');
+                // a:pPr
+                $objWriter->startElement('a:pPr');
 
-            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
-            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
+                // a:defRPr
+                $objWriter->startElement('a:defRPr');
 
-            // Font - a:solidFill
-            $objWriter->startElement('a:solidFill');
+                $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+                $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+                $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
+                $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+                $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+                $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
-            $this->writeColor($objWriter, $series->getFont()->getColor());
+                // Font - a:solidFill
+                $objWriter->startElement('a:solidFill');
 
-            $objWriter->endElement();
+                $this->writeColor($objWriter, $series->getFont()->getColor());
 
-            // Font - a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-            // a:ea
-            $objWriter->startElement('a:ea');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // Font - a:latin
+                $objWriter->startElement('a:latin');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+                // a:ea
+                $objWriter->startElement('a:ea');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // a:endParaRPr
+                $objWriter->startElement('a:endParaRPr');
+                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('dirty', '0');
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // c:showLegendKey
-            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
+                $objWriter->endElement();
 
-            // c:showVal
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+                // c:showLegendKey
+                $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
 
-            // c:showCatName
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+                // c:showVal
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
-            // c:showSerName
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+                // c:showCatName
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
-            // c:showPercent
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+                // c:showSerName
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
-            // c:showLeaderLines
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+                // c:showPercent
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
-            $objWriter->endElement();
+                // c:showLeaderLines
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
+                $objWriter->endElement();
+            }
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());
@@ -2081,90 +2191,107 @@ class PptCharts extends AbstractDecoratorWriter
             // Marker
             $this->writeSeriesMarker($objWriter, $series->getMarker());
 
-            // c:dLbls
-            $objWriter->startElement('c:dLbls');
+            // DataLabels
+            if (
+                $series->hasShowSeriesName() ||
+                $series->hasShowCategoryName() ||
+                $series->hasShowLegendKey() ||
+                $series->hasShowValue() ||
+                $series->hasShowPercentage()
+            ) {
+                // c:dLbls
+                $objWriter->startElement('c:dLbls');
 
-            // c:txPr
-            $objWriter->startElement('c:txPr');
+                if ($series->hasDlblNumFormat()) {
+                    //c:numFmt
+                    $objWriter->startElement('c:numFmt');
+                    $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                    $objWriter->writeAttribute('sourceLinked', '0');
+                    $objWriter->endElement();
+                }
 
-            // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
+                // c:txPr
+                $objWriter->startElement('c:txPr');
 
-            // a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
+                // a:bodyPr
+                $objWriter->writeElement('a:bodyPr', null);
 
-            // a:p
-            $objWriter->startElement('a:p');
+                // a:lstStyle
+                $objWriter->writeElement('a:lstStyle', null);
 
-            // a:pPr
-            $objWriter->startElement('a:pPr');
+                // a:p
+                $objWriter->startElement('a:p');
 
-            // a:defRPr
-            $objWriter->startElement('a:defRPr');
+                // a:pPr
+                $objWriter->startElement('a:pPr');
 
-            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
-            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
+                // a:defRPr
+                $objWriter->startElement('a:defRPr');
 
-            // Font - a:solidFill
-            $objWriter->startElement('a:solidFill');
+                $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+                $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+                $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
+                $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+                $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+                $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
-            $this->writeColor($objWriter, $series->getFont()->getColor());
+                // Font - a:solidFill
+                $objWriter->startElement('a:solidFill');
 
-            $objWriter->endElement();
+                $this->writeColor($objWriter, $series->getFont()->getColor());
 
-            // Font - a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-            // a:ea
-            $objWriter->startElement('a:ea');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // Font - a:latin
+                $objWriter->startElement('a:latin');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
+                // a:ea
+                $objWriter->startElement('a:ea');
+                $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                // a:endParaRPr
+                $objWriter->startElement('a:endParaRPr');
+                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('dirty', '0');
+                $objWriter->endElement();
 
-            $objWriter->endElement();
+                $objWriter->endElement();
 
-            // c:showLegendKey
-            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
+                $objWriter->endElement();
 
-            // c:showVal
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+                // c:showLegendKey
+                $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
 
-            // c:showCatName
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+                // c:showVal
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
-            // c:showSerName
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+                // c:showCatName
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
-            // c:showPercent
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+                // c:showSerName
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
-            // c:separator
-            $separator = $series->getSeparator();
-            if (!empty($separator) && PHP_EOL != $separator) {
-                // c:dLbls\c:separator
-                $objWriter->writeElement('c:separator', $separator);
+                // c:showPercent
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+
+                // c:separator
+                $separator = $series->getSeparator();
+                if (!empty($separator) && PHP_EOL != $separator) {
+                    // c:dLbls\c:separator
+                    $objWriter->writeElement('c:separator', $separator);
+                }
+
+                // c:showLeaderLines
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
+                $objWriter->endElement();
             }
-
-            // c:showLeaderLines
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            $objWriter->endElement();
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());

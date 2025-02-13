@@ -22,6 +22,7 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PptPresPropsTest extends PhpPresentationTestCase
 {
@@ -58,6 +59,7 @@ class PptPresPropsTest extends PhpPresentationTestCase
     /**
      * @dataProvider dataProviderShowType
      */
+    #[DataProvider('dataProviderShowType')]
     public function testShowType(string $slideshowType, string $element): void
     {
         $this->oPresentation->getPresentationProperties()->setSlideshowType($slideshowType);

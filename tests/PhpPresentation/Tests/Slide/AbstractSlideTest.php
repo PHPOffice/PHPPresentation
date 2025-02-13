@@ -38,8 +38,14 @@ class AbstractSlideTest extends TestCase
 {
     public function testCollection(): void
     {
-        /** @var AbstractSlide $object */
-        $object = $this->getMockForAbstractClass(AbstractSlide::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractSlide $object */
+            $object = $this->getMockForAbstractClass(AbstractSlide::class);
+        } else {
+            /** @var AbstractSlide $object */
+            $object = new class() extends AbstractSlide {
+            };
+        }
 
         $array = [];
         self::assertInstanceOf(AbstractSlide::class, $object->setShapeCollection($array));
@@ -58,8 +64,14 @@ class AbstractSlideTest extends TestCase
 
     public function testAdd(): void
     {
-        /** @var AbstractSlide $object */
-        $object = $this->getMockForAbstractClass(AbstractSlide::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractSlide $object */
+            $object = $this->getMockForAbstractClass(AbstractSlide::class);
+        } else {
+            /** @var AbstractSlide $object */
+            $object = new class() extends AbstractSlide {
+            };
+        }
 
         self::assertInstanceOf(AutoShape::class, $object->createAutoShape());
         self::assertInstanceOf(Chart::class, $object->createChartShape());
@@ -72,8 +84,14 @@ class AbstractSlideTest extends TestCase
 
     public function testSearchShapes(): void
     {
-        /** @var AbstractSlide $object */
-        $object = $this->getMockForAbstractClass(AbstractSlide::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractSlide $object */
+            $object = $this->getMockForAbstractClass(AbstractSlide::class);
+        } else {
+            /** @var AbstractSlide $object */
+            $object = new class() extends AbstractSlide {
+            };
+        }
 
         $array = [
             (new RichText())->setName('AAA'),
