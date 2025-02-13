@@ -1344,7 +1344,7 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->startElement('c:txPr');
                 $objWriter->writeElement('a:bodyPr', null);
                 $objWriter->writeElement('a:lstStyle', null);
-    
+
                 // c:dLbls\c:txPr\a:p
                 $objWriter->startElement('a:p');
 
