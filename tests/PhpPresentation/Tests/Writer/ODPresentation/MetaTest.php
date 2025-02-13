@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class MetaTest extends PhpPresentationTestCase
 {
@@ -32,6 +33,7 @@ class MetaTest extends PhpPresentationTestCase
      *
      * @param mixed $propertyValue
      */
+    #[DataProvider('dataProviderCustomProperties')]
     public function testCustomProperties($propertyValue, ?string $propertyType, string $expectedValue, string $expectedValueType): void
     {
         $this->oPresentation->getDocumentProperties()->setCustomProperty('pName', $propertyValue, $propertyType);

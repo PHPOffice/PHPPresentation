@@ -54,7 +54,12 @@ class SlideMasterTest extends TestCase
 
         // Mock Post
         /** @var SlideLayout $mockSlideLayout */
-        $mockSlideLayout = $this->getMockForAbstractClass(SlideLayout::class, [$object]);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            $mockSlideLayout = $this->getMockForAbstractClass(SlideLayout::class, [$object]);
+        } else {
+            $mockSlideLayout = new class($object) extends SlideLayout {
+            };
+        }
 
         self::assertEmpty($object->getAllSlideLayouts());
         self::assertInstanceOf(SlideLayout::class, $object->createSlideLayout());
@@ -66,11 +71,21 @@ class SlideMasterTest extends TestCase
     {
         // Mock Pre
         /** @var SchemeColor $mockSchemeColorAccent1 */
-        $mockSchemeColorAccent1 = $this->getMockForAbstractClass(SchemeColor::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            $mockSchemeColorAccent1 = $this->getMockForAbstractClass(SchemeColor::class);
+        } else {
+            $mockSchemeColorAccent1 = new class() extends SchemeColor {
+            };
+        }
         $mockSchemeColorAccent1->setValue('accent1');
         $mockSchemeColorAccent1->setRGB('ABCDEF');
         /** @var SchemeColor $mockSchemeColorNew */
-        $mockSchemeColorNew = $this->getMockForAbstractClass(SchemeColor::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            $mockSchemeColorNew = $this->getMockForAbstractClass(SchemeColor::class);
+        } else {
+            $mockSchemeColorNew = new class() extends SchemeColor {
+            };
+        }
         $mockSchemeColorNew->setValue('new');
         $mockSchemeColorNew->setRGB('ABCDEF');
 
@@ -90,7 +105,12 @@ class SlideMasterTest extends TestCase
     {
         // Mock Pre
         /** @var TextStyle $mockTextStyle */
-        $mockTextStyle = $this->getMockForAbstractClass(TextStyle::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            $mockTextStyle = $this->getMockForAbstractClass(TextStyle::class);
+        } else {
+            $mockTextStyle = new class() extends TextStyle {
+            };
+        }
 
         $object = new SlideMaster();
 

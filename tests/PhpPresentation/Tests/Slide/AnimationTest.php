@@ -34,7 +34,12 @@ class AnimationTest extends TestCase
     public function testShape(): void
     {
         /** @var AbstractShape $oStub */
-        $oStub = $this->getMockForAbstractClass(AbstractShape::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            $oStub = $this->getMockForAbstractClass(AbstractShape::class);
+        } else {
+            $oStub = new class() extends AbstractShape {
+            };
+        }
 
         $object = new Animation();
 

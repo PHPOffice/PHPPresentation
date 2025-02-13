@@ -53,7 +53,16 @@ class AbstractTest extends TestCase
     public function testSeries(): void
     {
         /** @var AbstractType $stub */
-        $stub = $this->getMockForAbstractClass(AbstractType::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            $stub = $this->getMockForAbstractClass(AbstractType::class);
+        } else {
+            $stub = new class() extends AbstractType {
+                public function getHashCode(): string
+                {
+                    return '';
+                }
+            };
+        }
         self::assertEmpty($stub->getSeries());
         self::assertIsArray($stub->getSeries());
 
@@ -76,7 +85,16 @@ class AbstractTest extends TestCase
         ];
 
         /** @var AbstractType $stub */
-        $stub = $this->getMockForAbstractClass(AbstractType::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            $stub = $this->getMockForAbstractClass(AbstractType::class);
+        } else {
+            $stub = new class() extends AbstractType {
+                public function getHashCode(): string
+                {
+                    return '';
+                }
+            };
+        }
         $stub->setSeries($arraySeries);
         $clone = clone $stub;
 
