@@ -1247,9 +1247,7 @@ class PptCharts extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Type Pie.
-     *
-     * @param XMLWriter $objWriter XML Writer
+     * Write Type Doughnut.
      */
     protected function writeTypeDoughnut(XMLWriter $objWriter, Doughnut $subject, bool $includeSheet = false): void
     {
@@ -1348,22 +1346,6 @@ class PptCharts extends AbstractDecoratorWriter
                 // c:dLbls\c:txPr\a:p
                 $objWriter->startElement('a:p');
 
-                $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
-                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
-                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
-                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
-                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
-                $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
-                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-                // c:dLbls\c:txPr
-                $objWriter->startElement('c:txPr');
-                $objWriter->writeElement('a:bodyPr', null);
-                $objWriter->writeElement('a:lstStyle', null);
-
-                // c:dLbls\c:txPr\a:p
-                $objWriter->startElement('a:p');
-
                 // c:dLbls\c:txPr\a:p\a:pPr
                 $objWriter->startElement('a:pPr');
 
@@ -1405,6 +1387,14 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->endElement();
                 // c:dLbls\c:txPr\
                 $objWriter->endElement();
+
+                $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
                 $separator = $series->getSeparator();
                 if (!empty($separator) && PHP_EOL != $separator) {
