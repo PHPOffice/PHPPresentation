@@ -1371,21 +1371,6 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->startElement('a:defRPr');
                 $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
                 $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-                $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
-                $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-                $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-                $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
-                $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
-
-                // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:solidFill
-                $objWriter->startElement('a:solidFill');
-                $this->writeColor($objWriter, $series->getFont()->getColor());
-                $objWriter->endElement();
-
-                // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr
-                $objWriter->startElement('a:defRPr');
-                $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-                $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
                 $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
                 $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
                 $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
