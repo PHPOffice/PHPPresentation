@@ -52,10 +52,11 @@ class AbstractTest extends TestCase
 
     public function testSeries(): void
     {
-        /** @var AbstractType $stub */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractType $stub */
             $stub = $this->getMockForAbstractClass(AbstractType::class);
         } else {
+            /** @var AbstractType $stub */
             $stub = new class() extends AbstractType {
                 public function getHashCode(): string
                 {
@@ -84,10 +85,11 @@ class AbstractTest extends TestCase
             new Series(),
         ];
 
-        /** @var AbstractType $stub */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractType $stub */
             $stub = $this->getMockForAbstractClass(AbstractType::class);
         } else {
+            /** @var AbstractType $stub */
             $stub = new class() extends AbstractType {
                 public function getHashCode(): string
                 {

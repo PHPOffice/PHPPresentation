@@ -38,10 +38,11 @@ class AbstractSlideTest extends TestCase
 {
     public function testCollection(): void
     {
-        /** @var AbstractSlide $object */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractSlide $object */
             $object = $this->getMockForAbstractClass(AbstractSlide::class);
         } else {
+            /** @var AbstractSlide $object */
             $object = new class() extends AbstractSlide {
             };
         }
@@ -63,10 +64,11 @@ class AbstractSlideTest extends TestCase
 
     public function testAdd(): void
     {
-        /** @var AbstractSlide $object */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractSlide $object */
             $object = $this->getMockForAbstractClass(AbstractSlide::class);
         } else {
+            /** @var AbstractSlide $object */
             $object = new class() extends AbstractSlide {
             };
         }
@@ -82,10 +84,11 @@ class AbstractSlideTest extends TestCase
 
     public function testSearchShapes(): void
     {
-        /** @var AbstractSlide $object */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractSlide $object */
             $object = $this->getMockForAbstractClass(AbstractSlide::class);
         } else {
+            /** @var AbstractSlide $object */
             $object = new class() extends AbstractSlide {
             };
         }

@@ -32,6 +32,7 @@ require 'AbstractWriter.php';
  * Test class for AbstractWriter.
  *
  * @coversDefaultClass \AbstractWriter
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
 class AbstractWriterTest extends TestCase
 {
@@ -40,28 +41,33 @@ class AbstractWriterTest extends TestCase
      */
     public function testConstruct(): void
     {
-        /** @var AbstractWriter $oStubWriter */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractWriter $oStubWriter */
             $oStubWriter = $this->getMockForAbstractClass(AbstractWriter::class);
         } else {
+            /** @var AbstractWriter $oStubWriter */
             $oStubWriter = new class() extends AbstractWriter {
             };
         }
-        /** @var ZipInterface $oStubZip */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var ZipInterface $oStubZip */
             $oStubZip = $this->getMockForAbstractClass(ZipInterface::class);
         } else {
+            /** @var ZipInterface $oStubZip */
             $oStubZip = new class() implements ZipInterface {
-                public function open($filename): void
+                public function open($filename)
                 {
+                    return $this;
                 }
 
-                public function close(): void
+                public function close()
                 {
+                    return $this;
                 }
 
-                public function addFromString(string $localname, string $contents, bool $withCompression = true): void
+                public function addFromString(string $localname, string $contents, bool $withCompression = true)
                 {
+                    return $this;
                 }
             };
         }
@@ -85,10 +91,11 @@ class AbstractWriterTest extends TestCase
         $masterSlide = $masterSlides[0];
         $masterSlide->createDrawingShape();
 
-        /** @var TestAbstractWriter $writer */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var TestAbstractWriter $writer */
             $writer = $this->getMockForAbstractClass(TestAbstractWriter::class);
         } else {
+            /** @var TestAbstractWriter $writer */
             $writer = new class() extends TestAbstractWriter {
             };
         }

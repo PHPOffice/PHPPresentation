@@ -77,10 +77,11 @@ class SlideTest extends TestCase
 
     public function testAnimations(): void
     {
-        /** @var Animation $oStub */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var Animation $oStub */
             $oStub = $this->getMockForAbstractClass(Animation::class);
         } else {
+            /** @var Animation $oStub */
             $oStub = new class() extends Animation {
             };
         }
@@ -101,10 +102,11 @@ class SlideTest extends TestCase
 
     public function testBackground(): void
     {
-        /** @var AbstractBackground $oStub */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractBackground $oStub */
             $oStub = $this->getMockForAbstractClass(AbstractBackground::class);
         } else {
+            /** @var AbstractBackground $oStub */
             $oStub = new class() extends AbstractBackground {
             };
         }

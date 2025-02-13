@@ -53,10 +53,11 @@ class SlideMasterTest extends TestCase
         $object = new SlideMaster();
 
         // Mock Post
-        /** @var SlideLayout $mockSlideLayout */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var SlideLayout $mockSlideLayout */
             $mockSlideLayout = $this->getMockForAbstractClass(SlideLayout::class, [$object]);
         } else {
+            /** @var SlideLayout $mockSlideLayout */
             $mockSlideLayout = new class($object) extends SlideLayout {
             };
         }
@@ -70,19 +71,21 @@ class SlideMasterTest extends TestCase
     public function testSchemeColors(): void
     {
         // Mock Pre
-        /** @var SchemeColor $mockSchemeColorAccent1 */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var SchemeColor $mockSchemeColorAccent1 */
             $mockSchemeColorAccent1 = $this->getMockForAbstractClass(SchemeColor::class);
         } else {
+            /** @var SchemeColor $mockSchemeColorAccent1 */
             $mockSchemeColorAccent1 = new class() extends SchemeColor {
             };
         }
         $mockSchemeColorAccent1->setValue('accent1');
         $mockSchemeColorAccent1->setRGB('ABCDEF');
-        /** @var SchemeColor $mockSchemeColorNew */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var SchemeColor $mockSchemeColorNew */
             $mockSchemeColorNew = $this->getMockForAbstractClass(SchemeColor::class);
         } else {
+            /** @var SchemeColor $mockSchemeColorNew */
             $mockSchemeColorNew = new class() extends SchemeColor {
             };
         }
@@ -104,10 +107,11 @@ class SlideMasterTest extends TestCase
     public function testTextStyles(): void
     {
         // Mock Pre
-        /** @var TextStyle $mockTextStyle */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var TextStyle $mockTextStyle */
             $mockTextStyle = $this->getMockForAbstractClass(TextStyle::class);
         } else {
+            /** @var TextStyle $mockTextStyle */
             $mockTextStyle = new class() extends TextStyle {
             };
         }

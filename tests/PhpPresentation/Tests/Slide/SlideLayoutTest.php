@@ -33,10 +33,11 @@ class SlideLayoutTest extends TestCase
 {
     public function testBase(): void
     {
-        /** @var SlideMaster $mockSlideMaster */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var SlideMaster $mockSlideMaster */
             $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
         } else {
+            /** @var SlideMaster $mockSlideMaster */
             $mockSlideMaster = new class() extends SlideMaster {
             };
         }
@@ -49,10 +50,11 @@ class SlideLayoutTest extends TestCase
 
     public function testLayoutName(): void
     {
-        /** @var SlideMaster $mockSlideMaster */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var SlideMaster $mockSlideMaster */
             $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
         } else {
+            /** @var SlideMaster $mockSlideMaster */
             $mockSlideMaster = new class() extends SlideMaster {
             };
         }
@@ -69,10 +71,11 @@ class SlideLayoutTest extends TestCase
 
     public function testSlideMaster(): void
     {
-        /** @var SlideMaster $mockSlideMaster */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var SlideMaster $mockSlideMaster */
             $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
         } else {
+            /** @var SlideMaster $mockSlideMaster */
             $mockSlideMaster = new class() extends SlideMaster {
             };
         }

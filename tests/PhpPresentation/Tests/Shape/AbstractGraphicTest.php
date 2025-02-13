@@ -34,10 +34,11 @@ class AbstractGraphicTest extends TestCase
     {
         $min = 10;
         $max = 20;
-        /** @var AbstractGraphic $stub */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractGraphic $stub */
             $stub = $this->getMockForAbstractClass(AbstractGraphic::class);
         } else {
+            /** @var AbstractGraphic $stub */
             $stub = new class() extends AbstractGraphic {
             };
         }
@@ -72,10 +73,11 @@ class AbstractGraphicTest extends TestCase
     {
         $min = 10;
         $max = 20;
-        /** @var AbstractGraphic $stub */
         if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractGraphic $stub */
             $stub = $this->getMockForAbstractClass(AbstractGraphic::class);
         } else {
+            /** @var AbstractGraphic $stub */
             $stub = new class() extends AbstractGraphic {
             };
         }
