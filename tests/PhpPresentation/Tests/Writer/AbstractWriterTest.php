@@ -32,6 +32,7 @@ require 'AbstractWriter.php';
  * Test class for AbstractWriter.
  *
  * @coversDefaultClass \AbstractWriter
+ *
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
 class AbstractWriterTest extends TestCase
