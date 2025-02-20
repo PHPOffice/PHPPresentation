@@ -201,10 +201,7 @@ class PhpPresentationTestCase extends TestCase
         return $this->xmlXPath->query($xpath);
     }
 
-    /**
-     * @param string $writerName
-     */
-    protected function writePresentationFile(PhpPresentation $oPhpPresentation, $writerName): void
+    protected function writePresentationFile(PhpPresentation $oPhpPresentation, string $writerName): void
     {
         if (is_file($this->filePath)) {
             return;
@@ -240,7 +237,7 @@ class PhpPresentationTestCase extends TestCase
     /**
      * @param string $filePath
      */
-    public function assertZipFileExists($filePath): void
+    public function assertZipFileExists(string $filePath): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         self::assertTrue(is_file($this->workDirectory . $filePath));
@@ -249,7 +246,7 @@ class PhpPresentationTestCase extends TestCase
     /**
      * @param string $filePath
      */
-    public function assertZipFileNotExists($filePath): void
+    public function assertZipFileNotExists(string $filePath): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         self::assertFalse(is_file($this->workDirectory . $filePath));
@@ -257,9 +254,25 @@ class PhpPresentationTestCase extends TestCase
 
     /**
      * @param string $filePath
+     */
+    public function assertZipFilePositionEquals(string $filePath, int $position): void
+    {
+        $xmlWriter = IOFactory::createWriter($this->oPresentation, $this->writerName);
+        $xmlWriter->save($this->filePath);
+
+        $zip = new \ZipArchive();
+        $res = $zip->open($this->filePath);
+        self::assertTrue($res);
+        $actualPosition = $zip->locateName($filePath);
+        self::assertIsInt($actualPosition);
+        self::assertSame($actualPosition, $position);
+    }
+
+    /**
+     * @param string $filePath
      * @param string $xPath
      */
-    public function assertZipXmlElementExists($filePath, $xPath): void
+    public function assertZipXmlElementExists(string $filePath, string $xPath): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -294,7 +307,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $filePath
      * @param string $xPath
      */
-    public function assertZipXmlElementNotExists($filePath, $xPath): void
+    public function assertZipXmlElementNotExists(string $filePath, string $xPath): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -314,7 +327,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $xPath
      * @param mixed $value
      */
-    public function assertZipXmlElementEquals($filePath, $xPath, $value): void
+    public function assertZipXmlElementEquals(string $filePath, string $xPath, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -348,7 +361,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $xPath
      * @param int $num
      */
-    public function assertZipXmlElementCount($filePath, $xPath, $num): void
+    public function assertZipXmlElementCount(string $filePath, string $xPath, int $num): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -361,7 +374,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeEquals($filePath, $xPath, $attribute, $value): void
+    public function assertZipXmlAttributeEquals(string $filePath, string $xPath, string $attribute, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -377,7 +390,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeStartsWith($filePath, $xPath, $attribute, $value): void
+    public function assertZipXmlAttributeStartsWith(string $filePath, string $xPath, string $attribute, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -393,7 +406,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeEndsWith($filePath, $xPath, $attribute, $value): void
+    public function assertZipXmlAttributeEndsWith(string $filePath, string $xPath, string $attribute, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -409,7 +422,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeContains($filePath, $xPath, $attribute, $value): void
+    public function assertZipXmlAttributeContains(string $filePath, string $xPath, string $attribute, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -424,7 +437,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $xPath
      * @param string $attribute
      */
-    public function assertZipXmlAttributeExists($filePath, $xPath, $attribute): void
+    public function assertZipXmlAttributeExists(string $filePath, string $xPath, string $attribute): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -439,7 +452,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $xPath
      * @param string $attribute
      */
-    public function assertZipXmlAttributeNotExists($filePath, $xPath, $attribute): void
+    public function assertZipXmlAttributeNotExists(string $filePath, string $xPath, string $attribute): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);

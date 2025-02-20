@@ -26,7 +26,7 @@ class Mimetype extends AbstractDecoratorWriter
 {
     public function render(): ZipInterface
     {
-        $this->getZip()->addFromString('mimetype', 'application/vnd.oasis.opendocument.presentation');
+        $this->getZip()->addFromString('mimetype', 'application/vnd.oasis.opendocument.presentation', false);
 
         return $this->getZip();
     }

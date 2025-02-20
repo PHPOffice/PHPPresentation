@@ -14,7 +14,7 @@ php-cs-fixer.phar
 .phpunit.result.cache
 composer.phar
 vendor
-/batch_CI.bat
+/odfvalidator.jar
 
 ### Samples
 /samples/Sample_00_Test.php
