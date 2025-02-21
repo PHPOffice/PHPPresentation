@@ -17,6 +17,34 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 
+function hex_dump($data, $newline = "\n"): void
+{
+    static $from = '';
+    static $to = '';
+
+    static $width = 16; // number of bytes per line
+
+    static $pad = '.'; // padding for non-visible characters
+
+    if ($from === '') {
+        for ($i = 0; $i <= 0xFF; ++$i) {
+            $from .= chr($i);
+            $to .= ($i >= 0x20 && $i <= 0x7E) ? chr($i) : $pad;
+        }
+    }
+
+    $hex = str_split(bin2hex($data), $width * 2);
+    $chars = str_split(strtr($data, $from, $to), $width);
+
+    $offset = 0;
+    echo '<pre>';
+    foreach ($hex as $i => $line) {
+        echo sprintf('%6X', $offset) . ' : ' . implode(' ', str_split($line, 2)) . ' [' . $chars[$i] . ']' . $newline;
+        $offset += $width;
+    }
+    echo '</pre>';
+}
+
 error_reporting(E_ALL);
 define('CLI', (PHP_SAPI == 'cli') ? true : false);
 define('EOL', CLI ? PHP_EOL : '<br />');
@@ -195,7 +223,7 @@ function createTemplatedSlide(PhpPresentation $objPHPPresentation): Slide
     return $slide;
 }
 
-class Sample_Header
+class PhpPptTree
 {
     protected $oPhpPresentation;
 
@@ -478,42 +506,45 @@ class Sample_Header
         return $constName;
     }
 }
+
 ?>
-<title><?php echo $pageTitle; ?></title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-<link rel="stylesheet" href="bootstrap/css/font-awesome.min.css" />
-<link rel="stylesheet" href="bootstrap/css/phppresentation.css" />
-</head>
-<body>
+    <title><?php echo $pageTitle; ?></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bootstrap/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="bootstrap/css/phppresentation.css"/>
+    </head>
+    <body>
 <div class="container">
-<div class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="./">PHPPresentation</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="./">PHPPresentation</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
                 <?php foreach ($files as $key => $groupfiles) { ?>
-                <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples <?php echo $key; ?>x<strong class="caret"></strong></a>
-                    <ul class="dropdown-menu"><?php echo implode('', $groupfiles); ?></ul>
-                </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples <?php echo $key?>x<strong
+                                class="caret"></strong></a>
+                        <ul class="dropdown-menu"><?php echo implode('', $groupfiles); ?></ul>
+                    </li>
                 <?php } ?>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://github.com/PHPOffice/PHPPresentation"><i class="fa fa-github fa-lg" title="GitHub"></i>&nbsp;</a></li>
-                <li><a href="https://phpoffice.github.io/PHPPresentation/"><i class="fa fa-book fa-lg" title="Docs"></i>&nbsp;</a></li>
-                <li><a href="http://twitter.com/PHPOffice"><i class="fa fa-twitter fa-lg" title="Twitter"></i>&nbsp;</a></li>
-            </ul>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/PHPOffice/PHPPresentation"><i class="fa fa-github fa-lg" title="GitHub"></i>&nbsp;</a></li>
+                    <li><a href="http://phppresentation.readthedocs.org/en/develop/"><i class="fa fa-book fa-lg" title="Docs"></i>&nbsp;</a></li>
+                    <li><a href="http://twitter.com/PHPOffice"><i class="fa fa-twitter fa-lg" title="Twitter"></i>&nbsp;</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

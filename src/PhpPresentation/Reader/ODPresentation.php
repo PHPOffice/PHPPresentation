@@ -46,7 +46,7 @@ use ZipArchive;
 /**
  * Serialized format reader.
  */
-class ODPresentation implements ReaderInterface
+class ODPresentation extends AbstractReader implements ReaderInterface
 {
     /**
      * Output Object.
@@ -63,6 +63,11 @@ class ODPresentation implements ReaderInterface
     protected $oZip;
 
     /**
+     * @var string
+     */
+    protected $filename;
+
+    /**
      * @var array<string, array{alignment: null|Alignment, background: null, shadow: null|Shadow, fill: null|Fill, spacingAfter: null|int, spacingBefore: null|int, lineSpacingMode: null, lineSpacing: null, font: null, listStyle: null}>
      */
     protected $arrayStyles = [];
@@ -76,6 +81,11 @@ class ODPresentation implements ReaderInterface
      * @var XMLReader
      */
     protected $oXMLReader;
+
+    /**
+     * @var XMLReader
+     */
+    protected $oXMLMetaInfManifest;
 
     /**
      * @var int
@@ -142,22 +152,21 @@ class ODPresentation implements ReaderInterface
      */
     protected function loadFile($pFilename)
     {
+        $this->filename = $pFilename;
+
         $this->oPhpPresentation = new PhpPresentation();
         $this->oPhpPresentation->removeSlideByIndex();
 
         $this->oZip = new ZipArchive();
-        $this->oZip->open($pFilename);
+        $this->oZip->open($this->filename);
 
-        $this->oXMLReader = new XMLReader();
-        if (false !== $this->oXMLReader->getDomFromZip($pFilename, 'meta.xml')) {
+        if ($this->loadFileFromODP('meta.xml') !== false) {
             $this->loadDocumentProperties();
         }
-        $this->oXMLReader = new XMLReader();
-        if (false !== $this->oXMLReader->getDomFromZip($pFilename, 'styles.xml')) {
+        if ($this->loadFileFromODP('styles.xml') !== false) {
             $this->loadStylesFile();
         }
-        $this->oXMLReader = new XMLReader();
-        if (false !== $this->oXMLReader->getDomFromZip($pFilename, 'content.xml')) {
+        if ($this->loadFileFromODP('content.xml') !== false) {
             $this->loadSlides();
             $this->loadPresentationProperties();
         }
@@ -760,6 +769,107 @@ class ODPresentation implements ReaderInterface
                 ];
             }
         }
+    }
+
+    /**
+     * @param string $filename
+     *
+     * @return bool
+     */
+    protected function loadFileFromODP($filename)
+    {
+        $bEncrypted = false;
+
+        if (!$this->oXMLMetaInfManifest) {
+            $this->oXMLMetaInfManifest = new XMLReader();
+            if ($this->oXMLMetaInfManifest->getDomFromZip($this->filename, 'META-INF/manifest.xml') === false) {
+                return false;
+            }
+        }
+        // Search file in META-INF/manifest.xml
+        $oElement = $this->oXMLMetaInfManifest->getElement('/manifest:manifest/manifest:file-entry[@manifest:full-path=\'' . $filename . '\']');
+        if (!$oElement) {
+            return false;
+        }
+        // Has it some manifest:encryption-data ?
+        $oElementEncryption = $this->oXMLMetaInfManifest->getElement('manifest:encryption-data', $oElement);
+        if ($oElementEncryption) {
+            $bEncrypted = true;
+        }
+
+        $fileContent = $this->oZip->getFromName($filename);
+        if (!$fileContent) {
+            return false;
+        }
+
+        // No Encrypted file
+        if (!$bEncrypted) {
+            $this->oXMLReader = new XMLReader();
+            $this->oXMLReader->getDomFromString($fileContent);
+
+            return true;
+        }
+        var_dump($filename);
+
+        //return false;
+        /*
+        <manifest:file-entry manifest:full-path="meta.xml" manifest:media-type="text/xml" manifest:size="2090">
+            <manifest:encryption-data
+                manifest:checksum-type="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0#sha256-1k"
+                manifest:checksum="BfB+taOY0kcVO/9WNi4DfqioRp3LMwVoNbqfAQ37yac=">
+            <manifest:algorithm
+                manifest:algorithm-name="http://www.w3.org/2001/04/xmlenc#aes256-cbc"
+                manifest:initialisation-vector="I7rMXmvuynJFxJtm+EQ5qA=="/>
+            <manifest:key-derivation
+                manifest:key-derivation-name="PBKDF2"
+                manifest:key-size="32"
+                manifest:iteration-count="1024"
+                manifest:salt="Mows9XX/YiNKNJ0qll3jgA=="/>
+            <manifest:start-key-generation
+                manifest:start-key-generation-name="http://www.w3.org/2000/09/xmldsig#sha256"
+                manifest:key-size="32"/>
+            </manifest:encryption-data>
+        </manifest:file-entry>
+         */
+        // Encrypted file
+        $checksum = $oElementEncryption->getAttribute('manifest:checksum');
+
+        $oEltKeyDerivation = $this->oXMLMetaInfManifest->getElement('manifest:key-derivation', $oElementEncryption);
+        $salt = $oEltKeyDerivation->getAttribute('manifest:salt');
+        //$salt = base64_decode($salt);
+        echo 'manifest:salt : ' . $salt . PHP_EOL;
+        $iterationCount = (int) $oEltKeyDerivation->getAttribute('manifest:iteration-count');
+        echo 'manifest:iteration-count : ' . $iterationCount . PHP_EOL;
+        $keySize = (int) $oEltKeyDerivation->getAttribute('manifest:key-size') ?? 16;
+        echo 'manifest:key-size : ' . $keySize . PHP_EOL;
+
+        $oEltAlgorithm = $this->oXMLMetaInfManifest->getElement('manifest:algorithm', $oElementEncryption);
+        $iv = $oEltAlgorithm->getAttribute('manifest:initialisation-vector');
+        $iv = base64_decode($iv);
+        echo 'manifest:initialisation-vector : ' . $iv . PHP_EOL;
+
+        // manifest:start-key-generation-name == sha256 sinon sha1
+        $pwdHash = hash('sha256', $this->getPassword());
+        echo 'sha256(' . $this->getPassword() . '): ' . $pwdHash . PHP_EOL;
+        //$pwdHash = substr($pwdHash, 0 , 32);
+        //var_dump($pwdHash);
+
+        // ifmanifest:key-derivation-name="PBKDF2" THEN PBKDF2WithHmacSHA1 SINON ?
+        $key = hash_pbkdf2('sha1', $pwdHash, $salt, $iterationCount, $keySize, true);
+        echo 'hash_pbkdf2 (sha1, hash, salt, iterationCount, $iterationCount) : ' . $key . PHP_EOL;
+        
+        $data = openssl_decrypt($fileContent, 'AES-256-CBC', $key, 0, $iv);
+        if (!$data) {
+            while ($msg = openssl_error_string()) {
+                var_dump($msg);
+            }
+            die();
+        }
+        var_dump($data);
+        $data = gzinflate($data);
+        var_dump($data);
+
+        return false;
     }
 
     private function getExpressionUnit(string $expr): string
