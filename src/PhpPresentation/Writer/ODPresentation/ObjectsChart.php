@@ -349,7 +349,11 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
-        $this->xmlContent->writeAttribute('draw:stroke', $axis->getOutline()->getFill()->getFillType());
+        if ($axis->getOutline()->getFill()->getFillType() === Fill::FILL_NONE) {
+            $this->xmlContent->writeAttribute('draw:stroke', 'none');
+        } else {
+            $this->xmlContent->writeAttribute('draw:stroke', 'solid');
+        }
         $this->xmlContent->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($axis->getOutline()->getWidth()), 3, '.', '') . 'cm');
         $this->xmlContent->writeAttribute('svg:stroke-color', '#' . $axis->getOutline()->getFill()->getStartColor()->getRGB());
         $this->xmlContent->endElement();
@@ -414,7 +418,11 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('style:family', 'chart');
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
-        $this->xmlContent->writeAttribute('draw:stroke', $chart->getFill()->getFillType());
+        if ($chart->getFill()->getFillType() === Fill::FILL_NONE) {
+            $this->xmlContent->writeAttribute('draw:stroke', 'none');
+        } else {
+            $this->xmlContent->writeAttribute('draw:stroke', 'solid');
+        }
         $this->xmlContent->writeAttribute('draw:fill-color', '#' . $chart->getFill()->getStartColor()->getRGB());
         // > style:graphic-properties
         $this->xmlContent->endElement();

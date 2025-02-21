@@ -35,7 +35,8 @@ $currentSlide->addShape($shape);
 
 // Add a file drawing (GIF) to the slide
 $shape = new Drawing\File();
-$shape->setName('Image File')
+$shape
+    ->setName('Image File')
     ->setDescription('Image File')
     ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
     ->setHeight(36)

@@ -108,14 +108,8 @@ if ($handle = opendir('.')) {
 
 /**
  * Write documents.
- *
- * @param PhpPresentation $phpPresentation
- * @param string $filename
- * @param array $writers
- *
- * @return string
  */
-function write($phpPresentation, $filename, $writers)
+function write(PhpPresentation $phpPresentation, string $filename, array $writers): string
 {
     $result = '';
 
