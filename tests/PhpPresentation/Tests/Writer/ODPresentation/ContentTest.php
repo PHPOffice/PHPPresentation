@@ -507,6 +507,18 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testRichTextRotation(): void
+    {
+        $expectedValue = mt_rand(1, 360);
+        $oRichText1 = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText1->setRotation($expectedValue);
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'draw:transform');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:transform', 'rotate (-' . deg2rad($expectedValue) . ') translate (0.000cm 0.000cm)');
+    }
+
     public function testRichTextShadow(): void
     {
         $randAlpha = mt_rand(0, 100);

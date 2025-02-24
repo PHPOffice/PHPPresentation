@@ -501,8 +501,19 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
+        if ($shape->getRotation() != 0) {
+            $rotRad = deg2rad($shape->getRotation());
+
+            $translateX = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm';
+            $translateY = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm';
+            $objWriter->writeAttribute(
+                'draw:transform',
+                'rotate (-' . $rotRad . ') translate (' . $translateX . ' ' . $translateY . ')'
+            );
+        } else {
+            $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
+            $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
+        }
         // draw:text-box
         $objWriter->startElement('draw:text-box');
 
