@@ -38,7 +38,7 @@ class MediaTest extends TestCase
         $object->setPath('file.mp4', false);
         self::assertEquals('video/mp4', $object->getMimeType());
         $object->setPath('file.ogv', false);
-        self::assertEquals('video/ogg', $object->getMimeType());
+        self::assertEquals('video/ogv', $object->getMimeType());
         $object->setPath('file.wmv', false);
         self::assertEquals('video/x-ms-wmv', $object->getMimeType());
         $object->setPath('file.xxx', false);

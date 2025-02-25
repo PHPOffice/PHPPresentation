@@ -41,16 +41,18 @@ $shape->setOffsetY(400);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
 $textRun = $shape->createTextRun('Introduction to');
-$textRun->getFont()->setBold(true);
-$textRun->getFont()->setSize(28);
-$textRun->getFont()->setColor($colorBlack);
+$textRun->getFont()
+    ->setBold(true)
+    ->setSize(28)
+    ->setColor($colorBlack);
 
 $shape->createBreak();
 
 $textRun = $shape->createTextRun('PHPPresentation');
-$textRun->getFont()->setBold(true);
-$textRun->getFont()->setSize(60);
-$textRun->getFont()->setColor($colorBlack);
+$textRun->getFont()
+    ->setBold(true)
+    ->setSize(60)
+    ->setColor($colorBlack);
 
 // Create templated slide
 echo date('H:i:s') . ' Create templated slide' . EOL;

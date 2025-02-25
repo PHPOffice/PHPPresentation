@@ -16,6 +16,7 @@ use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Writer\PDF\DomPDF;
 
 error_reporting(E_ALL);
 define('CLI', (PHP_SAPI == 'cli') ? true : false);
@@ -48,7 +49,12 @@ if (false === is_writable(__DIR__ . DIRECTORY_SEPARATOR)) {
 }
 
 // Set writers
-$writers = ['PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp'];
+$writers = [
+    'PowerPoint2007' => 'pptx',
+    'ODPresentation' => 'odp',
+    'HTML' => 'html',
+    'PDF' => 'pdf',
+];
 
 // Set titles and names
 $pageHeading = str_replace('_', ' ', SCRIPT_FILENAME);
@@ -118,9 +124,13 @@ function write(PhpPresentation $phpPresentation, string $filename, array $writer
     foreach ($writers as $writer => $extension) {
         $result .= date('H:i:s') . " Write to {$writer} format";
         if (null !== $extension) {
-            $xmlWriter = IOFactory::createWriter($phpPresentation, $writer);
-            $xmlWriter->save(__DIR__ . "/{$filename}.{$extension}");
-            rename(__DIR__ . "/{$filename}.{$extension}", __DIR__ . "/results/{$filename}.{$extension}");
+            $pathFile = __DIR__ . "/results/{$filename}.{$extension}";
+            if (file_exists($pathFile)) {
+                unlink($pathFile);
+            }
+            $ioWriter = IOFactory::createWriter($phpPresentation, $writer);
+            $ioWriter->setPDFAdapter(new DomPDF());
+            $ioWriter->save($pathFile);
         } else {
             $result .= ' ... NOT DONE!';
         }
@@ -188,7 +198,8 @@ function createTemplatedSlide(PhpPresentation $objPHPPresentation): Slide
         ->setHeight(36)
         ->setOffsetX(10)
         ->setOffsetY(10);
-    $shape->getShadow()->setVisible(true)
+    $shape->getShadow()
+        ->setVisible(true)
         ->setDirection(45)
         ->setDistance(10);
 
