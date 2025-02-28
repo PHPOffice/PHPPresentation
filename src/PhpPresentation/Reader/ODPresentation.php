@@ -31,6 +31,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
@@ -549,6 +550,11 @@ class ODPresentation implements ReaderInterface
 
                     continue;
                 }
+                if ($this->oXMLReader->getElement('draw:plugin', $oNodeFrame)) {
+                    $this->loadShapeMedia($oNodeFrame);
+
+                    continue;
+                }
             }
         }
 
@@ -641,6 +647,61 @@ class ODPresentation implements ReaderInterface
         if (count($oShape->getParagraphs()) > 0) {
             $oShape->setActiveParagraph(0);
         }
+    }
+
+    /**
+     * Read Shape Media.
+     */
+    protected function loadShapeMedia(DOMElement $oNodeFrame): void
+    {
+        $oNodePlugin = $this->oXMLReader->getElement('draw:plugin', $oNodeFrame);
+        if (!($oNodePlugin instanceof DOMElement)) {
+            return;
+        }
+
+        $mediaFile = null;
+        $filePath = null;
+        if ($oNodePlugin->hasAttribute('xlink:href')) {
+            $filePath = $oNodePlugin->getAttribute('xlink:href');
+            if (!$filePath) {
+                return;
+            }
+
+            $filePathParts = explode('/', $filePath);
+            if ($filePathParts[0] !== 'Media') {
+                return;
+            }
+
+            $mediaFile = $this->oZip->getFromName($filePath);
+        }
+
+        $tmpEmbed = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderODPEmbed');
+        file_put_contents($tmpEmbed, $mediaFile);
+
+        $shape = new Media();
+        $shape
+            ->setFileName(basename($filePath))
+            ->setPath($tmpEmbed, false);
+
+        $shape->getShadow()->setVisible(false);
+        $shape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
+        $shape->setDescription($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
+        $shape->setResizeProportional(false);
+        $shape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
+        $shape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
+        $shape->setResizeProportional(true);
+        $shape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
+        $shape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
+
+        if ($oNodeFrame->hasAttribute('draw:style-name')) {
+            $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
+            if (isset($this->arrayStyles[$keyStyle])) {
+                $shape->setShadow($this->arrayStyles[$keyStyle]['shadow']);
+                $shape->setFill($this->arrayStyles[$keyStyle]['fill']);
+            }
+        }
+
+        $this->oPhpPresentation->getActiveSlide()->addShape($shape);
     }
 
     /**

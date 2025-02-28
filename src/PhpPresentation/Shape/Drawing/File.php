@@ -31,6 +31,11 @@ class File extends AbstractDrawingAdapter
     protected $path = '';
 
     /**
+     * @var string Name of the file
+     */
+    protected $fileName = '';
+
+    /**
      * Get Path.
      */
     public function getPath(): string
@@ -58,6 +63,18 @@ class File extends AbstractDrawingAdapter
                 [$this->width, $this->height] = getimagesize($this->getPath());
             }
         }
+
+        return $this;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->fileName;
+    }
+
+    public function setFileName(string $fileName): self
+    {
+        $this->fileName = $fileName;
 
         return $this;
     }
