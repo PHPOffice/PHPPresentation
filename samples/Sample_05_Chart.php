@@ -706,7 +706,7 @@ fnSlide_Radar($objPHPPresentation);
 fnSlide_Scatter($objPHPPresentation);
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

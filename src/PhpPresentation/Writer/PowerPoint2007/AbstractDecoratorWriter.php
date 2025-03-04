@@ -76,12 +76,9 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
             $lineStyle = Border::LINE_SINGLE;
         }
 
-        // Line width
-        $lineWidth = 12700 * $pBorder->getLineWidth();
-
         // a:ln $pElementName
         $objWriter->startElement('a:ln' . $pElementName);
-        $objWriter->writeAttribute('w', $lineWidth);
+        $objWriter->writeAttribute('w', (int) CommonDrawing::pixelsToEmu($pBorder->getLineWidth()));
         $objWriter->writeAttribute('cap', 'flat');
         $objWriter->writeAttribute('cmpd', $lineStyle);
         $objWriter->writeAttribute('algn', 'ctr');
@@ -140,12 +137,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $objWriter->endElement();
     }
 
-    /**
-     * Write Fill.
-     *
-     * @param XMLWriter $objWriter XML Writer
-     * @param null|Fill $pFill Fill style
-     */
     protected function writeFill(XMLWriter $objWriter, ?Fill $pFill): void
     {
         if (!$pFill) {
@@ -177,12 +168,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $this->writePatternFill($objWriter, $pFill);
     }
 
-    /**
-     * Write Solid Fill.
-     *
-     * @param XMLWriter $objWriter XML Writer
-     * @param Fill $pFill Fill style
-     */
     protected function writeSolidFill(XMLWriter $objWriter, Fill $pFill): void
     {
         // a:gradFill
@@ -191,12 +176,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $objWriter->endElement();
     }
 
-    /**
-     * Write Gradient Fill.
-     *
-     * @param XMLWriter $objWriter XML Writer
-     * @param Fill $pFill Fill style
-     */
     protected function writeGradientFill(XMLWriter $objWriter, Fill $pFill): void
     {
         // a:gradFill
@@ -227,12 +206,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $objWriter->endElement();
     }
 
-    /**
-     * Write Pattern Fill.
-     *
-     * @param XMLWriter $objWriter XML Writer
-     * @param Fill $pFill Fill style
-     */
     protected function writePatternFill(XMLWriter $objWriter, Fill $pFill): void
     {
         // a:pattFill
@@ -255,15 +228,12 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $objWriter->endElement();
     }
 
-    /**
-     * Write Outline.
-     */
     protected function writeOutline(XMLWriter $objWriter, ?Outline $oOutline): void
     {
         if (!$oOutline) {
             return;
         }
-        // Width : pts
+        // Width : pixels
         $width = CommonDrawing::pixelsToEmu($oOutline->getWidth());
 
         // a:ln

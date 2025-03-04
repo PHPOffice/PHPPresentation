@@ -109,7 +109,10 @@ class HTML extends AbstractWriter implements WriterInterface
         }
 
         return  '<html>'
-            . '<head><style>' . $this->style . '</style></head>'
+            . '<head>'
+            . '<meta charset="utf-8">'
+            . '<style>' . $this->style . '</style>'
+            . '</head>'
             . '<body>' . $this->bodyList . $this->bodySlides . '</body>'
             . '</html>';
     }

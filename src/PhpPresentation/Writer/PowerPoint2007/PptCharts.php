@@ -431,7 +431,7 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
         $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
         $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('indent', (int) CommonDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr
@@ -546,11 +546,6 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-    /**
-     * Write Legend.
-     *
-     * @param XMLWriter $objWriter XML Writer
-     */
     protected function writeLegend(XMLWriter $objWriter, Legend $subject): void
     {
         // c:legend
@@ -600,7 +595,7 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
         $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
         $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('indent', (int) CommonDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr

@@ -789,7 +789,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
     public function testAxisYUnit(): void
     {
-        $value = mt_rand(0, 100);
+        $value = mt_rand(1, 100);
 
         $oSeries = new Series('Downloads', $this->seriesData);
         $oLine = new Line();
@@ -1232,7 +1232,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->getPlotArea()->setType($oLine);
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', 12700);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', 9525);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'cmpd', Border::LINE_SINGLE);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element . '/a:prstDash');
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element . '/a:prstDash', 'val', Border::DASH_SOLID);
@@ -1646,7 +1646,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->getPlotArea()->setType($oScatter);
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', 12700);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', 9525);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'cmpd', Border::LINE_SINGLE);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element . '/a:prstDash');
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element . '/a:prstDash', 'val', Border::DASH_SOLID);

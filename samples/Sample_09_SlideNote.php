@@ -60,7 +60,7 @@ $oRichText->createParagraph()->createTextRun('Representing a presentation');
 $oRichText->createParagraph()->createTextRun('Supports writing to different file formats');
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

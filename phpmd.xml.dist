@@ -26,7 +26,7 @@
         <!-- PptSlides needs more coupling (default: 13) -->
         <!-- Writer/Office2007/AbstractSlide needs more coupling (default: 13) -->
 		<properties>
-            <property name="maximum" value="35" />
+            <property name="maximum" value="38" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">

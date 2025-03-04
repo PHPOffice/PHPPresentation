@@ -25,6 +25,7 @@ use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\PowerPoint2007;
+use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -594,6 +595,28 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
     }
 
+    public function testLoadFileChartBar(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_ChartBar.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        // Document Properties
+
+        // Slides
+        self::assertCount(3, $oPhpPresentation->getAllSlides());
+
+        // Slide 2
+        $oSlide2 = $oPhpPresentation->getSlide(1);
+        $arrayShape = (array) $oSlide2->getShapeCollection();
+        self::assertCount(2, $arrayShape);
+        // Slide 2 : Shape 2
+        /** @var Chart $oShape */
+        $oShape = $arrayShape[1];
+        self::assertInstanceOf(Chart::class, $oShape);
+        self::assertInstanceOf(Chart\Type\Bar::class, $oShape->getPlotArea()->getType());
+    }
+
     public function testLoadFileWithoutImages(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.pptx';
@@ -703,8 +726,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[0];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
         self::assertCount(1, $arrayRichText);
@@ -720,8 +743,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[1];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
         self::assertCount(1, $arrayRichText);
@@ -737,8 +760,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[2];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
         self::assertCount(1, $arrayRichText);
@@ -754,8 +777,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[3];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
         self::assertCount(1, $arrayRichText);
@@ -815,8 +838,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[0];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(0, $oParagraph->getAlignment()->getLevel());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
@@ -833,8 +856,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[1];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(1, $oParagraph->getAlignment()->getLevel());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
@@ -851,8 +874,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[2];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(1, $oParagraph->getAlignment()->getLevel());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
@@ -869,8 +892,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[3];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(1, $oParagraph->getAlignment()->getLevel());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
@@ -887,8 +910,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[4];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(0, $oParagraph->getAlignment()->getLevel());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
@@ -905,8 +928,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[5];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(1, $oParagraph->getAlignment()->getLevel());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
@@ -923,8 +946,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[6];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(1, $oParagraph->getAlignment()->getLevel());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
@@ -941,8 +964,8 @@ class PowerPoint2007Test extends TestCase
         $oParagraph = $arrayParagraphs[7];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
         self::assertFalse($oParagraph->getAlignment()->isRTL());
-//         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
-//         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
+        // $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
+        // $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         self::assertEquals(1, $oParagraph->getAlignment()->getLevel());
         self::assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
         $arrayRichText = $oParagraph->getRichTextElements();
