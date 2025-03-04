@@ -106,7 +106,7 @@ $oSlideLayout->setShapeCollection($oMasterSlide->getShapeCollection());
 $currentSlide->setSlideLayout($oSlideLayout);
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

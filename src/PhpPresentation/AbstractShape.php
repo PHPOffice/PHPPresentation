@@ -227,7 +227,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set OffsetX.
+     * Set OffsetX (in pixels).
      *
      * @return $this
      */

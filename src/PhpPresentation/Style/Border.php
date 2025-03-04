@@ -48,7 +48,7 @@ class Border implements ComparableInterface
     /**
      * Line width.
      *
-     * @var int
+     * @var float
      */
     private $lineWidth = 1;
 
@@ -86,17 +86,17 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Get line width (in points).
+     * Get line width (in pixels).
      */
-    public function getLineWidth(): int
+    public function getLineWidth(): float
     {
         return $this->lineWidth;
     }
 
     /**
-     * Set line width (in points).
+     * Set line width (in pixels).
      */
-    public function setLineWidth(int $pValue = 1): self
+    public function setLineWidth(float $pValue = 1): self
     {
         $this->lineWidth = $pValue;
 

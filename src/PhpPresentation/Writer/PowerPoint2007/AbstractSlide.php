@@ -571,7 +571,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('fontAlgn', $paragraph->getAlignment()->getVertical());
         $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
         $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('indent', (int) CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $paragraph->getAlignment()->getLevel());
 
         $objWriter->startElement('a:lnSpc');

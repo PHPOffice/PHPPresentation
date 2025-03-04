@@ -62,7 +62,7 @@ echo date('H:i:s') . ' Read from serialized format' . EOL;
 $objPHPPresentationLoaded = IOFactory::load(__DIR__ . '/results/' . basename(__FILE__, '.php') . '.phppt');
 
 // Save file
-echo write($objPHPPresentationLoaded, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentationLoaded, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

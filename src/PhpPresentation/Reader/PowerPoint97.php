@@ -2015,25 +2015,25 @@ class PowerPoint97 implements ReaderInterface
                     case 0x0081:
                         // Text : dxTextLeft
                         //@link : http://msdn.microsoft.com/en-us/library/dd953234(v=office.12).aspx
-                        $arrayReturn['insetLeft'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['insetLeft'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0082:
                         // Text : dyTextTop
                         //@link : http://msdn.microsoft.com/en-us/library/dd925068(v=office.12).aspx
-                        $arrayReturn['insetTop'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['insetTop'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0083:
                         // Text : dxTextRight
                         //@link : http://msdn.microsoft.com/en-us/library/dd906782(v=office.12).aspx
-                        $arrayReturn['insetRight'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['insetRight'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0084:
                         // Text : dyTextBottom
                         //@link : http://msdn.microsoft.com/en-us/library/dd772858(v=office.12).aspx
-                        $arrayReturn['insetBottom'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['insetBottom'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0085:
@@ -2194,7 +2194,7 @@ class PowerPoint97 implements ReaderInterface
                     case 0x01CB:
                         // Line Style : lineWidth
                         //@link : http://msdn.microsoft.com/en-us/library/dd926964(v=office.12).aspx
-                        $arrayReturn['lineWidth'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['lineWidth'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x01D6:
@@ -2220,13 +2220,13 @@ class PowerPoint97 implements ReaderInterface
                     case 0x0205:
                         // Shadow Style : shadowOffsetX
                         //@link : http://msdn.microsoft.com/en-us/library/dd945280(v=office.12).aspx
-                        $arrayReturn['shadowOffsetX'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['shadowOffsetX'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0206:
                         // Shadow Style : shadowOffsetY
                         //@link : http://msdn.microsoft.com/en-us/library/dd907855(v=office.12).aspx
-                        $arrayReturn['shadowOffsetY'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['shadowOffsetY'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x023F:

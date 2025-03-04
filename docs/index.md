@@ -86,10 +86,10 @@ Below are the supported features for each file formats.
 |                           | Image                | :material-check: | :material-check: | :material-check: |
 |                           | Hyperlink            | :material-check: | :material-check: | :material-check: |
 |                           | RichText             | :material-check: | :material-check: | :material-check: |
-|                           | Table                |       |       |       |
+|                           | Table                |       |       | :material-check: |
 |                           | Text                 | :material-check: | :material-check: | :material-check: |
 | **Charts**                | Area                 |       |       |       |
-|                           | Bar                  |       |       |       |
+|                           | Bar                  |       |       | :material-check: |
 |                           | Bar3D                |       |       |       |
 |                           | Doughnut             |       |       |       |
 |                           | Line                 |       |       |       |

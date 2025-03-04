@@ -96,7 +96,7 @@ $shape->setName('Image File SVG')
 $currentSlide->addShape($shape);
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

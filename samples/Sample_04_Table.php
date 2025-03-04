@@ -138,7 +138,7 @@ $textRunC3 = $cellC3->createTextRun('Link Google');
 $textRunC3->getHyperlink()->setUrl('https://google.com')->setTooltip('Google');
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }
