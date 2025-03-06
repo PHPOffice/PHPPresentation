@@ -42,7 +42,7 @@ class TextStyleTest extends TestCase
         $oParagraph = $object->getBodyStyleAtLvl(1);
         self::assertInstanceOf('PhpOffice\PhpPresentation\Shape\RichText\Paragraph', $oParagraph);
         self::assertEquals(Alignment::HORIZONTAL_CENTER, $oParagraph->getAlignment()->getHorizontal());
-        self::assertEquals((-324900 / 9525), $oParagraph->getAlignment()->getIndent());
+        self::assertEquals((-342900 / 9525), $oParagraph->getAlignment()->getIndent());
         self::assertEquals(0, $oParagraph->getAlignment()->getMarginLeft());
         self::assertEquals(32, $oParagraph->getFont()->getSize());
         /** @var SchemeColor $color */
