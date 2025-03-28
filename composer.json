@@ -23,7 +23,8 @@
         "ext-xml": "*",
         "ext-zip": "*",
         "phpoffice/common": "^1",
-        "phpoffice/phpspreadsheet": "^1.9 || ^2.0 || ^3.0"
+        "phpoffice/phpspreadsheet": "^1.9 || ^2.0 || ^3.0",
+        "google/protobuf": "^4.30"
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.0",

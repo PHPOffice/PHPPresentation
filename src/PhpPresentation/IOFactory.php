@@ -103,4 +103,16 @@ class IOFactory
 
         return !$reflection->isAbstract() && !$reflection->isInterface();
     }
+
+    // Add to the readers array
+    private static $readers = [
+        // ... existing readers ...
+        'IWork' => Reader\IWork::class,
+    ];
+
+    // Add to the writers array
+    private static $writers = [
+        // ... existing writers ...
+        'IWork' => Writer\IWork::class,
+    ];
 }
