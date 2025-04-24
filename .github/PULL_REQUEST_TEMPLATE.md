@@ -9,4 +9,4 @@ Fixes # (issue)
 - [ ] My CI is :green_circle:
 - [ ] I have covered by unit tests my new code (check build/coverage for coverage report)
 - [ ] I have updated the [documentation](https://github.com/PHPOffice/PHPPresentation/tree/develop/docs) to describe the changes
-- [ ] I have updated the [changelog](https://github.com/PHPOffice/PHPPresentation/blob/develop/docs/changes/1.3.0.md)
+- [ ] I have updated the [changelog](https://github.com/PHPOffice/PHPPresentation/blob/develop/docs/changes/1.1.0.md)
