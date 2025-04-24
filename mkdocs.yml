@@ -52,7 +52,7 @@ nav:
       - Introduction: 'usage/slides/introduction.md'
       - Animations: 'usage/slides/animation.md'
       - Layouts: 'usage/slides/layout.md'
-    - Shapes: 
+    - Shapes:
       - Introduction: 'usage/shapes/introduction.md'
       - AutoShape: 'usage/shapes/autoshape.md'
       - Chart: 'usage/shapes/chart.md'
@@ -67,7 +67,7 @@ nav:
   - FAQ: 'faq.md'
   - Credits: 'credits.md'
   - Releases:
-      - '1.2.0 (WIP)': 'changes/1.2.0.md'
+      - '1.2.0': 'changes/1.2.0.md'
       - '1.1.0': 'changes/1.1.0.md'
       - '1.0.0': 'changes/1.0.0.md'
       - '0.9.0': 'changes/0.9.0.md'
