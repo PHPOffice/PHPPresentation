@@ -103,6 +103,5 @@ Below are the supported features for each file formats.
 
 We welcome everyone to contribute to PHPPresentation. Below are some of the things that you can do to contribute:
 
--  Read [our contributing guide](https://github.com/PHPOffice/PHPPresentation/blob/master/CONTRIBUTING.md)
 -  [Fork us](https://github.com/PHPOffice/PHPPresentation/fork) and [request a pull](https://github.com/PHPOffice/PHPPresentation/pulls) to the [develop](https://github.com/PHPOffice/PHPPresentation/tree/develop) branch
 -  Submit [bug reports or feature requests](https://github.com/PHPOffice/PHPPresentation/issues) to GitHub
