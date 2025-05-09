@@ -76,10 +76,48 @@ class Gd extends AbstractDrawingAdapter
     /**
      * Get image resource.
      *
-     * @return resource
+     * @param bool $isTransient Avoid the image resource being stored in memory to avoid OOM
+     * @return ?resource
      */
-    public function getImageResource()
+    public function getImageResource(bool $isTransient = false)
     {
+        // Lazy load image resource if not already loaded
+        if (!$this->imageResource) {
+            $imageString = file_get_contents($this->getPath());
+            if ($imageString === false) {
+                return null; // Failed to read file
+            }
+
+            $image = imagecreatefromstring($imageString);
+            if ($image === false) {
+                return null; // Failed to create image resource
+            }
+
+            $this->setImageResource($image);
+        }
+
+        if ($isTransient) {
+            // Create a new image resource and copy the original
+            $width = imagesx($this->imageResource);
+            $height = imagesy($this->imageResource);
+            $imageCopy = imagecreatetruecolor($width, $height);
+
+            // Preserve transparency for PNG/GIF images
+            if (imageistruecolor($this->imageResource)) {
+                imagealphablending($imageCopy, false);
+                imagesavealpha($imageCopy, true);
+            }
+
+            // Copy the image data
+            imagecopy($imageCopy, $this->imageResource, 0, 0, 0, 0, $width, $height);
+
+            // Destroy the original resource to free memory
+            imagedestroy($this->imageResource);
+            $this->imageResource = null;
+
+            return $imageCopy;
+        }
+
         return $this->imageResource;
     }
 
@@ -93,14 +131,26 @@ class Gd extends AbstractDrawingAdapter
     public function setImageResource($value = null)
     {
         $this->imageResource = $value;
+        if (!$this->imageResource) {
+            return $this;
+        }
 
-        if (null !== $this->imageResource && false !== $this->imageResource) {
-            // Get width/height
+        $this->getDimensions();
+
+        return $this;
+    }
+
+    public function getDimensions(): array
+    {
+        // Lazy load dimensions
+        if (!$this->width) {
             $this->width = imagesx($this->imageResource);
+        }
+        if (!$this->height) {
             $this->height = imagesy($this->imageResource);
         }
 
-        return $this;
+        return [$this->width, $this->height];
     }
 
     /**

@@ -937,11 +937,18 @@ class PowerPoint2007 implements ReaderInterface
             }
             $oShape->setMimeType($info['mime']);
             $oShape->setRenderingFunction(str_replace('/', '', $info['mime']));
-            $image = @imagecreatefromstring($imageFile);
-            if (!$image) {
+            if (!@imagecreatefromstring($imageFile)) {
                 return $oShape;
             }
-            $oShape->setImageResource($image);
+
+            $tmpEmbed = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPPT2007ImageGd');
+            file_put_contents($tmpEmbed, $imageFile);
+
+            $fileName = basename($pathImage);
+
+            $oShape
+                ->setName($fileName)
+                ->setPath($tmpEmbed);
         } elseif ($oShape instanceof Base64) {
             $oShape->setData('data:image/svg+xml;base64,' . base64_encode($imageFile));
         }
