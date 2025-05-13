@@ -36,6 +36,11 @@ class File extends AbstractDrawingAdapter
     protected $fileName = '';
 
     /**
+     * @var bool Flag indicating if this is a temporary file that should be cleaned up
+     */
+    protected $isTemporaryFile = false;
+
+    /**
      * Get Path.
      */
     public function getPath(): string
@@ -65,6 +70,28 @@ class File extends AbstractDrawingAdapter
         }
 
         return $this;
+    }
+
+    /**
+     * Set whether this is a temporary file that should be cleaned up
+     *
+     * @param bool $isTemporary
+     * @return self
+     */
+    public function setIsTemporaryFile(bool $isTemporary): self
+    {
+        $this->isTemporaryFile = $isTemporary;
+        return $this;
+    }
+
+    /**
+     * Check if this is a temporary file that should be cleaned up
+     *
+     * @return bool
+     */
+    public function isTemporaryFile(): bool
+    {
+        return $this->isTemporaryFile;
     }
 
     public function getFileName(): string
@@ -111,5 +138,37 @@ class File extends AbstractDrawingAdapter
         $output = str_replace(' ', '_', $output);
 
         return $output;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function loadFromContent(string $content, string $fileName = '', string $prefix = 'PhpPresentation'): AbstractDrawingAdapter
+    {
+        // Create temporary file
+        $tmpFile = tempnam(sys_get_temp_dir(), $prefix);
+        file_put_contents($tmpFile, $content);
+
+        // Set path and mark as temporary
+        $this->setPath($tmpFile);
+        $this->setIsTemporaryFile(true);
+
+        // Set filename if provided
+        if (!empty($fileName)) {
+            $this->setFileName($fileName);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clean up resources when object is destroyed
+     */
+    public function __destruct()
+    {
+        // Remove temporary file if needed
+        if ($this->isTemporaryFile() && $this->path && file_exists($this->path)) {
+            @unlink($this->path);
+        }
     }
 }
