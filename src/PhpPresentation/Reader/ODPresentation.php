@@ -270,12 +270,14 @@ class ODPresentation implements ReaderInterface
             if ('bitmap' == $nodeDrawingPageProps->getAttribute('draw:fill') && $nodeDrawingPageProps->hasAttribute('draw:fill-image-name')) {
                 $nameStyle = $nodeDrawingPageProps->getAttribute('draw:fill-image-name');
                 if (!empty($this->arrayCommonStyles[$nameStyle]) && 'image' == $this->arrayCommonStyles[$nameStyle]['type'] && !empty($this->arrayCommonStyles[$nameStyle]['path'])) {
-                    $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderODPBkg');
                     $contentImg = $this->oZip->getFromName($this->arrayCommonStyles[$nameStyle]['path']);
-                    file_put_contents($tmpBkgImg, $contentImg);
+                    if ($contentImg) {
+                        $tmpFile = new Gd();
+                        $tmpFile->loadFromContent($contentImg, basename($this->arrayCommonStyles[$nameStyle]['path']));
 
-                    $oBackground = new Image();
-                    $oBackground->setPath($tmpBkgImg);
+                        $oBackground = new Image();
+                        $oBackground->setImage($tmpFile);
+                    }
                 }
             }
         }
@@ -584,7 +586,7 @@ class ODPresentation implements ReaderInterface
         // Contents of file
         if (empty($mimetype)) {
             $shape = new Gd();
-            $shape->setImageResource(imagecreatefromstring($imageFile));
+            $shape->loadFromContent($imageFile, basename($sFilename));
         } else {
             $shape = new Base64();
             $shape->setData('data:' . $mimetype . ';base64,' . base64_encode($imageFile));
@@ -668,13 +670,12 @@ class ODPresentation implements ReaderInterface
             $mediaFile = $this->oZip->getFromName($filePath);
         }
 
-        $tmpEmbed = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderODPEmbed');
-        file_put_contents($tmpEmbed, $mediaFile);
+        if (!$mediaFile) {
+            return;
+        }
 
         $shape = new Media();
-        $shape
-            ->setFileName(basename($filePath))
-            ->setPath($tmpEmbed, false);
+        $shape->loadFromContent($mediaFile, basename($filePath));
 
         $shape->getShadow()->setVisible(false);
         $shape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
