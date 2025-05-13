@@ -440,7 +440,6 @@ class PowerPoint2007 implements ReaderInterface
             $oSlide = $this->oPhpPresentation->createSlide();
             $this->oPhpPresentation->setActiveSlideIndex($this->oPhpPresentation->getSlideCount() - 1);
             $oSlide->setRelsIndex('ppt/slides/_rels/' . $baseFile . '.rels');
-
             // Background
             $oElement = $xmlReader->getElement('/p:sld/p:cSld/p:bg/p:bgPr');
             if ($oElement instanceof DOMElement) {
@@ -482,23 +481,24 @@ class PowerPoint2007 implements ReaderInterface
                         }
                         $pathImage = implode('/', $pathImage);
                         $contentImg = $this->oZip->getFromName($pathImage);
+                        $fileName = basename($pathImage);
 
-                        $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPpt2007Bkg');
-                        file_put_contents($tmpBkgImg, $contentImg);
+                        $tmpFile = new Gd();
+                        $tmpFile->loadFromContent($contentImg, $fileName);
+
                         // Background
                         $oBackground = new Slide\Background\Image();
-                        $oBackground->setPath($tmpBkgImg);
+                        $oBackground->setImage($tmpFile);
+
                         // Slide Background
                         $oSlide = $this->oPhpPresentation->getActiveSlide();
                         $oSlide->setBackground($oBackground);
                     }
                 }
             }
-
             // Shapes
             $arrayElements = $xmlReader->getElements('/p:sld/p:cSld/p:spTree/*');
             $this->loadSlideShapes($oSlide, $arrayElements, $xmlReader);
-
             // Layout
             $oSlide = $this->oPhpPresentation->getActiveSlide();
             foreach ($this->arrayRels['ppt/slides/_rels/' . $baseFile . '.rels'] as $valueRel) {
@@ -507,7 +507,6 @@ class PowerPoint2007 implements ReaderInterface
                     if (array_key_exists($layoutBasename, $this->arraySlideLayouts)) {
                         $oSlide->setSlideLayout($this->arraySlideLayouts[$layoutBasename]);
                     }
-
                     break;
                 }
             }
@@ -555,7 +554,6 @@ class PowerPoint2007 implements ReaderInterface
                         continue;
                     }
                     $oRTParagraph = new Paragraph();
-
                     if ('a:defPPr' == $oElementLvl->nodeName) {
                         $level = 0;
                     } else {
@@ -563,7 +561,6 @@ class PowerPoint2007 implements ReaderInterface
                         $level = str_replace('pPr', '', $level);
                         $level = (int) $level;
                     }
-
                     if ($oElementLvl->hasAttribute('algn')) {
                         $oRTParagraph->getAlignment()->setHorizontal($oElementLvl->getAttribute('algn'));
                     }
@@ -602,7 +599,6 @@ class PowerPoint2007 implements ReaderInterface
                             $oRTParagraph->getFont()->setColor($oSchemeColor);
                         }
                     }
-
                     switch ($oElementTxStyle->nodeName) {
                         case 'p:bodyStyle':
                             $oSlideMaster->getTextStyles()->setBodyStyleAtLvl($oRTParagraph, $level);
@@ -627,7 +623,6 @@ class PowerPoint2007 implements ReaderInterface
                     if (false !== $pptTheme) {
                         $this->loadTheme($pptTheme, $oSlideMaster);
                     }
-
                     break;
                 }
             }
@@ -692,7 +687,6 @@ class PowerPoint2007 implements ReaderInterface
 
             return $oSlideLayout;
         }
-
         // @phpstan-ignore-next-line
         return null;
     }
@@ -764,12 +758,15 @@ class PowerPoint2007 implements ReaderInterface
                 }
                 $pathImage = implode('/', $pathImage);
                 $contentImg = $this->oZip->getFromName($pathImage);
+                $fileName = basename($pathImage);
 
-                $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPpt2007Bkg');
-                file_put_contents($tmpBkgImg, $contentImg);
+                $tmpFile = new Gd();
+                $tmpFile->loadFromContent($contentImg, $fileName);
+
                 // Background
                 $oBackground = new Slide\Background\Image();
-                $oBackground->setPath($tmpBkgImg);
+                $oBackground->setImage($tmpFile);
+
                 // Slide Background
                 $oSlide->setBackground($oBackground);
             }
@@ -783,7 +780,6 @@ class PowerPoint2007 implements ReaderInterface
         // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             $oNote = $oSlide->getNote();
-
             $arrayElements = $xmlReader->getElements('/p:notes/p:cSld/p:spTree/*');
             $this->loadSlideShapes($oNote, $arrayElements, $xmlReader);
         }
@@ -805,12 +801,10 @@ class PowerPoint2007 implements ReaderInterface
         $oShape->getShadow()->setVisible(false);
         // Variables
         $fileRels = $oSlide->getRelsIndex();
-
         $oElement = $document->getElement('p:nvPicPr/p:cNvPr', $node);
         if ($oElement instanceof DOMElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
-
             // Hyperlink
             $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElement);
             if (is_object($oElementHlinkClick)) {
@@ -819,26 +813,22 @@ class PowerPoint2007 implements ReaderInterface
                 );
             }
         }
-
         if ($oShape instanceof Media) {
             $oShape = $this->loadShapeDrawingEmbed($embedNode, $fileRels, $oShape);
         } else {
             $oShape = $this->loadShapeDrawingImage($document, $node, $fileRels, $oShape);
         }
-
         $oElement = $document->getElement('p:spPr', $node);
         if ($oElement instanceof DOMElement) {
             $oFill = $this->loadStyleFill($document, $oElement);
             $oShape->setFill($oFill);
         }
-
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
         if ($oElement instanceof DOMElement) {
             if ($oElement->hasAttribute('rot')) {
                 $oShape->setRotation((int) CommonDrawing::angleToDegrees((int) $oElement->getAttribute('rot')));
             }
         }
-
         $oElement = $document->getElement('p:spPr/a:xfrm/a:off', $node);
         if ($oElement instanceof DOMElement) {
             if ($oElement->hasAttribute('x')) {
@@ -848,7 +838,6 @@ class PowerPoint2007 implements ReaderInterface
                 $oShape->setOffsetY(CommonDrawing::emuToPixels((int) $oElement->getAttribute('y')));
             }
         }
-
         $oElement = $document->getElement('p:spPr/a:xfrm/a:ext', $node);
         if ($oElement instanceof DOMElement) {
             if ($oElement->hasAttribute('cx')) {
@@ -878,7 +867,6 @@ class PowerPoint2007 implements ReaderInterface
         }
 
         $embedPath = $this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target'];
-
         $pathEmbed = "ppt/slides/{$embedPath}";
 
         $pathEmbed = explode('/', $pathEmbed);
@@ -889,17 +877,9 @@ class PowerPoint2007 implements ReaderInterface
         }
         $pathEmbed = implode('/', $pathEmbed);
         $contentEmbed = $this->oZip->getFromName($pathEmbed);
-
-        $tmpEmbed = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPPT2007Embed');
-
-        file_put_contents($tmpEmbed, $contentEmbed);
-
         $fileName = basename($embedPath);
 
-        $oShape
-            ->setName($fileName)
-            ->setFileName($fileName)
-            ->setPath($tmpEmbed, false);
+        $oShape->loadFromContent($contentEmbed, $fileName);
 
         return $oShape;
     }
@@ -926,29 +906,14 @@ class PowerPoint2007 implements ReaderInterface
         }
         $pathImage = implode('/', $pathImage);
         $imageFile = $this->oZip->getFromName($pathImage);
+        $fileName = basename($pathImage);
+
         if (!$imageFile) {
             return $oShape;
         }
 
         if ($oShape instanceof Gd) {
-            $info = getimagesizefromstring($imageFile);
-            if (!$info) {
-                return $oShape;
-            }
-            $oShape->setMimeType($info['mime']);
-            $oShape->setRenderingFunction(str_replace('/', '', $info['mime']));
-            if (!@imagecreatefromstring($imageFile)) {
-                return $oShape;
-            }
-
-            $tmpEmbed = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPPT2007ImageGd');
-            file_put_contents($tmpEmbed, $imageFile);
-
-            $fileName = basename($pathImage);
-
-            $oShape
-                ->setName($fileName)
-                ->setPath($tmpEmbed);
+            $oShape->loadFromContent($imageFile, $fileName);
         } elseif ($oShape instanceof Base64) {
             $oShape->setData('data:image/svg+xml;base64,' . base64_encode($imageFile));
         }
@@ -1106,7 +1071,6 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadShapeTable(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
     {
         $this->fileRels = $oSlide->getRelsIndex();
-
         $oShape = $oSlide->createTableShape();
 
         $oElement = $document->getElement('p:cNvPr', $node);
@@ -1331,6 +1295,7 @@ class PowerPoint2007 implements ReaderInterface
                 $oParagraph->getBulletStyle()->setBulletColor($oColor);
             }
         }
+
         $arraySubElements = $document->getElements('(a:r|a:br)', $oElement);
         foreach ($arraySubElements as $oSubElement) {
             if (!($oSubElement instanceof DOMElement)) {
@@ -1343,7 +1308,6 @@ class PowerPoint2007 implements ReaderInterface
                 $oElementrPr = $document->getElement('a:rPr', $oSubElement);
                 if (is_object($oElementrPr)) {
                     $oText = $oParagraph->createTextRun();
-
                     if ($oElementrPr->hasAttribute('b')) {
                         $att = $oElementrPr->getAttribute('b');
                         $oText->getFont()->setBold('true' == $att || '1' == $att ? true : false);
@@ -1420,7 +1384,6 @@ class PowerPoint2007 implements ReaderInterface
                             $oText->getFont()->setCharset((int) $oElementFont->getAttribute('charset'));
                         }
                     }
-
                     $oSubSubElement = $document->getElement('a:t', $oSubElement);
                     $oText->setText($oSubSubElement->nodeValue);
                 }
