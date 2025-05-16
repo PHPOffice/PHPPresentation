@@ -301,16 +301,16 @@ class Gd extends AbstractDrawingAdapter
      */
     public function loadFromContent(string $content, string $fileName = '', string $prefix = 'PhpPresentationGd'): AbstractDrawingAdapter
     {
+        // Check if the content is a valid image
         $image = @imagecreatefromstring($content);
         if ($image === false) {
             return $this;
         }
+        // Clean up the image resource to avoid memory leaks
+        @imagedestroy($image);
 
         $tmpFile = tempnam(sys_get_temp_dir(), $prefix);
         file_put_contents($tmpFile, $content);
-
-        // Set image resource
-        $this->setImageResource($image);
 
         // Set path and mark as temporary for automatic cleanup
         $this->setPath($tmpFile);
