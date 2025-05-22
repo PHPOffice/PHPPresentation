@@ -24,6 +24,7 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Tests\Writer\AbstractWriter as TestAbstractWriter;
 use PhpOffice\PhpPresentation\Writer\AbstractWriter;
+use PhpOffice\PhpPresentation\Writer\PDF\PDFWriterInterface;
 use PHPUnit\Framework\TestCase;
 
 require 'AbstractWriter.php';
@@ -32,6 +33,8 @@ require 'AbstractWriter.php';
  * Test class for AbstractWriter.
  *
  * @coversDefaultClass \AbstractWriter
+ *
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
 class AbstractWriterTest extends TestCase
 {
@@ -40,14 +43,87 @@ class AbstractWriterTest extends TestCase
      */
     public function testConstruct(): void
     {
-        /** @var AbstractWriter $oStubWriter */
-        $oStubWriter = $this->getMockForAbstractClass(AbstractWriter::class);
-        /** @var ZipInterface $oStubZip */
-        $oStubZip = $this->getMockForAbstractClass(ZipInterface::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractWriter $mockWriter */
+            $mockWriter = $this->getMockForAbstractClass(AbstractWriter::class);
+        } else {
+            /** @var AbstractWriter $mockWriter */
+            $mockWriter = new class() extends AbstractWriter {
+            };
+        }
 
-        self::assertNull($oStubWriter->getZipAdapter());
-        self::assertInstanceOf(AbstractWriter::class, $oStubWriter->setZipAdapter($oStubZip));
-        self::assertInstanceOf(ZipInterface::class, $oStubWriter->getZipAdapter());
+        self::assertNull($mockWriter->getPDFAdapter());
+        self::assertNull($mockWriter->getZipAdapter());
+    }
+
+    public function testPDFAdapter(): void
+    {
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractWriter $mockWriter */
+            $mockWriter = $this->getMockForAbstractClass(AbstractWriter::class);
+        } else {
+            /** @var AbstractWriter $mockWriter */
+            $mockWriter = new class() extends AbstractWriter {
+            };
+        }
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var PDFWriterInterface $mockPdfAdapter */
+            $mockPdfAdapter = $this->getMockForAbstractClass(PDFWriterInterface::class);
+        } else {
+            /** @var PDFWriterInterface $mockPdfAdapter */
+            $mockPdfAdapter = new class() implements PDFWriterInterface {
+                public function save(string $filename): void
+                {
+                }
+
+                public function setPhpPresentation(?PhpPresentation $pPhpPresentation = null)
+                {
+                    return $this;
+                }
+            };
+        }
+
+        self::assertNull($mockWriter->getPDFAdapter());
+        self::assertInstanceOf(AbstractWriter::class, $mockWriter->setPDFAdapter($mockPdfAdapter));
+        self::assertInstanceOf(PDFWriterInterface::class, $mockWriter->getPDFAdapter());
+    }
+
+    public function testZipAdapter(): void
+    {
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var AbstractWriter $mockWriter */
+            $mockWriter = $this->getMockForAbstractClass(AbstractWriter::class);
+        } else {
+            /** @var AbstractWriter $mockWriter */
+            $mockWriter = new class() extends AbstractWriter {
+            };
+        }
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var ZipInterface $mockZip */
+            $mockZip = $this->getMockForAbstractClass(ZipInterface::class);
+        } else {
+            /** @var ZipInterface $mockZip */
+            $mockZip = new class() implements ZipInterface {
+                public function open($filename)
+                {
+                    return $this;
+                }
+
+                public function close()
+                {
+                    return $this;
+                }
+
+                public function addFromString(string $localname, string $contents, bool $withCompression = true)
+                {
+                    return $this;
+                }
+            };
+        }
+
+        self::assertNull($mockWriter->getZipAdapter());
+        self::assertInstanceOf(AbstractWriter::class, $mockWriter->setZipAdapter($mockZip));
+        self::assertInstanceOf(ZipInterface::class, $mockWriter->getZipAdapter());
     }
 
     /**
@@ -64,8 +140,14 @@ class AbstractWriterTest extends TestCase
         $masterSlide = $masterSlides[0];
         $masterSlide->createDrawingShape();
 
-        /** @var TestAbstractWriter $writer */
-        $writer = $this->getMockForAbstractClass(TestAbstractWriter::class);
+        if (method_exists($this, 'getMockForAbstractClass')) {
+            /** @var TestAbstractWriter $writer */
+            $writer = $this->getMockForAbstractClass(TestAbstractWriter::class);
+        } else {
+            /** @var TestAbstractWriter $writer */
+            $writer = new class() extends TestAbstractWriter {
+            };
+        }
         $writer->setPhpPresentation($presentation);
 
         $drawings = $writer->allDrawings();

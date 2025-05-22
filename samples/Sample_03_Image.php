@@ -35,7 +35,8 @@ $currentSlide->addShape($shape);
 
 // Add a file drawing (GIF) to the slide
 $shape = new Drawing\File();
-$shape->setName('Image File')
+$shape
+    ->setName('Image File')
     ->setDescription('Image File')
     ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
     ->setHeight(36)
@@ -95,7 +96,7 @@ $shape->setName('Image File SVG')
 $currentSlide->addShape($shape);
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

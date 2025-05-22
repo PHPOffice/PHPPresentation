@@ -82,7 +82,9 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
             $oMasterSlide = reset($arrayMasterSlides);
             $arraySlideLayouts = $oMasterSlide->getAllSlideLayouts();
             $oSlideLayout = reset($arraySlideLayouts);
-            $this->setSlideLayout($oSlideLayout);
+            if ($oSlideLayout) {
+                $this->setSlideLayout($oSlideLayout);
+            }
         }
         // Set note
         $this->setNote(new Note());

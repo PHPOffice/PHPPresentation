@@ -66,6 +66,8 @@ class Meta extends AbstractDecoratorWriter
         $objWriter->writeElement('meta:initial-creator', $this->getPresentation()->getDocumentProperties()->getCreator());
         // meta:keyword
         $objWriter->writeElement('meta:keyword', $this->getPresentation()->getDocumentProperties()->getKeywords());
+        // meta:generator
+        $objWriter->writeElement('meta:generator', $this->getPresentation()->getDocumentProperties()->getGenerator());
 
         // meta:user-defined
         $oDocumentProperties = $this->oPresentation->getDocumentProperties();

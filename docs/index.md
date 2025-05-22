@@ -35,6 +35,8 @@ Documentation.
 - Output to different file formats:
     - PowerPoint 2007 (.pptx)
     - OpenDocument Presentation (.odp)
+    - HTML (.html)
+    - PDF (.pdf)
     - Serialized Spreadsheet
 - ... and lots of other things!
 
@@ -50,15 +52,15 @@ Below are the supported features for each file formats.
 | **Document**              | Mark as final        |       |       |       | :material-check: |
 | **Document Properties**   | Standard             |       | :material-check: |       | :material-check: |
 |                           | Custom               |       | :material-check: |       | :material-check: |
-| **Slides**                |                      |       | :material-check: |       | :material-check: |
+| **Slides**                |                      | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | Name                 |       | :material-check: |       |       |
 | **Element Shape**         | AutoShape            |       |       |       | :material-check: |
-|                           | Image                |       | :material-check: |       | :material-check: |
-|                           | Hyperlink            |       | :material-check: |       | :material-check: |
+|                           | Image                | :material-check: | :material-check: | :material-check: | :material-check: |
+|                           | Hyperlink            | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | Line                 |       | :material-check: |       | :material-check: |
-|                           | MemoryImage          |       | :material-check: |       | :material-check: |
+|                           | MemoryImage          | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | RichText             |       | :material-check: |       | :material-check: |
-|                           | Table                |       | :material-check: |       | :material-check: |
+|                           | Table                | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | Text                 |       | :material-check: |       | :material-check: |
 | **Charts**                | Area                 |       | :material-check: |       | :material-check: |
 |                           | Bar                  |       | :material-check: |       | :material-check: |
@@ -84,10 +86,10 @@ Below are the supported features for each file formats.
 |                           | Image                | :material-check: | :material-check: | :material-check: |
 |                           | Hyperlink            | :material-check: | :material-check: | :material-check: |
 |                           | RichText             | :material-check: | :material-check: | :material-check: |
-|                           | Table                |       |       |       |
+|                           | Table                |       |       | :material-check: |
 |                           | Text                 | :material-check: | :material-check: | :material-check: |
 | **Charts**                | Area                 |       |       |       |
-|                           | Bar                  |       |       |       |
+|                           | Bar                  |       |       | :material-check: |
 |                           | Bar3D                |       |       |       |
 |                           | Doughnut             |       |       |       |
 |                           | Line                 |       |       |       |
@@ -101,7 +103,5 @@ Below are the supported features for each file formats.
 
 We welcome everyone to contribute to PHPPresentation. Below are some of the things that you can do to contribute:
 
--  Read [our contributing guide](https://github.com/PHPOffice/PHPPresentation/blob/master/CONTRIBUTING.md)
--  [Fork us](https://github.com/PHPOffice/PHPPresentation/fork) and [request a pull](https://github.com/PHPOffice/PHPPresentation/pulls) to the [develop](https://github.com/PHPOffice/PHPPresentation/tree/develop) branch
+-  [Fork us](https://github.com/PHPOffice/PHPPresentation/fork) and [request a pull](https://github.com/PHPOffice/PHPPresentation/pulls) to the [master](https://github.com/PHPOffice/PHPPresentation) branch
 -  Submit [bug reports or feature requests](https://github.com/PHPOffice/PHPPresentation/issues) to GitHub
--  Follow [@PHPOffice](https://twitter.com/PHPOffice) on Twitter

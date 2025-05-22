@@ -211,7 +211,7 @@ class PptSlideMasters extends AbstractSlide
                 $objWriter->writeAttributeIf(
                     0 != $oParagraph->getAlignment()->getIndent(),
                     'indent',
-                    CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getIndent())
+                    (int) CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getIndent())
                 );
                 $objWriter->startElement('a:defRPr');
                 $objWriter->writeAttributeIf(10 != $oParagraph->getFont()->getSize(), 'sz', $oParagraph->getFont()->getSize() * 100);

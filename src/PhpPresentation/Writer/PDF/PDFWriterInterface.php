@@ -18,27 +18,16 @@
 
 declare(strict_types=1);
 
-namespace PhpOffice\PhpPresentation\Reader;
+namespace PhpOffice\PhpPresentation\Writer\PDF;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 
-/**
- * Reader interface.
- */
-interface ReaderInterface
+interface PDFWriterInterface
 {
-    /**
-     * Skip loading of images.
-     */
-    public const SKIP_IMAGES = 1;
+    public function save(string $filename): void;
 
     /**
-     * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
+     * @return PDFWriterInterface
      */
-    public function canRead(string $pFilename): bool;
-
-    /**
-     * Loads PhpPresentation from file.
-     */
-    public function load(string $pFilename, int $flags = 0): PhpPresentation;
+    public function setPhpPresentation(?PhpPresentation $pPhpPresentation = null);
 }

@@ -54,7 +54,7 @@ $oAnimation5->addShape($oDrawing3);
 $oSlide3->addAnimation($oAnimation5);
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

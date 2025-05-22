@@ -18,27 +18,12 @@
 
 declare(strict_types=1);
 
-namespace PhpOffice\PhpPresentation\Reader;
+namespace PhpOffice\PhpPresentation\Exception;
 
-use PhpOffice\PhpPresentation\PhpPresentation;
-
-/**
- * Reader interface.
- */
-interface ReaderInterface
+class WriterPDFAdapterNotDefinedException extends PhpPresentationException
 {
-    /**
-     * Skip loading of images.
-     */
-    public const SKIP_IMAGES = 1;
-
-    /**
-     * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
-     */
-    public function canRead(string $pFilename): bool;
-
-    /**
-     * Loads PhpPresentation from file.
-     */
-    public function load(string $pFilename, int $flags = 0): PhpPresentation;
+    public function __construct()
+    {
+        parent::__construct('The PDF Adapter has not been defined');
+    }
 }

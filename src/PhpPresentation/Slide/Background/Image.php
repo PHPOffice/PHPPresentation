@@ -54,6 +54,11 @@ class Image extends AbstractBackground
     protected $image;
 
     /**
+     * @var string
+     */
+    protected $extension;
+
+    /**
      * Get Path.
      */
     public function getPath(): ?string
@@ -101,6 +106,18 @@ class Image extends AbstractBackground
     }
 
     /**
+     * Set Extension.
+     *
+     * @param string $pValue File Extension
+     */
+    public function setExtension(string $pValue): self
+    {
+        $this->extension = $pValue;
+
+        return $this;
+    }
+
+    /**
      * Get Filename.
      */
     public function getFilename(): string
@@ -113,6 +130,9 @@ class Image extends AbstractBackground
      */
     public function getExtension(): string
     {
+        if ($this->extension) {
+            return $this->extension;
+        }
         $exploded = explode('.', $this->getFilename());
 
         return $exploded[count($exploded) - 1];

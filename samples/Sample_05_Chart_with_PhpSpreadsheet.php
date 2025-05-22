@@ -112,7 +112,7 @@ $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
 $shape->getLegend()->getFont()->setItalic(true);
 
 // Save file
-echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'));
 
 if (!CLI) {
     include_once 'Sample_Footer.php';

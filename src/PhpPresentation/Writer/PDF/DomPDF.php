@@ -18,27 +18,28 @@
 
 declare(strict_types=1);
 
-namespace PhpOffice\PhpPresentation\Reader;
+namespace PhpOffice\PhpPresentation\Writer\PDF;
 
-use PhpOffice\PhpPresentation\PhpPresentation;
+use Dompdf\Dompdf as DomPDFLib;
+use Dompdf\Options;
+use PhpOffice\PhpPresentation\Writer\HTML;
 
-/**
- * Reader interface.
- */
-interface ReaderInterface
+class DomPDF extends HTML implements PDFWriterInterface
 {
     /**
-     * Skip loading of images.
+     * Save PhpPresentation to file.
      */
-    public const SKIP_IMAGES = 1;
+    public function save(string $filename): void
+    {
+        $this->isPDF = true;
 
-    /**
-     * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
-     */
-    public function canRead(string $pFilename): bool;
+        $html = $this->getHtmlContent();
+        $html = str_replace(PHP_EOL, '', $html);
 
-    /**
-     * Loads PhpPresentation from file.
-     */
-    public function load(string $pFilename, int $flags = 0): PhpPresentation;
+        $domPdf = new DomPDFLib(new Options());
+        $domPdf->loadHtml($html);
+        $domPdf->setPaper('a4', 'landscape');
+        $domPdf->render();
+        file_put_contents($filename, $domPdf->output());
+    }
 }

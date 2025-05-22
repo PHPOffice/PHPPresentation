@@ -295,7 +295,7 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
                         $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
                         $objWriter->writeAttributeIf($item->getFont()->isBold(), 'fo:font-weight', 'bold');
-                        $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                        $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? substr($item->getLanguage(), 0, 2) : 'en'));
                         $objWriter->writeAttribute('style:script-type', 'latin');
 
                         break;
@@ -501,8 +501,19 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
+        if ($shape->getRotation() != 0) {
+            $rotRad = deg2rad($shape->getRotation());
+
+            $translateX = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm';
+            $translateY = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm';
+            $objWriter->writeAttribute(
+                'draw:transform',
+                'rotate (-' . $rotRad . ') translate (' . $translateX . ' ' . $translateY . ')'
+            );
+        } else {
+            $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
+            $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
+        }
         // draw:text-box
         $objWriter->startElement('draw:text-box');
 

@@ -396,6 +396,11 @@ class PowerPoint97 implements ReaderInterface
     private $filename;
 
     /**
+     * @var bool
+     */
+    protected $loadImages = true;
+
+    /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
      */
     public function canRead(string $pFilename): bool
@@ -428,7 +433,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file.
      */
-    public function load(string $pFilename): PhpPresentation
+    public function load(string $pFilename, int $flags = 0): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
@@ -436,6 +441,8 @@ class PowerPoint97 implements ReaderInterface
         }
 
         $this->filename = $pFilename;
+
+        $this->loadImages = !((bool) ($flags & self::SKIP_IMAGES));
 
         return $this->loadFile();
     }
@@ -1581,7 +1588,7 @@ class PowerPoint97 implements ReaderInterface
                 if (isset($shpPrimaryOptions['pib'])) {
                     // isDrawing
                     $drawingPib = $shpPrimaryOptions['pib'];
-                    if (isset($this->arrayPictures[$drawingPib - 1])) {
+                    if ($this->loadImages && isset($this->arrayPictures[$drawingPib - 1])) {
                         $gdImage = imagecreatefromstring($this->arrayPictures[$drawingPib - 1]);
                         $arrayReturn['shape'] = new Drawing\Gd();
                         $arrayReturn['shape']->setImageResource($gdImage);
@@ -2008,25 +2015,25 @@ class PowerPoint97 implements ReaderInterface
                     case 0x0081:
                         // Text : dxTextLeft
                         //@link : http://msdn.microsoft.com/en-us/library/dd953234(v=office.12).aspx
-                        $arrayReturn['insetLeft'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['insetLeft'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0082:
                         // Text : dyTextTop
                         //@link : http://msdn.microsoft.com/en-us/library/dd925068(v=office.12).aspx
-                        $arrayReturn['insetTop'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['insetTop'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0083:
                         // Text : dxTextRight
                         //@link : http://msdn.microsoft.com/en-us/library/dd906782(v=office.12).aspx
-                        $arrayReturn['insetRight'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['insetRight'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0084:
                         // Text : dyTextBottom
                         //@link : http://msdn.microsoft.com/en-us/library/dd772858(v=office.12).aspx
-                        $arrayReturn['insetBottom'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['insetBottom'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0085:
@@ -2187,7 +2194,7 @@ class PowerPoint97 implements ReaderInterface
                     case 0x01CB:
                         // Line Style : lineWidth
                         //@link : http://msdn.microsoft.com/en-us/library/dd926964(v=office.12).aspx
-                        $arrayReturn['lineWidth'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['lineWidth'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x01D6:
@@ -2213,13 +2220,13 @@ class PowerPoint97 implements ReaderInterface
                     case 0x0205:
                         // Shadow Style : shadowOffsetX
                         //@link : http://msdn.microsoft.com/en-us/library/dd945280(v=office.12).aspx
-                        $arrayReturn['shadowOffsetX'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['shadowOffsetX'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x0206:
                         // Shadow Style : shadowOffsetY
                         //@link : http://msdn.microsoft.com/en-us/library/dd907855(v=office.12).aspx
-                        $arrayReturn['shadowOffsetY'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
+                        $arrayReturn['shadowOffsetY'] = (int) \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
 
                         break;
                     case 0x023F:

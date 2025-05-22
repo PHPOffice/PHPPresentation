@@ -36,7 +36,7 @@ class Media extends File implements ComparableInterface
 
                 break;
             case 'ogv':
-                $mimetype = 'video/ogg';
+                $mimetype = 'video/ogv';
 
                 break;
             case 'wmv':
