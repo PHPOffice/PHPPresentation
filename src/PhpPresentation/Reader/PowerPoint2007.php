@@ -1550,9 +1550,9 @@ class PowerPoint2007 implements ReaderInterface
             }
             if ('a:r' == $oSubElement->tagName) {
                 $oElementrPr = $document->getElement('a:rPr', $oSubElement);
-                if (is_object($oElementrPr)) {
-                    $oText = $oParagraph->createTextRun();
 
+                $oText = $oParagraph->createTextRun();
+                if (is_object($oElementrPr)) {
                     if ($oElementrPr->hasAttribute('b')) {
                         $att = $oElementrPr->getAttribute('b');
                         $oText->getFont()->setBold('true' == $att || '1' == $att ? true : false);
@@ -1631,10 +1631,9 @@ class PowerPoint2007 implements ReaderInterface
                             $oText->getFont()->setCharset($charset < 0 ? $charset + 256 : $charset);
                         }
                     }
-
-                    $oSubSubElement = $document->getElement('a:t', $oSubElement);
-                    $oText->setText($oSubSubElement->nodeValue);
                 }
+                $oSubSubElement = $document->getElement('a:t', $oSubElement);
+                $oText->setText($oSubSubElement->nodeValue);
             }
         }
     }
