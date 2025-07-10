@@ -1213,6 +1213,12 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', '1');
         $objWriter->endElement();
 
+        if (($angle = $subject->getFirstSliceAngle()) !== null) {
+            $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', (string) $angle);
+        }
+        // Always emit pieDir; default is clockWise
+        $this->writeElementWithValAttribute($objWriter, 'c:pieDir', $subject->getPieDirection());
+
         // Write series
         $seriesIndex = 0;
         foreach ($subject->getSeries() as $series) {
@@ -1352,7 +1358,6 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->endElement();
         }
 
-        $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', '0');
         $this->writeElementWithValAttribute($objWriter, 'c:holeSize', (string) $subject->getHoleSize());
 
         $objWriter->endElement();

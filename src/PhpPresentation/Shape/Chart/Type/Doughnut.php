@@ -35,6 +35,16 @@ class Doughnut extends AbstractTypePie implements ComparableInterface
     protected $holeSize = 50;
 
     /**
+     * Chart Direction & Rotation
+     *
+     * @var string
+     */
+    public const DIR_CLOCKWISE        = 'clockWise';
+    public const DIR_COUNTERCLOCKWISE = 'counterClockwise';
+    private ?int $firstSliceAngle = null;   // 0-359
+    private string $pieDirection = self::DIR_CLOCKWISE;
+
+    /**
      * @return int
      */
     public function getHoleSize()
@@ -70,5 +80,31 @@ class Doughnut extends AbstractTypePie implements ComparableInterface
     public function getHashCode(): string
     {
         return md5(parent::getHashCode() . __CLASS__);
+    }
+
+    public function setFirstSliceAngle(int $angle): self
+    {
+        $this->firstSliceAngle = (($angle % 360) + 360) % 360;
+        return $this;
+    }
+
+    public function getFirstSliceAngle(): ?int
+    {
+        return $this->firstSliceAngle;
+    }
+
+    public function setPieDirection(string $dir): self
+    {
+        if (!in_array($dir, [self::DIR_CLOCKWISE, self::DIR_COUNTERCLOCKWISE], true)) {
+            throw new \InvalidArgumentException('Invalid pie direction');
+        }
+        $this->pieDirection = $dir;
+
+        return $this;
+    }
+
+    public function getPieDirection(): string
+    {
+        return $this->pieDirection;
     }
 }
