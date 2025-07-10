@@ -115,38 +115,40 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->endElement();
 
         // c:view3D
-        $objWriter->startElement('c:view3D');
+        if ($chart->getPlotArea()->getType() instanceof Bar3D || $chart->getPlotArea()->getType() instanceof Pie3D) {
+            $objWriter->startElement('c:view3D');
 
-        // c:rotX
-        $objWriter->startElement('c:rotX');
-        $objWriter->writeAttribute('val', $chart->getView3D()->getRotationX());
-        $objWriter->endElement();
+            // c:rotX
+            $objWriter->startElement('c:rotX');
+            $objWriter->writeAttribute('val', $chart->getView3D()->getRotationX());
+            $objWriter->endElement();
 
-        // c:hPercent
-        $hPercent = $chart->getView3D()->getHeightPercent();
-        $objWriter->writeElementIf(null != $hPercent, 'c:hPercent', 'val', $hPercent);
+            // c:hPercent
+            $hPercent = $chart->getView3D()->getHeightPercent();
+            $objWriter->writeElementIf(null != $hPercent, 'c:hPercent', 'val', $hPercent);
 
-        // c:rotY
-        $objWriter->startElement('c:rotY');
-        $objWriter->writeAttribute('val', $chart->getView3D()->getRotationY());
-        $objWriter->endElement();
+            // c:rotY
+            $objWriter->startElement('c:rotY');
+            $objWriter->writeAttribute('val', $chart->getView3D()->getRotationY());
+            $objWriter->endElement();
 
-        // c:depthPercent
-        $objWriter->startElement('c:depthPercent');
-        $objWriter->writeAttribute('val', $chart->getView3D()->getDepthPercent());
-        $objWriter->endElement();
+            // c:depthPercent
+            $objWriter->startElement('c:depthPercent');
+            $objWriter->writeAttribute('val', $chart->getView3D()->getDepthPercent());
+            $objWriter->endElement();
 
-        // c:rAngAx
-        $objWriter->startElement('c:rAngAx');
-        $objWriter->writeAttribute('val', $chart->getView3D()->hasRightAngleAxes() ? '1' : '0');
-        $objWriter->endElement();
+            // c:rAngAx
+            $objWriter->startElement('c:rAngAx');
+            $objWriter->writeAttribute('val', $chart->getView3D()->hasRightAngleAxes() ? '1' : '0');
+            $objWriter->endElement();
 
-        // c:perspective
-        $objWriter->startElement('c:perspective');
-        $objWriter->writeAttribute('val', $chart->getView3D()->getPerspective());
-        $objWriter->endElement();
+            // c:perspective
+            $objWriter->startElement('c:perspective');
+            $objWriter->writeAttribute('val', $chart->getView3D()->getPerspective());
+            $objWriter->endElement();
 
-        $objWriter->endElement();
+            $objWriter->endElement();
+        }
 
         // Write plot area
         $this->writePlotArea($objWriter, $chart->getPlotArea(), $chart);
@@ -1358,6 +1360,7 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->endElement();
         }
 
+        // $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', '0');
         $this->writeElementWithValAttribute($objWriter, 'c:holeSize', (string) $subject->getHoleSize());
 
         $objWriter->endElement();
