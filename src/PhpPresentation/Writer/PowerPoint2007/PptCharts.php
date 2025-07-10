@@ -1218,8 +1218,14 @@ class PptCharts extends AbstractDecoratorWriter
         if (($angle = $subject->getFirstSliceAngle()) !== null) {
             $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', (string) $angle);
         }
-        // Always emit pieDir; default is clockWise
-        $this->writeElementWithValAttribute($objWriter, 'c:pieDir', $subject->getPieDirection());
+
+        if ($subject->getPieDirection() === Doughnut::DIR_COUNTERCLOCKWISE) {
+            $this->writeElementWithValAttribute(
+                $objWriter,
+                'c:pieDir',
+                Doughnut::DIR_COUNTERCLOCKWISE
+            );
+        }
 
         // Write series
         $seriesIndex = 0;
