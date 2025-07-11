@@ -1830,7 +1830,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $shape  = $slide->createChartShape();
 
         $doughnut = new Doughnut();
-        $doughnut->setFirstSliceAngle(90);      // rotate quarter-turn
+        $doughnut->setFirstSliceAngle(90);
         $doughnut->addSeries(new Series('Downloads', $this->seriesData));
 
         $shape->getPlotArea()->setType($doughnut);
