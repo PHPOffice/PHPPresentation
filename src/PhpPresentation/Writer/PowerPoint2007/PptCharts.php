@@ -1219,14 +1219,6 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', (string) $angle);
         }
 
-        if ($subject->getPieDirection() === Doughnut::DIR_COUNTERCLOCKWISE) {
-            $this->writeElementWithValAttribute(
-                $objWriter,
-                'c:pieDir',
-                Doughnut::DIR_COUNTERCLOCKWISE
-            );
-        }
-
         // Write series
         $seriesIndex = 0;
         foreach ($subject->getSeries() as $series) {
