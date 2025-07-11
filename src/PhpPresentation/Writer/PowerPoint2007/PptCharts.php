@@ -1215,10 +1215,6 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', '1');
         $objWriter->endElement();
 
-        if (($angle = $subject->getFirstSliceAngle()) !== null) {
-            $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', (string) $angle);
-        }
-
         // Write series
         $seriesIndex = 0;
         foreach ($subject->getSeries() as $series) {
@@ -1356,6 +1352,10 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:dLbls\
             $objWriter->endElement();
+        }
+
+        if (($angle = $subject->getFirstSliceAngle()) !== null) {
+            $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', (string) $angle);
         }
 
         $this->writeElementWithValAttribute($objWriter, 'c:holeSize', (string) $subject->getHoleSize());

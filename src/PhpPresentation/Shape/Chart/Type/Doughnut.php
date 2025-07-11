@@ -35,11 +35,11 @@ class Doughnut extends AbstractTypePie implements ComparableInterface
     protected $holeSize = 50;
 
     /**
-     * Chart Rotation
+     * Starting angle of the first slice
      *
-     * @var string (0-395))
+     * @var int
      */
-    private $firstSliceAngle = 0;
+    private int $firstSliceAngle = 0;
 
     /**
      * @return int
