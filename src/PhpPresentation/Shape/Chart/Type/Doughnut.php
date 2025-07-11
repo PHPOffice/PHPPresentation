@@ -39,7 +39,7 @@ class Doughnut extends AbstractTypePie implements ComparableInterface
      *
      * @var int
      */
-    private int $firstSliceAngle = 0;
+    private $firstSliceAngle = 0;
 
     /**
      * @return int
