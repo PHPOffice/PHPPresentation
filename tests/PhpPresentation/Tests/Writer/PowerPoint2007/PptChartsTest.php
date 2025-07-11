@@ -1826,8 +1826,8 @@ class PptChartsTest extends PhpPresentationTestCase
 
     public function testDoughnutFirstSliceAngle(): void
     {
-        $slide  = $this->oPresentation->getActiveSlide();
-        $shape  = $slide->createChartShape();
+        $slide = $this->oPresentation->getActiveSlide();
+        $shape = $slide->createChartShape();
 
         $doughnut = new Doughnut();
         $doughnut->setFirstSliceAngle(90);
