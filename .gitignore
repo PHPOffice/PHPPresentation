@@ -5,6 +5,7 @@
 .Trashes
 Thumbs.db
 Desktop.ini
+.idea/
 
 ### Continuous Integration
 build/

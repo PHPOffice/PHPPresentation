@@ -1809,20 +1809,38 @@ class PptChartsTest extends PhpPresentationTestCase
     public function testView3D(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
-        $oLine = new Line();
-        $oLine->addSeries(new Series('Downloads', $this->seriesData));
-        $oShape = $oSlide->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $shape3d = $oSlide->createChartShape();
+        $shape3d->getPlotArea()->setType(new Bar3D());
 
         $element = '/c:chartSpace/c:chart/c:view3D/c:hPercent';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '100');
+        $this->assertZipXmlElementExists('ppt/charts/' . $shape3d->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $shape3d->getIndexedFilename(), $element, 'val', '100');
         $this->assertIsSchemaECMA376Valid();
 
-        $oShape->getView3D()->setHeightPercent(null);
+        $shape3d->getView3D()->setHeightPercent(null);
         $this->resetPresentationFile();
 
-        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $shape3d->getIndexedFilename(), $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testDoughnutFirstSliceAngle(): void
+    {
+        $slide = $this->oPresentation->getActiveSlide();
+        $shape = $slide->createChartShape();
+
+        $doughnut = new Doughnut();
+        $doughnut->setFirstSliceAngle(90);
+        $doughnut->addSeries(new Series('Downloads', $this->seriesData));
+
+        $shape->getPlotArea()->setType($doughnut);
+
+        $path = 'ppt/charts/' . $shape->getIndexedFilename();
+        $elt = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:firstSliceAng';
+
+        $this->assertZipXmlElementExists($path, $elt);
+        $this->assertZipXmlAttributeEquals($path, $elt, 'val', '90');
+
         $this->assertIsSchemaECMA376Valid();
     }
 
