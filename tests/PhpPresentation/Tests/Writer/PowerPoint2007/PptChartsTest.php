@@ -1836,7 +1836,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $shape->getPlotArea()->setType($doughnut);
 
         $path = 'ppt/charts/' . $shape->getIndexedFilename();
-        $elt  = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:firstSliceAng';
+        $elt = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:firstSliceAng';
 
         $this->assertZipXmlElementExists($path, $elt);
         $this->assertZipXmlAttributeEquals($path, $elt, 'val', '90');
