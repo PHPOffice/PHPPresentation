@@ -86,7 +86,7 @@ class Doughnut extends AbstractTypePie implements ComparableInterface
         return $this;
     }
 
-    public function getFirstSliceAngle(): ?int
+    public function getFirstSliceAngle(): int
     {
         return $this->firstSliceAngle;
     }
