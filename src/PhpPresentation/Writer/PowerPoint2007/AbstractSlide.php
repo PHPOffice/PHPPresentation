@@ -1187,9 +1187,21 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:sp\p:spPr\a:prstGeom
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', $shape->getType());
-        // p:sp\p:spPr\a:prstGeom\a:avLst
-        $objWriter->writeElement('a:avLst');
-        // p:sp\p:spPr\a:prstGeom\
+
+        // a:avLst (+ optional adj for roundRect)
+        $needsAdj = ($shape->getType() === \PhpOffice\PhpPresentation\Shape\AutoShape::TYPE_ROUNDED_RECTANGLE);
+        $adj = $shape->getRoundRectAdj();
+
+        if ($needsAdj && $adj !== null) {
+            $objWriter->startElement('a:avLst');
+            $objWriter->startElement('a:gd');
+            $objWriter->writeAttribute('name', 'adj');
+            $objWriter->writeAttribute('fmla', 'val ' . (string) $adj); // 0..50000
+            $objWriter->endElement(); // a:gd
+            $objWriter->endElement(); // a:avLst
+        } else {
+            $objWriter->writeElement('a:avLst');
+        }
         $objWriter->endElement();
         // Fill
         $this->writeFill($objWriter, $shape->getFill());
