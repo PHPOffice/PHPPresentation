@@ -285,19 +285,12 @@ class AutoShape extends AbstractShape implements ComparableInterface
      * Set corner radius in pixels. We map px to the OOXML 'adj' 0..50000 scale.
      * adj is relative to (min(width,height)/2).
      */
-    public function setRoundRectCornerPx(int $px): self
+    public function setRoundRectCorner(int $px): self
     {
         $minHalf = (int) floor(min($this->width, $this->height) / 2);
         if ($minHalf > 0) {
             $this->roundRectAdj = max(0, min(50000, (int) round($px / $minHalf * 50000)));
         }
-        return $this;
-    }
-
-    /** Optional: direct override in OOXML units */
-    public function setRoundRectAdj(int $adj0to50000): self
-    {
-        $this->roundRectAdj = max(0, min(50000, $adj0to50000));
         return $this;
     }
 

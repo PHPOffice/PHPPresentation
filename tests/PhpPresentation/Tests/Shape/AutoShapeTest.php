@@ -80,9 +80,9 @@ class AutoShapeTest extends TestCase
         $s1 = (new AutoShape())
             ->setType(AutoShape::TYPE_ROUNDED_RECTANGLE)
             ->setWidth($w)->setHeight($h)
-            ->setRoundRectCornerPx($px1);
+            ->setRoundRectCorner($px1);
 
-        $s2 = (clone $s1)->setRoundRectCornerPx($px2);
+        $s2 = (clone $s1)->setRoundRectCorner($px2);
 
         // adj expected: round(px / (min(w,h)/2) * 50000)
         $minHalf = (int) floor(min($w, $h) / 2); // 50
@@ -116,7 +116,7 @@ class AutoShapeTest extends TestCase
         $shape = (new AutoShape())
             ->setType(AutoShape::TYPE_ROUNDED_RECTANGLE)
             ->setWidth($width)->setHeight($height)
-            ->setRoundRectCornerPx($padding);
+            ->setRoundRectCorner($padding);
 
         // Give it a fill so it's an obvious shape
         $shape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFFFFFFF'));
