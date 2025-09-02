@@ -82,4 +82,25 @@ class DoughnutTest extends TestCase
 
         self::assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
+
+    public function testFirstSliceAngle(): void
+    {
+        $o = new Doughnut();
+
+        // 1) default
+        self::assertSame(0, $o->getFirstSliceAngle());
+
+        // 2) fluent + simple set/get
+        $angle = $o->setFirstSliceAngle(90);
+        self::assertInstanceOf(Doughnut::class, $angle);
+        self::assertSame(90, $o->getFirstSliceAngle());
+
+        // 3) normalization (overflow wraps)
+        $o->setFirstSliceAngle(450); // 450 % 360 = 90
+        self::assertSame(90, $o->getFirstSliceAngle());
+
+        // 3) normalization (negative wraps)
+        $o->setFirstSliceAngle(-45); // -> 315
+        self::assertSame(315, $o->getFirstSliceAngle());
+    }
 }
