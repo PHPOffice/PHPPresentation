@@ -274,7 +274,7 @@ class AutoShape extends AbstractShape implements ComparableInterface
         return $this;
     }
 
-    /** @var int|null */
+    /** @var null|int */
     private $roundRectAdj;
 
     public function getRoundRectAdj(): ?int
@@ -291,6 +291,7 @@ class AutoShape extends AbstractShape implements ComparableInterface
         if ($minHalf > 0) {
             $this->roundRectAdj = max(0, min(50000, (int) round($px / $minHalf * 50000)));
         }
+
         return $this;
     }
 
