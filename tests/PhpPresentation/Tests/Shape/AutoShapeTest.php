@@ -139,9 +139,12 @@ class AutoShapeTest extends TestCase
         self::assertStringContainsString('<a:prstGeom prst="roundRect">', $xml);
 
         // fmla="val N" (there is a space after 'val' in writer)
-        self::assertMatchesRegularExpression(
-            sprintf('/<a:gd[^>]+name="adj"[^>]+fmla="val %d"/', $expectedAdj),
-            $xml
+        self::assertSame(
+            1,
+            preg_match(
+                sprintf('/<a:gd[^>]+name="adj"[^>]+fmla="val %d"/', $expectedAdj),
+                (string) $xml
+            )
         );
     }
 }
