@@ -72,28 +72,29 @@ class AutoShapeTest extends TestCase
 
     public function testPixelSetterComputesAdjAndAffectsHash(): void
     {
-        $w = 200;  // px
-        $h = 100;  // px
+        $width = 200;  // px
+        $height = 100;  // px
         $px1 = 5;  // softer radius
         $px2 = 10; // larger radius
 
-        $s1 = (new AutoShape())
+        $shape1 = (new AutoShape())
             ->setType(AutoShape::TYPE_ROUNDED_RECTANGLE)
-            ->setWidth($w)->setHeight($h)
+            ->setWidth($width)
+            ->setHeight($height)
             ->setRoundRectCorner($px1);
 
-        $s2 = (clone $s1)->setRoundRectCorner($px2);
+        $shape2 = (clone $shape1)->setRoundRectCorner($px2);
 
         // adj expected: round(px / (min(w,h)/2) * 50000)
-        $minHalf = (int) floor(min($w, $h) / 2); // 50
+        $minHalf = (int) floor(min($width, $height) / 2); // 50
         $expectedAdj1 = (int) round($px1 / $minHalf * 50000); // 5/50 * 50000 = 5000
         $expectedAdj2 = (int) round($px2 / $minHalf * 50000); // 10/50 * 50000 = 10000
 
-        self::assertSame($expectedAdj1, $s1->getRoundRectAdj());
-        self::assertSame($expectedAdj2, $s2->getRoundRectAdj());
+        self::assertSame($expectedAdj1, $shape1->getRoundRectAdj());
+        self::assertSame($expectedAdj2, $shape2->getRoundRectAdj());
 
         // Hash must differ when radius differs
-        self::assertNotSame($s1->getHashCode(), $s2->getHashCode());
+        self::assertNotSame($shape1->getHashCode(), $shape2->getHashCode());
     }
 
     public function testNoRadiusByDefaultIsNull(): void

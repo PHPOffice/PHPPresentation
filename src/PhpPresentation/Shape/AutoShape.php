@@ -285,11 +285,11 @@ class AutoShape extends AbstractShape implements ComparableInterface
     /**
      * Set corner radius.
      */
-    public function setRoundRectCorner(int $px): self
+    public function setRoundRectCorner(int $pixels): self
     {
         $minHalf = (int) floor(min($this->width, $this->height) / 2);
         if ($minHalf > 0) {
-            $this->roundRectAdj = max(0, min(50000, (int) round($px / $minHalf * 50000)));
+            $this->roundRectAdj = max(0, min(50000, (int) round($pixels / $minHalf * 50000)));
         }
 
         return $this;
