@@ -128,18 +128,18 @@ class AutoShapeTest extends TestCase
 
         // Open the pptx and read slide1.xml
         $zip = new ZipArchive();
-        $this->assertTrue($zip->open($tmpFile) === true, 'Failed to open pptx zip');
+        self::assertTrue($zip->open($tmpFile) === true, 'Failed to open pptx zip');
         $xml = $zip->getFromName('ppt/slides/slide1.xml');
         $zip->close();
         @unlink($tmpFile);
 
-        $this->assertIsString($xml);
+        self::assertIsString($xml);
 
         // Must contain roundRect geometry and the adj guide with expected value
-        $this->assertStringContainsString('<a:prstGeom prst="roundRect">', $xml);
+        self::assertStringContainsString('<a:prstGeom prst="roundRect">', $xml);
 
         // fmla="val N" (there is a space after 'val' in writer)
-        $this->assertMatchesRegularExpression(
+        self::assertMatchesRegularExpression(
             sprintf('/<a:gd[^>]+name="adj"[^>]+fmla="val %d"/', $expectedAdj),
             $xml
         );
