@@ -1189,7 +1189,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('prst', $shape->getType());
 
         // a:avLst (+ optional adj for roundRect)
-        $needsAdj = ($shape->getType() === \PhpOffice\PhpPresentation\Shape\AutoShape::TYPE_ROUNDED_RECTANGLE);
+        $needsAdj = ($shape->getType() === AutoShape::TYPE_ROUNDED_RECTANGLE);
         $adj = $shape->getRoundRectAdj();
 
         if ($needsAdj && $adj !== null) {
