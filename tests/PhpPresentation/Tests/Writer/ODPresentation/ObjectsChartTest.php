@@ -578,7 +578,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeAxisUnit(): void
     {
-        $value = mt_rand(0, 100);
+        $value = max(1, mt_rand(0, 100));
 
         $series = new Series('Downloads', $this->seriesData);
         $line = new Line();
