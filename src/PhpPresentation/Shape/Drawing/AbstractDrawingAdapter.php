@@ -35,7 +35,41 @@ abstract class AbstractDrawingAdapter extends AbstractGraphic
     abstract public function getPath(): string;
 
     /**
+     * @param string $path File path
      * @return self
      */
     abstract public function setPath(string $path);
+
+    /**
+     * Set whether this is a temporary file that should be cleaned up
+     *
+     * @param bool $isTemporary
+     * @return self
+     */
+    abstract public function setIsTemporaryFile(bool $isTemporary);
+
+    /**
+     * Load content into this object using a temporary file
+     *
+     * @param string $content Binary content
+     * @param string $fileName Optional fileName for reference
+     * @param string $prefix Prefix for the temporary file
+     * @return self
+     */
+    public function loadFromContent(string $content, string $fileName = '', string $prefix = 'PhpPresentation'): self
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), $prefix);
+        file_put_contents($tmpFile, $content);
+
+        // Set path and mark as temporary for automatic cleanup
+        $this->setPath($tmpFile);
+        $this->setIsTemporaryFile(true);
+
+        // Set filename if provided
+        if (!empty($fileName)) {
+            $this->setName($fileName);
+        }
+
+        return $this;
+    }
 }

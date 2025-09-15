@@ -39,7 +39,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * Image resource.
      *
-     * @var resource
+     * @var GdImage|resource|null
      */
     protected $imageResource;
 
@@ -65,6 +65,11 @@ class Gd extends AbstractDrawingAdapter
     protected $uniqueName;
 
     /**
+     * @var bool Flag indicating if this is a temporary file that should be cleaned up
+     */
+    protected $isTemporaryFile = false;
+
+    /**
      * Gd constructor.
      */
     public function __construct()
@@ -76,10 +81,48 @@ class Gd extends AbstractDrawingAdapter
     /**
      * Get image resource.
      *
-     * @return resource
+     * @param bool $isTransient Avoid the image resource being stored in memory to avoid OOM
+     * @return ?GdImage|?resource
      */
-    public function getImageResource()
+    public function getImageResource(bool $isTransient = false)
     {
+        // Lazy load image resource if not already loaded
+        if (!$this->imageResource) {
+            $imageString = file_get_contents($this->getPath());
+            if ($imageString === false) {
+                return null; // Failed to read file
+            }
+
+            $image = imagecreatefromstring($imageString);
+            if ($image === false) {
+                return null; // Failed to create image resource
+            }
+
+            $this->setImageResource($image);
+        }
+
+        if ($isTransient) {
+            // Create a new image resource and copy the original
+            $width = imagesx($this->imageResource);
+            $height = imagesy($this->imageResource);
+            $imageCopy = imagecreatetruecolor($width, $height);
+
+            // Preserve transparency for PNG/GIF images
+            if (imageistruecolor($this->imageResource)) {
+                imagealphablending($imageCopy, false);
+                imagesavealpha($imageCopy, true);
+            }
+
+            // Copy the image data
+            imagecopy($imageCopy, $this->imageResource, 0, 0, 0, 0, $width, $height);
+
+            // Destroy the original resource to free memory
+            imagedestroy($this->imageResource);
+            $this->imageResource = null;
+
+            return $imageCopy;
+        }
+
         return $this->imageResource;
     }
 
@@ -93,14 +136,26 @@ class Gd extends AbstractDrawingAdapter
     public function setImageResource($value = null)
     {
         $this->imageResource = $value;
+        if (!$this->imageResource) {
+            return $this;
+        }
 
-        if (null !== $this->imageResource && false !== $this->imageResource) {
-            // Get width/height
+        $this->getDimensions();
+
+        return $this;
+    }
+
+    public function getDimensions(): array
+    {
+        // Lazy load dimensions
+        if (!$this->width) {
             $this->width = imagesx($this->imageResource);
+        }
+        if (!$this->height) {
             $this->height = imagesy($this->imageResource);
         }
 
-        return $this;
+        return [$this->width, $this->height];
     }
 
     /**
@@ -190,9 +245,86 @@ class Gd extends AbstractDrawingAdapter
         return $this->path;
     }
 
+    /**
+     * Set Path.
+     *
+     * @param string $path File path
+     * @return self
+     */
     public function setPath(string $path): self
     {
         $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * Set whether this is a temporary file that should be cleaned up
+     *
+     * @param bool $isTemporary
+     * @return self
+     */
+    public function setIsTemporaryFile(bool $isTemporary): self
+    {
+        $this->isTemporaryFile = $isTemporary;
+        return $this;
+    }
+
+    /**
+     * Check if this is a temporary file that should be cleaned up
+     *
+     * @return bool
+     */
+    public function isTemporaryFile(): bool
+    {
+        return $this->isTemporaryFile;
+    }
+
+    /**
+     * Clean up resources when object is destroyed
+     */
+    public function __destruct()
+    {
+        // Free GD image resource if it exists
+        if ($this->imageResource) {
+            imagedestroy($this->imageResource);
+            $this->imageResource = null;
+        }
+
+        // Remove temporary file if needed
+        if ($this->isTemporaryFile && !empty($this->path) && file_exists($this->path)) {
+            @unlink($this->path);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function loadFromContent(string $content, string $fileName = '', string $prefix = 'PhpPresentationGd'): AbstractDrawingAdapter
+    {
+        // Check if the content is a valid image
+        $image = @imagecreatefromstring($content);
+        if ($image === false) {
+            return $this;
+        }
+        // Clean up the image resource to avoid memory leaks
+        @imagedestroy($image);
+
+        $tmpFile = tempnam(sys_get_temp_dir(), $prefix);
+        file_put_contents($tmpFile, $content);
+
+        // Set path and mark as temporary for automatic cleanup
+        $this->setPath($tmpFile);
+        $this->setIsTemporaryFile(true);
+
+        if (!empty($fileName)) {
+            $this->setName($fileName);
+        }
+
+        $info = getimagesizefromstring($content);
+        if (isset($info['mime'])) {
+            $this->setMimeType($info['mime']);
+            $this->setRenderingFunction(str_replace('/', '', $info['mime']));
+        }
 
         return $this;
     }

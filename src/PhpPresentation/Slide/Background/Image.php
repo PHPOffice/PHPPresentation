@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Slide\Background;
 
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Slide\AbstractBackground;
 
 class Image extends AbstractBackground
@@ -48,6 +49,11 @@ class Image extends AbstractBackground
     protected $width;
 
     /**
+     * @var AbstractDrawingAdapter|null
+     */
+    protected $image;
+
+    /**
      * @var string
      */
     protected $extension;
@@ -68,7 +74,7 @@ class Image extends AbstractBackground
      *
      * @return self
      */
-    public function setPath(string $pValue = '', bool $pVerifyFile = true)
+    public function setPath(string $pValue = '', bool $pVerifyFile = true): Image
     {
         if ($pVerifyFile) {
             if (!file_exists($pValue)) {
@@ -82,6 +88,20 @@ class Image extends AbstractBackground
         }
         $this->path = $pValue;
 
+        return $this;
+    }
+
+    /**
+     * Set the image using a drawing adapter (keeps a reference to the object to manage file lifecycle)
+     *
+     * @param AbstractDrawingAdapter $image Drawing adapter containing image data
+     * @return self
+     * @throws FileNotFoundException
+     */
+    public function setImage(AbstractDrawingAdapter $image): self
+    {
+        $this->image = $image;
+        $this->setPath($image->getPath());
         return $this;
     }
 
@@ -125,7 +145,7 @@ class Image extends AbstractBackground
      *
      * @return string
      */
-    public function getIndexedFilename($numSlide)
+    public function getIndexedFilename($numSlide): string
     {
         return 'background_' . $numSlide . '.' . $this->getExtension();
     }
