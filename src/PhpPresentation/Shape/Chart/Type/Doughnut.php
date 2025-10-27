@@ -35,6 +35,13 @@ class Doughnut extends AbstractTypePie implements ComparableInterface
     protected $holeSize = 50;
 
     /**
+     * Starting angle of the first slice.
+     *
+     * @var int
+     */
+    private $firstSliceAngle = 0;
+
+    /**
      * @return int
      */
     public function getHoleSize()
@@ -70,5 +77,17 @@ class Doughnut extends AbstractTypePie implements ComparableInterface
     public function getHashCode(): string
     {
         return md5(parent::getHashCode() . __CLASS__);
+    }
+
+    public function setFirstSliceAngle(int $angle): self
+    {
+        $this->firstSliceAngle = (($angle % 360) + 360) % 360;
+
+        return $this;
+    }
+
+    public function getFirstSliceAngle(): int
+    {
+        return $this->firstSliceAngle;
     }
 }
