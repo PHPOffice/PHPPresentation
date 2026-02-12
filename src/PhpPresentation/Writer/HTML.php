@@ -229,7 +229,9 @@ class HTML extends AbstractWriter implements WriterInterface
         $styles[] = 'height: ' . $shape->getHeight() . 'px';
         $styles[] = 'top: ' . $shape->getOffsetY() . 'px';
         $styles[] = 'left: ' . $shape->getOffsetX() . 'px';
-        $styles = array_merge($styles, $this->getStyleShadow($shape->getShadow()));
+        if (!is_null($shape->getShadow())) {
+            $styles = array_merge($styles, $this->getStyleShadow($shape->getShadow()));
+        }
 
         $this->bodySlides .= '<img src="' . $imageData . '" style="' . implode(';', $styles) . '" alt="' . $shape->getDescription() . '" title="' . $shape->getDescription() . '" />';
     }
@@ -365,7 +367,7 @@ class HTML extends AbstractWriter implements WriterInterface
      */
     protected function getStyleShadow(Shadow $style): array
     {
-        if (!$style->isVisible()) {
+        if (is_null($style) or !is_null($style) and !$style->isVisible()) {
             return [];
         }
         $boxShadow = '';
