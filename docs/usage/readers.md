@@ -75,6 +75,22 @@ $reader = new PowerPoint2007();
 $reader->load(__DIR__ . '/sample.pptx', PowerPoint2007::SKIP_IMAGES);
 ```
 
+## Keynote
+The name of the reader is `Keynote`.
+
+This reader provides basic support for the legacy iWork '09 Keynote format, where
+the presentation is stored as an `index.apxl` XML document inside the `.key`
+package. It reads slides, text placeholders (paragraphs and runs), shape geometry
+and speaker notes. The modern IWA binary format used by Keynote '13 and later is
+not supported and is rejected by `canRead()`.
+
+``` php
+<?php
+
+$reader = IOFactory::createReader('Keynote');
+$reader->load(__DIR__ . '/sample.key');
+```
+
 ## Serialized
 The name of the reader is `Serialized`.
 
