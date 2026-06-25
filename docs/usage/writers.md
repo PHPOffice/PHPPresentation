@@ -56,6 +56,22 @@ $writer->setZipAdapter(new PclZipAdapter());
 $writer->save(__DIR__ . '/sample.pptx');
 ```
 
+## Keynote
+The name of the writer is `Keynote`.
+
+The writer produces a `.key` package following the legacy iWork '09 structure
+(an `index.apxl` document). It writes slides, text placeholders (paragraphs and
+runs), shape geometry and speaker notes. The output is round-trippable with the
+`Keynote` reader; opening it directly in a current Keynote.app is not guaranteed
+because of the format generation gap.
+
+``` php
+<?php
+
+$writer = IOFactory::createWriter($oPhpPresentation, 'Keynote');
+$writer->save(__DIR__ . '/sample.key');
+```
+
 ## Serialized
 The name of the writer is `Serialized`.
 
