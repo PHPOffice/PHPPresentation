@@ -33,31 +33,18 @@ class SlideLayoutTest extends TestCase
 {
     public function testBase(): void
     {
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var SlideMaster $mockSlideMaster */
-            $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
-        } else {
-            /** @var SlideMaster $mockSlideMaster */
-            $mockSlideMaster = new class() extends SlideMaster {
-            };
-        }
+        $mockSlideMaster = new class() extends SlideMaster {
+        };
 
         $object = new SlideLayout($mockSlideMaster);
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
-        self::assertIsArray($object->getShapeCollection());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
     }
 
     public function testLayoutName(): void
     {
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var SlideMaster $mockSlideMaster */
-            $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
-        } else {
-            /** @var SlideMaster $mockSlideMaster */
-            $mockSlideMaster = new class() extends SlideMaster {
-            };
-        }
+        $mockSlideMaster = new class() extends SlideMaster {
+        };
 
         // Expected
         $expectedLayoutName = 'Title' . mt_rand(1, 100);
@@ -71,14 +58,8 @@ class SlideLayoutTest extends TestCase
 
     public function testSlideMaster(): void
     {
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var SlideMaster $mockSlideMaster */
-            $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
-        } else {
-            /** @var SlideMaster $mockSlideMaster */
-            $mockSlideMaster = new class() extends SlideMaster {
-            };
-        }
+        $mockSlideMaster = new class() extends SlideMaster {
+        };
 
         $object = new SlideLayout($mockSlideMaster);
 

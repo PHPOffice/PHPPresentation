@@ -43,7 +43,6 @@ class SeriesTest extends TestCase
         self::assertEquals('Calibri', $object->getFont()->getName());
         self::assertEquals(9, $object->getFont()->getSize());
         self::assertEquals('Series Title', $object->getTitle());
-        self::assertIsArray($object->getValues());
         self::assertEmpty($object->getValues());
         self::assertInstanceOf(Marker::class, $object->getMarker());
         self::assertNull($object->getOutline());
@@ -72,7 +71,6 @@ class SeriesTest extends TestCase
     {
         $object = new Series();
 
-        self::assertIsArray($object->getDataPointFills());
         self::assertEmpty($object->getDataPointFills());
 
         self::assertInstanceOf(Fill::class, $object->getDataPointFill(0));
@@ -228,7 +226,6 @@ class SeriesTest extends TestCase
     {
         $object = new Series();
 
-        /** @var array<string, string> $array */
         $array = [
             '0' => 'a',
             '1' => 'b',
@@ -236,7 +233,6 @@ class SeriesTest extends TestCase
             '3' => 'd',
         ];
 
-        self::assertIsArray($object->getValues());
         self::assertEmpty($object->getValues());
         self::assertInstanceOf(Series::class, $object->setValues());
         self::assertEmpty($object->getValues());

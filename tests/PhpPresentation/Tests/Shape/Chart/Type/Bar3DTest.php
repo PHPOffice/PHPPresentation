@@ -35,7 +35,6 @@ class Bar3DTest extends TestCase
     {
         $object = new Bar3D();
 
-        self::assertIsArray($object->getSeries());
         self::assertEmpty($object->getSeries());
 
         $array = [

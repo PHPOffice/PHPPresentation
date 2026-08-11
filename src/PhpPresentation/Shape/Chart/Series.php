@@ -134,7 +134,7 @@ class Series implements ComparableInterface
     /**
      * Values (key/value).
      *
-     * @var array<string, null|string>
+     * @var array<array-key, null|string>
      */
     private $values = [];
 
@@ -146,7 +146,7 @@ class Series implements ComparableInterface
     private $hashIndex;
 
     /**
-     * @param array<string, null|string> $values
+     * @param array<array-key, null|string> $values
      */
     public function __construct(string $title = 'Series Title', array $values = [])
     {
@@ -239,7 +239,7 @@ class Series implements ComparableInterface
     /**
      * Get Values.
      *
-     * @return array<string, null|string>
+     * @return array<array-key, null|string>
      */
     public function getValues(): array
     {
@@ -249,7 +249,7 @@ class Series implements ComparableInterface
     /**
      * Set Values.
      *
-     * @param array<string, null|string> $values
+     * @param array<array-key, null|string> $values
      */
     public function setValues(array $values = []): self
     {

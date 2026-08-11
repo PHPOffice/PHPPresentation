@@ -38,7 +38,6 @@ class HashTableTest extends TestCase
         self::assertEquals(0, $object->count());
         self::assertNull($object->getByIndex());
         self::assertNull($object->getByHashCode());
-        self::assertIsArray($object->toArray());
         self::assertEmpty($object->toArray());
     }
 
@@ -50,7 +49,6 @@ class HashTableTest extends TestCase
         ]);
 
         self::assertEquals(2, $object->count());
-        self::assertIsArray($object->toArray());
         self::assertCount(2, $object->toArray());
     }
 
@@ -63,7 +61,6 @@ class HashTableTest extends TestCase
         $object->addFromSource();
         // Add From Source : Array
         $object->addFromSource([$oSlide]);
-        self::assertIsArray($object->toArray());
         self::assertCount(1, $object->toArray());
         // Clear
         $object->clear();

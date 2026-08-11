@@ -62,10 +62,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      */
     protected function writeBorder(XMLWriter $objWriter, Border $pBorder, string $pElementName = 'L', bool $isMarker = false): void
     {
-        if (!($pBorder instanceof Border)) {
-            return;
-        }
-
         if (Border::LINE_NONE == $pBorder->getLineStyle() && '' == $pElementName && !$isMarker) {
             return;
         }

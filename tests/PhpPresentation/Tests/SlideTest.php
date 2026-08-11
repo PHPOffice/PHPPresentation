@@ -39,19 +39,19 @@ class SlideTest extends TestCase
     public function testExtents(): void
     {
         $object = new Slide();
-        self::assertNotNull($object->getExtentX());
+        self::assertSame(0, $object->getExtentX());
 
         $object = new Slide();
-        self::assertNotNull($object->getExtentY());
+        self::assertSame(0, $object->getExtentY());
     }
 
     public function testOffset(): void
     {
         $object = new Slide();
-        self::assertNotNull($object->getOffsetX());
+        self::assertSame(0, $object->getOffsetX());
 
         $object = new Slide();
-        self::assertNotNull($object->getOffsetY());
+        self::assertSame(0, $object->getOffsetY());
     }
 
     public function testParent(): void
@@ -77,14 +77,8 @@ class SlideTest extends TestCase
 
     public function testAnimations(): void
     {
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var Animation $oStub */
-            $oStub = $this->getMockForAbstractClass(Animation::class);
-        } else {
-            /** @var Animation $oStub */
-            $oStub = new class() extends Animation {
-            };
-        }
+        $oStub = new class() extends Animation {
+        };
 
         $object = new Slide();
         self::assertIsArray($object->getAnimations());
@@ -102,14 +96,8 @@ class SlideTest extends TestCase
 
     public function testBackground(): void
     {
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var AbstractBackground $oStub */
-            $oStub = $this->getMockForAbstractClass(AbstractBackground::class);
-        } else {
-            /** @var AbstractBackground $oStub */
-            $oStub = new class() extends AbstractBackground {
-            };
-        }
+        $oStub = new class() extends AbstractBackground {
+        };
 
         $object = new Slide();
         self::assertNull($object->getBackground());
@@ -164,7 +152,6 @@ class SlideTest extends TestCase
         self::assertInstanceOf(ShapeContainerInterface::class, $slide);
         $shape = new File();
 
-        self::assertIsArray($slide->getShapeCollection());
         self::assertCount(0, $slide->getShapeCollection());
 
         $slide->addShape($shape);
@@ -172,7 +159,6 @@ class SlideTest extends TestCase
         self::assertEquals($slide, $shape->getContainer());
         self::assertInstanceOf(Slide::class, $shape->getContainer());
 
-        self::assertIsArray($slide->getShapeCollection());
         self::assertCount(1, $slide->getShapeCollection());
         self::assertEquals([$shape], $slide->getShapeCollection());
     }
@@ -181,7 +167,6 @@ class SlideTest extends TestCase
     {
         $slide = new Slide();
 
-        self::assertIsArray($slide->getShapeCollection());
         self::assertCount(0, $slide->getShapeCollection());
 
         $shape = $slide->createDrawingShape();
@@ -189,7 +174,6 @@ class SlideTest extends TestCase
         self::assertEquals($slide, $shape->getContainer());
         self::assertInstanceOf(Slide::class, $shape->getContainer());
 
-        self::assertIsArray($slide->getShapeCollection());
         self::assertCount(1, $slide->getShapeCollection());
         self::assertEquals([$shape], $slide->getShapeCollection());
     }

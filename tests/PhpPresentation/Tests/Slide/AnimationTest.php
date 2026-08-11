@@ -33,27 +33,17 @@ class AnimationTest extends TestCase
 {
     public function testShape(): void
     {
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var AbstractShape $oStub */
-            $oStub = $this->getMockForAbstractClass(AbstractShape::class);
-        } else {
-            /** @var AbstractShape $oStub */
-            $oStub = new class() extends AbstractShape {
-            };
-        }
+        $oStub = new class() extends AbstractShape {
+        };
 
         $object = new Animation();
 
-        self::assertIsArray($object->getShapeCollection());
         self::assertCount(0, $object->getShapeCollection());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->addShape($oStub));
-        self::assertIsArray($object->getShapeCollection());
         self::assertCount(1, $object->getShapeCollection());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection());
-        self::assertIsArray($object->getShapeCollection());
         self::assertCount(0, $object->getShapeCollection());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection([$oStub]));
-        self::assertIsArray($object->getShapeCollection());
         self::assertCount(1, $object->getShapeCollection());
     }
 }

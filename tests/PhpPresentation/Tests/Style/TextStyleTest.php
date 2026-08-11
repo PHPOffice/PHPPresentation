@@ -85,11 +85,8 @@ class TextStyleTest extends TestCase
     {
         $object = new TextStyle(false);
 
-        self::assertIsArray($object->getBodyStyle());
         self::assertCount(0, $object->getBodyStyle());
-        self::assertIsArray($object->getOtherStyle());
         self::assertCount(0, $object->getOtherStyle());
-        self::assertIsArray($object->getTitleStyle());
         self::assertCount(0, $object->getTitleStyle());
     }
 

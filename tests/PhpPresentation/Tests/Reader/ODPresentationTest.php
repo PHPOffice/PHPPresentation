@@ -103,7 +103,6 @@ class ODPresentationTest extends TestCase
         self::assertEquals('Sample 02 Subject', $oPhpPresentation->getDocumentProperties()->getSubject());
         self::assertEquals('Sample 02 Description', $oPhpPresentation->getDocumentProperties()->getDescription());
         self::assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getDocumentProperties()->getKeywords());
-        self::assertIsArray($oPhpPresentation->getDocumentProperties()->getCustomProperties());
         self::assertCount(0, $oPhpPresentation->getDocumentProperties()->getCustomProperties());
 
         // Presentation Properties
@@ -598,7 +597,6 @@ class ODPresentationTest extends TestCase
         self::assertEquals('Sample 02 Subject', $oPhpPresentation->getDocumentProperties()->getSubject());
         self::assertEquals('Sample 02 Description', $oPhpPresentation->getDocumentProperties()->getDescription());
         self::assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getDocumentProperties()->getKeywords());
-        self::assertIsArray($oPhpPresentation->getDocumentProperties()->getCustomProperties());
         self::assertCount(0, $oPhpPresentation->getDocumentProperties()->getCustomProperties());
 
         // Presentation Properties
@@ -1034,7 +1032,6 @@ class ODPresentationTest extends TestCase
         $object = new ODPresentation();
         $oPhpPresentation = $object->load($file);
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
-        self::assertIsArray($oPhpPresentation->getDocumentProperties()->getCustomProperties());
         self::assertCount(0, $oPhpPresentation->getDocumentProperties()->getCustomProperties());
 
         self::assertEquals('MaDiapo', $oPhpPresentation->getSlide(0)->getName());
@@ -1046,7 +1043,6 @@ class ODPresentationTest extends TestCase
         $object = new ODPresentation();
         $oPhpPresentation = $object->load($file);
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
-        self::assertIsArray($oPhpPresentation->getDocumentProperties()->getCustomProperties());
         self::assertCount(0, $oPhpPresentation->getDocumentProperties()->getCustomProperties());
 
         self::assertCount(3, $oPhpPresentation->getAllSlides());
