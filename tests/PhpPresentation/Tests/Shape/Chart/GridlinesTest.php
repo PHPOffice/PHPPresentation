@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Style\Outline;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class GridlinesTest extends TestCase
@@ -37,7 +38,7 @@ class GridlinesTest extends TestCase
     {
         $object = new Gridlines();
 
-        /** @var Outline $oStub */
+        /** @var MockObject&Outline $oStub */
         $oStub = $this->getMockBuilder(Outline::class)->getMock();
 
         self::assertInstanceOf(Outline::class, $object->getOutline());

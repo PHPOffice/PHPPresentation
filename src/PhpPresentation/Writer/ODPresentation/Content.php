@@ -461,9 +461,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         // draw:image
         $objWriter->startElement('draw:image');
-        if ($shape instanceof AbstractDrawingAdapter) {
-            $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
-        }
+        $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');

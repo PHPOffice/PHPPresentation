@@ -35,7 +35,6 @@ class LineTest extends TestCase
     {
         $object = new Line();
 
-        self::assertIsArray($object->getSeries());
         self::assertEmpty($object->getSeries());
 
         $array = [

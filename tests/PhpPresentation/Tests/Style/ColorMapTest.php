@@ -28,7 +28,6 @@ class ColorMapTest extends TestCase
     public function testConstruct(): void
     {
         $object = new ColorMap();
-        self::assertIsArray($object->getMapping());
         self::assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 
@@ -36,11 +35,9 @@ class ColorMapTest extends TestCase
     {
         $object = new ColorMap();
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping([]));
-        self::assertIsArray($object->getMapping());
         self::assertCount(0, $object->getMapping());
         $array = ColorMap::$mappingDefault;
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping($array));
-        self::assertIsArray($object->getMapping());
         self::assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 

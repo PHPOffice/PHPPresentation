@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Style\Outline;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AutoShapeTest extends TestCase
@@ -33,12 +34,12 @@ class AutoShapeTest extends TestCase
         self::assertEquals(AutoShape::TYPE_HEART, $object->getType());
         self::assertEquals('', $object->getText());
         self::assertInstanceOf(Outline::class, $object->getOutline());
-        self::assertIsString($object->getHashCode());
+        self::assertNotEmpty($object->getHashCode());
     }
 
     public function testOutline(): void
     {
-        /** @var Outline $mock */
+        /** @var MockObject&Outline $mock */
         $mock = $this->getMockBuilder(Outline::class)->getMock();
 
         $object = new AutoShape();

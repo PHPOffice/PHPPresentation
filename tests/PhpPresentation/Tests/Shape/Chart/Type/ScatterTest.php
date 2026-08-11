@@ -35,7 +35,6 @@ class ScatterTest extends TestCase
     {
         $object = new Scatter();
 
-        self::assertIsArray($object->getSeries());
         self::assertEmpty($object->getSeries());
 
         $array = [
