@@ -106,7 +106,9 @@ class MetaInfManifest extends AbstractDecoratorWriter
             // PNG : 8bit, non-interlaced with full alpha transparency
             $gdImage = imagecreatefromstring(file_get_contents($pathThumbnail));
             if ($gdImage) {
-                imagedestroy($gdImage);
+                if (PHP_VERSION_ID < 80000) {
+                    imagedestroy($gdImage);
+                }
                 $objWriter->startElement('manifest:file-entry');
                 $objWriter->writeAttribute('manifest:media-type', 'image/png');
                 $objWriter->writeAttribute('manifest:full-path', 'Thumbnails/thumbnail.png');

@@ -1354,9 +1354,7 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->endElement();
         }
 
-        if (($angle = $subject->getFirstSliceAngle()) !== null) {
-            $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', (string) $angle);
-        }
+        $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', (string) $subject->getFirstSliceAngle());
 
         $this->writeElementWithValAttribute($objWriter, 'c:holeSize', (string) $subject->getHoleSize());
 

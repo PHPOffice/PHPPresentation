@@ -35,7 +35,6 @@ class AreaTest extends TestCase
     {
         $object = new Area();
 
-        self::assertIsArray($object->getSeries());
         self::assertEmpty($object->getSeries());
 
         $array = [

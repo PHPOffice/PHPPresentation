@@ -52,27 +52,19 @@ class AbstractTest extends TestCase
 
     public function testSeries(): void
     {
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var AbstractType $stub */
-            $stub = $this->getMockForAbstractClass(AbstractType::class);
-        } else {
-            /** @var AbstractType $stub */
-            $stub = new class() extends AbstractType {
-                public function getHashCode(): string
-                {
-                    return '';
-                }
-            };
-        }
+        $stub = new class() extends AbstractType {
+            public function getHashCode(): string
+            {
+                return '';
+            }
+        };
         self::assertEmpty($stub->getSeries());
-        self::assertIsArray($stub->getSeries());
 
         $arraySeries = [
             new Series(),
             new Series(),
         ];
         self::assertInstanceOf(AbstractType::class, $stub->setSeries($arraySeries));
-        self::assertIsArray($stub->getSeries());
         self::assertCount(count($arraySeries), $stub->getSeries());
     }
 
@@ -85,23 +77,16 @@ class AbstractTest extends TestCase
             new Series(),
         ];
 
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var AbstractType $stub */
-            $stub = $this->getMockForAbstractClass(AbstractType::class);
-        } else {
-            /** @var AbstractType $stub */
-            $stub = new class() extends AbstractType {
-                public function getHashCode(): string
-                {
-                    return '';
-                }
-            };
-        }
+        $stub = new class() extends AbstractType {
+            public function getHashCode(): string
+            {
+                return '';
+            }
+        };
         $stub->setSeries($arraySeries);
         $clone = clone $stub;
 
         self::assertInstanceOf(AbstractType::class, $clone);
-        self::assertIsArray($stub->getSeries());
         self::assertCount(count($arraySeries), $stub->getSeries());
     }
 }

@@ -35,7 +35,6 @@ class PieTest extends TestCase
     {
         $object = new Pie();
 
-        self::assertIsArray($object->getSeries());
         self::assertEmpty($object->getSeries());
 
         $array = [

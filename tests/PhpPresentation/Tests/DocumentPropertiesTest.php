@@ -83,7 +83,6 @@ class DocumentPropertiesTest extends TestCase
         $valueTime = time();
 
         $object = new DocumentProperties();
-        self::assertIsArray($object->getCustomProperties());
         self::assertCount(0, $object->getCustomProperties());
         self::assertFalse($object->isCustomPropertySet('pName'));
         self::assertNull($object->getCustomPropertyType('pName'));

@@ -557,8 +557,11 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->numSeries = 0;
         foreach ($chartType->getSeries() as $series) {
             $this->writeSeries($chart, $series);
-            ++$this->rangeCol;
             ++$this->numSeries;
+            // The first series is written in column B, so the next column is
+            // derived from its index. Incrementing the string is deprecated
+            // as of PHP 8.5.
+            $this->rangeCol = $this->getColumnName($this->numSeries + 2);
         }
 
         //**** Wall ****
@@ -997,5 +1000,21 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
         // > style:style
         $this->xmlContent->endElement();
+    }
+
+    /**
+     * Returns the spreadsheet column name for a 1-based column index
+     * (1 => A, 2 => B, 26 => Z, 27 => AA).
+     */
+    private function getColumnName(int $index): string
+    {
+        $name = '';
+        while ($index > 0) {
+            $modulo = ($index - 1) % 26;
+            $name = chr(65 + $modulo) . $name;
+            $index = intdiv($index - $modulo, 26);
+        }
+
+        return $name;
     }
 }

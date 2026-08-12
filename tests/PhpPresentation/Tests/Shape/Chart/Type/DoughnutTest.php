@@ -35,7 +35,6 @@ class DoughnutTest extends TestCase
     {
         $object = new Doughnut();
 
-        self::assertIsArray($object->getSeries());
         self::assertEmpty($object->getSeries());
 
         $array = [

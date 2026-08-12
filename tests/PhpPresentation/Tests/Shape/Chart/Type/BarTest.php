@@ -35,7 +35,6 @@ class BarTest extends TestCase
     {
         $object = new Bar();
 
-        self::assertIsArray($object->getSeries());
         self::assertEmpty($object->getSeries());
 
         $array = [

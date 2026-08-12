@@ -34,7 +34,9 @@ class DocPropsThumbnail extends AbstractDecoratorWriter
                 imagejpeg($gdImage);
                 $imageContents = ob_get_contents();
                 ob_end_clean();
-                imagedestroy($gdImage);
+                if (PHP_VERSION_ID < 80000) {
+                    imagedestroy($gdImage);
+                }
                 $this->getZip()->addFromString('docProps/thumbnail.jpeg', $imageContents);
             }
         }

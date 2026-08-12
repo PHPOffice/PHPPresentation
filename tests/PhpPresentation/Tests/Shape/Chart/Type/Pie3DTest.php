@@ -35,7 +35,6 @@ class Pie3DTest extends TestCase
     {
         $object = new Pie3D();
 
-        self::assertIsArray($object->getSeries());
         self::assertEmpty($object->getSeries());
 
         $array = [
