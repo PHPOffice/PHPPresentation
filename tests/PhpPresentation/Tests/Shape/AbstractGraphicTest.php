@@ -34,14 +34,8 @@ class AbstractGraphicTest extends TestCase
     {
         $min = 10;
         $max = 20;
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var AbstractGraphic $stub */
-            $stub = $this->getMockForAbstractClass(AbstractGraphic::class);
-        } else {
-            /** @var AbstractGraphic $stub */
-            $stub = new class() extends AbstractGraphic {
-            };
-        }
+        $stub = new class() extends AbstractGraphic {
+        };
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(false));
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($min));
         self::assertEquals($min, $stub->getWidth());
@@ -73,14 +67,8 @@ class AbstractGraphicTest extends TestCase
     {
         $min = 10;
         $max = 20;
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var AbstractGraphic $stub */
-            $stub = $this->getMockForAbstractClass(AbstractGraphic::class);
-        } else {
-            /** @var AbstractGraphic $stub */
-            $stub = new class() extends AbstractGraphic {
-            };
-        }
+        $stub = new class() extends AbstractGraphic {
+        };
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(false));
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
         self::assertEquals($max, $stub->getWidth());

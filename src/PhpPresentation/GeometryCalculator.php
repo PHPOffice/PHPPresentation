@@ -37,7 +37,7 @@ class GeometryCalculator
     {
         $offsets = [self::X => 0, self::Y => 0];
 
-        if (null !== $container && 0 != count($container->getShapeCollection())) {
+        if (0 != count($container->getShapeCollection())) {
             $shapes = $container->getShapeCollection();
             if (null !== $shapes[0]) {
                 $offsets[self::X] = $shapes[0]->getOffsetX();
@@ -70,7 +70,7 @@ class GeometryCalculator
         /** @var array<string, int> $extents */
         $extents = [self::X => 0, self::Y => 0];
 
-        if (null !== $container && 0 != count($container->getShapeCollection())) {
+        if (0 != count($container->getShapeCollection())) {
             $shapes = $container->getShapeCollection();
             if (null !== $shapes[0]) {
                 $extents[self::X] = (int) ($shapes[0]->getOffsetX() + $shapes[0]->getWidth());

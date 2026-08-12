@@ -26,6 +26,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ZipArchive;
 
@@ -38,12 +39,12 @@ class AutoShapeTest extends TestCase
         self::assertEquals(AutoShape::TYPE_HEART, $object->getType());
         self::assertEquals('', $object->getText());
         self::assertInstanceOf(Outline::class, $object->getOutline());
-        self::assertIsString($object->getHashCode());
+        self::assertNotEmpty($object->getHashCode());
     }
 
     public function testOutline(): void
     {
-        /** @var Outline $mock */
+        /** @var MockObject&Outline $mock */
         $mock = $this->getMockBuilder(Outline::class)->getMock();
 
         $object = new AutoShape();

@@ -44,6 +44,6 @@ class LineTest extends TestCase
         self::assertEquals($value, $object->getOffsetY());
         self::assertEquals(0, $object->getWidth());
         self::assertEquals(0, $object->getHeight());
-        self::assertIsString($object->getHashCode());
+        self::assertNotEmpty($object->getHashCode());
     }
 }

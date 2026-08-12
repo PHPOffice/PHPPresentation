@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use ArrayObject;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
@@ -62,7 +61,7 @@ class PptSlideMastersTest extends TestCase
             ->method('getAllSlideLayouts')
             ->willReturn($layouts);
 
-        /** @var ArrayObject<int, ShapeDrawingFile> $collection */
+        /** @var array<int, ShapeDrawingFile> $collection */
         $collection = [];
         $collection[] = new ShapeDrawingFile();
         $collection[] = new ShapeDrawingFile();

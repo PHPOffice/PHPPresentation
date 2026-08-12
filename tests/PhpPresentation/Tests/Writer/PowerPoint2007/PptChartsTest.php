@@ -272,18 +272,12 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
-        if (method_exists($this, 'getMockForAbstractClass')) {
-            /** @var AbstractType $stub */
-            $stub = $this->getMockForAbstractClass(AbstractType::class);
-        } else {
-            /** @var AbstractType $stub */
-            $stub = new class() extends AbstractType {
-                public function getHashCode(): string
-                {
-                    return '';
-                }
-            };
-        }
+        $stub = new class() extends AbstractType {
+            public function getHashCode(): string
+            {
+                return '';
+            }
+        };
         $oShape->getPlotArea()->setType($stub);
 
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');

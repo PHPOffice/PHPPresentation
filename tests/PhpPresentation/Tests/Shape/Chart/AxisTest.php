@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -104,7 +105,7 @@ class AxisTest extends TestCase
     {
         $object = new Axis();
 
-        /** @var Gridlines $oMock */
+        /** @var Gridlines&MockObject $oMock */
         $oMock = $this->getMockBuilder(Gridlines::class)->getMock();
 
         self::assertInstanceOf(Axis::class, $object->setMajorGridlines($oMock));
@@ -148,7 +149,7 @@ class AxisTest extends TestCase
 
     public function testOutline(): void
     {
-        /** @var Outline $oMock */
+        /** @var MockObject&Outline $oMock */
         $oMock = $this->getMockBuilder(Outline::class)->getMock();
 
         $object = new Axis();

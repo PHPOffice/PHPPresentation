@@ -134,7 +134,6 @@ class ParagraphTest extends TestCase
     public function testRichTextElements(): void
     {
         $object = new Paragraph();
-        self::assertIsArray($object->getRichTextElements());
         self::assertEmpty($object->getRichTextElements());
         $object->createBreak();
         self::assertCount(1, $object->getRichTextElements());

@@ -47,8 +47,10 @@ class ThumbnailsThumbnail extends AbstractDecoratorWriter
                 $imageContents = ob_get_contents();
                 ob_end_clean();
 
-                imagedestroy($gdRender);
-                imagedestroy($gdImage);
+                if (PHP_VERSION_ID < 80000) {
+                    imagedestroy($gdRender);
+                    imagedestroy($gdImage);
+                }
 
                 $this->getZip()->addFromString('Thumbnails/thumbnail.png', $imageContents);
             }

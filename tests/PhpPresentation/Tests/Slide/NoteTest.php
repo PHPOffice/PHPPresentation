@@ -46,25 +46,25 @@ class NoteTest extends TestCase
     public function testExtent(): void
     {
         $object = new Note();
-        self::assertNotNull($object->getExtentX());
+        self::assertSame(0, $object->getExtentX());
 
         $object = new Note();
-        self::assertNotNull($object->getExtentY());
+        self::assertSame(0, $object->getExtentY());
     }
 
     public function testHashCode(): void
     {
         $object = new Note();
-        self::assertIsString($object->getHashCode());
+        self::assertNotEmpty($object->getHashCode());
     }
 
     public function testOffset(): void
     {
         $object = new Note();
-        self::assertNotNull($object->getOffsetX());
+        self::assertSame(0, $object->getOffsetX());
 
         $object = new Note();
-        self::assertNotNull($object->getOffsetY());
+        self::assertSame(0, $object->getOffsetY());
     }
 
     public function testShape(): void
