@@ -49,9 +49,6 @@ class ContentTypes extends AbstractDecoratorWriter
         // XML
         $this->writeDefaultContentType($objWriter, 'xml', 'application/xml');
 
-        // SVG
-        $this->writeDefaultContentType($objWriter, 'svg', 'image/svg+xml');
-
         // Presentation
         $this->writeOverrideContentType($objWriter, '/ppt/presentation.xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml');
 
@@ -106,11 +103,12 @@ class ContentTypes extends AbstractDecoratorWriter
         // Add media content-types
         $aMediaContentTypes = [];
 
-        // GIF, JPEG, PNG
+        // GIF, JPEG, PNG, SVG
         $aMediaContentTypes['gif'] = 'image/gif';
         $aMediaContentTypes['jpg'] = 'image/jpeg';
         $aMediaContentTypes['jpeg'] = 'image/jpeg';
         $aMediaContentTypes['png'] = 'image/png';
+        $aMediaContentTypes['svg'] = 'image/svg+xml';
         foreach ($aMediaContentTypes as $key => $value) {
             $this->writeDefaultContentType($objWriter, $key, $value);
         }
@@ -132,6 +130,11 @@ class ContentTypes extends AbstractDecoratorWriter
             } elseif ($shapeIndex instanceof AbstractDrawingAdapter) {
                 $extension = strtolower($shapeIndex->getExtension());
                 $mimeType = $shapeIndex->getMimeType();
+
+                // Normalize any odd returns (some environments report "image/svg")
+                if ($extension === 'svg') {
+                    $mimeType = 'image/svg+xml';
+                }
 
                 if (!isset($aMediaContentTypes[$extension])) {
                     $aMediaContentTypes[$extension] = $mimeType;
