@@ -273,4 +273,28 @@ class AutoShape extends AbstractShape implements ComparableInterface
 
         return $this;
     }
+
+    /** @var null|int */
+    private $roundRectCorner;
+
+    public function getRoundRectCorner(): ?int
+    {
+        return $this->roundRectCorner;
+    }
+
+    /**
+     * Set corner radius.
+     */
+    public function setRoundRectCorner(?int $pixels): self
+    {
+        $this->roundRectCorner = max(0, $pixels);
+
+        return $this;
+    }
+
+    // override the hash so radius works
+    public function getHashCode(): string
+    {
+        return md5(parent::getHashCode() . $this->type . $this->text . (string) $this->roundRectCorner . __CLASS__);
+    }
 }

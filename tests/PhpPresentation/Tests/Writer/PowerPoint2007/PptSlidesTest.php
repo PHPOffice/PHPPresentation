@@ -169,6 +169,34 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testWriterEmitsAdjGuideForRoundRect(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+
+        $width = 200;
+        $height = 100;
+        $padding = 5;
+        $minHalf = (int) floor(min($width, $height) / 2);
+        $expectedAdj = (int) round($padding / $minHalf * 50000); // 5000
+
+        $oShape = (new AutoShape())
+            ->setType(AutoShape::TYPE_ROUNDED_RECTANGLE)
+            ->setWidth($width)->setHeight($height)
+            ->setRoundRectCorner($padding);
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFFFFFFF'));
+        $oSlide->addShape($oShape);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:prstGeom';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'prst', AutoShape::TYPE_ROUNDED_RECTANGLE);
+
+        $guideElement = $element . '/a:avLst/a:gd';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $guideElement);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $guideElement, 'name', 'adj');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $guideElement, 'fmla', 'val ' . $expectedAdj);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testCommentRelationship(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
