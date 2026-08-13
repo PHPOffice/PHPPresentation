@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\IOFactory;
+use PhpOffice\PhpPresentation\PhpPresentation;
 use PHPUnit\Framework\TestCase;
+use ZipArchive;
 
 class ContentTypesTest extends TestCase
 {
@@ -18,8 +19,8 @@ class ContentTypesTest extends TestCase
         $writer = IOFactory::createWriter($presentation, 'PowerPoint2007');
         $writer->save($pptxFile);
 
-        $zip = new \ZipArchive();
-        $this->assertTrue(
+        $zip = new ZipArchive();
+        self::assertTrue(
             $zip->open($pptxFile),
             'Could not open generated PPTX as ZipArchive'
         );
@@ -28,18 +29,18 @@ class ContentTypesTest extends TestCase
         $zip->close();
         @unlink($pptxFile);
 
-        $this->assertIsString(
+        self::assertIsString(
             $contentTypesXml,
             '[Content_Types].xml not found in archive'
         );
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             'Extension="svg"',
             $contentTypesXml,
             'SVG extension not registered in [Content_Types].xml'
         );
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             'image/svg+xml',
             $contentTypesXml,
             'SVG MIME type not registered correctly in [Content_Types].xml'
