@@ -71,4 +71,26 @@ class AutoShapeTest extends TestCase
         $shape = new AutoShape();
         self::assertNull($shape->getRoundRectCorner());
     }
+
+    public function testRoundRectCornerPixelRadiusStoredAndAffectsHash(): void
+    {
+        $width = 200;  // px
+        $height = 100;  // px
+        $px1 = 5;  // softer radius
+        $px2 = 10; // larger radius
+
+        $shape1 = (new AutoShape())
+            ->setType(AutoShape::TYPE_ROUNDED_RECTANGLE)
+            ->setWidth($width)
+            ->setHeight($height)
+            ->setRoundRectCorner($px1);
+
+        $shape2 = (clone $shape1)->setRoundRectCorner($px2);
+
+        self::assertSame($px1, $shape1->getRoundRectCorner());
+        self::assertSame($px2, $shape2->getRoundRectCorner());
+
+        // Hash must differ when radius differs
+        self::assertNotSame($shape1->getHashCode(), $shape2->getHashCode());
+    }
 }
