@@ -285,7 +285,7 @@ class AutoShape extends AbstractShape implements ComparableInterface
     /**
      * Set corner radius.
      */
-    public function setRoundRectCorner(int $pixels): self
+    public function setRoundRectCorner(?int $pixels): self
     {
         $this->roundRectCorner = max(0, $pixels);
 
