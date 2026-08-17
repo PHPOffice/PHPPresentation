@@ -285,6 +285,92 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testLegendVisibility(): void
+    {
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oLine);
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oChart->getLegend()->setVisible(false);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('Object 1/content.xml', $element);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testChartFill(): void
+    {
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oLine);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleChart\']/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill', 'none');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oChart->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFFFFFFF'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill-color', '#FFFFFF');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testSeriesFill(): void
+    {
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oBar);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\']/style:graphic-properties';
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'draw:fill');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'draw:fill-color');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oSeries->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4472C4'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill-color', '#4472C4');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testPlotAreaDataLabels(): void
+    {
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oLine);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // A serie showing nothing must not leave a default label on the plot area
+        $oSeries->setShowValue(false);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-number');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oSeries->setShowPercentage(true);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testSeriesValues(): void
     {
         $series = new Series('Series', ['Jan' => null]);
@@ -688,6 +774,28 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:overlap', '100');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:percentage', 'true');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testTypeBarDataPointsRepeated(): void
+    {
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2', 'Apr' => '4']);
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oBar);
+
+        // The data points describe the four values of the serie, no more and no less
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point[1]';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:repeated', 1);
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point[2]';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:style-name', 'styleSeries0_1');
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point[3]';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:repeated', 2);
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point[4]';
+        $this->assertZipXmlElementNotExists('Object 1/content.xml', $element);
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }

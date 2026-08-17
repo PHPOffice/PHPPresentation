@@ -423,6 +423,8 @@ class ObjectsChart extends AbstractDecoratorWriter
         } else {
             $this->xmlContent->writeAttribute('draw:stroke', 'solid');
         }
+        // Without draw:fill, the colour below is taken as a solid background, black by default
+        $this->xmlContent->writeAttribute('draw:fill', Fill::FILL_NONE === $chart->getFill()->getFillType() ? 'none' : 'solid');
         $this->xmlContent->writeAttribute('draw:fill-color', '#' . $chart->getFill()->getStartColor()->getRGB());
         // > style:graphic-properties
         $this->xmlContent->endElement();
@@ -460,6 +462,10 @@ class ObjectsChart extends AbstractDecoratorWriter
 
     protected function writeLegend(Chart $chart): void
     {
+        if (!$chart->getLegend()->isVisible()) {
+            return;
+        }
+
         // chart:legend
         $this->xmlContent->startElement('chart:legend');
         switch ($chart->getLegend()->getPosition()) {
@@ -626,13 +632,28 @@ class ObjectsChart extends AbstractDecoratorWriter
                 $this->xmlContent->writeAttribute('chart:percentage', 'true');
             }
         }
-        $labelFormat = 'value';
-        if ($chartType instanceof AbstractTypeBar) {
-            if (Bar::GROUPING_PERCENTSTACKED == $chartType->getBarGrouping()) {
+        // The labels the series ask for : the plot area states the default for the whole chart,
+        // so a chart whose series show nothing must not state one
+        $labelFormat = null;
+        foreach ($chartType->getSeries() as $series) {
+            if ($series->hasShowValue()) {
+                $labelFormat = $series->hasShowPercentage() ? 'value-and-percentage' : 'value';
+
+                break;
+            }
+            if ($series->hasShowPercentage()) {
                 $labelFormat = 'percentage';
+
+                break;
             }
         }
-        $this->xmlContent->writeAttribute('chart:data-label-number', $labelFormat);
+        if (null !== $labelFormat
+            && $chartType instanceof AbstractTypeBar
+            && Bar::GROUPING_PERCENTSTACKED == $chartType->getBarGrouping()
+        ) {
+            $labelFormat = 'percentage';
+        }
+        $this->xmlContent->writeAttributeIf(null !== $labelFormat, 'chart:data-label-number', $labelFormat);
 
         // > style:text-properties
         $this->xmlContent->endElement();
@@ -656,38 +677,38 @@ class ObjectsChart extends AbstractDecoratorWriter
             || $chartType instanceof Radar
             || $chartType instanceof Scatter
         ) {
-            $dataPointFills = $series->getDataPointFills();
-
-            $incRepeat = $numRange;
-            if (!empty($dataPointFills)) {
-                $inc = 0;
-                $incRepeat = 1;
-                $newFill = new Fill();
-                do {
-                    if ($series->getDataPointFill($inc)->getHashCode() !== $newFill->getHashCode()) {
-                        // chart:data-point
-                        $this->xmlContent->startElement('chart:data-point');
-                        $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
-                        // > chart:data-point
-                        $this->xmlContent->endElement();
-                        $incRepeat = 1;
-
-                        // chart:data-point
-                        $this->xmlContent->startElement('chart:data-point');
-                        $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries' . $this->numSeries . '_' . $inc);
-                        // > chart:data-point
-                        $this->xmlContent->endElement();
-                    }
-                    ++$inc;
+            $newFill = new Fill();
+            $incRepeat = 0;
+            for ($inc = 0; $inc < $numRange; ++$inc) {
+                if ($series->getDataPointFill($inc)->getHashCode() === $newFill->getHashCode()) {
+                    // A data point taking the style of the serie : counted, written once the run ends
                     ++$incRepeat;
-                } while ($inc < $numRange);
-                --$incRepeat;
+
+                    continue;
+                }
+
+                if ($incRepeat > 0) {
+                    // chart:data-point
+                    $this->xmlContent->startElement('chart:data-point');
+                    $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
+                    // > chart:data-point
+                    $this->xmlContent->endElement();
+                    $incRepeat = 0;
+                }
+
+                // chart:data-point
+                $this->xmlContent->startElement('chart:data-point');
+                $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries' . $this->numSeries . '_' . $inc);
+                // > chart:data-point
+                $this->xmlContent->endElement();
             }
-            // chart:data-point
-            $this->xmlContent->startElement('chart:data-point');
-            $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
-            // > chart:data-point
-            $this->xmlContent->endElement();
+            if ($incRepeat > 0) {
+                // chart:data-point
+                $this->xmlContent->startElement('chart:data-point');
+                $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
+                // > chart:data-point
+                $this->xmlContent->endElement();
+            }
         } elseif ($chartType instanceof AbstractTypePie) {
             $count = count($series->getDataPointFills());
             for ($inc = 0; $inc < $count; ++$inc) {
@@ -779,6 +800,11 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
+        // A serie leaving its fill untouched says nothing about its colour, the application picks one, as with the OOXML writer
+        $oSeriesFill = $series->getFill();
+        if ($oSeriesFill instanceof Fill && $oSeriesFill->getHashCode() === (new Fill())->getHashCode()) {
+            $oSeriesFill = null;
+        }
         if ($chartType instanceof Line || $chartType instanceof Radar || $chartType instanceof Scatter) {
             $outlineWidth = '';
             $outlineColor = '';
@@ -801,11 +827,13 @@ class ObjectsChart extends AbstractDecoratorWriter
             $this->xmlContent->writeAttribute('svg:stroke-color', '#' . $outlineColor);
         } else {
             $this->xmlContent->writeAttribute('draw:stroke', 'none');
-            if (!($chartType instanceof Area)) {
-                $this->xmlContent->writeAttribute('draw:fill', $series->getFill()->getFillType());
+            if (null !== $oSeriesFill && !($chartType instanceof Area)) {
+                $this->xmlContent->writeAttribute('draw:fill', $oSeriesFill->getFillType());
             }
         }
-        $this->xmlContent->writeAttribute('draw:fill-color', '#' . $series->getFill()->getStartColor()->getRGB());
+        if (null !== $oSeriesFill) {
+            $this->xmlContent->writeAttribute('draw:fill-color', '#' . $oSeriesFill->getStartColor()->getRGB());
+        }
         // > style:graphic-properties
         $this->xmlContent->endElement();
         // style:text-properties
