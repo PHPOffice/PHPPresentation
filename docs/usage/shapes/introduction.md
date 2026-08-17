@@ -13,6 +13,8 @@ Every shapes have common properties that you can set by using fluent interface.
 - ``border`` see *[Border](#border)*
 - ``shadow`` see *[Shadow](#shadow)*
 - ``hyperlink``
+- ``name``
+- ``description`` see *[Alternative text](#alternative-text)*
 
 Example:
 
@@ -24,6 +26,22 @@ $richtext = $slide->createRichTextShape()
 		->setOffsetX(170)
 		->setOffsetY(180);
 ```
+
+## Alternative text
+
+The description of a shape is the alternative text that assistive technologies announce in
+place of the shape. Give one to every shape that carries information; leave it empty on
+shapes that are purely decorative.
+
+``` php
+<?php
+$richtext = $slide->createRichTextShape()
+		->setName('Budget')
+		->setDescription('Budget spent to date: 45% of 1.2M EUR');
+```
+
+It is written as the `descr` attribute of `p:cNvPr` in PowerPoint2007 files and as the
+`svg:desc` element of the shape in ODPresentation files.
 
 ## Line
 

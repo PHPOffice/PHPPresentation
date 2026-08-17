@@ -558,6 +558,20 @@ class ODPresentation implements ReaderInterface
     /**
      * Read Shape Drawing.
      */
+    /**
+     * Read the description of a shape, the alternative text exposed to assistive
+     * technologies. Falls back to the shape name, as written by older versions.
+     */
+    protected function loadShapeDescription(DOMElement $oNodeFrame): string
+    {
+        $oNodeDesc = $this->oXMLReader->getElement('svg:desc', $oNodeFrame);
+        if ($oNodeDesc instanceof DOMElement) {
+            return $oNodeDesc->nodeValue ?? '';
+        }
+
+        return $oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '';
+    }
+
     protected function loadShapeDrawing(DOMElement $oNodeFrame): void
     {
         // Core
@@ -593,7 +607,7 @@ class ODPresentation implements ReaderInterface
 
         $shape->getShadow()->setVisible(false);
         $shape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
-        $shape->setDescription($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
+        $shape->setDescription($this->loadShapeDescription($oNodeFrame));
         $shape->setResizeProportional(false);
         $shape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $shape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
@@ -621,6 +635,7 @@ class ODPresentation implements ReaderInterface
         $oShape = $this->oPhpPresentation->getActiveSlide()->createRichTextShape();
         $oShape->setParagraphs([]);
 
+        $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);

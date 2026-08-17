@@ -54,6 +54,17 @@ class AbstractShapeTest extends TestCase
         self::assertInstanceOf(Shadow::class, $object->getShadow());
     }
 
+    public function testDescription(): void
+    {
+        $object = new RichText();
+
+        self::assertEquals('', $object->getDescription());
+        self::assertInstanceOf(AbstractShape::class, $object->setDescription('AlternativeText'));
+        self::assertEquals('AlternativeText', $object->getDescription());
+        self::assertInstanceOf(AbstractShape::class, $object->setDescription());
+        self::assertEquals('', $object->getDescription());
+    }
+
     public function testFill(): void
     {
         $object = new RichText();
