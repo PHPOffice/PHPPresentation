@@ -58,7 +58,7 @@ $slide->createLineShape(10, 10, 100, 10)
 The flag is unset by default (`isDecorative()` returns `null`), and nothing is then written to
 the document. It is written as the `{C183D7F6-B498-43B3-948B-1728B52AA6E4}` extension of
 `p:cNvPr` in PowerPoint2007 files, and as the `loext:decorative` attribute of the shape in
-ODPresentation files.
+ODPresentation files. Both readers restore the flag when the document carries it.
 
 ## Line
 

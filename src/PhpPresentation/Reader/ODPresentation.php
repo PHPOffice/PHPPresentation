@@ -24,6 +24,7 @@ use DateTime;
 use DOMElement;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
@@ -570,6 +571,16 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
+     * Read the decorative flag of a shape.
+     */
+    protected function loadShapeDecorative(DOMElement $oNodeFrame, AbstractShape $shape): void
+    {
+        if ($oNodeFrame->hasAttribute('loext:decorative')) {
+            $shape->setDecorative('true' === $oNodeFrame->getAttribute('loext:decorative'));
+        }
+    }
+
+    /**
      * Read Shape Drawing.
      */
     protected function loadShapeDrawing(DOMElement $oNodeFrame): void
@@ -608,6 +619,7 @@ class ODPresentation implements ReaderInterface
         $shape->getShadow()->setVisible(false);
         $shape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
         $shape->setDescription($this->loadShapeDescription($oNodeFrame));
+        $this->loadShapeDecorative($oNodeFrame, $shape);
         $shape->setResizeProportional(false);
         $shape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $shape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
@@ -636,6 +648,7 @@ class ODPresentation implements ReaderInterface
         $oShape->setParagraphs([]);
 
         $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
+        $this->loadShapeDecorative($oNodeFrame, $oShape);
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
