@@ -26,7 +26,6 @@ use DOMNode;
 use DOMNodeList;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
-use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\Exception\FeatureNotImplementedException;
@@ -810,14 +809,18 @@ class PowerPoint2007 implements ReaderInterface
      * Read the decorative flag, stored as an extension of the non-visual properties of the shape.
      *
      * @param DOMElement $node the `p:cNvPr` element of the shape
+     *
+     * @return null|bool null when the shape says nothing about it
      */
-    protected function loadShapeDecorative(XMLReader $document, DOMElement $node, AbstractShape $oShape): void
+    protected function loadShapeDecorative(XMLReader $document, DOMElement $node): ?bool
     {
         $document->registerNamespace('adec', 'http://schemas.microsoft.com/office/drawing/2017/decorative');
         $oElement = $document->getElement('a:extLst/a:ext[@uri="{C183D7F6-B498-43B3-948B-1728B52AA6E4}"]/adec:decorative', $node);
-        if ($oElement instanceof DOMElement) {
-            $oShape->setDecorative(in_array($oElement->getAttribute('val'), ['1', 'true'], true));
+        if (!$oElement instanceof DOMElement) {
+            return null;
         }
+
+        return in_array($oElement->getAttribute('val'), ['1', 'true'], true);
     }
 
     protected function loadShapeDrawing(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
@@ -837,7 +840,7 @@ class PowerPoint2007 implements ReaderInterface
         if ($oElement instanceof DOMElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
-            $this->loadShapeDecorative($document, $oElement, $oShape);
+            $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
 
             // Hyperlink
             $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElement);
@@ -986,7 +989,7 @@ class PowerPoint2007 implements ReaderInterface
         if ($oElement instanceof DOMElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
-            $this->loadShapeDecorative($document, $oElement, $oShape);
+            $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
         }
 
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
@@ -1083,7 +1086,7 @@ class PowerPoint2007 implements ReaderInterface
             if ($oElement->hasAttribute('descr')) {
                 $oShape->setDescription($oElement->getAttribute('descr'));
             }
-            $this->loadShapeDecorative($document, $oElement, $oShape);
+            $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
         }
 
         $oElement = $document->getElement('p:xfrm/a:off', $node);
@@ -1222,7 +1225,7 @@ class PowerPoint2007 implements ReaderInterface
             if ($oElement->hasAttribute('descr')) {
                 $oShape->setDescription($oElement->getAttribute('descr'));
             }
-            $this->loadShapeDecorative($document, $oElement, $oShape);
+            $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
         }
 
         $oElement = $document->getElement('p:xfrm/a:off', $node);
