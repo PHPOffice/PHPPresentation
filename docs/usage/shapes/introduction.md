@@ -15,6 +15,7 @@ Every shapes have common properties that you can set by using fluent interface.
 - ``hyperlink``
 - ``name``
 - ``description`` see *[Alternative text](#alternative-text)*
+- ``decorative`` see *[Decorative shapes](#decorative-shapes)*
 
 Example:
 
@@ -42,6 +43,22 @@ $richtext = $slide->createRichTextShape()
 
 It is written as the `descr` attribute of `p:cNvPr` in PowerPoint2007 files and as the
 `svg:desc` element of the shape in ODPresentation files.
+
+## Decorative shapes
+
+A shape that carries no information — a coloured band, a rule, a background image — can be
+marked as decorative, so that assistive technologies skip it instead of announcing it.
+
+``` php
+<?php
+$slide->createLineShape(10, 10, 100, 10)
+		->setDecorative();      // setDecorative(false) states the opposite explicitly
+```
+
+The flag is unset by default (`isDecorative()` returns `null`), and nothing is then written to
+the document. It is written as the `{C183D7F6-B498-43B3-948B-1728B52AA6E4}` extension of
+`p:cNvPr` in PowerPoint2007 files, and as the `loext:decorative` attribute of the shape in
+ODPresentation files.
 
 ## Line
 

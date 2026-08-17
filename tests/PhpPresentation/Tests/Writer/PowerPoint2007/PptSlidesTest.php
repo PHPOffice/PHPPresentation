@@ -153,6 +153,40 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testShapeDecorative(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+
+        $oGroup = new Group();
+        $oGroup->setDecorative();
+        $oGroup->addShape(new AutoShape());
+        $oSlide->addShape($oGroup);
+
+        $expectedElement = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr/a:extLst/a:ext/adec:decorative';
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $expectedElement);
+
+        $expectedElement = '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr/a:extLst/a:ext/adec:decorative';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $expectedElement);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement, 'val', '1');
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->resetPresentationFile();
+        $oRichText->setDecorative(false);
+
+        $expectedElement = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr/a:extLst/a:ext';
+        $this->assertZipXmlAttributeEquals(
+            'ppt/slides/slide1.xml',
+            $expectedElement,
+            'uri',
+            '{C183D7F6-B498-43B3-948B-1728B52AA6E4}'
+        );
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement . '/adec:decorative', 'val', '0');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testShapeDescription(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

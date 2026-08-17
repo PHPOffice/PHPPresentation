@@ -86,6 +86,23 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
+    public function testShapeDecorative(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+
+        $oLine = $oSlide->createLineShape(10, 10, 100, 100);
+        $oLine->setDecorative();
+
+        $basePath = '/office:document-content/office:body/office:presentation/draw:page';
+        $this->assertZipXmlAttributeNotExists('content.xml', $basePath . '/draw:frame', 'loext:decorative');
+        $this->assertZipXmlAttributeEquals('content.xml', $basePath . '/draw:line', 'loext:decorative', 'true');
+        // Invalid because `loext:decorative` is a LibreOffice extension, standardized in ODF 1.4
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
     public function testShapeDescription(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
