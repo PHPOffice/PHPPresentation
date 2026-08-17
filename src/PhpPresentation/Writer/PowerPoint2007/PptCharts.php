@@ -836,20 +836,29 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
-            // Fills for points?
+            // Fills & outlines for points?
             $dataPointFills = $series->getDataPointFills();
-            foreach ($dataPointFills as $key => $value) {
+            $dataPointOutlines = $series->getDataPointOutlines();
+            foreach ($series->getDataPointIndexes() as $key) {
+                $fill = $dataPointFills[$key] ?? null;
+                $outline = $dataPointOutlines[$key] ?? null;
+                $hasFill = $fill && Fill::FILL_NONE != $fill->getFillType();
+
                 // c:dPt
                 $objWriter->startElement('c:dPt');
 
                 // c:idx
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', (string) $key);
 
-                if (Fill::FILL_NONE != $value->getFillType()) {
+                if ($hasFill || $outline) {
                     // c:spPr
                     $objWriter->startElement('c:spPr');
                     // Write fill
-                    $this->writeFill($objWriter, $value);
+                    if ($hasFill) {
+                        $this->writeFill($objWriter, $fill);
+                    }
+                    // Write outline
+                    $this->writeOutline($objWriter, $outline);
                     // ## c:spPr
                     $objWriter->endElement();
                 }
@@ -1048,20 +1057,29 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
-            // Fills for points?
+            // Fills & outlines for points?
             $dataPointFills = $series->getDataPointFills();
-            foreach ($dataPointFills as $key => $value) {
+            $dataPointOutlines = $series->getDataPointOutlines();
+            foreach ($series->getDataPointIndexes() as $key) {
+                $fill = $dataPointFills[$key] ?? null;
+                $outline = $dataPointOutlines[$key] ?? null;
+                $hasFill = $fill && Fill::FILL_NONE != $fill->getFillType();
+
                 // c:dPt
                 $objWriter->startElement('c:dPt');
 
                 // c:idx
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', (string) $key);
 
-                if (Fill::FILL_NONE != $value->getFillType()) {
+                if ($hasFill || $outline) {
                     // c:spPr
                     $objWriter->startElement('c:spPr');
                     // Write fill
-                    $this->writeFill($objWriter, $value);
+                    if ($hasFill) {
+                        $this->writeFill($objWriter, $fill);
+                    }
+                    // Write outline
+                    $this->writeOutline($objWriter, $outline);
                     // ## c:spPr
                     $objWriter->endElement();
                 }
@@ -1237,15 +1255,17 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
-            // Fills for points?
+            // Fills & outlines for points?
             $dataPointFills = $series->getDataPointFills();
-            foreach ($dataPointFills as $key => $value) {
+            $dataPointOutlines = $series->getDataPointOutlines();
+            foreach ($series->getDataPointIndexes() as $key) {
                 // c:dPt
                 $objWriter->startElement('c:dPt');
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', (string) $key);
                 // c:dPt/c:spPr
                 $objWriter->startElement('c:spPr');
-                $this->writeFill($objWriter, $value);
+                $this->writeFill($objWriter, $dataPointFills[$key] ?? null);
+                $this->writeOutline($objWriter, $dataPointOutlines[$key] ?? null);
                 // c:dPt/##c:spPr
                 $objWriter->endElement();
                 // ##c:dPt
@@ -1398,15 +1418,17 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
-            // Fills for points?
+            // Fills & outlines for points?
             $dataPointFills = $series->getDataPointFills();
-            foreach ($dataPointFills as $key => $value) {
+            $dataPointOutlines = $series->getDataPointOutlines();
+            foreach ($series->getDataPointIndexes() as $key) {
                 // c:dPt
                 $objWriter->startElement('c:dPt');
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', (string) $key);
                 // c:dPt/c:spPr
                 $objWriter->startElement('c:spPr');
-                $this->writeFill($objWriter, $value);
+                $this->writeFill($objWriter, $dataPointFills[$key] ?? null);
+                $this->writeOutline($objWriter, $dataPointOutlines[$key] ?? null);
                 // c:dPt/##c:spPr
                 $objWriter->endElement();
                 // ##c:dPt
@@ -1569,15 +1591,17 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('val', $subject->getExplosion());
             $objWriter->endElement();
 
-            // Fills for points?
+            // Fills & outlines for points?
             $dataPointFills = $series->getDataPointFills();
-            foreach ($dataPointFills as $key => $value) {
+            $dataPointOutlines = $series->getDataPointOutlines();
+            foreach ($series->getDataPointIndexes() as $key) {
                 // c:dPt
                 $objWriter->startElement('c:dPt');
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', (string) $key);
                 // c:dPt/c:spPr
                 $objWriter->startElement('c:spPr');
-                $this->writeFill($objWriter, $value);
+                $this->writeFill($objWriter, $dataPointFills[$key] ?? null);
+                $this->writeOutline($objWriter, $dataPointOutlines[$key] ?? null);
                 // c:dPt/##c:spPr
                 $objWriter->endElement();
                 // ##c:dPt

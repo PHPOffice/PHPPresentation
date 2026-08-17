@@ -46,6 +46,13 @@ class Series implements ComparableInterface
     protected $dataPointFills = [];
 
     /**
+     * DataPointOutlines (key/value).
+     *
+     * @var array<int, Outline>
+     */
+    protected $dataPointOutlines = [];
+
+    /**
      * Data Label Number Format.
      *
      * @var string
@@ -229,11 +236,64 @@ class Series implements ComparableInterface
     }
 
     /**
+     * @param int $dataPointIndex data point index
+     */
+    public function setDataPointFill(int $dataPointIndex, Fill $fill): self
+    {
+        $this->dataPointFills[$dataPointIndex] = $fill;
+
+        return $this;
+    }
+
+    /**
      * @return Fill[]
      */
     public function getDataPointFills(): array
     {
         return $this->dataPointFills;
+    }
+
+    /**
+     * @param int $dataPointIndex data point index
+     */
+    public function getDataPointOutline(int $dataPointIndex): Outline
+    {
+        if (!isset($this->dataPointOutlines[$dataPointIndex])) {
+            $this->dataPointOutlines[$dataPointIndex] = new Outline();
+        }
+
+        return $this->dataPointOutlines[$dataPointIndex];
+    }
+
+    /**
+     * @param int $dataPointIndex data point index
+     */
+    public function setDataPointOutline(int $dataPointIndex, Outline $outline): self
+    {
+        $this->dataPointOutlines[$dataPointIndex] = $outline;
+
+        return $this;
+    }
+
+    /**
+     * @return Outline[]
+     */
+    public function getDataPointOutlines(): array
+    {
+        return $this->dataPointOutlines;
+    }
+
+    /**
+     * The indexes of the data points carrying a fill or an outline of their own.
+     *
+     * @return array<int, int>
+     */
+    public function getDataPointIndexes(): array
+    {
+        $indexes = array_keys($this->dataPointFills + $this->dataPointOutlines);
+        sort($indexes);
+
+        return $indexes;
     }
 
     /**

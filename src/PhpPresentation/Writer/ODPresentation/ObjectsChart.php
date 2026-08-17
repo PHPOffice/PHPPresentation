@@ -677,10 +677,13 @@ class ObjectsChart extends AbstractDecoratorWriter
             || $chartType instanceof Radar
             || $chartType instanceof Scatter
         ) {
+            $dataPointOutlines = $series->getDataPointOutlines();
             $newFill = new Fill();
             $incRepeat = 0;
             for ($inc = 0; $inc < $numRange; ++$inc) {
-                if ($series->getDataPointFill($inc)->getHashCode() === $newFill->getHashCode()) {
+                if ($series->getDataPointFill($inc)->getHashCode() === $newFill->getHashCode()
+                    && !isset($dataPointOutlines[$inc])
+                ) {
                     // A data point taking the style of the serie : counted, written once the run ends
                     ++$incRepeat;
 
@@ -710,7 +713,7 @@ class ObjectsChart extends AbstractDecoratorWriter
                 $this->xmlContent->endElement();
             }
         } elseif ($chartType instanceof AbstractTypePie) {
-            $count = count($series->getDataPointFills());
+            $count = count($series->getDataPointIndexes());
             for ($inc = 0; $inc < $count; ++$inc) {
                 // chart:data-point
                 $this->xmlContent->startElement('chart:data-point');
@@ -847,20 +850,43 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > style:style
         $this->xmlContent->endElement();
 
-        foreach ($series->getDataPointFills() as $idx => $oFill) {
+        $dataPointFills = $series->getDataPointFills();
+        $dataPointOutlines = $series->getDataPointOutlines();
+        foreach ($series->getDataPointIndexes() as $idx) {
             // style:style
             $this->xmlContent->startElement('style:style');
             $this->xmlContent->writeAttribute('style:name', 'styleSeries' . $this->numSeries . '_' . $idx);
             $this->xmlContent->writeAttribute('style:family', 'chart');
             // style:graphic-properties
             $this->xmlContent->startElement('style:graphic-properties');
-            $this->xmlContent->writeAttribute('draw:fill', $oFill->getFillType());
-            $this->xmlContent->writeAttribute('draw:fill-color', '#' . $oFill->getStartColor()->getRGB());
+            if (isset($dataPointFills[$idx])) {
+                $this->xmlContent->writeAttribute('draw:fill', $dataPointFills[$idx]->getFillType());
+                $this->xmlContent->writeAttribute('draw:fill-color', '#' . $dataPointFills[$idx]->getStartColor()->getRGB());
+            }
+            if (isset($dataPointOutlines[$idx])) {
+                $this->writeDataPointOutline($dataPointOutlines[$idx]);
+            }
             // > style:graphic-properties
             $this->xmlContent->endElement();
             // > style:style
             $this->xmlContent->endElement();
         }
+    }
+
+    /**
+     * Write the stroke of a data point, as attributes of the graphic properties of its style.
+     */
+    protected function writeDataPointOutline(Outline $oOutline): void
+    {
+        if (Fill::FILL_NONE == $oOutline->getFill()->getFillType()) {
+            $this->xmlContent->writeAttribute('draw:stroke', 'none');
+
+            return;
+        }
+
+        $this->xmlContent->writeAttribute('draw:stroke', 'solid');
+        $this->xmlContent->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pixelsToCentimeters($oOutline->getWidth()), 3, '.', '') . 'cm');
+        $this->xmlContent->writeAttribute('svg:stroke-color', '#' . $oOutline->getFill()->getStartColor()->getRGB());
     }
 
     protected function writeTable(): void

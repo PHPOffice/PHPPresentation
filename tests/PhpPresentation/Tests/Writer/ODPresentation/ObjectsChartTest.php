@@ -800,6 +800,39 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testDataPointOutlines(): void
+    {
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        // A slice with a white border of its own
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
+        $oSeries->getDataPointOutline(0)->setWidth(2)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFFFFFFF'));
+        // A slice made invisible : no fill and no border
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_NONE);
+        $oSeries->getDataPointOutline(1)->getFill()->setFillType(Fill::FILL_NONE);
+        // A slice carrying an outline only
+        $oSeries->getDataPointOutline(2)->setWidth(1)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
+        $oDoughnut = new Doughnut();
+        $oDoughnut->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oDoughnut);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0_0\']/style:graphic-properties';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:stroke', 'solid');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#FFFFFF');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'svg:stroke-width');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0_1\']/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:stroke', 'none');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0_2\']/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:stroke', 'solid');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#AB4744');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'draw:fill');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testTypeBarHorizontal(): void
     {
         $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);

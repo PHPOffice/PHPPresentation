@@ -1317,6 +1317,8 @@ class PowerPoint2007 implements ReaderInterface
                                 );
                             }
 
+                            $this->loadSeriesDataPoints($xmlReader, $elementSerie, $series);
+
                             if ($elementShowLegendKey = $xmlReader->getElement('c:dLbls/c:showLegendKey', $elementSerie)) {
                                 $series->setShowLegendKey((bool) $elementShowLegendKey->getAttribute('val'));
                             }
@@ -1679,6 +1681,39 @@ class PowerPoint2007 implements ReaderInterface
         }
 
         return $oColor;
+    }
+
+    /**
+     * Read the fill and the outline carried by the data points of a serie.
+     *
+     * @param DOMElement $oElement the `c:ser` element of the serie
+     */
+    protected function loadSeriesDataPoints(XMLReader $xmlReader, DOMElement $oElement, Chart\Series $series): void
+    {
+        foreach ($xmlReader->getElements('c:dPt', $oElement) as $oElementDataPoint) {
+            if (!$oElementDataPoint instanceof DOMElement) {
+                continue;
+            }
+            $oElementIndex = $xmlReader->getElement('c:idx', $oElementDataPoint);
+            $oElementProperties = $xmlReader->getElement('c:spPr', $oElementDataPoint);
+            if (!$oElementIndex instanceof DOMElement || !$oElementProperties instanceof DOMElement) {
+                continue;
+            }
+            $index = (int) $oElementIndex->getAttribute('val');
+
+            $oFill = $this->loadStyleFill($xmlReader, $oElementProperties);
+            if ($oFill) {
+                $series->setDataPointFill($index, $oFill);
+            } elseif ($xmlReader->getElement('a:noFill', $oElementProperties) instanceof DOMElement) {
+                // A data point stating that it has no fill of its own
+                $series->setDataPointFill($index, new Fill());
+            }
+
+            $oOutline = $this->loadStyleOutline($xmlReader, $oElementProperties);
+            if ($oOutline) {
+                $series->setDataPointOutline($index, $oOutline);
+            }
+        }
     }
 
     protected function loadStyleFill(XMLReader $xmlReader, DOMElement $oElement): ?Fill

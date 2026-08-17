@@ -1001,6 +1001,44 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testDataPointOutlines(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oDoughnut = new Doughnut();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        // A segment with a white border of its own
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+        $oSeries->getDataPointOutline(0)->setWidth(2)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_WHITE));
+        // A segment made invisible : no fill and no border
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_NONE);
+        $oSeries->getDataPointOutline(1)->getFill()->setFillType(Fill::FILL_NONE);
+        // A segment carrying an outline only
+        $oSeries->getDataPointOutline(2)->setWidth(1)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKRED));
+        $oDoughnut->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oDoughnut);
+
+        $basePath = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:ser';
+
+        $element = $basePath . '/c:dPt[1]/c:spPr/a:ln';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pixelsToEmu(2));
+        $element = $basePath . '/c:dPt[1]/c:spPr/a:ln/a:solidFill/a:srgbClr';
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', (new Color(Color::COLOR_WHITE))->getRGB());
+
+        $element = $basePath . '/c:dPt[2]/c:spPr/a:noFill';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = $basePath . '/c:dPt[2]/c:spPr/a:ln/a:noFill';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+
+        $element = $basePath . '/c:dPt[3]/c:idx';
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 2);
+        $element = $basePath . '/c:dPt[3]/c:spPr/a:ln/a:solidFill/a:srgbClr';
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', (new Color(Color::COLOR_DARKRED))->getRGB());
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testTypeDoughnut(): void
     {
         $randHoleSize = mt_rand(10, 90);

@@ -380,6 +380,27 @@ $series = new Series('Downloads', $seriesData);
 $series->setOutline($outline);
 ```
 
+#### Data points
+Each data point of a serie can carry a fill and an outline of its own, which overrides the ones of the serie.
+A data point styled this way is written whether it defines a fill, an outline, or both.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
+
+$series = new Series('Downloads', $seriesData);
+// A slice with a white border
+$series->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+$series->getDataPointOutline(0)->setWidth(2)->getFill()
+    ->setFillType(Fill::FILL_SOLID)
+    ->setStartColor(new Color(Color::COLOR_WHITE));
+// A slice made invisible, for the flat side of a gauge
+$series->getDataPointFill(1)->setFillType(Fill::FILL_NONE);
+$series->getDataPointOutline(1)->getFill()->setFillType(Fill::FILL_NONE);
+```
+
 ### View3D
 
 For enabling the autoscale for a shape, you must reset the height percent.
