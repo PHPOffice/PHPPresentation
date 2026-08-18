@@ -556,9 +556,6 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Shape Drawing.
-     */
-    /**
      * Read the description of a shape, the alternative text exposed to assistive
      * technologies. Falls back to the shape name, as written by older versions.
      */
@@ -572,6 +569,9 @@ class ODPresentation implements ReaderInterface
         return $oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '';
     }
 
+    /**
+     * Read Shape Drawing.
+     */
     protected function loadShapeDrawing(DOMElement $oNodeFrame): void
     {
         // Core

@@ -403,9 +403,6 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write picture.
-     */
-    /**
      * Write the description of a shape, exposed to assistive technologies as the
      * alternative text. It has to be the first child of the shape element.
      */
@@ -418,6 +415,9 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeElement('svg:desc', $shape->getDescription());
     }
 
+    /**
+     * Write picture.
+     */
     protected function writeShapeMedia(XMLWriter $objWriter, Media $shape): void
     {
         // draw:frame
