@@ -1068,6 +1068,24 @@ class ODPresentationTest extends TestCase
         self::assertEquals('TEST IMAGE', $oElement->getText());
     }
 
+    public function testShapeDecorative(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->setDecorative()->createTextRun('Decorative');
+        $oSlide->createRichTextShape()->createTextRun('Meaningful');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(2, $arrayShape);
+        self::assertTrue($arrayShape[0]->isDecorative());
+        self::assertFalse($arrayShape[1]->isDecorative());
+    }
+
     public function testShapeDescription(): void
     {
         $oPhpPresentation = new PhpPresentation();

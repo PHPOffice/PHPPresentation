@@ -126,6 +126,13 @@ abstract class AbstractShape implements ComparableInterface
     protected $description = '';
 
     /**
+     * Decorative, ie the shape is ignored by assistive technologies.
+     *
+     * @var bool
+     */
+    protected $decorative = false;
+
+    /**
      * Create a new self.
      */
     public function __construct()
@@ -241,6 +248,26 @@ abstract class AbstractShape implements ComparableInterface
     public function setDescription(string $pValue = ''): self
     {
         $this->description = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Is the shape decorative, ie ignored by assistive technologies?
+     */
+    public function isDecorative(): bool
+    {
+        return $this->decorative;
+    }
+
+    /**
+     * Set the shape as decorative, ie ignored by assistive technologies.
+     *
+     * @return static
+     */
+    public function setDecorative(bool $pValue = true): self
+    {
+        $this->decorative = $pValue;
 
         return $this;
     }

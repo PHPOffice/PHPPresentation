@@ -54,6 +54,17 @@ class AbstractShapeTest extends TestCase
         self::assertInstanceOf(Shadow::class, $object->getShadow());
     }
 
+    public function testDecorative(): void
+    {
+        $object = new RichText();
+
+        self::assertFalse($object->isDecorative());
+        self::assertInstanceOf(AbstractShape::class, $object->setDecorative());
+        self::assertTrue($object->isDecorative());
+        self::assertInstanceOf(AbstractShape::class, $object->setDecorative(false));
+        self::assertFalse($object->isDecorative());
+    }
+
     public function testDescription(): void
     {
         $object = new RichText();

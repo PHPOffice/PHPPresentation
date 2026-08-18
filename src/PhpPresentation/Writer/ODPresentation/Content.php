@@ -403,6 +403,21 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * Write the decorative flag of a shape, ie the shape is ignored by assistive
+     * technologies. It has to be written before any child of the shape element.
+     *
+     * ODF has no such attribute before version 1.4, so the LibreOffice extension is used.
+     */
+    protected function writeShapeDecorative(XMLWriter $objWriter, AbstractShape $shape): void
+    {
+        if (!$shape->isDecorative()) {
+            return;
+        }
+
+        $objWriter->writeAttribute('loext:decorative', 'true');
+    }
+
+    /**
      * Write the description of a shape, exposed to assistive technologies as the
      * alternative text. It has to be the first child of the shape element.
      */
@@ -428,6 +443,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
+        $this->writeShapeDecorative($objWriter, $shape);
         // draw:frame > draw:plugin
         $objWriter->startElement('draw:plugin');
         $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
@@ -475,6 +491,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
+        $this->writeShapeDecorative($objWriter, $shape);
         // draw:image
         $objWriter->startElement('draw:image');
         $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
@@ -530,6 +547,7 @@ class Content extends AbstractDecoratorWriter
             $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
             $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         }
+        $this->writeShapeDecorative($objWriter, $shape);
         // draw:text-box
         $objWriter->startElement('draw:text-box');
 
@@ -709,6 +727,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:x2', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX() + $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y2', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY() + $shape->getHeight()), 3) . 'cm');
 
+        $this->writeShapeDecorative($objWriter, $shape);
         $this->writeShapeDescription($objWriter, $shape);
 
         // text:p
@@ -728,6 +747,8 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
+
+        $this->writeShapeDecorative($objWriter, $shape);
 
         $arrayRows = $shape->getRows();
         if (!empty($arrayRows)) {
@@ -831,6 +852,8 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
 
+        $this->writeShapeDecorative($objWriter, $shape);
+
         // draw:object
         $objWriter->startElement('draw:object');
         $objWriter->writeAttribute('xlink:href', './Object ' . $this->shapeId);
@@ -854,6 +877,7 @@ class Content extends AbstractDecoratorWriter
         // draw:g
         $objWriter->startElement('draw:g');
 
+        $this->writeShapeDecorative($objWriter, $group);
         $this->writeShapeDescription($objWriter, $group);
 
         $shapes = $group->getShapeCollection();

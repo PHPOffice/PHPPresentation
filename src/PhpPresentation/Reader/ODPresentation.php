@@ -570,6 +570,20 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
+     * Read the decorative flag of a shape.
+     *
+     * @return bool false when the shape says nothing about it
+     */
+    protected function loadShapeDecorative(DOMElement $oNodeFrame): bool
+    {
+        if (!$oNodeFrame->hasAttribute('loext:decorative')) {
+            return false;
+        }
+
+        return 'true' === $oNodeFrame->getAttribute('loext:decorative');
+    }
+
+    /**
      * Read Shape Drawing.
      */
     protected function loadShapeDrawing(DOMElement $oNodeFrame): void
@@ -608,6 +622,7 @@ class ODPresentation implements ReaderInterface
         $shape->getShadow()->setVisible(false);
         $shape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
         $shape->setDescription($this->loadShapeDescription($oNodeFrame));
+        $shape->setDecorative($this->loadShapeDecorative($oNodeFrame));
         $shape->setResizeProportional(false);
         $shape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $shape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
@@ -636,6 +651,7 @@ class ODPresentation implements ReaderInterface
         $oShape->setParagraphs([]);
 
         $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
+        $oShape->setDecorative($this->loadShapeDecorative($oNodeFrame));
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);

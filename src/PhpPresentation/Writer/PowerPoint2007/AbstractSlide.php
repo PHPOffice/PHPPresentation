@@ -154,6 +154,48 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     }
 
     /**
+     * Write the decorative flag of a shape. It is an extension of `p:cNvPr`, so it has to be
+     * written as its last child.
+     *
+     * @param XMLWriter $objWriter XML Writer
+     */
+    protected function writeShapeDecorative(XMLWriter $objWriter, AbstractShape $shape): void
+    {
+        if (!$shape->isDecorative()) {
+            return;
+        }
+
+        // a:extLst
+        $objWriter->startElement('a:extLst');
+        $this->writeShapeDecorativeExtension($objWriter, $shape);
+        // > a:extLst
+        $objWriter->endElement();
+    }
+
+    /**
+     * Write the decorative extension of a shape, for callers writing their own `a:extLst`.
+     *
+     * @param XMLWriter $objWriter XML Writer
+     */
+    protected function writeShapeDecorativeExtension(XMLWriter $objWriter, AbstractShape $shape): void
+    {
+        if (!$shape->isDecorative()) {
+            return;
+        }
+
+        // a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('uri', '{C183D7F6-B498-43B3-948B-1728B52AA6E4}');
+        // a:ext\adec:decorative
+        $objWriter->startElement('adec:decorative');
+        $objWriter->writeAttribute('xmlns:adec', 'http://schemas.microsoft.com/office/drawing/2017/decorative');
+        $objWriter->writeAttribute('val', '1');
+        $objWriter->endElement();
+        // > a:ext
+        $objWriter->endElement();
+    }
+
+    /**
      * Write txt.
      *
      * @param XMLWriter $objWriter XML Writer
@@ -177,6 +219,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         if ($shape->hasHyperlink()) {
             $this->writeHyperlink($objWriter, $shape);
         }
+        $this->writeShapeDecorative($objWriter, $shape);
         // > p:sp\p:nvSpPr
         $objWriter->endElement();
         // p:sp\p:nvSpPr\p:cNvSpPr
@@ -338,6 +381,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
+        $this->writeShapeDecorative($objWriter, $shape);
         $objWriter->endElement();
         // p:graphicFrame/p:nvGraphicFramePr/p:cNvGraphicFramePr
         $objWriter->startElement('p:cNvGraphicFramePr');
@@ -719,6 +763,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', '');
         $objWriter->writeAttribute('descr', $shape->getDescription());
+        $this->writeShapeDecorative($objWriter, $shape);
         $objWriter->endElement();
         // p:cNvCxnSpPr
         $objWriter->writeElement('p:cNvCxnSpPr', null);
@@ -1158,6 +1203,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
+        $this->writeShapeDecorative($objWriter, $shape);
         // p:sp\p:nvSpPr\p:cNvPr\
         $objWriter->endElement();
         // p:sp\p:nvSpPr\p:cNvSpPr
@@ -1274,6 +1320,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
+        $this->writeShapeDecorative($objWriter, $shape);
         $objWriter->endElement();
         // p:cNvGraphicFramePr
         $objWriter->writeElement('p:cNvGraphicFramePr', null);
@@ -1340,15 +1387,19 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $this->writeHyperlink($objWriter, $shape);
         }
 
-        if ($shape instanceof AbstractDrawingAdapter && $shape->getExtension() == 'svg') {
+        $hasCreationId = $shape instanceof AbstractDrawingAdapter && $shape->getExtension() == 'svg';
+        if ($hasCreationId || $shape->isDecorative()) {
             $objWriter->startElement('a:extLst');
-            $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('uri', '{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}');
-            $objWriter->startElement('a16:creationId');
-            $objWriter->writeAttribute('xmlns:a16', 'http://schemas.microsoft.com/office/drawing/2014/main');
-            $objWriter->writeAttribute('id', '{F8CFD691-5332-EB49-9B42-7D7B3DB9185D}');
-            $objWriter->endElement();
-            $objWriter->endElement();
+            if ($hasCreationId) {
+                $objWriter->startElement('a:ext');
+                $objWriter->writeAttribute('uri', '{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}');
+                $objWriter->startElement('a16:creationId');
+                $objWriter->writeAttribute('xmlns:a16', 'http://schemas.microsoft.com/office/drawing/2014/main');
+                $objWriter->writeAttribute('id', '{F8CFD691-5332-EB49-9B42-7D7B3DB9185D}');
+                $objWriter->endElement();
+                $objWriter->endElement();
+            }
+            $this->writeShapeDecorativeExtension($objWriter, $shape);
             $objWriter->endElement();
         }
 
@@ -1500,6 +1551,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('name', 'Group ' . $shapeId++);
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('descr', $group->getDescription());
+        $this->writeShapeDecorative($objWriter, $group);
         $objWriter->endElement(); // p:cNvPr
         // NOTE: Re: $shapeId This seems to be how PowerPoint 2010 does business.
         // p:cNvGrpSpPr
