@@ -1694,4 +1694,28 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement, 'show', 0);
         $this->assertIsSchemaECMA376Valid();
     }
+
+    public function testSlideName(): void
+    {
+        $element = '/p:sld/p:cSld';
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'name');
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->oPresentation->getActiveSlide()->setName('AAAA');
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $element, 'name');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'name', 'AAAA');
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->oPresentation->getActiveSlide()->setName();
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'name');
+        $this->assertIsSchemaECMA376Valid();
+    }
 }
