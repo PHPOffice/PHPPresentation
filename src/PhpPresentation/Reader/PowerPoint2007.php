@@ -1796,6 +1796,12 @@ class PowerPoint2007 implements ReaderInterface
                     $this->loadShapeRichText($xmlReader, $oNode, $oSlide);
 
                     break;
+
+                case 'p:grpSp':
+                    $oNodes = $document->getElements('*', $oNode);
+                    $this->loadSlideShapes($document, $oSlide, $oNodes, $xmlReader);
+
+                    break;
                 default:
                     //throw new FeatureNotImplementedException();
             }
