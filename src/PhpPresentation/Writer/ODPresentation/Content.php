@@ -403,6 +403,21 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * Write the decorative flag of a shape, ie the shape is ignored by assistive
+     * technologies. It has to be written before any child of the shape element.
+     *
+     * ODF has no such attribute before version 1.4, so the LibreOffice extension is used.
+     */
+    protected function writeShapeDecorative(XMLWriter $objWriter, AbstractShape $shape): void
+    {
+        if (!$shape->isDecorative()) {
+            return;
+        }
+
+        $objWriter->writeAttribute('loext:decorative', 'true');
+    }
+
+    /**
      * Write the description of a shape, exposed to assistive technologies as the
      * alternative text. It has to be the first child of the shape element.
      */
@@ -418,21 +433,6 @@ class Content extends AbstractDecoratorWriter
     /**
      * Write picture.
      */
-    /**
-     * Write the decorative flag of a shape, ie the shape is ignored by assistive
-     * technologies. It has to be written before any child of the shape element.
-     *
-     * ODF has no such attribute before version 1.4, so the LibreOffice extension is used.
-     */
-    protected function writeShapeDecorative(XMLWriter $objWriter, AbstractShape $shape): void
-    {
-        if (null === $shape->isDecorative()) {
-            return;
-        }
-
-        $objWriter->writeAttribute('loext:decorative', $shape->isDecorative() ? 'true' : 'false');
-    }
-
     protected function writeShapeMedia(XMLWriter $objWriter, Media $shape): void
     {
         // draw:frame

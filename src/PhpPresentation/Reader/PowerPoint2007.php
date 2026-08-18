@@ -810,14 +810,14 @@ class PowerPoint2007 implements ReaderInterface
      *
      * @param DOMElement $node the `p:cNvPr` element of the shape
      *
-     * @return null|bool null when the shape says nothing about it
+     * @return bool false when the shape says nothing about it
      */
-    protected function loadShapeDecorative(XMLReader $document, DOMElement $node): ?bool
+    protected function loadShapeDecorative(XMLReader $document, DOMElement $node): bool
     {
         $document->registerNamespace('adec', 'http://schemas.microsoft.com/office/drawing/2017/decorative');
         $oElement = $document->getElement('a:extLst/a:ext[@uri="{C183D7F6-B498-43B3-948B-1728B52AA6E4}"]/adec:decorative', $node);
         if (!$oElement instanceof DOMElement) {
-            return null;
+            return false;
         }
 
         return in_array($oElement->getAttribute('val'), ['1', 'true'], true);

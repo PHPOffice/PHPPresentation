@@ -161,7 +161,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      */
     protected function writeShapeDecorative(XMLWriter $objWriter, AbstractShape $shape): void
     {
-        if (null === $shape->isDecorative()) {
+        if (!$shape->isDecorative()) {
             return;
         }
 
@@ -179,7 +179,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      */
     protected function writeShapeDecorativeExtension(XMLWriter $objWriter, AbstractShape $shape): void
     {
-        if (null === $shape->isDecorative()) {
+        if (!$shape->isDecorative()) {
             return;
         }
 
@@ -189,7 +189,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // a:ext\adec:decorative
         $objWriter->startElement('adec:decorative');
         $objWriter->writeAttribute('xmlns:adec', 'http://schemas.microsoft.com/office/drawing/2017/decorative');
-        $objWriter->writeAttribute('val', $shape->isDecorative() ? '1' : '0');
+        $objWriter->writeAttribute('val', '1');
         $objWriter->endElement();
         // > a:ext
         $objWriter->endElement();
@@ -1388,7 +1388,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         }
 
         $hasCreationId = $shape instanceof AbstractDrawingAdapter && $shape->getExtension() == 'svg';
-        if ($hasCreationId || null !== $shape->isDecorative()) {
+        if ($hasCreationId || $shape->isDecorative()) {
             $objWriter->startElement('a:extLst');
             if ($hasCreationId) {
                 $objWriter->startElement('a:ext');

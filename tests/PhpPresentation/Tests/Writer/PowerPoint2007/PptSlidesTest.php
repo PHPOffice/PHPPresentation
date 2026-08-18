@@ -174,7 +174,7 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         $this->resetPresentationFile();
-        $oRichText->setDecorative(false);
+        $oRichText->setDecorative();
 
         $expectedElement = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr/a:extLst/a:ext';
         $this->assertZipXmlAttributeEquals(
@@ -183,7 +183,7 @@ class PptSlidesTest extends PhpPresentationTestCase
             'uri',
             '{C183D7F6-B498-43B3-948B-1728B52AA6E4}'
         );
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement . '/adec:decorative', 'val', '0');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement . '/adec:decorative', 'val', '1');
         $this->assertIsSchemaECMA376Valid();
     }
 

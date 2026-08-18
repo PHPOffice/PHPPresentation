@@ -572,12 +572,12 @@ class ODPresentation implements ReaderInterface
     /**
      * Read the decorative flag of a shape.
      *
-     * @return null|bool null when the shape says nothing about it
+     * @return bool false when the shape says nothing about it
      */
-    protected function loadShapeDecorative(DOMElement $oNodeFrame): ?bool
+    protected function loadShapeDecorative(DOMElement $oNodeFrame): bool
     {
         if (!$oNodeFrame->hasAttribute('loext:decorative')) {
-            return null;
+            return false;
         }
 
         return 'true' === $oNodeFrame->getAttribute('loext:decorative');

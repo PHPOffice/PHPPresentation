@@ -58,13 +58,11 @@ class AbstractShapeTest extends TestCase
     {
         $object = new RichText();
 
-        self::assertNull($object->isDecorative());
+        self::assertFalse($object->isDecorative());
         self::assertInstanceOf(AbstractShape::class, $object->setDecorative());
         self::assertTrue($object->isDecorative());
         self::assertInstanceOf(AbstractShape::class, $object->setDecorative(false));
         self::assertFalse($object->isDecorative());
-        self::assertInstanceOf(AbstractShape::class, $object->setDecorative(null));
-        self::assertNull($object->isDecorative());
     }
 
     public function testDescription(): void

@@ -127,11 +127,10 @@ abstract class AbstractShape implements ComparableInterface
 
     /**
      * Decorative, ie the shape is ignored by assistive technologies.
-     * Null when the document says nothing about it.
      *
-     * @var null|bool
+     * @var bool
      */
-    protected $decorative;
+    protected $decorative = false;
 
     /**
      * Create a new self.
@@ -255,20 +254,18 @@ abstract class AbstractShape implements ComparableInterface
 
     /**
      * Is the shape decorative, ie ignored by assistive technologies?
-     * Null when the document says nothing about it.
      */
-    public function isDecorative(): ?bool
+    public function isDecorative(): bool
     {
         return $this->decorative;
     }
 
     /**
      * Set the shape as decorative, ie ignored by assistive technologies.
-     * Null removes the information from the document.
      *
      * @return static
      */
-    public function setDecorative(?bool $pValue = true): self
+    public function setDecorative(bool $pValue = true): self
     {
         $this->decorative = $pValue;
 

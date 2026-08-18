@@ -1126,8 +1126,7 @@ class PowerPoint2007Test extends TestCase
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oSlide->createRichTextShape()->setDecorative()->createTextRun('Decorative');
-        $oSlide->createRichTextShape()->setDecorative(false)->createTextRun('Meaningful');
-        $oSlide->createRichTextShape()->createTextRun('Unspecified');
+        $oSlide->createRichTextShape()->createTextRun('Meaningful');
 
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
         (new PowerPoint2007Writer($oPhpPresentation))->save($file);
@@ -1135,10 +1134,9 @@ class PowerPoint2007Test extends TestCase
         unlink($file);
 
         $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
-        self::assertCount(3, $arrayShape);
+        self::assertCount(2, $arrayShape);
         self::assertTrue($arrayShape[0]->isDecorative());
         self::assertFalse($arrayShape[1]->isDecorative());
-        self::assertNull($arrayShape[2]->isDecorative());
     }
 
     public function testShapeDescription(): void
