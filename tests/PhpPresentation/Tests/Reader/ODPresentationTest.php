@@ -22,8 +22,8 @@ namespace PhpOffice\PhpPresentation\Tests\Reader;
 
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
-use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
