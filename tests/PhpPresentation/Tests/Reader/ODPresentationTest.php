@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests\Reader;
 
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
+use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
@@ -30,6 +31,7 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Writer\ODPresentation as ODPresentationWriter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -1064,5 +1066,33 @@ class ODPresentationTest extends TestCase
         $oElement = reset($arrayElements);
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $oElement);
         self::assertEquals('TEST IMAGE', $oElement->getText());
+    }
+
+    public function testShapeDescription(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->setDescription('Budget spent to date: 45% of 1.2M EUR');
+        $oRichText->createTextRun('45%');
+        $oDrawing = $oSlide->createDrawingShape();
+        $oDrawing->setName('Logo');
+        $oDrawing->setDescription('The logo of the company');
+        $oDrawing->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        // Written by an earlier version: no `svg:desc`, the name is all the shape says.
+        $oLegacy = $oSlide->createDrawingShape();
+        $oLegacy->setName('Legacy');
+        $oLegacy->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(3, $arrayShape);
+        self::assertEquals('Budget spent to date: 45% of 1.2M EUR', $arrayShape[0]->getDescription());
+        self::assertEquals('The logo of the company', $arrayShape[1]->getDescription());
+        self::assertEquals('Legacy', $arrayShape[2]->getDescription());
     }
 }

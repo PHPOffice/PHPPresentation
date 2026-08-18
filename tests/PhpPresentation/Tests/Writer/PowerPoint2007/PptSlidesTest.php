@@ -153,6 +153,53 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testShapeDescription(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+        $oRichText->setDescription('RichText Alternative Text');
+
+        $oAutoShape = new AutoShape();
+        $oAutoShape->setDescription('AutoShape Alternative Text');
+        $oSlide->addShape($oAutoShape);
+
+        $oGroup = new Group();
+        $oGroup->setDescription('Group Alternative Text');
+        $oGroup->addShape(new AutoShape());
+        $oSlide->addShape($oGroup);
+
+        $oLine = $oSlide->createLineShape(10, 10, 100, 100);
+        $oLine->setDescription('Line Alternative Text');
+
+        $this->assertZipXmlAttributeEquals(
+            'ppt/slides/slide1.xml',
+            '/p:sld/p:cSld/p:spTree/p:sp[1]/p:nvSpPr/p:cNvPr',
+            'descr',
+            'RichText Alternative Text'
+        );
+        $this->assertZipXmlAttributeEquals(
+            'ppt/slides/slide1.xml',
+            '/p:sld/p:cSld/p:spTree/p:sp[2]/p:nvSpPr/p:cNvPr',
+            'descr',
+            'AutoShape Alternative Text'
+        );
+        $this->assertZipXmlAttributeEquals(
+            'ppt/slides/slide1.xml',
+            '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr',
+            'descr',
+            'Group Alternative Text'
+        );
+        $this->assertZipXmlAttributeEquals(
+            'ppt/slides/slide1.xml',
+            '/p:sld/p:cSld/p:spTree/p:cxnSp/p:nvCxnSpPr/p:cNvPr',
+            'descr',
+            'Line Alternative Text'
+        );
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testAutoShape(): void
     {
         $autoShape = new AutoShape();

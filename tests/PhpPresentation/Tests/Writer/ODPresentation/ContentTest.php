@@ -25,6 +25,7 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Comment;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
@@ -83,6 +84,41 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeNotExists('content.xml', $element, 'dc:creator');
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testShapeDescription(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+        $oRichText->setDescription('RichText Alternative Text');
+
+        $oLine = $oSlide->createLineShape(10, 10, 100, 100);
+        $oLine->setDescription('Line Alternative Text');
+
+        $oGroup = new Group();
+        $oGroup->setDescription('Group Alternative Text');
+        $oGroup->createRichTextShape()->createTextRun('BBB');
+        $oSlide->addShape($oGroup);
+
+        $basePath = '/office:document-content/office:body/office:presentation/draw:page';
+        $this->assertZipXmlElementEquals('content.xml', $basePath . '/draw:frame/svg:desc', 'RichText Alternative Text');
+        $this->assertZipXmlElementEquals('content.xml', $basePath . '/draw:line/svg:desc', 'Line Alternative Text');
+        $this->assertZipXmlElementEquals('content.xml', $basePath . '/draw:g/svg:desc', 'Group Alternative Text');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testShapeDescriptionOmittedWhenEmpty(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+
+        $this->assertZipXmlElementNotExists(
+            'content.xml',
+            '/office:document-content/office:body/office:presentation/draw:page/draw:frame/svg:desc'
+        );
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testDrawingMimetype(): void

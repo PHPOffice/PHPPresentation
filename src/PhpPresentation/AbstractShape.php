@@ -119,6 +119,13 @@ abstract class AbstractShape implements ComparableInterface
     protected $name = '';
 
     /**
+     * Description, exposed to assistive technologies as the alternative text.
+     *
+     * @var string
+     */
+    protected $description = '';
+
+    /**
      * Create a new self.
      */
     public function __construct()
@@ -214,6 +221,26 @@ abstract class AbstractShape implements ComparableInterface
     public function setName(string $pValue = ''): self
     {
         $this->name = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get Description.
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set Description.
+     *
+     * @return static
+     */
+    public function setDescription(string $pValue = ''): self
+    {
+        $this->description = $pValue;
 
         return $this;
     }

@@ -24,6 +24,7 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Comment;
@@ -402,6 +403,19 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * Write the description of a shape, exposed to assistive technologies as the
+     * alternative text. It has to be the first child of the shape element.
+     */
+    protected function writeShapeDescription(XMLWriter $objWriter, AbstractShape $shape): void
+    {
+        if ('' === $shape->getDescription()) {
+            return;
+        }
+
+        $objWriter->writeElement('svg:desc', $shape->getDescription());
+    }
+
+    /**
      * Write picture.
      */
     protected function writeShapeMedia(XMLWriter $objWriter, Media $shape): void
@@ -441,6 +455,8 @@ class Content extends AbstractDecoratorWriter
 
         // draw:frame > ## draw:plugin
         $objWriter->endElement();
+
+        $this->writeShapeDescription($objWriter, $shape);
 
         // ## draw:frame
         $objWriter->endElement();
@@ -485,6 +501,8 @@ class Content extends AbstractDecoratorWriter
             // > office:event-listeners
             $objWriter->endElement();
         }
+
+        $this->writeShapeDescription($objWriter, $shape);
 
         $objWriter->endElement();
     }
@@ -653,6 +671,9 @@ class Content extends AbstractDecoratorWriter
 
         // > draw:text-box
         $objWriter->endElement();
+
+        $this->writeShapeDescription($objWriter, $shape);
+
         // > draw:frame
         $objWriter->endElement();
     }
@@ -687,6 +708,8 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:y1', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x2', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX() + $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y2', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY() + $shape->getHeight()), 3) . 'cm');
+
+        $this->writeShapeDescription($objWriter, $shape);
 
         // text:p
         $objWriter->writeElement('text:p');
@@ -784,6 +807,9 @@ class Content extends AbstractDecoratorWriter
             // > table:table
             $objWriter->endElement();
         }
+
+        $this->writeShapeDescription($objWriter, $shape);
+
         // > draw:frame
         $objWriter->endElement();
     }
@@ -813,6 +839,9 @@ class Content extends AbstractDecoratorWriter
 
         // > draw:object
         $objWriter->endElement();
+
+        $this->writeShapeDescription($objWriter, $shape);
+
         // > draw:frame
         $objWriter->endElement();
     }
@@ -824,6 +853,8 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:g
         $objWriter->startElement('draw:g');
+
+        $this->writeShapeDescription($objWriter, $group);
 
         $shapes = $group->getShapeCollection();
         foreach ($shapes as $shape) {

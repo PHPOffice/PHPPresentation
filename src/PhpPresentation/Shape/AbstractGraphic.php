@@ -43,13 +43,6 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     private $imageIndex = 0;
 
     /**
-     * Description.
-     *
-     * @var string
-     */
-    protected $description;
-
-    /**
      * Proportional resize.
      *
      * @var bool
@@ -70,7 +63,6 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     {
         // Initialise values
         $this->name = '';
-        $this->description = '';
         $this->resizeProportional = true;
 
         // Set image index
@@ -97,30 +89,6 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     public function getImageIndex()
     {
         return $this->imageIndex;
-    }
-
-    /**
-     * Get Description.
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set Description.
-     *
-     * @param string $pValue
-     *
-     * @return $this
-     */
-    public function setDescription($pValue = '')
-    {
-        $this->description = $pValue;
-
-        return $this;
     }
 
     /**

@@ -172,6 +172,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         } else {
             $objWriter->writeAttribute('name', $shape->getName());
         }
+        $objWriter->writeAttribute('descr', $shape->getDescription());
         // Hyperlink
         if ($shape->hasHyperlink()) {
             $this->writeHyperlink($objWriter, $shape);
@@ -717,6 +718,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:cNvPr');
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', '');
+        $objWriter->writeAttribute('descr', $shape->getDescription());
         $objWriter->endElement();
         // p:cNvCxnSpPr
         $objWriter->writeElement('p:cNvCxnSpPr', null);
@@ -1154,8 +1156,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:sp\p:nvSpPr\p:cNvPr
         $objWriter->startElement('p:cNvPr');
         $objWriter->writeAttribute('id', $shapeId);
-        $objWriter->writeAttribute('name', '');
-        $objWriter->writeAttribute('descr', '');
+        $objWriter->writeAttribute('name', $shape->getName());
+        $objWriter->writeAttribute('descr', $shape->getDescription());
         // p:sp\p:nvSpPr\p:cNvPr\
         $objWriter->endElement();
         // p:sp\p:nvSpPr\p:cNvSpPr
@@ -1497,6 +1499,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:cNvPr');
         $objWriter->writeAttribute('name', 'Group ' . $shapeId++);
         $objWriter->writeAttribute('id', $shapeId);
+        $objWriter->writeAttribute('descr', $group->getDescription());
         $objWriter->endElement(); // p:cNvPr
         // NOTE: Re: $shapeId This seems to be how PowerPoint 2010 does business.
         // p:cNvGrpSpPr

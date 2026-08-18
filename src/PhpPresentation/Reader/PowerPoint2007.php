@@ -969,6 +969,7 @@ class PowerPoint2007 implements ReaderInterface
         $oElement = $document->getElement('p:nvSpPr/p:cNvPr', $node);
         if ($oElement instanceof DOMElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
+            $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
         }
 
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
