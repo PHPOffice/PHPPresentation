@@ -1196,4 +1196,19 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('Budget spent to date: 45% of 1.2M EUR', $arrayShape[0]->getDescription());
         self::assertEquals('', $arrayShape[1]->getDescription());
     }
+
+    public function testSlideName(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->setName('Introduction');
+        $oPhpPresentation->createSlide();
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        self::assertEquals('Introduction', $oPhpPresentationRead->getSlide(0)->getName());
+        self::assertNull($oPhpPresentationRead->getSlide(1)->getName());
+    }
 }

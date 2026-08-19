@@ -455,6 +455,12 @@ class PowerPoint2007 implements ReaderInterface
             $this->oPhpPresentation->setActiveSlideIndex($this->oPhpPresentation->getSlideCount() - 1);
             $oSlide->setRelsIndex('ppt/slides/_rels/' . $baseFile . '.rels');
 
+            // Name
+            $oElement = $xmlReader->getElement('/p:sld/p:cSld');
+            if ($oElement instanceof DOMElement && $oElement->hasAttribute('name')) {
+                $oSlide->setName($oElement->getAttribute('name'));
+            }
+
             // Background
             $oElement = $xmlReader->getElement('/p:sld/p:cSld/p:bg/p:bgPr');
             if ($oElement instanceof DOMElement) {

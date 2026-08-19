@@ -352,6 +352,7 @@ class PptSlides extends AbstractSlide
 
         // p:sld/p:cSld
         $objWriter->startElement('p:cSld');
+        $objWriter->writeAttributeIf(null !== $pSlide->getName(), 'name', $pSlide->getName());
 
         // Background
         if ($pSlide->getBackground() instanceof Slide\AbstractBackground) {

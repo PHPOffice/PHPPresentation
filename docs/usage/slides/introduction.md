@@ -44,6 +44,9 @@ $slide = $presentation->createSlide();
 $slide->setName('Title of the slide');
 ```
 
+It is written as the `name` attribute of `p:cSld` in PowerPoint2007 files and as the
+`draw:name` attribute of `draw:page` in ODPresentation files. Both readers restore it.
+
 ### Visibility
 
 By default, a slide is visible.
