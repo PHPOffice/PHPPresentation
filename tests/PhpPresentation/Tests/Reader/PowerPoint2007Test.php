@@ -27,11 +27,15 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\PowerPoint2007;
 use PhpOffice\PhpPresentation\Shape\Chart;
+use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007 as PowerPoint2007Writer;
 use PHPUnit\Framework\TestCase;
@@ -615,7 +619,7 @@ class PowerPoint2007Test extends TestCase
         /** @var Chart $oShape */
         $oShape = $arrayShape[1];
         self::assertInstanceOf(Chart::class, $oShape);
-        self::assertInstanceOf(Chart\Type\Bar::class, $oShape->getPlotArea()->getType());
+        self::assertInstanceOf(Bar::class, $oShape->getPlotArea()->getType());
     }
 
     public function testLoadFileWithoutImages(): void
@@ -1111,6 +1115,38 @@ class PowerPoint2007Test extends TestCase
         $oPhpPresentation = $object->load($file);
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
         self::assertEquals(1, $oPhpPresentation->getSlideCount());
+    }
+
+    public function testSeriesDataPoints(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSeries = new Series('Downloads', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+        $oSeries->getDataPointOutline(0)->setWidth(2)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_WHITE));
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_NONE);
+        $oSeries->getDataPointOutline(1)->getFill()->setFillType(Fill::FILL_NONE);
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($oBar);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $seriesRead = $arrayShape[0]->getPlotArea()->getType()->getSeries();
+        $seriesRead = reset($seriesRead);
+
+        self::assertEquals(Fill::FILL_SOLID, $seriesRead->getDataPointFill(0)->getFillType());
+        self::assertEquals('0000FF', $seriesRead->getDataPointFill(0)->getStartColor()->getRGB());
+        self::assertEquals(Fill::FILL_SOLID, $seriesRead->getDataPointOutline(0)->getFill()->getFillType());
+        self::assertEquals('FFFFFF', $seriesRead->getDataPointOutline(0)->getFill()->getStartColor()->getRGB());
+        self::assertEquals(2, $seriesRead->getDataPointOutline(0)->getWidth());
+
+        self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointFill(1)->getFillType());
+        self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointOutline(1)->getFill()->getFillType());
     }
 
     public function testLoadingFileWithNoteInSlide(): void

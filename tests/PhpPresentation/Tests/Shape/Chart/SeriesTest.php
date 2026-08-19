@@ -76,6 +76,30 @@ class SeriesTest extends TestCase
         self::assertInstanceOf(Fill::class, $object->getDataPointFill(0));
     }
 
+    public function testDataPointOutlines(): void
+    {
+        $object = new Series();
+
+        self::assertEmpty($object->getDataPointOutlines());
+
+        self::assertInstanceOf(Outline::class, $object->getDataPointOutline(0));
+        self::assertCount(1, $object->getDataPointOutlines());
+        self::assertSame($object->getDataPointOutline(0), $object->getDataPointOutline(0));
+    }
+
+    public function testDataPointIndexes(): void
+    {
+        $object = new Series();
+
+        self::assertEmpty($object->getDataPointIndexes());
+
+        $object->getDataPointFill(2);
+        $object->getDataPointOutline(0);
+        $object->getDataPointOutline(2);
+
+        self::assertSame([0, 2], $object->getDataPointIndexes());
+    }
+
     public function testFill(): void
     {
         $object = new Series();
