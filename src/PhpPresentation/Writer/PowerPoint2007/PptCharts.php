@@ -2465,7 +2465,10 @@ class PptCharts extends AbstractDecoratorWriter
         // c:numFmt
         $objWriter->startElement('c:numFmt');
         $objWriter->writeAttribute('formatCode', $oAxis->getFormatCode());
-        $objWriter->writeAttribute('sourceLinked', '1');
+        // sourceLinked="1" tells the renderer to take the number format from the source data,
+        // which discards the formatCode written next to it. Only link it when no format code
+        // was asked for, so that a default axis keeps inheriting the format of its data.
+        $objWriter->writeAttribute('sourceLinked', Chart\Axis::DEFAULT_FORMAT_CODE === $oAxis->getFormatCode() ? '1' : '0');
         $objWriter->endElement();
 
         // c:majorTickMark

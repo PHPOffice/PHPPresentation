@@ -60,6 +60,34 @@ class PptChartsTest extends PhpPresentationTestCase
         'E' => '2',
     ];
 
+    public function testAxisFormatCode(): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:numFmt';
+
+        // A default axis links its format to the source data, as it always has.
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'formatCode', Axis::DEFAULT_FORMAT_CODE);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'sourceLinked', '1');
+        $this->assertIsSchemaECMA376Valid();
+
+        // An explicit format code unlinks it, or the renderer would discard the format code.
+        $this->resetPresentationFile();
+        $oShape->getPlotArea()->getAxisY()->setFormatCode('#,##0.00');
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'formatCode', '#,##0.00');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'sourceLinked', '0');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testChartDisplayBlankAs(): void
     {
         $oSeries = new Series('Downloads', $this->seriesData);
