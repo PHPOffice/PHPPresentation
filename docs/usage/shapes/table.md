@@ -67,6 +67,25 @@ $cellA1->getActiveParagraph()->getAlignment()
     ->setMarginTop(80);
 ```
 
+### Define the borders
+For defining the borders of a cell, you can use the `getBorders` method of a Cell object.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Border;
+
+$tableShape = $slide->createTableShape($columns);
+$row = $tableShape->createRow();
+$cellA1 = $row->nextCell();
+$cellA1->getBorders()->getBottom()->setLineStyle(Border::LINE_DOUBLE);
+```
+
+Two neighbouring cells share the edge between them, and PowerPoint draws that edge once. A cell
+therefore keeps its own right and bottom borders unless the neighbour on that side asked for the
+same edge itself — the cell to the right through its **left** border, the cell below through its
+**top** border. When it did, the neighbour's rule is the one that is drawn.
+
 ### Define the text direction
 For defining the text direction of cell, you can use the `setTextDirection` method of the `getAlignment` method of a Cell object.
 The width is in pixels.
