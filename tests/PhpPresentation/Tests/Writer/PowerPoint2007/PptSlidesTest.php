@@ -1480,6 +1480,50 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testTableWithBorderOnEveryCell(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape(2);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        for ($row = 0; $row < 2; ++$row) {
+            $oRow = $oShape->createRow();
+            for ($cell = 0; $cell < 2; ++$cell) {
+                $oCell = $oRow->getCell($cell);
+                $oCell->createTextRun('AAA');
+                $oCell->getBorders()->getRight()->setLineStyle(Border::LINE_THICKTHIN);
+                $oCell->getBorders()->getBottom()->setLineStyle(Border::LINE_DOUBLE);
+            }
+        }
+
+        // The top left cell is the one with both a neighbour to its right and a row below it
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr[1]/a:tc[1]/a:tcPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:lnR[@cmpd="' . Border::LINE_THICKTHIN . '"]');
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:lnB[@cmpd="' . Border::LINE_DOUBLE . '"]');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testTableWithBorderOwnedByTheNeighbour(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape(2);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+
+        // Only the neighbours declare the edges they share with the top left cell
+        $oRow = $oShape->createRow();
+        $oRow->getCell(0)->createTextRun('AAA');
+        $oRow->getCell(1)->createTextRun('BBB');
+        $oRow->getCell(1)->getBorders()->getLeft()->setLineStyle(Border::LINE_TRI);
+        $oRow = $oShape->createRow();
+        $oRow->getCell(0)->createTextRun('CCC');
+        $oRow->getCell(0)->getBorders()->getTop()->setLineStyle(Border::LINE_THICKTHIN);
+        $oRow->getCell(1)->createTextRun('DDD');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr[1]/a:tc[1]/a:tcPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:lnR[@cmpd="' . Border::LINE_TRI . '"]');
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:lnB[@cmpd="' . Border::LINE_THICKTHIN . '"]');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testTableWithCellMargin(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
