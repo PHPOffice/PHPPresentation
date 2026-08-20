@@ -1317,6 +1317,31 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testTableWithFirstRowAndBandRow(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape(4);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oShape->createRow()->getCell()->createTextRun('AAA');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblPr';
+
+        // Both are on by default, as they have always been written
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'firstRow', '1');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'bandRow', '1');
+        $this->assertIsSchemaECMA376Valid();
+
+        // A table whose first row holds data, not column labels
+        $this->resetPresentationFile();
+        $oShape->setFirstRow(false)->setBandRow(false);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'firstRow');
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'bandRow');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testTableWithBorder(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
