@@ -1031,6 +1031,9 @@ class ContentTest extends PhpPresentationTestCase
         ];
     }
 
+    /**
+     * @dataProvider dataProviderTableCellBorder
+     */
     #[DataProvider('dataProviderTableCellBorder')]
     public function testTableCellBorder(string $lineStyle, string $dashStyle, string $expected): void
     {
