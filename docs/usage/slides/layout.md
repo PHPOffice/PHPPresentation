@@ -52,3 +52,24 @@ A shape defined in each level will have an override for its formatting in each l
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 $shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_TITLE));
 ```
+
+### Fields
+
+The number of a slide and its date are not written as the text they were given: they are
+fields, which the application filling them in replaces with the number of the slide the
+shape ended up on and with the date the presentation is opened on. The text a field is
+created with is only what it stands in for while it is being written.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Placeholder;
+
+$shape = $slide->createRichTextShape();
+$shape->createTextRun('<number>');
+$shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_SLIDENUM));
+
+$shape = $slide->createRichTextShape();
+$shape->createTextRun('01-01-25');
+$shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_DATETIME));
+```
