@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
+use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
+use PhpOffice\PhpPresentation\Slide\Background\Image as BackgroundImage;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
@@ -70,6 +72,45 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('styles.xml', $element);
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:page-layout-name', 'sPL0');
 
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testMasterSlideBackgroundColor(): void
+    {
+        $element = '/office:document-styles/office:automatic-styles/style:style[@style:name=\'sPres0\']/style:drawing-page-properties';
+
+        // The style the master page is drawn with carries no fill until one is asked for
+        $this->assertZipXmlElementExists('styles.xml', $element);
+        $this->assertZipXmlAttributeNotExists('styles.xml', $element, 'draw:fill');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oBackground = new BackgroundColor();
+        $oBackground->setColor(new Color('FFCC00'));
+        $this->oPresentation->getAllMasterSlides()[0]->setBackground($oBackground);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:fill-color', '#FFCC00');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testMasterSlideBackgroundImage(): void
+    {
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
+
+        $oBackground = new BackgroundImage();
+        $oBackground->setPath($imagePath);
+        $this->oPresentation->getAllMasterSlides()[0]->setBackground($oBackground);
+
+        $element = '/office:document-styles/office:automatic-styles/style:style[@style:name=\'sPres0\']/style:drawing-page-properties';
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:fill', 'bitmap');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:fill-image-name', 'background_sPres0');
+
+        // The image the style names has to be in the package, and in the manifest with it
+        $element = '/office:document-styles/office:styles/draw:fill-image[@draw:name=\'background_sPres0\']';
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'xlink:href', 'Pictures/background_sPres0.png');
+        $this->assertZipFileExists('Pictures/background_sPres0.png');
+        $this->assertZipXmlElementExists('META-INF/manifest.xml', '/manifest:manifest/manifest:file-entry[@manifest:full-path=\'Pictures/background_sPres0.png\']');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 

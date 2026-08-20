@@ -46,6 +46,12 @@ class Pictures extends AbstractDecoratorWriter
             }
         }
 
+        // Add background image of the master page
+        $oBkgImage = $this->getMasterBackground();
+        if ($oBkgImage instanceof Image) {
+            $this->getZip()->addFromString('Pictures/' . $oBkgImage->getIndexedFilename(Styles::MASTER_PAGE_STYLE), file_get_contents($oBkgImage->getPath()));
+        }
+
         return $this->getZip();
     }
 }

@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 use PhpOffice\PhpPresentation\Shape\Chart;
+use PhpOffice\PhpPresentation\Slide\AbstractBackground;
 
 abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer\AbstractDecoratorWriter
 {
@@ -28,6 +29,20 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @var Chart[]
      */
     protected $arrayChart;
+
+    /**
+     * The background of the master page, which every slide is drawn on top of.
+     *
+     * The Writer has one master page, `Standard`, so the first master slide is the one that owns it.
+     */
+    protected function getMasterBackground(): ?AbstractBackground
+    {
+        foreach ($this->getPresentation()->getAllMasterSlides() as $oMasterSlide) {
+            return $oMasterSlide->getBackground();
+        }
+
+        return null;
+    }
 
     /**
      * @return Chart[]

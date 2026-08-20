@@ -69,6 +69,10 @@ A background is a fill of its own, drawn over the whole page. A converter that t
 a tagged PDF has nothing to say about that fill, so it lands outside the tag tree -- which is why
 one is written only when it is asked for.
 
+Both Writers keep the background of a master: the PowerPoint2007 Writer as the `p:bg` of the master
+slide, the ODPresentation Writer as the drawing-page style of the master page. A colour and an
+image are both carried.
+
 ### Visibility
 
 By default, a slide is visible.
