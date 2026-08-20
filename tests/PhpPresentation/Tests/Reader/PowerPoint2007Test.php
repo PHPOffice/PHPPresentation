@@ -34,6 +34,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
@@ -1463,5 +1464,26 @@ class PowerPoint2007Test extends TestCase
         // Without the slide number this comes back as the raw part name, `slide2.xml`
         self::assertTrue($oHyperlink->isInternal());
         self::assertEquals(2, $oHyperlink->getSlideNumber());
+    }
+
+    public function testTableFirstRowAndBandRow(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->createTableShape(1)->setFirstRow(false)->setBandRow(false)->createRow();
+        $oSlide->createTableShape(1)->createRow();
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = $oPhpPresentationRead->getSlide(0)->getShapeCollection();
+        self::assertInstanceOf(Table::class, $arrayShape[0]);
+        self::assertFalse($arrayShape[0]->isFirstRow());
+        self::assertFalse($arrayShape[0]->isBandRow());
+        self::assertInstanceOf(Table::class, $arrayShape[1]);
+        self::assertTrue($arrayShape[1]->isFirstRow());
+        self::assertTrue($arrayShape[1]->isBandRow());
     }
 }
