@@ -1196,6 +1196,39 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * The value of an ODF fo:border property: a width, a style and a colour.
+     */
+    protected function getBorderValue(Border $border): string
+    {
+        return Text::numberFormat($border->getLineWidth() / 1.75, 2) . 'pt '
+            . $this->getBorderStyle($border) . ' #' . $border->getColor()->getRGB();
+    }
+
+    /**
+     * The style component of an ODF fo:border, which takes the CSS2 border styles. Those are fewer
+     * than the OOXML line styles, so the compound lines all land on `double` and the ten dash
+     * patterns on `dashed` or `dotted` -- the closest CSS can say.
+     */
+    protected function getBorderStyle(Border $border): string
+    {
+        if (Border::LINE_NONE === $border->getLineStyle()) {
+            return 'none';
+        }
+
+        switch ($border->getDashStyle()) {
+            case Border::DASH_SOLID:
+                break;
+            case Border::DASH_DOT:
+            case Border::DASH_SYSDOT:
+                return 'dotted';
+            default:
+                return 'dashed';
+        }
+
+        return Border::LINE_SINGLE === $border->getLineStyle() ? 'solid' : 'double';
+    }
+
+    /**
      * Write the default style information for a Table shape.
      */
     protected function writeTableStyle(XMLWriter $objWriter, Table $shape): void
@@ -1252,50 +1285,12 @@ class Content extends AbstractDecoratorWriter
                 if ($cellBordersBottomHashCode == $cellBorders->getTop()->getHashCode()
                     && $cellBordersBottomHashCode == $cellBorders->getLeft()->getHashCode()
                     && $cellBordersBottomHashCode == $cellBorders->getRight()->getHashCode()) {
-                    $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($cellBorders->getBottom()->getLineWidth() / 1.75, 2);
-                    $lineColor = $cellBorders->getBottom()->getColor()->getRGB();
-                    switch ($cellBorders->getBottom()->getLineStyle()) {
-                        case Border::LINE_SINGLE:
-                            $lineStyle = 'solid';
-                    }
-                    $objWriter->writeAttribute('fo:border', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
+                    $objWriter->writeAttribute('fo:border', $this->getBorderValue($cellBorders->getBottom()));
                 } else {
-                    $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($cellBorders->getBottom()->getLineWidth() / 1.75, 2);
-                    $lineColor = $cellBorders->getBottom()->getColor()->getRGB();
-                    switch ($cellBorders->getBottom()->getLineStyle()) {
-                        case Border::LINE_SINGLE:
-                            $lineStyle = 'solid';
-                    }
-                    $objWriter->writeAttribute('fo:border-bottom', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
-                    // TOP
-                    $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($cellBorders->getTop()->getLineWidth() / 1.75, 2);
-                    $lineColor = $cellBorders->getTop()->getColor()->getRGB();
-                    switch ($cellBorders->getTop()->getLineStyle()) {
-                        case Border::LINE_SINGLE:
-                            $lineStyle = 'solid';
-                    }
-                    $objWriter->writeAttribute('fo:border-top', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
-                    // RIGHT
-                    $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($cellBorders->getRight()->getLineWidth() / 1.75, 2);
-                    $lineColor = $cellBorders->getRight()->getColor()->getRGB();
-                    switch ($cellBorders->getRight()->getLineStyle()) {
-                        case Border::LINE_SINGLE:
-                            $lineStyle = 'solid';
-                    }
-                    $objWriter->writeAttribute('fo:border-right', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
-                    // LEFT
-                    $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($cellBorders->getLeft()->getLineWidth() / 1.75, 2);
-                    $lineColor = $cellBorders->getLeft()->getColor()->getRGB();
-                    switch ($cellBorders->getLeft()->getLineStyle()) {
-                        case Border::LINE_SINGLE:
-                            $lineStyle = 'solid';
-                    }
-                    $objWriter->writeAttribute('fo:border-left', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
+                    $objWriter->writeAttribute('fo:border-bottom', $this->getBorderValue($cellBorders->getBottom()));
+                    $objWriter->writeAttribute('fo:border-top', $this->getBorderValue($cellBorders->getTop()));
+                    $objWriter->writeAttribute('fo:border-right', $this->getBorderValue($cellBorders->getRight()));
+                    $objWriter->writeAttribute('fo:border-left', $this->getBorderValue($cellBorders->getLeft()));
                 }
                 // >style:paragraph-properties
                 $objWriter->endElement();
