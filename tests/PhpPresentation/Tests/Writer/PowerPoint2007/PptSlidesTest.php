@@ -525,6 +525,34 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testFillSolidTableRow(): void
+    {
+        $expected = 'E06B20';
+        $expectedCell = '204FE0';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape(2);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oRow->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF' . $expected));
+        $oRow->getCell(0)->createTextRun('R1C1');
+        $oRow->getCell(1)->createTextRun('R1C2');
+
+        // Both cells are painted with the fill of the row, which has none of their own to lose to
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc[%d]/a:tcPr/a:solidFill/a:srgbClr';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', sprintf($element, 1), 'val', $expected);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', sprintf($element, 2), 'val', $expected);
+        $this->assertIsSchemaECMA376Valid();
+
+        // A cell that asks for a fill of its own keeps it
+        $oRow->getCell(1)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF' . $expectedCell));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', sprintf($element, 1), 'val', $expected);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', sprintf($element, 2), 'val', $expectedCell);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     /**
      * @see : https://github.com/PHPOffice/PHPPresentation/issues/61
      */

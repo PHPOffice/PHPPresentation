@@ -1154,17 +1154,25 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId . 'r' . $keyRow . 'c' . $keyCell);
                 $objWriter->writeAttribute('style:family', 'table-cell');
 
+                // A cell with no fill of its own is painted with the fill of its row. It cannot be
+                // written on the row itself: a table-row style takes a flat `fo:background-color`
+                // and nothing else, no gradient -- and LibreOffice does not draw even that one.
+                $cellFill = $shapeCell->getFill();
+                if (Fill::FILL_NONE == $cellFill->getFillType()) {
+                    $cellFill = $shapeRow->getFill();
+                }
+
                 // Note : This element is not valid in the Schema 1.2
                 // style:graphic-properties
-                if (Fill::FILL_NONE != $shapeCell->getFill()->getFillType()) {
+                if (Fill::FILL_NONE != $cellFill->getFillType()) {
                     $objWriter->startElement('style:graphic-properties');
-                    if (Fill::FILL_SOLID == $shapeCell->getFill()->getFillType()) {
+                    if (Fill::FILL_SOLID == $cellFill->getFillType()) {
                         $objWriter->writeAttribute('draw:fill', 'solid');
-                        $objWriter->writeAttribute('draw:fill-color', '#' . $shapeCell->getFill()->getStartColor()->getRGB());
+                        $objWriter->writeAttribute('draw:fill-color', '#' . $cellFill->getStartColor()->getRGB());
                     }
-                    if (Fill::FILL_GRADIENT_LINEAR == $shapeCell->getFill()->getFillType()) {
+                    if (Fill::FILL_GRADIENT_LINEAR == $cellFill->getFillType()) {
                         $objWriter->writeAttribute('draw:fill', 'gradient');
-                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shapeCell->getFill()->getHashCode());
+                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $cellFill->getHashCode());
                     }
                     $objWriter->endElement();
                 }

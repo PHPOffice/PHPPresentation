@@ -1034,6 +1034,24 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
+    public function testTableRowFill(): void
+    {
+        $oFill = new Fill();
+        $oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
+
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape(2);
+        $oRow = $oShape->createRow();
+        $oRow->setFill($oFill);
+
+        // ODF puts no fill on a table-row style, so the fill of the row lands on each of its cells
+        foreach (['gr1r0c0', 'gr1r0c1'] as $styleName) {
+            $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $styleName . '\']/style:graphic-properties';
+            $this->assertZipXmlElementExists('content.xml', $element);
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'solid');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill-color', '#E06B20');
+        }
+    }
+
     public function testTableWithColspan(): void
     {
         $value = mt_rand(2, 100);

@@ -19,6 +19,26 @@ $tableShape = $slide->createTableShape($columns);
 $row = $tableShape->createRow();
 ```
 
+### Define the fill
+
+A fill set on a row paints every cell of it, which is how a table gets a banded look without
+setting the same fill on each cell in turn. A cell that asks for a fill of its own keeps it: the
+fill of the row is what a cell falls back to, not what it is overruled by.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
+
+$row = $tableShape->createRow();
+$row->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
+```
+
+Neither format carries a fill on a table row -- in OOXML a row has nothing but a height, and the
+row style of ODF takes a flat colour that LibreOffice does not draw -- so both Writers write the
+fill of the row on each of its cells.
+
 ## Cells
 A cell is a child of a row.
 
