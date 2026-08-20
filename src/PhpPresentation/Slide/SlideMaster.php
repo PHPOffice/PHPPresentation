@@ -23,8 +23,6 @@ namespace PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
-use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
-use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\ColorMap;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\TextStyle;
@@ -84,9 +82,6 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
         $this->identifier = md5(mt_rand(0, 9999) . time());
         // Set a basic colorMap
         $this->colorMap = new ColorMap();
-        // Set a white background
-        $this->background = new BackgroundColor();
-        $this->background->setColor(new Color(Color::COLOR_WHITE));
         // Set basic textStyles
         $this->textStyles = new TextStyle(true);
         // Set basic scheme colors

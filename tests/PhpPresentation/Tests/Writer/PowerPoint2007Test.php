@@ -22,6 +22,8 @@ namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
+use PhpOffice\PhpPresentation\Slide\Background\Color;
+use PhpOffice\PhpPresentation\Style\Color as StyleColor;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
@@ -121,6 +123,24 @@ class PowerPoint2007Test extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy');
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', $value * 100);
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 100);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testSlideMasterBackground(): void
+    {
+        $xPath = '/p:sldMaster/p:cSld/p:bg/p:bgPr/a:solidFill/a:srgbClr[@val=\'FFFFFF\']';
+
+        // A master paints nothing of its own, so the theme is what shows through
+        $this->assertZipFileExists('ppt/slideMasters/slideMaster1.xml');
+        $this->assertZipXmlElementNotExists('ppt/slideMasters/slideMaster1.xml', '/p:sldMaster/p:cSld/p:bg');
+        $this->assertIsSchemaECMA376Valid();
+
+        $oBackground = new Color();
+        $oBackground->setColor(new StyleColor(StyleColor::COLOR_WHITE));
+        $this->oPresentation->getAllMasterSlides()[0]->setBackground($oBackground);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/slideMasters/slideMaster1.xml', $xPath);
         $this->assertIsSchemaECMA376Valid();
     }
 

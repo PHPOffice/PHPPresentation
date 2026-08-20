@@ -47,6 +47,28 @@ $slide->setName('Title of the slide');
 It is written as the `name` attribute of `p:cSld` in PowerPoint2007 files and as the
 `draw:name` attribute of `draw:page` in ODPresentation files. Both readers restore it.
 
+### Background
+
+By default, a slide has no background, and neither has the master slide it is based on: what shows
+through is the light colour of the theme. You can define one with the method `setBackground`, on a
+slide for that slide alone or on the master for every slide based on it.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
+use PhpOffice\PhpPresentation\Style\Color;
+
+$background = new BackgroundColor();
+$background->setColor(new Color('FFCC00'));
+
+$presentation->getAllMasterSlides()[0]->setBackground($background);
+```
+
+A background is a fill of its own, drawn over the whole page. A converter that turns the file into
+a tagged PDF has nothing to say about that fill, so it lands outside the tag tree -- which is why
+one is written only when it is asked for.
+
 ### Visibility
 
 By default, a slide is visible.
