@@ -66,6 +66,27 @@ $richText->getHyperlink()->setUrl('https://phpoffice.github.io/PHPPresentation/'
 
 ```
 
+### Link to another slide
+
+A hyperlink can point at another slide of the same deck rather than at a URL.
+
+Example:
+
+```php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\RichText;
+
+$richText = new RichText();
+$richText->getHyperlink()->setSlideNumber(3);
+
+```
+
+Each format addresses the slide in its own way. The PowerPoint2007 Writer writes a relationship to
+the slide part; the ODPresentation Writer writes the name of the page, because that is how ODF
+addresses a slide. Every page therefore carries a `draw:name`, and a slide with no name of its own
+is named after its position, the way LibreOffice names the pages of a deck.
+
 ### Use of Text Color
 
 !!! warning

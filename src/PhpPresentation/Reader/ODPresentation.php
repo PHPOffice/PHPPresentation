@@ -73,6 +73,13 @@ class ODPresentation implements ReaderInterface
     protected $arrayCommonStyles = [];
 
     /**
+     * The number of every named slide, so that a link can be resolved back to it.
+     *
+     * @var array<string, int>
+     */
+    protected $arraySlideNumbers = [];
+
+    /**
      * @var XMLReader
      */
     protected $oXMLReader;
@@ -237,6 +244,18 @@ class ODPresentation implements ReaderInterface
         foreach ($this->oXMLReader->getElements('/office:document-content/office:automatic-styles/*') as $oElement) {
             if ($oElement instanceof DOMElement && $oElement->hasAttribute('style:name')) {
                 $this->loadStyle($oElement);
+            }
+        }
+        // A link to another slide addresses it by name and can point forwards, so the names are
+        // collected before any slide is read
+        $this->arraySlideNumbers = [];
+        $slideNumber = 0;
+        foreach ($this->oXMLReader->getElements('/office:document-content/office:body/office:presentation/draw:page') as $oElement) {
+            if ($oElement instanceof DOMElement && 'draw:page' == $oElement->nodeName) {
+                ++$slideNumber;
+                if ($oElement->hasAttribute('draw:name')) {
+                    $this->arraySlideNumbers[$oElement->getAttribute('draw:name')] = $slideNumber;
+                }
             }
         }
         foreach ($this->oXMLReader->getElements('/office:document-content/office:body/office:presentation/draw:page') as $oElement) {
@@ -731,7 +750,12 @@ class ODPresentation implements ReaderInterface
             if ($oTextRunLink instanceof DOMElement) {
                 $oTextRun->setText($oTextRunLink->nodeValue);
                 if ($oTextRunLink->hasAttribute('xlink:href')) {
-                    $oTextRun->getHyperlink()->setUrl($oTextRunLink->getAttribute('xlink:href'));
+                    $href = $oTextRunLink->getAttribute('xlink:href');
+                    if (0 === strpos($href, '#') && isset($this->arraySlideNumbers[substr($href, 1)])) {
+                        $oTextRun->getHyperlink()->setSlideNumber($this->arraySlideNumbers[substr($href, 1)]);
+                    } else {
+                        $oTextRun->getHyperlink()->setUrl($href);
+                    }
                 }
             } else {
                 $oTextRun->setText($oNodeParent->nodeValue);

@@ -662,8 +662,10 @@ class ContentTest extends PhpPresentationTestCase
     {
         $element = '/office:document-content/office:body/office:presentation/draw:page';
 
+        // Every page is named, so that a link can address it; a slide with no name of its own is
+        // named after its position
         $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'draw:name');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:name', 'Slide 1');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $this->oPresentation->getActiveSlide()->setName('AAAA');
@@ -678,7 +680,38 @@ class ContentTest extends PhpPresentationTestCase
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'draw:name');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:name', 'Slide 1');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testSlideLink(): void
+    {
+        $oRun = $this->oPresentation->getActiveSlide()->createRichTextShape()->createTextRun('AAAA');
+        $oRun->getHyperlink()->setSlideNumber(3);
+        $this->oPresentation->createSlide();
+        $this->oPresentation->createSlide()->setName('Milestone Overview');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:a';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', '#Milestone Overview');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // A slide with no name of its own is addressed by the name its page carries
+        $this->oPresentation->getSlide(2)->setName();
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', '#Slide 3');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testSlideLinkOutOfRange(): void
+    {
+        $oRun = $this->oPresentation->getActiveSlide()->createRichTextShape()->createTextRun('AAAA');
+        $oRun->getHyperlink()->setSlideNumber(9);
+
+        // Nothing to address, so the action string is left as it was rather than pointing nowhere
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:a';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'ppaction://hlinksldjump');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
