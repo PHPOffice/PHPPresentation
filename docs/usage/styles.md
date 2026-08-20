@@ -192,3 +192,15 @@ Colors can be applied to different objects, e.g. font or border.
 $textRun = $shape->createTextRun('Text');
 $textRun->getFont()->setColor(new Color('C00000'));
 ```
+
+A colour is written either as six characters, `RRGGBB`, or as eight, `AARRGGBB`, where the two in
+front are the alpha. Six characters are opaque; the constants of the class, `Color::COLOR_BLACK`
+and the rest, are the eight-character form with `FF` in front. The alpha can also be set on its own,
+in percent:
+
+``` php
+<?php
+
+$color = new Color('C00000');
+$color->setAlpha(50);
+```
