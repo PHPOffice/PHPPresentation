@@ -790,6 +790,13 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->endElement();
             }
             foreach ($arrayRows as $keyRow => $shapeRow) {
+                // ODF marks a header by wrapping the rows that make it up, so the first row of the
+                // table is written inside table:table-header-rows and the rest follow it as siblings
+                $isHeaderRow = 0 === $keyRow && $shape->isFirstRow();
+                if ($isHeaderRow) {
+                    // table:table-header-rows
+                    $objWriter->startElement('table:table-header-rows');
+                }
                 // table:table-row
                 $objWriter->startElement('table:table-row');
                 $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId . 'r' . $keyRow);
@@ -853,6 +860,10 @@ class Content extends AbstractDecoratorWriter
                 }
                 // > table:table-row
                 $objWriter->endElement();
+                if ($isHeaderRow) {
+                    // > table:table-header-rows
+                    $objWriter->endElement();
+                }
             }
             // > table:table
             $objWriter->endElement();

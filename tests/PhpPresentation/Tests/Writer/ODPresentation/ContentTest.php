@@ -998,6 +998,28 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testTableFirstRow(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
+        $oShape->createRow();
+        $oShape->createRow();
+
+        $table = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table';
+
+        // The first row is a header row by default, the rest are ordinary rows
+        $this->assertZipXmlElementCount('content.xml', $table . '/table:table-header-rows/table:table-row', 1);
+        $this->assertZipXmlElementCount('content.xml', $table . '/table:table-row', 1);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // A table whose first row holds data, not column labels
+        $this->resetPresentationFile();
+        $oShape->setFirstRow(false);
+
+        $this->assertZipXmlElementNotExists('content.xml', $table . '/table:table-header-rows');
+        $this->assertZipXmlElementCount('content.xml', $table . '/table:table-row', 2);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testTableEmpty(): void
     {
         $this->oPresentation->getActiveSlide()->createTableShape();
@@ -1043,7 +1065,7 @@ class ContentTest extends PhpPresentationTestCase
         $oCell = $oRow->getCell();
         $oCell->setColSpan($value);
 
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-header-rows/table:table-row/table:table-cell';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'table:number-columns-spanned', $value);
 
@@ -1063,7 +1085,7 @@ class ContentTest extends PhpPresentationTestCase
         $oHyperlink = $oTextRun->getHyperlink();
         $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPresentation/');
 
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:a';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-header-rows/table:table-row/table:table-cell/text:p/text:span/text:a';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
 
@@ -1081,10 +1103,10 @@ class ContentTest extends PhpPresentationTestCase
         $oCell->addText($oRun);
         $oCell->createBreak();
 
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-header-rows/table:table-row/table:table-cell/text:p/text:span';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlElementEquals('content.xml', $element, 'Test');
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:line-break';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-header-rows/table:table-row/table:table-cell/text:p/text:span/text:line-break';
         $this->assertZipXmlElementExists('content.xml', $element);
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
