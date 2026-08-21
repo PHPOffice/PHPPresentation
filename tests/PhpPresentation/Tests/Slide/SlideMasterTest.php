@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests;
 
-use PhpOffice\PhpPresentation\Slide\Background\Color;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
@@ -40,10 +39,8 @@ class SlideMasterTest extends TestCase
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
         self::assertNull($object->getParent());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
-        /** @var Color $background */
-        $background = $object->getBackground();
-        self::assertInstanceOf(Color::class, $background);
-        self::assertEquals('FFFFFF', $background->getColor()->getRGB());
+        // A master carries no background of its own; the colour map takes it to the theme
+        self::assertNull($object->getBackground());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
     }
 

@@ -100,6 +100,18 @@ class MetaInfManifest extends AbstractDecoratorWriter
             }
         }
 
+        // Background image of the master page
+        $oBkgImage = $this->getMasterBackground();
+        if ($oBkgImage instanceof Image) {
+            $arrayImage = getimagesize($oBkgImage->getPath());
+            $mimeType = image_type_to_mime_type($arrayImage[2]);
+
+            $objWriter->startElement('manifest:file-entry');
+            $objWriter->writeAttribute('manifest:media-type', $mimeType);
+            $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $oBkgImage->getIndexedFilename(Styles::MASTER_PAGE_STYLE)));
+            $objWriter->endElement();
+        }
+
         if ($this->getPresentation()->getPresentationProperties()->getThumbnailPath()) {
             $pathThumbnail = $this->getPresentation()->getPresentationProperties()->getThumbnailPath();
             // Size : 128x128 pixel
