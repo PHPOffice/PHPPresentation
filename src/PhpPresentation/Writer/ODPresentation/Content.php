@@ -32,6 +32,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -556,6 +557,7 @@ class Content extends AbstractDecoratorWriter
         $sCstShpLastBullet = '';
         $iCstShpLastBulletLvl = 0;
         $bCstShpHasBullet = false;
+        $fieldName = $this->getPlaceholderField($shape);
 
         foreach ($paragraphs as $paragraph) {
             // Close the bullet list
@@ -594,6 +596,8 @@ class Content extends AbstractDecoratorWriter
                             $objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
                             $objWriter->text($richtext->getText());
                             $objWriter->endElement();
+                        } elseif (null !== $fieldName) {
+                            $objWriter->writeElement($fieldName, $richtext->getText());
                         } else {
                             $objWriter->text($richtext->getText());
                         }
@@ -658,6 +662,8 @@ class Content extends AbstractDecoratorWriter
                             $objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
                             $objWriter->text($richtext->getText());
                             $objWriter->endElement();
+                        } elseif (null !== $fieldName) {
+                            $objWriter->writeElement($fieldName, $richtext->getText());
                         } else {
                             $objWriter->text($richtext->getText());
                         }
@@ -694,6 +700,29 @@ class Content extends AbstractDecoratorWriter
 
         // > draw:frame
         $objWriter->endElement();
+    }
+
+    /**
+     * The element a placeholder writes its text with, if that text is a field.
+     *
+     * The number of a slide and its date are not the text the shape was given: they are
+     * fields the reader fills in, and the text is only what they stand in for.
+     */
+    protected function getPlaceholderField(RichText $shape): ?string
+    {
+        $placeholder = $shape->getPlaceholder();
+        if (null === $placeholder) {
+            return null;
+        }
+
+        switch ($placeholder->getType()) {
+            case Placeholder::PH_TYPE_SLIDENUM:
+                return 'text:page-number';
+            case Placeholder::PH_TYPE_DATETIME:
+                return 'text:date';
+            default:
+                return null;
+        }
     }
 
     /**

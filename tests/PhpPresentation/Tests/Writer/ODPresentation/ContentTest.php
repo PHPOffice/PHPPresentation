@@ -27,6 +27,7 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Slide\Transition;
@@ -557,6 +558,46 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('content.xml', $element, 'draw:stroke-dash');
         $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:stroke-dash', 'strokeDash_');
         $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:stroke-dash', $oRichText1->getBorder()->getDashStyle());
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public static function dataProviderPlaceholderField(): array
+    {
+        return [
+            [Placeholder::PH_TYPE_SLIDENUM, 'text:page-number'],
+            [Placeholder::PH_TYPE_DATETIME, 'text:date'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderPlaceholderField
+     */
+    #[DataProvider('dataProviderPlaceholderField')]
+    public function testRichTextPlaceholderField(string $type, string $expectedElement): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('7');
+        $oRichText->setPlaceHolder(new Placeholder($type));
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/' . $expectedElement;
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlElementEquals('content.xml', $element, '7');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testRichTextPlaceholderTitle(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('Title');
+        $oRichText->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_TITLE));
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span';
+        $this->assertZipXmlElementEquals('content.xml', $element, 'Title');
+        $this->assertZipXmlElementNotExists('content.xml', $element . '/text:page-number');
+        $this->assertZipXmlElementNotExists('content.xml', $element . '/text:date');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
