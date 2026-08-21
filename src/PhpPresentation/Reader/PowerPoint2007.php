@@ -1762,6 +1762,16 @@ class PowerPoint2007 implements ReaderInterface
             return $oFill;
         }
 
+        // No fill. This is a fill, and it is not the same thing as the absence of one below:
+        // `a:noFill` is what the file says when something asked to stay transparent.
+        $oElementFill = $xmlReader->getElement('a:noFill', $oElement);
+        if ($oElementFill instanceof DOMElement) {
+            $oFill = new Fill();
+            $oFill->setFillType(Fill::FILL_NONE);
+
+            return $oFill;
+        }
+
         return null;
     }
 

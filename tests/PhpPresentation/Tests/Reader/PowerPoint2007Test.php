@@ -1149,6 +1149,25 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointOutline(1)->getFill()->getFillType());
     }
 
+    public function testShapeAskingForNoFillIsReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Nothing behind me');
+        $oShape->getFill()->setFillType(Fill::FILL_NONE);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        // The shape wrote `a:noFill`, so it must come back with a fill that says so, not with none at all
+        self::assertNotNull($arrayShape[0]->getFill());
+        self::assertEquals(Fill::FILL_NONE, $arrayShape[0]->getFill()->getFillType());
+    }
+
     public function testLoadingFileWithNoteInSlide(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_SlideNoteWithRichText.pptx';
