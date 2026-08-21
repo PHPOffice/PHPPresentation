@@ -100,7 +100,7 @@ class Cell implements ComparableInterface
         $this->activeParagraph = 0;
 
         // Set fill
-        $this->fill = new Fill();
+        $this->fill = (new Fill())->setFillType(Fill::FILL_UNSET);
 
         // Set borders
         $this->borders = new Borders();

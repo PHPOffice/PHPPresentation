@@ -25,6 +25,13 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 class Fill implements ComparableInterface
 {
     // Fill types
+    /**
+     * No fill was asked for. Table cells and rows start here, so that a cell with nothing of its
+     * own can be told apart from one deliberately left transparent, and painted with its row's
+     * fill instead. Both formats make the same distinction: an empty `a:tcPr` against `a:noFill`,
+     * an absent `table:style-name` against a cell style with `draw:fill="none"`.
+     */
+    public const FILL_UNSET = 'unset';
     public const FILL_NONE = 'none';
     public const FILL_SOLID = 'solid';
     public const FILL_GRADIENT_LINEAR = 'linear';

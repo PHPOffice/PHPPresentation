@@ -302,9 +302,9 @@ class Styles extends AbstractDecoratorWriter
     {
         foreach ($shape->getRows() as $row) {
             foreach ($row->getCells() as $cell) {
-                // A cell with no fill of its own is painted with the fill of its row, so that one
-                // needs its gradient defined too
-                $fill = Fill::FILL_NONE == $cell->getFill()->getFillType() ? $row->getFill() : $cell->getFill();
+                // A cell that was given no fill of its own is painted with the fill of its row,
+                // so that one needs its gradient defined too
+                $fill = Fill::FILL_UNSET == $cell->getFill()->getFillType() ? $row->getFill() : $cell->getFill();
                 if (Fill::FILL_GRADIENT_LINEAR == $fill->getFillType()) {
                     if (!in_array($fill->getHashCode(), $this->arrayGradient)) {
                         $this->writeGradientFill($objWriter, $fill);
