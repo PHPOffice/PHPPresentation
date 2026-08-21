@@ -35,9 +35,22 @@ $row = $tableShape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
 ```
 
-Neither format carries a fill on a table row -- in OOXML a row has nothing but a height, and the
-row style of ODF takes a flat colour that LibreOffice does not draw -- so both Writers write the
-fill of the row on each of its cells.
+A cell that is deliberately left transparent says so, and keeps it even where its row is
+painted -- `Fill::FILL_NONE` is a fill refused, not a fill never asked for, and the two are
+different states. A cell and a row both start at `Fill::FILL_UNSET`, which is what the fallback
+looks for.
+
+``` php
+<?php
+
+$row->getCell(1)->getFill()->setFillType(Fill::FILL_NONE);
+```
+
+Neither format carries a fill on a table row -- in OOXML a row has nothing but a height -- so both
+Writers write the fill of the row on each of the cells that did not ask for one. Both make the same
+distinction this library now makes: PowerPoint leaves an untouched cell's `a:tcPr` empty and writes
+`a:noFill` for one refused outright, and LibreOffice leaves an untouched cell without a
+`table:style-name` and gives a refused one a style with `draw:fill="none"`.
 
 ## Cells
 A cell is a child of a row.

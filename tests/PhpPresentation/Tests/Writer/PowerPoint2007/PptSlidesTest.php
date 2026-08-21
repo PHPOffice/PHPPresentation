@@ -553,6 +553,43 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testFillUntouchedTableRow(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape(1);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oRow->getCell(0)->createTextRun('R1C1');
+
+        // Nobody asked for a fill, on the cell or on its row, so the cell keeps the same
+        // `a:noFill` it was written with before a row could carry one
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:noFill';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testFillNoneCellInFilledRow(): void
+    {
+        $expected = 'E06B20';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape(2);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oRow->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF' . $expected));
+        $oRow->getCell(0)->createTextRun('R1C1');
+        $oRow->getCell(1)->createTextRun('R1C2');
+
+        // The second cell refuses a fill outright, which is not the same as never asking for one:
+        // it stays transparent while its neighbour takes the colour of the row
+        $oRow->getCell(1)->getFill()->setFillType(Fill::FILL_NONE);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc[%d]/a:tcPr';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', sprintf($element, 1) . '/a:solidFill/a:srgbClr', 'val', $expected);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', sprintf($element, 2) . '/a:noFill');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     /**
      * @see : https://github.com/PHPOffice/PHPPresentation/issues/61
      */

@@ -71,6 +71,22 @@ class RowTest extends TestCase
         self::assertInstanceOf(Cell::class, $object->nextCell());
     }
 
+    public function testNextCellKeepsWhatTheCellWasGiven(): void
+    {
+        $object = new Row(2);
+        $object->getFill()->setFillType(Fill::FILL_SOLID);
+        $object->getCell(1)->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR);
+
+        // Walking a row used to overwrite the fill of every cell it passed with a copy of the
+        // row's. A cell that was given one keeps it, and one that was not stays unset -- it is the
+        // Writers that resolve the row's fill, and they do it when they write
+        $object->nextCell();
+        $object->nextCell();
+
+        self::assertEquals(Fill::FILL_UNSET, $object->getCell(0)->getFill()->getFillType());
+        self::assertEquals(Fill::FILL_GRADIENT_LINEAR, $object->getCell(1)->getFill()->getFillType());
+    }
+
     public function testNextCellException(): void
     {
         $this->expectException(OutOfBoundsException::class);

@@ -1154,17 +1154,19 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId . 'r' . $keyRow . 'c' . $keyCell);
                 $objWriter->writeAttribute('style:family', 'table-cell');
 
-                // A cell with no fill of its own is painted with the fill of its row. It cannot be
-                // written on the row itself: a table-row style takes a flat `fo:background-color`
-                // and nothing else, no gradient -- and LibreOffice does not draw even that one.
+                // A cell that was given no fill of its own is painted with the fill of its row.
+                // A cell set to `FILL_NONE` asked for no fill and stays transparent, even where
+                // its row is painted.
                 $cellFill = $shapeCell->getFill();
-                if (Fill::FILL_NONE == $cellFill->getFillType()) {
+                if (Fill::FILL_UNSET == $cellFill->getFillType()) {
                     $cellFill = $shapeRow->getFill();
                 }
 
                 // Note : This element is not valid in the Schema 1.2
                 // style:graphic-properties
-                if (Fill::FILL_NONE != $cellFill->getFillType()) {
+                if (Fill::FILL_NONE != $cellFill->getFillType()
+                    && Fill::FILL_UNSET != $cellFill->getFillType()
+                ) {
                     $objWriter->startElement('style:graphic-properties');
                     if (Fill::FILL_SOLID == $cellFill->getFillType()) {
                         $objWriter->writeAttribute('draw:fill', 'solid');

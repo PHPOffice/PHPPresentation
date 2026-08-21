@@ -70,7 +70,7 @@ class Row implements ComparableInterface
     public function __construct(int $columns = 1)
     {
         // Fill
-        $this->fill = new Fill();
+        $this->fill = (new Fill())->setFillType(Fill::FILL_UNSET);
         // Cells
         for ($inc = 0; $inc < $columns; ++$inc) {
             $this->cells[] = new Cell();
@@ -122,8 +122,6 @@ class Row implements ComparableInterface
     {
         ++$this->activeCellIndex;
         if (isset($this->cells[$this->activeCellIndex])) {
-            $this->cells[$this->activeCellIndex]->setFill(clone $this->getFill());
-
             return $this->cells[$this->activeCellIndex];
         }
 

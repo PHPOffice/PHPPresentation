@@ -550,10 +550,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeBorder($objWriter, $borderDiagonalDown, 'TlToBr');
                 $this->writeBorder($objWriter, $borderDiagonalUp, 'BlToTr');
                 // Fill
-                // A cell with no fill of its own is painted with the fill of its row, which is
-                // otherwise never written and leaves `Row::getFill()` with nothing to do
+                // A cell that was given no fill of its own is painted with the fill of its row,
+                // which OOXML cannot store on the row itself. A cell set to `FILL_NONE` asked for
+                // no fill and keeps its `a:noFill`, even where its row is painted
                 $fill = $currentCell->getFill();
-                if (Fill::FILL_NONE === $fill->getFillType()) {
+                if (Fill::FILL_UNSET === $fill->getFillType()) {
                     $fill = $shape->getRow($row)->getFill();
                 }
                 $this->writeFill($objWriter, $fill);
