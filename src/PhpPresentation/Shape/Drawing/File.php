@@ -69,7 +69,15 @@ class File extends AbstractDrawingAdapter
 
     public function getExtension(): string
     {
-        return pathinfo($this->getPath(), PATHINFO_EXTENSION);
+        $extension = pathinfo($this->getPath(), PATHINFO_EXTENSION);
+        if ('' !== $extension || !CommonFile::fileExists($this->getPath())) {
+            return $extension;
+        }
+
+        // a path is free to carry no extension; the contents still say what the image is
+        $image = getimagesizefromstring(CommonFile::fileGetContents($this->getPath()));
+
+        return is_array($image) ? (string) image_type_to_extension($image[2], false) : '';
     }
 
     public function getMimeType(): string

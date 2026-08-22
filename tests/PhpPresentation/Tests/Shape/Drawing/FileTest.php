@@ -55,6 +55,21 @@ class FileTest extends TestCase
         self::assertEmpty($object->getPath());
     }
 
+    public function testPathWithoutAnExtension(): void
+    {
+        $path = (string) tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        copy(dirname(__DIR__, 4) . '/resources/images/PhpPresentationLogo.png', $path);
+
+        $object = new File();
+        $object->setPath($path);
+
+        // the name says nothing, so the contents have to
+        self::assertEquals('png', $object->getExtension());
+        self::assertStringEndsWith($object->getImageIndex() . '.png', $object->getIndexedFilename());
+
+        unlink($path);
+    }
+
     public function testPathWithRealFile(): void
     {
         $object = new File();
