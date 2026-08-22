@@ -297,6 +297,7 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
                         $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
                         $objWriter->writeAttributeIf($item->getFont()->isBold(), 'fo:font-weight', 'bold');
+                        $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'fo:font-style', 'italic');
                         $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? substr($item->getLanguage(), 0, 2) : 'en'));
                         $objWriter->writeAttribute('style:script-type', 'latin');
 
@@ -305,6 +306,7 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('style:font-family-asian', $item->getFont()->getName());
                         $objWriter->writeAttribute('style:font-size-asian', $item->getFont()->getSize() . 'pt');
                         $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-asian', 'bold');
+                        $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'style:font-style-asian', 'italic');
                         $objWriter->writeAttribute('style:language-asian', ($item->getLanguage() ? $item->getLanguage() : 'en'));
                         $objWriter->writeAttribute('style:script-type', 'asian');
 
@@ -313,11 +315,15 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('style:font-family-complex', $item->getFont()->getName());
                         $objWriter->writeAttribute('style:font-size-complex', $item->getFont()->getSize() . 'pt');
                         $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-complex', 'bold');
+                        $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'style:font-style-complex', 'italic');
                         $objWriter->writeAttribute('style:language-complex', ($item->getLanguage() ? $item->getLanguage() : 'en'));
                         $objWriter->writeAttribute('style:script-type', 'complex');
 
                         break;
                 }
+                // the underline and the strikethrough are one family for the whole run, whatever
+                // the script the rest of it was spelled for
+                $this->writeFontStates($objWriter, $item->getFont());
 
                 // > style:style > style:text-properties
                 $objWriter->endElement();
