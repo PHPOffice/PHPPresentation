@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
+use ErrorException;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
@@ -30,6 +31,7 @@ use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -38,7 +40,9 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007 as PowerPoint2007Writer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use ZipArchive;
 
 /**
  * Test class for PowerPoint2007 reader.
@@ -1168,6 +1172,73 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(Fill::FILL_NONE, $arrayShape[0]->getFill()->getFillType());
     }
 
+    public function testTextRunWithoutProperties(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Part 1:');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        // `a:rPr` is optional, and Keynote writes a run without one. Taking it back out of a file
+        // this library wrote says what such a run is without carrying a binary fixture for it.
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sSlide = $oZip->getFromName('ppt/slides/slide1.xml');
+        self::assertIsString($sSlide);
+        $oZip->deleteName('ppt/slides/slide1.xml');
+        $oZip->addFromString(
+            'ppt/slides/slide1.xml',
+            (string) preg_replace('#<a:rPr[^>]*/>|<a:rPr.*?</a:rPr>#s', '', $sSlide)
+        );
+        $oZip->close();
+
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertCount(1, $arrayShape[0]->getParagraph(0)->getRichTextElements());
+        self::assertEquals('Part 1:', $arrayShape[0]->getPlainText());
+    }
+
+    public function testTextRunWithoutText(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Part 1:');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        // A run without `a:t` is malformed, and the reader is not the one that should say so
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sSlide = $oZip->getFromName('ppt/slides/slide1.xml');
+        self::assertIsString($sSlide);
+        $oZip->deleteName('ppt/slides/slide1.xml');
+        $oZip->addFromString(
+            'ppt/slides/slide1.xml',
+            (string) preg_replace('#<a:t>.*?</a:t>#s', '', $sSlide)
+        );
+        $oZip->close();
+
+        // Reading it must not raise anything of its own, so turn whatever it raises into a failure
+        set_error_handler(static function (int $errno, string $errstr): bool {
+            throw new ErrorException($errstr, 0, $errno);
+        });
+
+        try {
+            $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        } finally {
+            restore_error_handler();
+            unlink($file);
+        }
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertEquals('', $arrayShape[0]->getPlainText());
+    }
+
     public function testLoadingFileWithNoteInSlide(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_SlideNoteWithRichText.pptx';
@@ -1229,5 +1300,66 @@ class PowerPoint2007Test extends TestCase
 
         self::assertEquals('Introduction', $oPhpPresentationRead->getSlide(0)->getName());
         self::assertNull($oPhpPresentationRead->getSlide(1)->getName());
+    }
+
+    /**
+     * @return array<array{string, string}>
+     */
+    public static function dataProviderFields(): array
+    {
+        return [
+            [Placeholder::PH_TYPE_SLIDENUM, 'slidenum'],
+            [Placeholder::PH_TYPE_DATETIME, 'datetime'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderFields
+     */
+    #[DataProvider('dataProviderFields')]
+    public function testFieldKeepsItsStyle(string $placeholder, string $type): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Page')
+            ->getFont()
+            ->setName('Georgia')
+            ->setSize(18)
+            ->setBold(true)
+            ->setColor(new Color('FFCC0000'));
+        $oShape->setPlaceHolder(new Placeholder($placeholder));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        // The writer turns this shape into `a:fld` rather than a run, so the fixture is the file
+        // itself: what the reader has to cope with is exactly what the writer produces.
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        self::assertStringContainsString(
+            '<a:fld id=',
+            (string) $oZip->getFromName('ppt/slides/slide1.xml')
+        );
+        self::assertStringContainsString(
+            'type="' . $type . '"',
+            (string) $oZip->getFromName('ppt/slides/slide1.xml')
+        );
+        $oZip->close();
+
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertTrue($arrayShape[0]->isPlaceholder());
+        self::assertEquals($placeholder, $arrayShape[0]->getPlaceholder()->getType());
+
+        // The text of a field is only the stand-in the writer put there; the styling is the shape's
+        $arrayElements = $arrayShape[0]->getParagraph(0)->getRichTextElements();
+        self::assertCount(1, $arrayElements);
+        self::assertEquals('Georgia', $arrayElements[0]->getFont()->getName());
+        self::assertEquals(18, $arrayElements[0]->getFont()->getSize());
+        self::assertTrue($arrayElements[0]->getFont()->isBold());
+        self::assertEquals('FFCC0000', $arrayElements[0]->getFont()->getColor()->getARGB());
     }
 }
