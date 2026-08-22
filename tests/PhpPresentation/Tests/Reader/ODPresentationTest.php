@@ -28,6 +28,7 @@ use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Font;
@@ -1112,5 +1113,50 @@ class ODPresentationTest extends TestCase
         self::assertEquals('Budget spent to date: 45% of 1.2M EUR', $arrayShape[0]->getDescription());
         self::assertEquals('The logo of the company', $arrayShape[1]->getDescription());
         self::assertEquals('Legacy', $arrayShape[2]->getDescription());
+    }
+
+    public function testHyperlinkToSlide(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oRun = $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('AAAA');
+        $oRun->getHyperlink()->setSlideNumber(3);
+        $oPhpPresentation->createSlide();
+        $oPhpPresentation->createSlide()->setName('Milestone Overview');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $arrayRichText = $arrayShape[0]->getParagraph()->getRichTextElements();
+        self::assertInstanceOf(TextElement::class, $arrayRichText[0]);
+        $oHyperlink = $arrayRichText[0]->getHyperlink();
+
+        // Without the lookup this comes back as the literal `#Milestone Overview`
+        self::assertTrue($oHyperlink->isInternal());
+        self::assertEquals(3, $oHyperlink->getSlideNumber());
+    }
+
+    public function testHyperlinkToUrl(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oRun = $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('AAAA');
+        $oRun->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $arrayRichText = $arrayShape[0]->getParagraph()->getRichTextElements();
+        self::assertInstanceOf(TextElement::class, $arrayRichText[0]);
+        $oHyperlink = $arrayRichText[0]->getHyperlink();
+
+        self::assertFalse($oHyperlink->isInternal());
+        self::assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oHyperlink->getUrl());
     }
 }
