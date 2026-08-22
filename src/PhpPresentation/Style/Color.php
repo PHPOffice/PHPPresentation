@@ -94,11 +94,14 @@ class Color implements ComparableInterface
     /**
      * Get the alpha % of the ARGB
      * Will return 100 if no ARGB.
+     *
+     * Six characters are an RGB, and an RGB is opaque: only the eight-character form carries an
+     * alpha, in the two characters in front of the colour.
      */
     public function getAlpha(): int
     {
         $alpha = 100;
-        if (strlen($this->argb) >= 6) {
+        if (strlen($this->argb) >= 8) {
             $dec = hexdec(substr($this->argb, 0, 2));
             $alpha = (int) number_format(($dec / 255) * 100, 0);
         }
@@ -122,7 +125,8 @@ class Color implements ComparableInterface
         $alpha = round(($alpha / 100) * 255);
         $alpha = dechex((int) $alpha);
         $alpha = str_pad($alpha, 2, '0', STR_PAD_LEFT);
-        $this->argb = $alpha . substr($this->argb, 2);
+        // The colour keeps its six characters whether it arrived with an alpha in front of it or not
+        $this->argb = $alpha . $this->getRGB();
 
         return $this;
     }

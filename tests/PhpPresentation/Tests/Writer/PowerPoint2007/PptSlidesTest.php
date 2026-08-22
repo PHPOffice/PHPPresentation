@@ -1025,6 +1025,28 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testRichTextRunFontColorRGB(): void
+    {
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:solidFill/a:srgbClr';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRun = $oSlide->createRichTextShape()->createTextRun('MyText');
+        $oRun->getFont()->setColor(new Color('D0D0D0'));
+
+        // A six-character colour is an RGB, so it is opaque: the two characters in front of an
+        // eight-character one are the alpha, and a plain RGB has none to read
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', 'D0D0D0');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '/a:alpha', 'val', 100000);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setColor(new Color('80D0D0D0'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', 'D0D0D0');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '/a:alpha', 'val', 50000);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testRichTextRunFontFormat(): void
     {
         $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';

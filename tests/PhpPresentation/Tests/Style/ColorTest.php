@@ -59,6 +59,22 @@ class ColorTest extends TestCase
     }
 
     /**
+     * Test Alpha of a colour written as a plain RGB.
+     */
+    public function testAlphaOfAnRGB(): void
+    {
+        $object = new Color('D0D0D0');
+        self::assertEquals(100, $object->getAlpha());
+        self::assertEquals('D0D0D0', $object->getRGB());
+
+        // The alpha goes in front of the colour, and does not eat the first two characters of it
+        $object->setAlpha(50);
+        self::assertEquals('80D0D0D0', $object->getARGB());
+        self::assertEquals('D0D0D0', $object->getRGB());
+        self::assertEquals(50, $object->getAlpha());
+    }
+
+    /**
      * Test get/set ARGB.
      */
     public function testSetGetARGB(): void
