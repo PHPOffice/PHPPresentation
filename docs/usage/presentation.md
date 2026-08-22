@@ -264,3 +264,35 @@ $properties->setZoom(3);
 echo $properties->getZoom();
 // Output : 3
 ```
+
+## Slide size
+
+The size of a slide is held by the document layout, in EMU. Both the getters and the setters take
+the unit they should speak in, so a caller never has to convert by hand.
+
+``` php
+<?php
+
+$presentation = new PhpPresentation();
+
+$layout = $presentation->getLayout();
+// A preset : 4/3, 16/9, A4, letter, ... (see DocumentLayout::LAYOUT_*)
+$layout->setDocumentLayout(DocumentLayout::LAYOUT_SCREEN_16X9);
+// Or a size of your own, in the unit of your choice
+$layout->setCX(25.4, DocumentLayout::UNIT_CENTIMETER);
+$layout->setCY(14.29, DocumentLayout::UNIT_CENTIMETER);
+
+// Read it back in any unit : EMU (the default), CENTIMETER, MILLIMETER, INCH, POINT, PIXEL
+echo $layout->getCX(DocumentLayout::UNIT_INCH);
+// Output : 10
+```
+
+The conversion itself is available on its own, for a value that belongs to no layout — the offset
+of a shape, for instance, which is expressed in pixels.
+
+``` php
+<?php
+
+// 2.5 cm, in the pixels a shape is positioned with
+$offsetX = DocumentLayout::convertUnit(2.5, DocumentLayout::UNIT_CENTIMETER, DocumentLayout::UNIT_PIXEL);
+```
