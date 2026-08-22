@@ -76,6 +76,17 @@ class DocumentLayoutTest extends TestCase
         self::assertEquals(2700000, $object->getCY());
     }
 
+    public function testConvertUnitWithoutALayout(): void
+    {
+        // the point of it being public: a caller who thinks in centimetres has no layout to ask
+        self::assertEquals(914400, DocumentLayout::convertUnit(1, DocumentLayout::UNIT_INCH, DocumentLayout::UNIT_EMU));
+        self::assertEquals(2.54, DocumentLayout::convertUnit(1, DocumentLayout::UNIT_INCH, DocumentLayout::UNIT_CENTIMETER));
+        self::assertEquals(25.4, DocumentLayout::convertUnit(1, DocumentLayout::UNIT_INCH, DocumentLayout::UNIT_MILLIMETER));
+        self::assertEquals(96, DocumentLayout::convertUnit(1, DocumentLayout::UNIT_INCH, DocumentLayout::UNIT_PIXEL));
+        self::assertEquals(72, DocumentLayout::convertUnit(1, DocumentLayout::UNIT_INCH, DocumentLayout::UNIT_POINT));
+        self::assertEquals(1, DocumentLayout::convertUnit(1, DocumentLayout::UNIT_INCH, DocumentLayout::UNIT_INCH));
+    }
+
     public function testCX(): void
     {
         $value = mt_rand(1, 100000);
