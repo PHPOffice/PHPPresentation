@@ -27,6 +27,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\PowerPoint2007;
 use PhpOffice\PhpPresentation\Shape\Chart;
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
@@ -1147,6 +1148,86 @@ class PowerPoint2007Test extends TestCase
 
         self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointFill(1)->getFillType());
         self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointOutline(1)->getFill()->getFillType());
+    }
+
+    public function testAxisTextIsReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oBar = new Bar();
+        $oBar->addSeries(new Series('Downloads', ['Jan' => '1', 'Feb' => '5']));
+        $oShape = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oBar);
+
+        $oAxisX = $oShape->getPlotArea()->getAxisX();
+        $oAxisX->setTitle('Quarter')->setTitleRotation(45);
+        $oAxisX->getFont()->setName('Georgia')->setSize(18)->setBold(true)->setItalic(true)
+            ->setUnderline(Font::UNDERLINE_DOUBLE)->getColor()->setRGB('FF0000');
+        $oAxisX->getTickLabelFont()->setName('Verdana')->setSize(7)->getColor()->setRGB('00AA00');
+        $oShape->getPlotArea()->getAxisY()->setTitle('Downloads');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $oAxisXRead = $arrayShape[0]->getPlotArea()->getAxisX();
+
+        self::assertEquals('Quarter', $oAxisXRead->getTitle());
+        self::assertEquals(45, $oAxisXRead->getTitleRotation());
+
+        $oFont = $oAxisXRead->getFont();
+        self::assertInstanceOf(Font::class, $oFont);
+        self::assertEquals('Georgia', $oFont->getName());
+        self::assertEquals(18, $oFont->getSize());
+        self::assertTrue($oFont->isBold());
+        self::assertTrue($oFont->isItalic());
+        self::assertEquals(Font::UNDERLINE_DOUBLE, $oFont->getUnderline());
+        self::assertEquals('FF0000', $oFont->getColor()->getRGB());
+
+        // the two fonts of an axis are separate: the title is styled by one, the labels by the other
+        $oTickLabelFont = $oAxisXRead->getTickLabelFont();
+        self::assertInstanceOf(Font::class, $oTickLabelFont);
+        self::assertEquals('Verdana', $oTickLabelFont->getName());
+        self::assertEquals(7, $oTickLabelFont->getSize());
+        self::assertFalse($oTickLabelFont->isBold());
+        self::assertEquals('00AA00', $oTickLabelFont->getColor()->getRGB());
+
+        self::assertEquals('Downloads', $arrayShape[0]->getPlotArea()->getAxisY()->getTitle());
+    }
+
+    public function testAxisTickMarksAndOutlineAreReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oBar = new Bar();
+        $oBar->addSeries(new Series('Downloads', ['Jan' => '1']));
+        $oShape = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oBar);
+
+        foreach ([$oShape->getPlotArea()->getAxisX(), $oShape->getPlotArea()->getAxisY()] as $oAxis) {
+            $oAxis->setMajorTickMark(Axis::TICK_MARK_OUTSIDE);
+            $oAxis->setMinorTickMark(Axis::TICK_MARK_INSIDE);
+            $oAxis->getOutline()->setWidth(3)->getFill()
+                ->setFillType(Fill::FILL_SOLID)
+                ->setStartColor(new Color('FF00FF00'));
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+
+        // both axes, because the two blocks that read them are copies of one another
+        foreach ([$arrayShape[0]->getPlotArea()->getAxisX(), $arrayShape[0]->getPlotArea()->getAxisY()] as $oAxis) {
+            self::assertEquals(Axis::TICK_MARK_OUTSIDE, $oAxis->getMajorTickMark());
+            self::assertEquals(Axis::TICK_MARK_INSIDE, $oAxis->getMinorTickMark());
+            self::assertEquals(3, $oAxis->getOutline()->getWidth());
+            self::assertEquals('00FF00', $oAxis->getOutline()->getFill()->getStartColor()->getRGB());
+        }
     }
 
     public function testShapeAskingForNoFillIsReadBack(): void
