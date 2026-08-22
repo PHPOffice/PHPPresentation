@@ -51,6 +51,18 @@ class ImageTest extends TestCase
         self::assertEquals('background_' . $numSlide . '.', $object->getIndexedFilename($numSlide));
     }
 
+    public function testPathOfAFileWithNoMeasurableSize(): void
+    {
+        $object = new Image();
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'tiger.svg';
+
+        // the background keeps its size to itself, so the warning the file used to raise is
+        // all there is to catch, and `failOnWarning` in phpunit.xml.dist is what catches it
+        $object->setPath($imagePath);
+
+        self::assertEquals($imagePath, $object->getPath());
+    }
+
     public function testExtension(): void
     {
         $object = new Image();

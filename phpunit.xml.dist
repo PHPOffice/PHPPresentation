@@ -6,6 +6,9 @@
     colors="true"
     processIsolation="false"
     stopOnFailure="false"
+    failOnWarning="true"
+    failOnRisky="true"
+    failOnEmptyTestSuite="true"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <source>
     <include>
