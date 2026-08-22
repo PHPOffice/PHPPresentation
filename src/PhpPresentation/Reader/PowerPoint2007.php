@@ -1380,7 +1380,7 @@ class PowerPoint2007 implements ReaderInterface
                             $oShape->getPlotArea()->getAxisX()->setMajorTickMark($elementMajorTickMark->getAttribute('val'));
                         }
                         if ($elementMinorTickMark = $xmlReader->getElement('c:minorTickMark', $oElement)) {
-                            $oShape->getPlotArea()->getAxisX()->setMajorTickMark($elementMinorTickMark->getAttribute('val'));
+                            $oShape->getPlotArea()->getAxisX()->setMinorTickMark($elementMinorTickMark->getAttribute('val'));
                         }
                         if ($elementTickLabelPosition = $xmlReader->getElement('c:tickLblPos', $oElement)) {
                             $oShape->getPlotArea()->getAxisX()->setTickLabelPosition($elementTickLabelPosition->getAttribute('val'));
@@ -1395,6 +1395,8 @@ class PowerPoint2007 implements ReaderInterface
                                 $oShape->getPlotArea()->getAxisX()->setOutline($outline);
                             }
                         }
+
+                        $this->loadAxisText($xmlReader, $oElement, $oShape->getPlotArea()->getAxisX());
                     }
 
                     if ($oElement = $xmlReader->getElement('/c:chartSpace/c:chart/c:plotArea/c:valAx')) {
@@ -1412,7 +1414,7 @@ class PowerPoint2007 implements ReaderInterface
                             $oShape->getPlotArea()->getAxisY()->setMajorTickMark($elementMajorTickMark->getAttribute('val'));
                         }
                         if ($elementMinorTickMark = $xmlReader->getElement('c:minorTickMark', $oElement)) {
-                            $oShape->getPlotArea()->getAxisY()->setMajorTickMark($elementMinorTickMark->getAttribute('val'));
+                            $oShape->getPlotArea()->getAxisY()->setMinorTickMark($elementMinorTickMark->getAttribute('val'));
                         }
                         if ($elementTickLabelPosition = $xmlReader->getElement('c:tickLblPos', $oElement)) {
                             $oShape->getPlotArea()->getAxisY()->setTickLabelPosition($elementTickLabelPosition->getAttribute('val'));
@@ -1420,11 +1422,13 @@ class PowerPoint2007 implements ReaderInterface
                         if ($elementCrosses = $xmlReader->getElement('c:crosses', $oElement)) {
                             $oShape->getPlotArea()->getAxisY()->setCrossesAt($elementCrosses->getAttribute('val'));
                         }
-                        if ($elementFill = $xmlReader->getElement('c:spPr/a:ln', $oElement)) {
+                        if ($elementFill = $xmlReader->getElement('c:spPr', $oElement)) {
                             if ($outline = $this->loadStyleOutline($xmlReader, $elementFill)) {
                                 $oShape->getPlotArea()->getAxisY()->setOutline($outline);
                             }
                         }
+
+                        $this->loadAxisText($xmlReader, $oElement, $oShape->getPlotArea()->getAxisY());
                     }
 
                     if ($oElement = $xmlReader->getElement('/c:chartSpace/c:chart/c:legend')) {
@@ -1800,6 +1804,75 @@ class PowerPoint2007 implements ReaderInterface
         }
 
         return null;
+    }
+
+    /**
+     * The `a:defRPr` a chart writes for a font: the same attributes a run carries, on an element
+     * that styles a whole paragraph rather than a piece of one.
+     */
+    protected function loadStyleFont(XMLReader $xmlReader, DOMElement $oElement, Font $oFont): void
+    {
+        if ($oElement->hasAttribute('b')) {
+            $oFont->setBold('true' == $oElement->getAttribute('b') || '1' == $oElement->getAttribute('b'));
+        }
+        if ($oElement->hasAttribute('i')) {
+            $oFont->setItalic('true' == $oElement->getAttribute('i') || '1' == $oElement->getAttribute('i'));
+        }
+        if ($oElement->hasAttribute('strike')) {
+            $oFont->setStrikethrough($oElement->getAttribute('strike'));
+        }
+        if ($oElement->hasAttribute('u')) {
+            $oFont->setUnderline($oElement->getAttribute('u'));
+        }
+        if ($oElement->hasAttribute('sz')) {
+            $oFont->setSize((int) ((int) $oElement->getAttribute('sz') / 100));
+        }
+        if ($oElement->hasAttribute('baseline')) {
+            $oFont->setBaseline((int) $oElement->getAttribute('baseline'));
+        }
+        $oElementColor = $xmlReader->getElement('a:solidFill/a:srgbClr', $oElement);
+        if ($oElementColor instanceof DOMElement) {
+            $oFont->setColor($this->loadStyleColor($xmlReader, $oElementColor));
+        }
+        $oElementLatin = $xmlReader->getElement('a:latin', $oElement);
+        if ($oElementLatin instanceof DOMElement && $oElementLatin->hasAttribute('typeface')) {
+            $oFont->setName($oElementLatin->getAttribute('typeface'));
+        }
+    }
+
+    /**
+     * The text of an axis: the title it was given, how that title is turned and styled, and the
+     * font of the tick labels. All four are written by this library and none was read back.
+     *
+     * @param DOMElement $oElement the `c:catAx` or `c:valAx` element of the axis
+     */
+    protected function loadAxisText(XMLReader $xmlReader, DOMElement $oElement, Chart\Axis $oAxis): void
+    {
+        $oElementTitle = $xmlReader->getElement('c:title/c:tx/c:rich', $oElement);
+        if ($oElementTitle instanceof DOMElement) {
+            $title = '';
+            foreach ($xmlReader->getElements('a:p/a:r/a:t', $oElementTitle) as $oElementText) {
+                $title .= $oElementText->nodeValue;
+            }
+            if ('' !== $title) {
+                $oAxis->setTitle($title);
+            }
+
+            $oElementBody = $xmlReader->getElement('a:bodyPr', $oElementTitle);
+            if ($oElementBody instanceof DOMElement && $oElementBody->hasAttribute('rot')) {
+                $oAxis->setTitleRotation((int) CommonDrawing::angleToDegrees((int) $oElementBody->getAttribute('rot')));
+            }
+
+            $oElementFont = $xmlReader->getElement('a:p/a:pPr/a:defRPr', $oElementTitle);
+            if ($oElementFont instanceof DOMElement && null !== $oAxis->getFont()) {
+                $this->loadStyleFont($xmlReader, $oElementFont, $oAxis->getFont());
+            }
+        }
+
+        $oElementFont = $xmlReader->getElement('c:txPr/a:p/a:pPr/a:defRPr', $oElement);
+        if ($oElementFont instanceof DOMElement && null !== $oAxis->getTickLabelFont()) {
+            $this->loadStyleFont($xmlReader, $oElementFont, $oAxis->getTickLabelFont());
+        }
     }
 
     protected function loadRels(string $fileRels): void
