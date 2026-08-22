@@ -1623,7 +1623,8 @@ class PowerPoint2007 implements ReaderInterface
                             $oText->getFont()->setPitchFamily((int) $oElementFont->getAttribute('pitchFamily'));
                         }
                         if ($oElementFont->hasAttribute('charset')) {
-                            $oText->getFont()->setCharset((int) $oElementFont->getAttribute('charset'));
+                            $charset = (int) $oElementFont->getAttribute('charset');
+                            $oText->getFont()->setCharset($charset < 0 ? $charset + 256 : $charset);
                         }
                     }
 

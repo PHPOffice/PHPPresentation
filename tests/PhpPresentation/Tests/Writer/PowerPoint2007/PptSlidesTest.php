@@ -995,7 +995,7 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'typeface');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'typeface', 'Calibri');
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'charset');
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'charset', '12');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'charset', '18');
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
         $this->assertIsSchemaECMA376Valid();
@@ -1008,7 +1008,7 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'typeface');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'typeface', 'Calibri');
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'charset');
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'charset', '12');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'charset', '18');
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
         $this->assertIsSchemaECMA376Valid();
 
@@ -1021,7 +1021,19 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'charset');
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'charset', '12');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'charset', '18');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testRichTextRunFontCharsetAboveAByte(): void
+    {
+        $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';
+
+        $oRun = $this->oPresentation->getActiveSlide()->createRichTextShape()->createTextRun('MyText');
+        // Arabic, which is 178 in the table the model holds and does not fit in a byte
+        $oRun->getFont()->setCharset(178);
+
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'charset', '-78');
         $this->assertIsSchemaECMA376Valid();
     }
 
