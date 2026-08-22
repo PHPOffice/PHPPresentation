@@ -38,8 +38,10 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest.
@@ -1478,6 +1480,118 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interpolation');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interpolation', 'cubic-spline');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @return array<array{0: string, 1: string, 2: string, 3: null|string}>
+     */
+    public static function dataProviderUnderlines(): array
+    {
+        return [
+            [Font::UNDERLINE_DASH, 'dash', 'single', null],
+            [Font::UNDERLINE_DASHHEAVY, 'dash', 'single', 'bold'],
+            [Font::UNDERLINE_DASHLONG, 'long-dash', 'single', null],
+            [Font::UNDERLINE_DASHLONGHEAVY, 'long-dash', 'single', 'bold'],
+            [Font::UNDERLINE_DOTHASH, 'dot-dash', 'single', null],
+            [Font::UNDERLINE_DOTHASHHEAVY, 'dot-dash', 'single', 'bold'],
+            [Font::UNDERLINE_DOTDOTDASH, 'dot-dot-dash', 'single', null],
+            [Font::UNDERLINE_DOTDOTDASHHEAVY, 'dot-dot-dash', 'single', 'bold'],
+            [Font::UNDERLINE_DOTTED, 'dotted', 'single', null],
+            [Font::UNDERLINE_DOTTEDHEAVY, 'dotted', 'single', 'bold'],
+            [Font::UNDERLINE_DOUBLE, 'solid', 'double', null],
+            [Font::UNDERLINE_HEAVY, 'solid', 'single', 'bold'],
+            [Font::UNDERLINE_SINGLE, 'solid', 'single', null],
+            [Font::UNDERLINE_WAVY, 'wave', 'single', null],
+            [Font::UNDERLINE_WAVYDOUBLE, 'wave', 'double', null],
+            [Font::UNDERLINE_WAVYHEAVY, 'wave', 'single', 'bold'],
+            [Font::UNDERLINE_WORDS, 'solid', 'single', null],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderUnderlines
+     */
+    #[DataProvider('dataProviderUnderlines')]
+    public function testAxisFontUnderline(string $underline, string $style, string $type, ?string $width): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oSeries = new Series('Series', $this->seriesData);
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->getAxisX()->getFont()->setUnderline($underline);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:text-properties';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-underline-style', $style);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-underline-type', $type);
+        if (null === $width) {
+            $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'style:text-underline-width');
+        } else {
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-underline-width', $width);
+        }
+        // `words` is the one underline ODF spells with a mode rather than a style of its own
+        if (Font::UNDERLINE_WORDS === $underline) {
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-underline-mode', 'skip-white-space');
+        } else {
+            $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'style:text-underline-mode');
+        }
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testFontStateOfEveryChartStyle(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oSeries = new Series('Series', $this->seriesData);
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->getAxisX()->setTitle('Axis');
+        $oShape->getTitle()->setVisible(true);
+        $oShape->getLegend()->setVisible(true);
+
+        $fonts = [
+            $oShape->getPlotArea()->getAxisX()->getFont(),
+            $oShape->getLegend()->getFont(),
+            $oSeries->getFont(),
+            $oShape->getTitle()->getFont(),
+        ];
+        foreach ($fonts as $oFont) {
+            $oFont->setBold(true);
+            $oFont->setItalic(true);
+            $oFont->setUnderline(Font::UNDERLINE_DOUBLE);
+            $oFont->setStrikethrough(Font::STRIKE_DOUBLE);
+        }
+
+        // the axis carries the same font twice: on its labels and on its title
+        foreach (['styleAxisX', 'styleAxisXTitle', 'styleLegend', 'styleSeries0', 'styleTitle'] as $styleName) {
+            $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $styleName . '\']/style:text-properties';
+            $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-weight', 'bold');
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-style', 'italic');
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-underline-style', 'solid');
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-underline-type', 'double');
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-line-through-style', 'solid');
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-line-through-type', 'double');
+        }
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testFontStateLeftAloneIsNotWritten(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oSeries = new Series('Series', $this->seriesData);
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:text-properties';
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'style:text-underline-style');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'style:text-line-through-style');
+
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 }

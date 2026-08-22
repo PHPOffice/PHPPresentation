@@ -447,6 +447,55 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testRichTextRunFontState(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-style');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:text-underline-style');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:text-line-through-style');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setItalic(true);
+        $oRun->getFont()->setUnderline(Font::UNDERLINE_WAVYHEAVY);
+        $oRun->getFont()->setStrikethrough(Font::STRIKE_DOUBLE);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:font-style', 'italic');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-underline-style', 'wave');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-underline-type', 'single');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-underline-width', 'bold');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-line-through-style', 'solid');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-line-through-type', 'double');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // the italic is spelled once per script, the way the family, the size and the weight are
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-style');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-style-asian', 'italic');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-underline-style', 'wave');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-line-through-type', 'double');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-style');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-style-complex', 'italic');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testRichTextRunLanguage(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
