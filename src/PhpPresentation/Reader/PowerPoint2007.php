@@ -1546,9 +1546,11 @@ class PowerPoint2007 implements ReaderInterface
             }
             if ('a:r' == $oSubElement->tagName) {
                 $oElementrPr = $document->getElement('a:rPr', $oSubElement);
-                if (is_object($oElementrPr)) {
-                    $oText = $oParagraph->createTextRun();
 
+                // `a:rPr` is optional (ECMA-376, CT_RegularTextRun), and Keynote's export leaves it
+                // out, so the run is made before its properties are looked at rather than by them
+                $oText = $oParagraph->createTextRun();
+                if ($oElementrPr instanceof DOMElement) {
                     if ($oElementrPr->hasAttribute('b')) {
                         $att = $oElementrPr->getAttribute('b');
                         $oText->getFont()->setBold('true' == $att || '1' == $att ? true : false);
@@ -1577,14 +1579,14 @@ class PowerPoint2007 implements ReaderInterface
                     }
                     // Color
                     $oElementSrgbClr = $document->getElement('a:solidFill/a:srgbClr', $oElementrPr);
-                    if (is_object($oElementSrgbClr) && $oElementSrgbClr->hasAttribute('val')) {
+                    if ($oElementSrgbClr instanceof DOMElement && $oElementSrgbClr->hasAttribute('val')) {
                         $oColor = new Color();
                         $oColor->setRGB($oElementSrgbClr->getAttribute('val'));
                         $oText->getFont()->setColor($oColor);
                     }
                     // Hyperlink
                     $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElementrPr);
-                    if (is_object($oElementHlinkClick)) {
+                    if ($oElementHlinkClick instanceof DOMElement) {
                         $oText->setHyperlink(
                             $this->loadHyperlink($document, $oElementHlinkClick, $oText->getHyperlink())
                         );
@@ -1593,21 +1595,21 @@ class PowerPoint2007 implements ReaderInterface
                     // Font
                     $oElementFontFormat = null;
                     $oElementFontFormatComplexScript = $document->getElement('a:cs', $oElementrPr);
-                    if (is_object($oElementFontFormatComplexScript)) {
+                    if ($oElementFontFormatComplexScript instanceof DOMElement) {
                         $oText->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
                         $oElementFontFormat = $oElementFontFormatComplexScript;
                     }
                     $oElementFontFormatEastAsian = $document->getElement('a:ea', $oElementrPr);
-                    if (is_object($oElementFontFormatEastAsian)) {
+                    if ($oElementFontFormatEastAsian instanceof DOMElement) {
                         $oText->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
                         $oElementFontFormat = $oElementFontFormatEastAsian;
                     }
                     $oElementFontFormatLatin = $document->getElement('a:latin', $oElementrPr);
-                    if (is_object($oElementFontFormatLatin)) {
+                    if ($oElementFontFormatLatin instanceof DOMElement) {
                         $oText->getFont()->setFormat(Font::FORMAT_LATIN);
                         $oElementFontFormat = $oElementFontFormatLatin;
                     }
-                    if (is_object($oElementFontFormat) && $oElementFontFormat->hasAttribute('typeface')) {
+                    if ($oElementFontFormat instanceof DOMElement && $oElementFontFormat->hasAttribute('typeface')) {
                         $oText->getFont()->setName($oElementFontFormat->getAttribute('typeface'));
                     }
                     // Font definition
@@ -1626,8 +1628,12 @@ class PowerPoint2007 implements ReaderInterface
                             $oText->getFont()->setCharset((int) $oElementFont->getAttribute('charset'));
                         }
                     }
-
-                    $oSubSubElement = $document->getElement('a:t', $oSubElement);
+                }
+                // The run now exists whether or not it had properties, so the text it holds has
+                // to be looked for rather than assumed: a run without `a:t` is malformed, but it
+                // is the reader that would raise the error
+                $oSubSubElement = $document->getElement('a:t', $oSubElement);
+                if ($oSubSubElement instanceof DOMElement) {
                     $oText->setText($oSubSubElement->nodeValue);
                 }
             }

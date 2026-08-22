@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
+use ErrorException;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
@@ -39,6 +40,7 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007 as PowerPoint2007Writer;
 use PHPUnit\Framework\TestCase;
+use ZipArchive;
 
 /**
  * Test class for PowerPoint2007 reader.
@@ -1166,6 +1168,73 @@ class PowerPoint2007Test extends TestCase
         // The shape wrote `a:noFill`, so it must come back with a fill that says so, not with none at all
         self::assertNotNull($arrayShape[0]->getFill());
         self::assertEquals(Fill::FILL_NONE, $arrayShape[0]->getFill()->getFillType());
+    }
+
+    public function testTextRunWithoutProperties(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Part 1:');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        // `a:rPr` is optional, and Keynote writes a run without one. Taking it back out of a file
+        // this library wrote says what such a run is without carrying a binary fixture for it.
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sSlide = $oZip->getFromName('ppt/slides/slide1.xml');
+        self::assertIsString($sSlide);
+        $oZip->deleteName('ppt/slides/slide1.xml');
+        $oZip->addFromString(
+            'ppt/slides/slide1.xml',
+            (string) preg_replace('#<a:rPr[^>]*/>|<a:rPr.*?</a:rPr>#s', '', $sSlide)
+        );
+        $oZip->close();
+
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertCount(1, $arrayShape[0]->getParagraph(0)->getRichTextElements());
+        self::assertEquals('Part 1:', $arrayShape[0]->getPlainText());
+    }
+
+    public function testTextRunWithoutText(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Part 1:');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        // A run without `a:t` is malformed, and the reader is not the one that should say so
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sSlide = $oZip->getFromName('ppt/slides/slide1.xml');
+        self::assertIsString($sSlide);
+        $oZip->deleteName('ppt/slides/slide1.xml');
+        $oZip->addFromString(
+            'ppt/slides/slide1.xml',
+            (string) preg_replace('#<a:t>.*?</a:t>#s', '', $sSlide)
+        );
+        $oZip->close();
+
+        // Reading it must not raise anything of its own, so turn whatever it raises into a failure
+        set_error_handler(static function (int $errno, string $errstr): bool {
+            throw new ErrorException($errstr, 0, $errno);
+        });
+
+        try {
+            $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        } finally {
+            restore_error_handler();
+            unlink($file);
+        }
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertEquals('', $arrayShape[0]->getPlainText());
     }
 
     public function testLoadingFileWithNoteInSlide(): void
