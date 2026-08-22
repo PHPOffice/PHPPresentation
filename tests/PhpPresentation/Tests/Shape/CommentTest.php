@@ -22,7 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Comment\Author;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -47,8 +47,8 @@ class CommentTest extends TestCase
     {
         $object = new Comment();
 
-        /** @var Author&MockObject $oStub */
-        $oStub = $this->getMockBuilder(Author::class)->getMock();
+        /** @var Author&Stub $oStub */
+        $oStub = self::createStub(Author::class);
 
         self::assertNull($object->getAuthor());
         self::assertInstanceOf(Comment::class, $object->setAuthor($oStub));

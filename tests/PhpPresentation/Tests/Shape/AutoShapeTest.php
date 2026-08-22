@@ -22,7 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Style\Outline;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 class AutoShapeTest extends TestCase
@@ -39,8 +39,8 @@ class AutoShapeTest extends TestCase
 
     public function testOutline(): void
     {
-        /** @var MockObject&Outline $mock */
-        $mock = $this->getMockBuilder(Outline::class)->getMock();
+        /** @var Outline&Stub $mock */
+        $mock = self::createStub(Outline::class);
 
         $object = new AutoShape();
         self::assertInstanceOf(Outline::class, $object->getOutline());

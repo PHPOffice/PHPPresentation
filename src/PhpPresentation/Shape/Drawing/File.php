@@ -55,7 +55,13 @@ class File extends AbstractDrawingAdapter
 
         if ($pVerifyFile) {
             if (0 == $this->width && 0 == $this->height) {
-                [$this->width, $this->height] = getimagesize($this->getPath());
+                // Not every file a shape can carry is one `getimagesize()` can measure -- an SVG
+                // and a video both come back as `false`, and a size of nothing is what they had
+                // before this asked.
+                $imageSize = getimagesize($this->getPath());
+                if (is_array($imageSize)) {
+                    [$this->width, $this->height] = $imageSize;
+                }
             }
         }
 

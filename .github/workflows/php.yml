@@ -75,7 +75,7 @@ jobs:
           with:
               php-version: ${{ matrix.php }}
               extensions: gd, xml, zip
-              coverage: ${{ (matrix.php == '8.3') && 'xdebug' || 'none' }}
+              coverage: ${{ (matrix.php == '8.5') && 'xdebug' || 'none' }}
 
       -   uses: actions/checkout@v2
 
@@ -83,15 +83,18 @@ jobs:
           run: composer install --ansi --prefer-dist --no-interaction --no-progress
 
       -   name: Run phpunit
-          if: matrix.php != '8.3'
+          if: matrix.php != '8.5'
           run: ./vendor/bin/phpunit -c phpunit.xml.dist --no-coverage
 
+      # the newest PHP is where a new deprecation shows up first, so that leg is the one
+      # that refuses to be green while the suite still has something to report -- and the
+      # one that gathers the coverage, so that there is a single leg out of the ordinary
       -   name: Run phpunit
-          if: matrix.php == '8.3'
-          run: ./vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/clover.xml
+          if: matrix.php == '8.5'
+          run: ./vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/clover.xml --fail-on-deprecation --fail-on-notice --fail-on-phpunit-deprecation
 
       -   name: Upload coverage results to Coveralls
-          if: matrix.php == '8.3'
+          if: matrix.php == '8.5'
           env:
             COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
