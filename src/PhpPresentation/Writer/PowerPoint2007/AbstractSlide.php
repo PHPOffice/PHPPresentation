@@ -734,10 +734,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             'pitchFamily',
             $element->getFont()->getPitchFamily()
         );
+        // the schema calls this a byte, so the charsets above 127 are spelled as the
+        // negative value that byte holds: Arabic is 178 to the model and -78 to the file
+        $charset = $element->getFont()->getCharset();
         $objWriter->writeAttributeIf(
-            $element->getFont()->getCharset() !== Font::CHARSET_DEFAULT,
+            $charset !== Font::CHARSET_DEFAULT,
             'charset',
-            dechex($element->getFont()->getCharset())
+            (string) ($charset > 127 ? $charset - 256 : $charset)
         );
         $objWriter->endElement();
 

@@ -38,6 +38,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007 as PowerPoint2007Writer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -1214,6 +1215,45 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('Budget', $arrayShape[0]->getName());
         self::assertEquals('Budget spent to date: 45% of 1.2M EUR', $arrayShape[0]->getDescription());
         self::assertEquals('', $arrayShape[1]->getDescription());
+    }
+
+    /**
+     * @dataProvider dataProviderCharsets
+     */
+    #[DataProvider('dataProviderCharsets')]
+    public function testFontCharsetSurvivesTheRoundTrip(int $charset): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oRun = $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('MyText');
+        $oRun->getFont()->setCharset($charset);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $arrayElement = $arrayShape[0]->getParagraph()->getRichTextElements();
+
+        self::assertEquals($charset, $arrayElement[0]->getFont()->getCharset());
+    }
+
+    /**
+     * @return array<int, array<int, int>>
+     */
+    public static function dataProviderCharsets(): array
+    {
+        return [
+            [Font::CHARSET_DEFAULT],
+            [0],
+            [18],
+            // the ones that do not fit in a byte, which the file spells as negative
+            [134],
+            [178],
+            [204],
+            [255],
+        ];
     }
 
     public function testSlideName(): void
