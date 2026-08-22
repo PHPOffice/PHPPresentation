@@ -25,8 +25,9 @@
     <rule ref="rulesets/design.xml/CouplingBetweenObjects">
         <!-- PptSlides needs more coupling (default: 13) -->
         <!-- Writer/Office2007/AbstractSlide needs more coupling (default: 13) -->
+        <!-- Reader/PowerPoint2007 reads a chart axis, and an axis is a class of its own -->
 		<properties>
-            <property name="maximum" value="38" />
+            <property name="maximum" value="39" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">
