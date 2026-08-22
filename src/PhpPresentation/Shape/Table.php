@@ -44,6 +44,20 @@ class Table extends AbstractGraphic implements ComparableInterface
     private $columnCount = 1;
 
     /**
+     * Is the first row of the table styled as a header row?
+     *
+     * @var bool
+     */
+    private $firstRow = true;
+
+    /**
+     * Are the rows of the table styled with alternating bands?
+     *
+     * @var bool
+     */
+    private $bandRow = true;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Table instance.
      *
      * @param int $columns Number of columns
@@ -101,6 +115,39 @@ class Table extends AbstractGraphic implements ComparableInterface
         $this->rows[] = $row;
 
         return $row;
+    }
+
+    /**
+     * Is the first row of the table styled as a header row?
+     *
+     * A header row is announced as such by assistive technologies, so a table whose first row
+     * holds data rather than column labels should turn it off.
+     */
+    public function isFirstRow(): bool
+    {
+        return $this->firstRow;
+    }
+
+    public function setFirstRow(bool $value = true): self
+    {
+        $this->firstRow = $value;
+
+        return $this;
+    }
+
+    /**
+     * Are the rows of the table styled with alternating bands?
+     */
+    public function isBandRow(): bool
+    {
+        return $this->bandRow;
+    }
+
+    public function setBandRow(bool $value = true): self
+    {
+        $this->bandRow = $value;
+
+        return $this;
     }
 
     public function getNumColumns(): int
