@@ -9,6 +9,30 @@ Example:
 $tableShape = $slide->createTableShape($columns);
 ```
 
+## Header row and banded rows
+
+A table is written with its first row styled as a header row and with alternating row bands.
+Both can be turned off with `setFirstRow` and `setBandRow`.
+
+A header row is announced as a header by assistive technologies, so a table whose first row holds
+data rather than column labels — a single-column list, for instance — should turn it off, or its
+first entry is read out as the heading of the column.
+
+``` php
+<?php
+
+$tableShape = $slide->createTableShape($columns);
+$tableShape->setFirstRow(false);
+$tableShape->setBandRow(false);
+```
+
+Each writer says it in the terms of its own format: the PowerPoint2007 Writer sets `firstRow` on the
+table properties, the ODPresentation Writer wraps the first row in `table:table-header-rows`.
+
+!!! warning
+    `setBandRow` is available only on the PowerPoint2007 Writer. ODF has no equivalent — banding is
+    a matter of styling each row there.
+
 ## Rows
 A row is a child of a table. For creating a row, use `createRow` method of a Table shape.
 

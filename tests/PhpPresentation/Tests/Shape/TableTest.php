@@ -68,6 +68,28 @@ class TableTest extends TestCase
         $object->getRow(1);
     }
 
+    public function testFirstRow(): void
+    {
+        $object = new Table();
+
+        self::assertTrue($object->isFirstRow());
+        self::assertInstanceOf(Table::class, $object->setFirstRow(false));
+        self::assertFalse($object->isFirstRow());
+        self::assertInstanceOf(Table::class, $object->setFirstRow());
+        self::assertTrue($object->isFirstRow());
+    }
+
+    public function testBandRow(): void
+    {
+        $object = new Table();
+
+        self::assertTrue($object->isBandRow());
+        self::assertInstanceOf(Table::class, $object->setBandRow(false));
+        self::assertFalse($object->isBandRow());
+        self::assertInstanceOf(Table::class, $object->setBandRow());
+        self::assertTrue($object->isBandRow());
+    }
+
     public function testHashCode(): void
     {
         $object = new Table();
