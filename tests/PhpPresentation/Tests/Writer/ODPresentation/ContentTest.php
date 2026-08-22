@@ -1008,6 +1008,60 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    /**
+     * @return array<array{0: string, 1: string, 2: string}>
+     */
+    public static function dataProviderTableCellBorder(): array
+    {
+        return [
+            // A line style the ODF border styles can name outright
+            [Border::LINE_NONE, Border::DASH_SOLID, 'none'],
+            [Border::LINE_DOUBLE, Border::DASH_SOLID, 'double'],
+            // The compound lines have no CSS2 equivalent, double is the closest
+            [Border::LINE_THICKTHIN, Border::DASH_SOLID, 'double'],
+            [Border::LINE_THINTHICK, Border::DASH_SOLID, 'double'],
+            [Border::LINE_TRI, Border::DASH_SOLID, 'double'],
+            // A dash pattern decides the style, and CSS2 knows two of them
+            [Border::LINE_SINGLE, Border::DASH_DASH, 'dashed'],
+            [Border::LINE_SINGLE, Border::DASH_LARGEDASHDOT, 'dashed'],
+            [Border::LINE_SINGLE, Border::DASH_DOT, 'dotted'],
+            [Border::LINE_SINGLE, Border::DASH_SYSDOT, 'dotted'],
+            // No line at all outranks any dash pattern
+            [Border::LINE_NONE, Border::DASH_DASH, 'none'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTableCellBorder
+     */
+    #[DataProvider('dataProviderTableCellBorder')]
+    public function testTableCellBorder(string $lineStyle, string $dashStyle, string $expected): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
+        $oCell = $oShape->createRow()->getCell();
+        $oCell->getBorders()->getBottom()->setLineStyle($lineStyle)->setDashStyle($dashStyle);
+
+        // Only the bottom differs from the default, so each side is written on its own
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']/style:paragraph-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'fo:border-bottom', $expected . ' #000000');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testTableCellBorderOnEverySide(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
+        $oCell = $oShape->createRow()->getCell();
+        foreach (['getBottom', 'getTop', 'getLeft', 'getRight'] as $side) {
+            $oCell->getBorders()->{$side}()->setLineStyle(Border::LINE_DOUBLE);
+        }
+
+        // The four sides agree, so they collapse into the fo:border shorthand
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']/style:paragraph-properties';
+        $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'fo:border', 'double #000000');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testTableCellFill(): void
     {
         $oColor = new Color();

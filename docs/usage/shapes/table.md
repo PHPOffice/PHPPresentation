@@ -67,6 +67,27 @@ $cellA1->getActiveParagraph()->getAlignment()
     ->setMarginTop(80);
 ```
 
+### Define the borders
+For defining the borders of a cell, you can use the `getBorders` method of a Cell object.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Border;
+
+$tableShape = $slide->createTableShape($columns);
+$row = $tableShape->createRow();
+$cellA1 = $row->nextCell();
+$cellA1->getBorders()->getBottom()->setLineStyle(Border::LINE_DOUBLE);
+$cellA1->getBorders()->getBottom()->setDashStyle(Border::DASH_DASH);
+```
+
+The ODPresentation Writer says this with an ODF `fo:border`, whose styles come from CSS2 and are
+fewer than the OOXML ones. `LINE_NONE` is `none` and `LINE_SINGLE` is `solid`; the compound lines
+(`LINE_DOUBLE`, `LINE_THICKTHIN`, `LINE_THINTHICK`, `LINE_TRI`) all arrive as `double`, and any dash
+pattern other than `DASH_SOLID` arrives as `dotted` or `dashed`. A dash pattern outranks the line
+style, and `LINE_NONE` outranks both.
+
 ### Define the text direction
 For defining the text direction of cell, you can use the `setTextDirection` method of the `getAlignment` method of a Cell object.
 The width is in pixels.
