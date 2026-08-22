@@ -19,6 +19,39 @@ $tableShape = $slide->createTableShape($columns);
 $row = $tableShape->createRow();
 ```
 
+### Define the fill
+
+A fill set on a row paints every cell of it, which is how a table gets a banded look without
+setting the same fill on each cell in turn. A cell that asks for a fill of its own keeps it: the
+fill of the row is what a cell falls back to, not what it is overruled by.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
+
+$row = $tableShape->createRow();
+$row->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
+```
+
+A cell that is deliberately left transparent says so, and keeps it even where its row is
+painted -- `Fill::FILL_NONE` is a fill refused, not a fill never asked for, and the two are
+different states. A cell and a row both start at `Fill::FILL_UNSET`, which is what the fallback
+looks for.
+
+``` php
+<?php
+
+$row->getCell(1)->getFill()->setFillType(Fill::FILL_NONE);
+```
+
+Neither format carries a fill on a table row -- in OOXML a row has nothing but a height -- so both
+Writers write the fill of the row on each of the cells that did not ask for one. Both make the same
+distinction this library now makes: PowerPoint leaves an untouched cell's `a:tcPr` empty and writes
+`a:noFill` for one refused outright, and LibreOffice leaves an untouched cell without a
+`table:style-name` and gives a refused one a style with `draw:fill="none"`.
+
 ## Cells
 A cell is a child of a row.
 
