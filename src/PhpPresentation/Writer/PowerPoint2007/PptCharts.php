@@ -2507,7 +2507,7 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('a:defRPr');
         $objWriter->writeAttribute('b', ($oAxis->getTickLabelFont()->isBold() ? 'true' : 'false'));
         $objWriter->writeAttribute('i', ($oAxis->getTickLabelFont()->isItalic() ? 'true' : 'false'));
-        $objWriter->writeAttribute('strike', $oAxis->getFont()->getStrikethrough());
+        $objWriter->writeAttribute('strike', $oAxis->getTickLabelFont()->getStrikethrough());
         $objWriter->writeAttribute('sz', ($oAxis->getTickLabelFont()->getSize() * 100));
         $objWriter->writeAttribute('u', $oAxis->getTickLabelFont()->getUnderline());
         $objWriter->writeAttributeIf($oAxis->getTickLabelFont()->getBaseline() !== 0, 'baseline', $oAxis->getTickLabelFont()->getBaseline());

@@ -376,7 +376,9 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('svg:stroke-color', '#' . $axis->getOutline()->getFill()->getStartColor()->getRGB());
         $this->xmlContent->endElement();
         // style:style > style:text-properties
-        $this->writeTextProperties($axis->getFont());
+        // The style of a `chart:axis` is the style of its tick labels; the style of the title it
+        // carries is written separately, by writeAxisTitleStyle(), and that one keeps getFont().
+        $this->writeTextProperties($axis->getTickLabelFont());
         // ## style:style
         $this->xmlContent->endElement();
     }

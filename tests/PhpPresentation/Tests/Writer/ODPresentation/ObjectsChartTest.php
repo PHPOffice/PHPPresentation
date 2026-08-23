@@ -70,12 +70,16 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oBar = new Bar();
         $oBar->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar);
-        $oShape->getPlotArea()->getAxisX()->getFont()->getColor()->setRGB('AABBCC');
-        $oShape->getPlotArea()->getAxisX()->getFont()->setItalic(true);
+        $oShape->getPlotArea()->getAxisX()->getTickLabelFont()->getColor()->setRGB('AABBCC');
+        $oShape->getPlotArea()->getAxisX()->getTickLabelFont()->setItalic(true);
 
-        $oShape->getPlotArea()->getAxisY()->getFont()->getColor()->setRGB('00FF00');
-        $oShape->getPlotArea()->getAxisY()->getFont()->setSize(16);
-        $oShape->getPlotArea()->getAxisY()->getFont()->setName('Arial');
+        $oShape->getPlotArea()->getAxisY()->getTickLabelFont()->getColor()->setRGB('00FF00');
+        $oShape->getPlotArea()->getAxisY()->getTickLabelFont()->setSize(16);
+        $oShape->getPlotArea()->getAxisY()->getTickLabelFont()->setName('Arial');
+
+        // the axis title is styled by the other font, and must not follow the labels
+        $oShape->getPlotArea()->getAxisX()->getFont()->getColor()->setRGB('112233');
+        $oShape->getPlotArea()->getAxisX()->getFont()->setSize(20);
 
         $this->assertZipFileExists('Object 1/content.xml');
 
@@ -96,6 +100,12 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-style', 'normal');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-size', '16pt');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-family', 'Arial');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisXTitle\']/style:text-properties';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:color', '#112233');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-size', '20pt');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-style', 'normal');
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
@@ -1520,7 +1530,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oBar = new Bar();
         $oBar->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar);
-        $oShape->getPlotArea()->getAxisX()->getFont()->setUnderline($underline);
+        $oShape->getPlotArea()->getAxisX()->getTickLabelFont()->setUnderline($underline);
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:text-properties';
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-underline-style', $style);
@@ -1553,6 +1563,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $fonts = [
             $oShape->getPlotArea()->getAxisX()->getFont(),
+            $oShape->getPlotArea()->getAxisX()->getTickLabelFont(),
             $oShape->getLegend()->getFont(),
             $oSeries->getFont(),
             $oShape->getTitle()->getFont(),
@@ -1564,7 +1575,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
             $oFont->setStrikethrough(Font::STRIKE_DOUBLE);
         }
 
-        // the axis carries the same font twice: on its labels and on its title
+        // the axis has a font per half: the tick labels and the title it carries
         foreach (['styleAxisX', 'styleAxisXTitle', 'styleLegend', 'styleSeries0', 'styleTitle'] as $styleName) {
             $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $styleName . '\']/style:text-properties';
             $this->assertZipXmlElementExists('Object 1/content.xml', $element);

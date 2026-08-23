@@ -210,6 +210,15 @@ $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisY()->setTickLabelFont($font);
 ```
 
+An axis carries two fonts, and they style different halves of it: `setTickLabelFont()` the tick
+labels, `setFont()` the axis title. Both Writers read them that way.
+
+``` php
+$axis = $shape->getPlotArea()->getAxisY();
+$axis->getTickLabelFont()->setSize(7);   // the numbers along the axis
+$axis->getFont()->setSize(12);           // the title of the axis
+```
+
 #### Tick Marks
 
 For Axis Y, you can define tick mark with `setMinorTickMark` & `setMajorTickMark` methods.
