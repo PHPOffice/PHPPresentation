@@ -1640,7 +1640,15 @@ class PowerPoint2007 implements ReaderInterface
             $hyperlink->setTooltip($element->getAttribute('tooltip'));
         }
         if ($element->hasAttribute('r:id') && isset($this->arrayRels[$this->fileRels][$element->getAttribute('r:id')]['Target'])) {
-            $hyperlink->setUrl($this->arrayRels[$this->fileRels][$element->getAttribute('r:id')]['Target']);
+            $target = $this->arrayRels[$this->fileRels][$element->getAttribute('r:id')]['Target'];
+            // A link to another slide is a relationship to its part, and the action says so. Without
+            // this the slide number is lost and only the raw part name, `slide2.xml`, comes back.
+            if ('ppaction://hlinksldjump' === $element->getAttribute('action')
+                && 1 === preg_match('/slide(\d+)\.xml$/', $target, $matches)) {
+                $hyperlink->setSlideNumber((int) $matches[1]);
+            } else {
+                $hyperlink->setUrl($target);
+            }
         }
         if ($subElementExt = $xmlReader->getElement('a:extLst/a:ext', $element)) {
             if ($subElementExt->hasAttribute('uri') && $subElementExt->getAttribute('uri') == '{A12FA001-AC4F-418D-AE19-62706E023703}') {

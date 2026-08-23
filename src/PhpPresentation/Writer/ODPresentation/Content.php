@@ -30,6 +30,7 @@ use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Group;
+use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
@@ -347,10 +348,7 @@ class Content extends AbstractDecoratorWriter
         for ($i = 0; $i < $slideCount; ++$i) {
             $pSlide = $this->getPresentation()->getSlide($i);
             $objWriter->startElement('draw:page');
-            $name = $pSlide->getName();
-            if (null !== $name) {
-                $objWriter->writeAttribute('draw:name', $name);
-            }
+            $objWriter->writeAttribute('draw:name', $this->getSlideName($pSlide, $i + 1));
             $objWriter->writeAttribute('draw:master-page-name', 'Standard');
             $objWriter->writeAttribute('draw:style-name', 'stylePage' . $i);
             // Images
@@ -516,7 +514,7 @@ class Content extends AbstractDecoratorWriter
             $objWriter->startElement('presentation:event-listener');
             $objWriter->writeAttribute('script:event-name', 'dom:click');
             $objWriter->writeAttribute('presentation:action', 'show');
-            $objWriter->writeAttribute('xlink:href', $shape->getHyperlink()->getUrl());
+            $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($shape->getHyperlink()));
             $objWriter->writeAttribute('xlink:type', 'simple');
             $objWriter->writeAttribute('xlink:show', 'embed');
             $objWriter->writeAttribute('xlink:actuate', 'onRequest');
@@ -599,7 +597,7 @@ class Content extends AbstractDecoratorWriter
                             // text:a
                             $objWriter->startElement('text:a');
                             $objWriter->writeAttribute('xlink:type', 'simple');
-                            $objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
+                            $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($richtext->getHyperlink()));
                             $objWriter->text($richtext->getText());
                             $objWriter->endElement();
                         } elseif (null !== $fieldName) {
@@ -665,7 +663,7 @@ class Content extends AbstractDecoratorWriter
                             // text:a
                             $objWriter->startElement('text:a');
                             $objWriter->writeAttribute('xlink:type', 'simple');
-                            $objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
+                            $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($richtext->getHyperlink()));
                             $objWriter->text($richtext->getText());
                             $objWriter->endElement();
                         } elseif (null !== $fieldName) {
@@ -772,6 +770,38 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * The name ODF addresses a slide by, which every page carries so that a link can reach it.
+     *
+     * A slide with no name of its own is named after its position. Not as `page3`, though:
+     * LibreOffice generates exactly that form for the pages it exports and treats it as its own,
+     * so a link to `#page3` is left as an unresolved URI rather than followed.
+     */
+    protected function getSlideName(Slide $slide, int $slideNumber): string
+    {
+        return $slide->getName() ?? 'Slide ' . $slideNumber;
+    }
+
+    /**
+     * The target of a hyperlink, in the terms ODF addresses it.
+     *
+     * A link to another slide is stored as the PowerPoint action string `ppaction://hlinksldjump`,
+     * which ODF has never heard of -- there a slide is addressed by name.
+     */
+    protected function getHyperlinkHref(Hyperlink $hyperlink): string
+    {
+        if (!$hyperlink->isInternal()) {
+            return $hyperlink->getUrl();
+        }
+
+        $slideNumber = $hyperlink->getSlideNumber();
+        if ($slideNumber < 1 || $slideNumber > $this->getPresentation()->getSlideCount()) {
+            return $hyperlink->getUrl();
+        }
+
+        return '#' . $this->getSlideName($this->getPresentation()->getSlide($slideNumber - 1), $slideNumber);
+    }
+
+    /**
      * Write table Shape.
      */
     protected function writeShapeTable(XMLWriter $objWriter, Table $shape): void
@@ -828,7 +858,7 @@ class Content extends AbstractDecoratorWriter
                                         // text:a
                                         $objWriter->startElement('text:a');
                                         $objWriter->writeAttribute('xlink:type', 'simple');
-                                        $objWriter->writeAttribute('xlink:href', $shapeRichText->getHyperlink()->getUrl());
+                                        $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($shapeRichText->getHyperlink()));
                                         $objWriter->text($shapeRichText->getText());
                                         $objWriter->endElement();
                                     } else {
