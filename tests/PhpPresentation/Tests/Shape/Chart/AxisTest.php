@@ -24,7 +24,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -105,8 +105,8 @@ class AxisTest extends TestCase
     {
         $object = new Axis();
 
-        /** @var Gridlines&MockObject $oMock */
-        $oMock = $this->getMockBuilder(Gridlines::class)->getMock();
+        /** @var Gridlines&Stub $oMock */
+        $oMock = self::createStub(Gridlines::class);
 
         self::assertInstanceOf(Axis::class, $object->setMajorGridlines($oMock));
         self::assertInstanceOf(Gridlines::class, $object->getMajorGridlines());
@@ -149,8 +149,8 @@ class AxisTest extends TestCase
 
     public function testOutline(): void
     {
-        /** @var MockObject&Outline $oMock */
-        $oMock = $this->getMockBuilder(Outline::class)->getMock();
+        /** @var Outline&Stub $oMock */
+        $oMock = self::createStub(Outline::class);
 
         $object = new Axis();
         self::assertInstanceOf(Outline::class, $object->getOutline());

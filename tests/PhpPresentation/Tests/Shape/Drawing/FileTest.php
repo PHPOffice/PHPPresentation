@@ -78,6 +78,18 @@ class FileTest extends TestCase
         self::assertEquals($mimeType, $object->getMimeType());
     }
 
+    public function testPathOfAFileWithNoMeasurableSize(): void
+    {
+        $object = new File();
+
+        // an SVG has no pixel size for `getimagesize()` to report -- it answers `false`, and
+        // the warning that used to raise is what `failOnWarning` in phpunit.xml.dist catches
+        $object->setPath(dirname(__DIR__, 4) . '/resources/images/tiger.svg');
+
+        self::assertEquals(0, $object->getWidth());
+        self::assertEquals(0, $object->getHeight());
+    }
+
     /**
      * @return array<array<string>>
      */

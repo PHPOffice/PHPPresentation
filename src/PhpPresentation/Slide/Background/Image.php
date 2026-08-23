@@ -76,8 +76,11 @@ class Image extends AbstractBackground
             }
 
             if (0 == $this->width && 0 == $this->height) {
-                // Get width/height
-                [$this->width, $this->height] = getimagesize($pValue);
+                // Get width/height, when the file is one that has them
+                $imageSize = getimagesize($pValue);
+                if (is_array($imageSize)) {
+                    [$this->width, $this->height] = $imageSize;
+                }
             }
         }
         $this->path = $pValue;
