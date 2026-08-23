@@ -616,6 +616,27 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testAxisTickLabelFontStates(): void
+    {
+        $oLine = new Line();
+        $oLine->addSeries(new Series('Downloads', $this->seriesData));
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+        // every state of the tick-label block comes from the tick-label font, `strike` included
+        $oShape->getPlotArea()->getAxisY()->getTickLabelFont()->setStrikethrough(Font::STRIKE_DOUBLE);
+        $oShape->getPlotArea()->getAxisY()->getTickLabelFont()->setBold(true);
+        // and the axis title font is a different one, which must not reach it
+        $oShape->getPlotArea()->getAxisY()->getFont()->setStrikethrough(Font::STRIKE_NONE);
+
+        $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:txPr/a:p/a:pPr/a:defRPr';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'strike', Font::STRIKE_DOUBLE);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'b', 'true');
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testAxisTickLabelPosition(): void
     {
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:tickLblPos';

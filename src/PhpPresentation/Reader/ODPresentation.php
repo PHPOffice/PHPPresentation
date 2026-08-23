@@ -49,6 +49,31 @@ use ZipArchive;
 class ODPresentation implements ReaderInterface
 {
     /**
+     * The reverse of what the Writer spells out: a style, a type and a width back into the single
+     * token OOXML names an underline with. `words` is not here -- ODF says it with a mode.
+     *
+     * @var array<string, string>
+     */
+    protected const UNDERLINE_OOXML = [
+        'dash|single|' => Font::UNDERLINE_DASH,
+        'dash|single|bold' => Font::UNDERLINE_DASHHEAVY,
+        'long-dash|single|' => Font::UNDERLINE_DASHLONG,
+        'long-dash|single|bold' => Font::UNDERLINE_DASHLONGHEAVY,
+        'dot-dash|single|' => Font::UNDERLINE_DOTHASH,
+        'dot-dash|single|bold' => Font::UNDERLINE_DOTHASHHEAVY,
+        'dot-dot-dash|single|' => Font::UNDERLINE_DOTDOTDASH,
+        'dot-dot-dash|single|bold' => Font::UNDERLINE_DOTDOTDASHHEAVY,
+        'dotted|single|' => Font::UNDERLINE_DOTTED,
+        'dotted|single|bold' => Font::UNDERLINE_DOTTEDHEAVY,
+        'solid|double|' => Font::UNDERLINE_DOUBLE,
+        'solid|single|bold' => Font::UNDERLINE_HEAVY,
+        'solid|single|' => Font::UNDERLINE_SINGLE,
+        'wave|single|' => Font::UNDERLINE_WAVY,
+        'wave|double|' => Font::UNDERLINE_WAVYDOUBLE,
+        'wave|single|bold' => Font::UNDERLINE_WAVYHEAVY,
+    ];
+
+    /**
      * Output Object.
      *
      * @var PhpPresentation
@@ -404,6 +429,45 @@ class ODPresentation implements ReaderInterface
                 $oFont
                     ->setSize((int) substr($nodeTextProperties->getAttribute('style:font-size-complex'), 0, -2))
                     ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+            }
+            // Italic, spelled once per script the way the family, the size and the weight are
+            if ('italic' == $nodeTextProperties->getAttribute('fo:font-style')) {
+                $oFont
+                    ->setItalic(true)
+                    ->setFormat(Font::FORMAT_LATIN);
+            }
+            if ('italic' == $nodeTextProperties->getAttribute('style:font-style-asian')) {
+                $oFont
+                    ->setItalic(true)
+                    ->setFormat(Font::FORMAT_EAST_ASIAN);
+            }
+            if ('italic' == $nodeTextProperties->getAttribute('style:font-style-complex')) {
+                $oFont
+                    ->setItalic(true)
+                    ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+            }
+            // Underline and strikethrough, one family each for the whole run
+            $underlineStyle = $nodeTextProperties->getAttribute('style:text-underline-style');
+            if ('' !== $underlineStyle && 'none' !== $underlineStyle) {
+                if ('skip-white-space' == $nodeTextProperties->getAttribute('style:text-underline-mode')) {
+                    $oFont->setUnderline(Font::UNDERLINE_WORDS);
+                } else {
+                    $underlineType = $nodeTextProperties->getAttribute('style:text-underline-type');
+                    $underlineWidth = $nodeTextProperties->getAttribute('style:text-underline-width');
+                    $key = $underlineStyle
+                        . '|' . ('' === $underlineType ? 'single' : $underlineType)
+                        . '|' . ('bold' === $underlineWidth ? 'bold' : '');
+                    // a file written elsewhere can name a pair OOXML has no word for
+                    $oFont->setUnderline(self::UNDERLINE_OOXML[$key] ?? Font::UNDERLINE_SINGLE);
+                }
+            }
+            $lineThroughStyle = $nodeTextProperties->getAttribute('style:text-line-through-style');
+            if ('' !== $lineThroughStyle && 'none' !== $lineThroughStyle) {
+                $oFont->setStrikethrough(
+                    'double' == $nodeTextProperties->getAttribute('style:text-line-through-type')
+                        ? Font::STRIKE_DOUBLE
+                        : Font::STRIKE_SINGLE
+                );
             }
             if ($nodeTextProperties->hasAttribute('style:script-type')) {
                 switch ($nodeTextProperties->getAttribute('style:script-type')) {

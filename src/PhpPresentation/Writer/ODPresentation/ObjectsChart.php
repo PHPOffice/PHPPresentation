@@ -40,6 +40,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 
 class ObjectsChart extends AbstractDecoratorWriter
@@ -312,6 +313,23 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMinorGridlines(), 'styleAxisYGridlinesMinor');
     }
 
+    /**
+     * Every chart style is styled from the same four attributes, and used to stop there: a font
+     * that was made bold, underlined or struck through reached the PowerPoint2007 file with all
+     * three and this one with none.
+     */
+    protected function writeTextProperties(Font $font): void
+    {
+        $this->xmlContent->startElement('style:text-properties');
+        $this->xmlContent->writeAttribute('fo:color', '#' . $font->getColor()->getRGB());
+        $this->xmlContent->writeAttribute('fo:font-family', $font->getName());
+        $this->xmlContent->writeAttribute('fo:font-size', $font->getSize() . 'pt');
+        $this->xmlContent->writeAttribute('fo:font-style', $font->isItalic() ? 'italic' : 'normal');
+        $this->xmlContent->writeAttributeIf($font->isBold(), 'fo:font-weight', 'bold');
+        $this->writeFontStates($this->xmlContent, $font);
+        $this->xmlContent->endElement();
+    }
+
     protected function writeAxisMainStyle(Axis $axis, string $styleName, AbstractType $chartType): void
     {
         // style:style
@@ -358,12 +376,9 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('svg:stroke-color', '#' . $axis->getOutline()->getFill()->getStartColor()->getRGB());
         $this->xmlContent->endElement();
         // style:style > style:text-properties
-        $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#' . $axis->getFont()->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $axis->getFont()->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $axis->getFont()->getSize() . 'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $axis->getFont()->isItalic() ? 'italic' : 'normal');
-        $this->xmlContent->endElement();
+        // The style of a `chart:axis` is the style of its tick labels; the style of the title it
+        // carries is written separately, by writeAxisTitleStyle(), and that one keeps getFont().
+        $this->writeTextProperties($axis->getTickLabelFont());
         // ## style:style
         $this->xmlContent->endElement();
     }
@@ -381,13 +396,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > style:chart-properties
         $this->xmlContent->endElement();
         // style:text-properties
-        $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#' . $axis->getFont()->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $axis->getFont()->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $axis->getFont()->getSize() . 'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $axis->getFont()->isItalic() ? 'italic' : 'normal');
-        // > style:text-properties
-        $this->xmlContent->endElement();
+        $this->writeTextProperties($axis->getFont());
         // > style:style
         $this->xmlContent->endElement();
     }
@@ -512,13 +521,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > style:chart-properties
         $this->xmlContent->endElement();
         // style:text-properties
-        $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#' . $chart->getLegend()->getFont()->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $chart->getLegend()->getFont()->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $chart->getLegend()->getFont()->getSize() . 'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $chart->getLegend()->getFont()->isItalic() ? 'italic' : 'normal');
-        // > style:text-properties
-        $this->xmlContent->endElement();
+        $this->writeTextProperties($chart->getLegend()->getFont());
         // > style:style
         $this->xmlContent->endElement();
     }
@@ -840,12 +843,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > style:graphic-properties
         $this->xmlContent->endElement();
         // style:text-properties
-        $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#' . $series->getFont()->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $series->getFont()->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $series->getFont()->getSize() . 'pt');
-        // > style:text-properties
-        $this->xmlContent->endElement();
+        $this->writeTextProperties($series->getFont());
 
         // > style:style
         $this->xmlContent->endElement();
@@ -1011,13 +1009,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('style:name', 'styleTitle');
         $this->xmlContent->writeAttribute('style:family', 'chart');
         // style:text-properties
-        $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#' . $oTitle->getFont()->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $oTitle->getFont()->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $oTitle->getFont()->getSize() . 'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $oTitle->getFont()->isItalic() ? 'italic' : 'normal');
-        // > style:text-properties
-        $this->xmlContent->endElement();
+        $this->writeTextProperties($oTitle->getFont());
         // > style:style
         $this->xmlContent->endElement();
     }

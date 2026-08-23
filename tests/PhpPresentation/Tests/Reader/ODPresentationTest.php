@@ -32,6 +32,7 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Writer\ODPresentation as ODPresentationWriter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -1066,6 +1067,93 @@ class ODPresentationTest extends TestCase
         $oElement = reset($arrayElements);
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $oElement);
         self::assertEquals('TEST IMAGE', $oElement->getText());
+    }
+
+    /**
+     * @return array<array{0: string}>
+     */
+    public static function dataProviderUnderlines(): array
+    {
+        return [
+            [Font::UNDERLINE_DASH],
+            [Font::UNDERLINE_DASHHEAVY],
+            [Font::UNDERLINE_DASHLONG],
+            [Font::UNDERLINE_DASHLONGHEAVY],
+            [Font::UNDERLINE_DOTHASH],
+            [Font::UNDERLINE_DOTHASHHEAVY],
+            [Font::UNDERLINE_DOTDOTDASH],
+            [Font::UNDERLINE_DOTDOTDASHHEAVY],
+            [Font::UNDERLINE_DOTTED],
+            [Font::UNDERLINE_DOTTEDHEAVY],
+            [Font::UNDERLINE_DOUBLE],
+            [Font::UNDERLINE_HEAVY],
+            [Font::UNDERLINE_SINGLE],
+            [Font::UNDERLINE_WAVY],
+            [Font::UNDERLINE_WAVYDOUBLE],
+            [Font::UNDERLINE_WAVYHEAVY],
+            [Font::UNDERLINE_WORDS],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderUnderlines
+     */
+    #[DataProvider('dataProviderUnderlines')]
+    public function testFontUnderlineSurvivesTheRoundTrip(string $underline): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oRun = $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Sample');
+        $oRun->getFont()->setUnderline($underline);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $oFont = $arrayShape[0]->getParagraph()->getRichTextElements()[0]->getFont();
+        self::assertInstanceOf(Font::class, $oFont);
+        self::assertEquals($underline, $oFont->getUnderline());
+    }
+
+    public function testFontStateSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        foreach ([Font::FORMAT_LATIN, Font::FORMAT_EAST_ASIAN, Font::FORMAT_COMPLEX_SCRIPT] as $format) {
+            $oRun = $oSlide->createRichTextShape()->createTextRun('Sample');
+            $oRun->getFont()
+                ->setFormat($format)
+                ->setBold(true)
+                ->setItalic(true)
+                ->setStrikethrough(Font::STRIKE_DOUBLE);
+        }
+        // a run nobody styled comes back as plain as it went in
+        $oSlide->createRichTextShape()->createTextRun('Plain');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(4, $arrayShape);
+        foreach ([Font::FORMAT_LATIN, Font::FORMAT_EAST_ASIAN, Font::FORMAT_COMPLEX_SCRIPT] as $idx => $format) {
+            self::assertInstanceOf(RichText::class, $arrayShape[$idx]);
+            $oFont = $arrayShape[$idx]->getParagraph()->getRichTextElements()[0]->getFont();
+            self::assertInstanceOf(Font::class, $oFont);
+            self::assertEquals($format, $oFont->getFormat());
+            self::assertTrue($oFont->isBold());
+            self::assertTrue($oFont->isItalic());
+            self::assertEquals(Font::STRIKE_DOUBLE, $oFont->getStrikethrough());
+        }
+        self::assertInstanceOf(RichText::class, $arrayShape[3]);
+        $oFont = $arrayShape[3]->getParagraph()->getRichTextElements()[0]->getFont();
+        self::assertInstanceOf(Font::class, $oFont);
+        self::assertFalse($oFont->isItalic());
+        self::assertEquals(Font::UNDERLINE_NONE, $oFont->getUnderline());
+        self::assertEquals(Font::STRIKE_NONE, $oFont->getStrikethrough());
     }
 
     public function testShapeDecorative(): void
