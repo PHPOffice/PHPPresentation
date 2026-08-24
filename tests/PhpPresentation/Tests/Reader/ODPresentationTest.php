@@ -1240,6 +1240,9 @@ class ODPresentationTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider dataProviderHorizontalAlignment
+     */
     #[DataProvider('dataProviderHorizontalAlignment')]
     public function testHorizontalAlignmentSurvivesTheRoundTrip(string $alignment): void
     {
