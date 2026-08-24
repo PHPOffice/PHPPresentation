@@ -35,6 +35,7 @@ use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Writer\ODPresentation as ODPresentationWriter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use ZipArchive;
 
 /**
  * Test class for ODPresentation reader.
@@ -1303,6 +1304,59 @@ class ODPresentationTest extends TestCase
 
         self::assertFalse($oHyperlink->isInternal());
         self::assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oHyperlink->getUrl());
+    }
+
+    /**
+     * @return array<array{string, null|bool}>
+     */
+    public static function dataProviderWritingModes(): array
+    {
+        return [
+            // the three ODF spells right to left with, and the three it spells left to right with
+            ['rl-tb', true],
+            ['tb-rl', true],
+            ['rl', true],
+            ['lr-tb', false],
+            ['tb-lr', false],
+            ['lr', false],
+            // and the two that state no direction of their own
+            ['tb', null],
+            ['page', null],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderWritingModes
+     */
+    #[DataProvider('dataProviderWritingModes')]
+    public function testTextColumnsRTLWritingModes(string $writingMode, ?bool $expected): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('AAAA');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+
+        // This library writes two of the eight spellings; putting the others into a file it wrote
+        // says what the reader makes of one that came from somewhere else.
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sContent = $oZip->getFromName('content.xml');
+        self::assertIsString($sContent);
+        $oZip->deleteName('content.xml');
+        $oZip->addFromString('content.xml', str_replace(
+            'fo:wrap-option="wrap" style:writing-mode="lr-tb"',
+            'fo:wrap-option="wrap" style:writing-mode="' . $writingMode . '"',
+            $sContent
+        ));
+        $oZip->close();
+
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertSame($expected, $arrayShape[0]->hasColumnsRTL());
     }
 
     public function testTextColumnsRTL(): void

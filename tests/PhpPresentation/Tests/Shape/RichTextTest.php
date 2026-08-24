@@ -132,6 +132,12 @@ class RichTextTest extends TestCase
         // left to right text in right to left columns, which is why the setter exists
         $object->setColumnsRTL(true);
         self::assertTrue($object->isColumnsRTL());
+
+        // and a shape with no paragraph at all has nothing to take the order from: "every
+        // paragraph reads right to left" is vacuously true on an empty array, and must not be
+        $object->setColumnsRTL();
+        $object->setParagraphs([]);
+        self::assertFalse($object->isColumnsRTL());
     }
 
     public function testColumnsException(): void
