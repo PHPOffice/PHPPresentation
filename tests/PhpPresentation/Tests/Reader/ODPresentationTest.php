@@ -1305,6 +1305,28 @@ class ODPresentationTest extends TestCase
         self::assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oHyperlink->getUrl());
     }
 
+    public function testTextColumnsRTL(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('AAAA');
+        $oShape->setColumns(2)->setColumnsRTL(true);
+        // and a second shape that never said anything about the order of its columns
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('BBBB');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertTrue($arrayShape[0]->hasColumnsRTL());
+        // the frame always states its writing mode, so what was never set comes back said outright
+        self::assertInstanceOf(RichText::class, $arrayShape[1]);
+        self::assertFalse($arrayShape[1]->hasColumnsRTL());
+    }
+
     public function testTextColumns(): void
     {
         $oPhpPresentation = new PhpPresentation();

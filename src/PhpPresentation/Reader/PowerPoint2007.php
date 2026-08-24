@@ -1058,6 +1058,9 @@ class PowerPoint2007 implements ReaderInterface
             if ($bodyPr->hasAttribute('anchorCtr')) {
                 $oShape->setVerticalAlignCenter((int) $bodyPr->getAttribute('anchorCtr'));
             }
+            if ($bodyPr->hasAttribute('rtlCol')) {
+                $oShape->setColumnsRTL((bool) (int) $bodyPr->getAttribute('rtlCol'));
+            }
         }
 
         $arrayElements = $document->getElements('p:txBody/a:p', $node);

@@ -1283,6 +1283,28 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(6858000, $oPhpPresentationRead->getLayout()->getCY());
     }
 
+    public function testColumnsRTL(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('AAAA');
+        $oShape->setColumns(2)->setColumnsRTL(true);
+        // and a second shape that never said anything about the order of its columns
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('BBBB');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertTrue($arrayShape[0]->hasColumnsRTL());
+        // `rtlCol` is written for every text body, so what was never set comes back said outright
+        self::assertInstanceOf(RichText::class, $arrayShape[1]);
+        self::assertFalse($arrayShape[1]->hasColumnsRTL());
+    }
+
     public function testTextRunWithoutProperties(): void
     {
         $oPhpPresentation = new PhpPresentation();

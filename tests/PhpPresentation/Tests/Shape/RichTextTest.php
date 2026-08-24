@@ -96,6 +96,44 @@ class RichTextTest extends TestCase
         self::assertEquals($value, $object->getColumnSpacing());
     }
 
+    public function testColumnsRTL(): void
+    {
+        $object = new RichText();
+
+        // never set, and no paragraph asked for right to left
+        self::assertNull($object->hasColumnsRTL());
+        self::assertFalse($object->isColumnsRTL());
+
+        self::assertInstanceOf(RichText::class, $object->setColumnsRTL(true));
+        self::assertTrue($object->hasColumnsRTL());
+        self::assertTrue($object->isColumnsRTL());
+
+        self::assertInstanceOf(RichText::class, $object->setColumnsRTL(false));
+        self::assertFalse($object->hasColumnsRTL());
+        self::assertFalse($object->isColumnsRTL());
+
+        self::assertInstanceOf(RichText::class, $object->setColumnsRTL());
+        self::assertNull($object->hasColumnsRTL());
+    }
+
+    public function testColumnsRTLFromParagraphs(): void
+    {
+        $object = new RichText();
+        // the shape starts with one paragraph, which is left to right
+        self::assertFalse($object->isColumnsRTL());
+
+        $object->getActiveParagraph()->getAlignment()->setIsRTL(true);
+        self::assertTrue($object->isColumnsRTL());
+
+        // one paragraph left to right is enough to leave the columns as they were
+        $object->createParagraph()->getAlignment()->setIsRTL(false);
+        self::assertFalse($object->isColumnsRTL());
+
+        // left to right text in right to left columns, which is why the setter exists
+        $object->setColumnsRTL(true);
+        self::assertTrue($object->isColumnsRTL());
+    }
+
     public function testColumnsException(): void
     {
         $this->expectException(OutOfBoundsException::class);

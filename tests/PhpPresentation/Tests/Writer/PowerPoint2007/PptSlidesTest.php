@@ -832,6 +832,32 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testParagraphColumnsRTL(): void
+    {
+        $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $richText->createTextRun('AAA');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'rtlCol', '0');
+        $this->assertIsSchemaECMA376Valid();
+
+        // a shape whose every paragraph reads right to left orders its columns the same way
+        $this->resetPresentationFile();
+        $richText->setColumns(2);
+        $richText->getActiveParagraph()->getAlignment()->setIsRTL(true);
+
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'rtlCol', '1');
+        $this->assertIsSchemaECMA376Valid();
+
+        // and the order can be said outright, which is the only way to right to left text in
+        // left to right columns
+        $this->resetPresentationFile();
+        $richText->setColumnsRTL(false);
+
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'rtlCol', '0');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testParagraphColumns(): void
     {
         $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();

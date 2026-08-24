@@ -19,6 +19,7 @@ Below are the properties that you can set for a rich text shape.
 - `upright`
 - `vertical`
 - `columns` see *Columns*
+- `columnsRTL` see *Columns*
 - `bottomInset` in pixels
 - `leftInset` in pixels
 - `rightInset` in pixels
@@ -50,6 +51,25 @@ $richText = new RichText();
 $richText->setColumns(3);
 $columns = $richText->getColumns();
 ```
+
+The columns are ordered left to right unless every paragraph of the shape reads right to left, in
+which case they follow the text. `setColumnsRTL()` says the order outright and overrides that:
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\RichText;
+
+$richText = new RichText();
+$richText->setColumns(3);
+// right to left columns, whatever direction the text runs in
+$richText->setColumnsRTL(true);
+// null, the default, takes the order from the paragraphs
+$richText->setColumnsRTL();
+```
+
+`hasColumnsRTL()` gives back what was set, `null` included; `isColumnsRTL()` gives the order the
+writers use, taking it from the paragraphs when nothing was set.
 
 ## Column Spacing
 
