@@ -54,8 +54,9 @@ class TitleTest extends TestCase
     {
         $object = new Title();
 
+        // a font the setter was asked to take away is replaced with a fresh one, never a null
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setFont());
-        self::assertNull($object->getFont());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setFont(new Font()));
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }

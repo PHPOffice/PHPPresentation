@@ -114,8 +114,9 @@ class SeriesTest extends TestCase
     {
         $object = new Series();
 
+        // a font the setter was asked to take away is replaced with a fresh one, never a null
         self::assertInstanceOf(Series::class, $object->setFont());
-        self::assertNull($object->getFont());
+        self::assertInstanceOf(Font::class, $object->getFont());
         self::assertInstanceOf(Series::class, $object->setFont(new Font()));
         self::assertInstanceOf(Font::class, $object->getFont());
     }

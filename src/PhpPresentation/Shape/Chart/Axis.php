@@ -176,7 +176,7 @@ class Axis implements ComparableInterface
     /**
      * Get font.
      */
-    public function getFont(): ?Font
+    public function getFont(): Font
     {
         return $this->font;
     }
@@ -186,7 +186,7 @@ class Axis implements ComparableInterface
      */
     public function setTickLabelFont(?Font $font = null): self
     {
-        $this->tickLabelFont = $font;
+        $this->tickLabelFont = $font ?? new Font();
 
         return $this;
     }
@@ -194,7 +194,7 @@ class Axis implements ComparableInterface
     /**
      * Get tick label font.
      */
-    public function getTickLabelFont(): ?Font
+    public function getTickLabelFont(): Font
     {
         return $this->tickLabelFont;
     }
@@ -204,7 +204,7 @@ class Axis implements ComparableInterface
      */
     public function setFont(?Font $font = null): self
     {
-        $this->font = $font;
+        $this->font = $font ?? new Font();
 
         return $this;
     }

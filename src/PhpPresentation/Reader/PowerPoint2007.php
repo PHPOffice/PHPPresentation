@@ -1879,13 +1879,13 @@ class PowerPoint2007 implements ReaderInterface
             }
 
             $oElementFont = $xmlReader->getElement('a:p/a:pPr/a:defRPr', $oElementTitle);
-            if ($oElementFont instanceof DOMElement && null !== $oAxis->getFont()) {
+            if ($oElementFont instanceof DOMElement) {
                 $this->loadStyleFont($xmlReader, $oElementFont, $oAxis->getFont());
             }
         }
 
         $oElementFont = $xmlReader->getElement('c:txPr/a:p/a:pPr/a:defRPr', $oElement);
-        if ($oElementFont instanceof DOMElement && null !== $oAxis->getTickLabelFont()) {
+        if ($oElementFont instanceof DOMElement) {
             $this->loadStyleFont($xmlReader, $oElementFont, $oAxis->getTickLabelFont());
         }
     }

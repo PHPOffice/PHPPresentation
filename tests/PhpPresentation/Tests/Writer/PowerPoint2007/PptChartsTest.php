@@ -1976,4 +1976,30 @@ class PptChartsTest extends PhpPresentationTestCase
             yield $chartType;
         }
     }
+
+    public function testFontSetBackToNull(): void
+    {
+        $oLine = new Line();
+        $oLine->addSeries(new Series('Downloads', $this->seriesData));
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        // every one of these accepts null, and used to store it -- the writer then read a font
+        // off it and died. Passing no argument at all is the same call
+        $oShape->getPlotArea()->getAxisY()->setFont();
+        $oShape->getPlotArea()->getAxisY()->setTickLabelFont();
+        $oShape->getPlotArea()->getAxisX()->setFont(null);
+        $oShape->getTitle()->setFont(null);
+        $oShape->getLegend()->setFont(null);
+        $oLine->getSeries()[0]->setFont(null);
+
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('Alpha')->setFont(null);
+        $oRichText->getActiveParagraph()->setFont(null);
+
+        $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $this->assertZipXmlElementExists($pathShape, '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:txPr/a:p/a:pPr/a:defRPr');
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr');
+        $this->assertIsSchemaECMA376Valid();
+    }
 }

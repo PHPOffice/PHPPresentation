@@ -74,8 +74,9 @@ class LegendTest extends TestCase
     {
         $object = new Legend();
 
+        // a font the setter was asked to take away is replaced with a fresh one, never a null
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setFont());
-        self::assertNull($object->getFont());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setFont(new Font()));
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }

@@ -83,7 +83,7 @@ class Legend implements ComparableInterface
     /**
      * Font.
      *
-     * @var null|Font
+     * @var Font
      */
     private $font;
 
@@ -242,7 +242,7 @@ class Legend implements ComparableInterface
     /**
      * Get font.
      */
-    public function getFont(): ?Font
+    public function getFont(): Font
     {
         return $this->font;
     }
@@ -254,7 +254,7 @@ class Legend implements ComparableInterface
      */
     public function setFont(?Font $pFont = null): self
     {
-        $this->font = $pFont;
+        $this->font = $pFont ?? new Font();
 
         return $this;
     }

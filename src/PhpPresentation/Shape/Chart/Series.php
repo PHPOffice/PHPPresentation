@@ -70,7 +70,7 @@ class Series implements ComparableInterface
     protected $fill;
 
     /**
-     * @var null|Font
+     * @var Font
      */
     protected $font;
 
@@ -460,7 +460,7 @@ class Series implements ComparableInterface
     /**
      * Get font.
      */
-    public function getFont(): ?Font
+    public function getFont(): Font
     {
         return $this->font;
     }
@@ -472,7 +472,7 @@ class Series implements ComparableInterface
      */
     public function setFont(?Font $pFont = null): self
     {
-        $this->font = $pFont;
+        $this->font = $pFont ?? new Font();
 
         return $this;
     }
