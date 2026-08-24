@@ -88,7 +88,7 @@ class ODPresentation implements ReaderInterface
     protected $oZip;
 
     /**
-     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string}>
+     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string}>
      */
     protected $arrayStyles = [];
 
@@ -355,6 +355,18 @@ class ODPresentation implements ReaderInterface
                     $oShadow->setDistance(CommonDrawing::centimetersToPixels($distance));
                 }
             }
+            // Read Columns
+            $nodeColumns = $this->oXMLReader->getElement('style:columns', $nodeGraphicProps);
+            if ($nodeColumns instanceof DOMElement) {
+                if ($nodeColumns->hasAttribute('fo:column-count')) {
+                    $columns = (int) $nodeColumns->getAttribute('fo:column-count');
+                }
+                if ($nodeColumns->hasAttribute('fo:column-gap')) {
+                    $columnSpacing = CommonDrawing::centimetersToPixels(
+                        (float) substr($nodeColumns->getAttribute('fo:column-gap'), 0, -2)
+                    );
+                }
+            }
             // Read Fill
             if ($nodeGraphicProps->hasAttribute('draw:fill')) {
                 $value = $nodeGraphicProps->getAttribute('draw:fill');
@@ -608,6 +620,8 @@ class ODPresentation implements ReaderInterface
         $this->arrayStyles[$keyStyle] = [
             'alignment' => $oAlignment ?? null,
             'background' => $oBackground ?? null,
+            'columns' => $columns ?? null,
+            'columnSpacing' => $columnSpacing ?? null,
             'fill' => $oFill ?? null,
             'font' => $oFont ?? null,
             'shadow' => $oShadow ?? null,
@@ -757,6 +771,18 @@ class ODPresentation implements ReaderInterface
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
         $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
+
+        if ($oNodeFrame->hasAttribute('draw:style-name')) {
+            $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
+            if (isset($this->arrayStyles[$keyStyle])) {
+                if (null !== $this->arrayStyles[$keyStyle]['columns']) {
+                    $oShape->setColumns($this->arrayStyles[$keyStyle]['columns']);
+                }
+                if (null !== $this->arrayStyles[$keyStyle]['columnSpacing']) {
+                    $oShape->setColumnSpacing($this->arrayStyles[$keyStyle]['columnSpacing']);
+                }
+            }
+        }
 
         foreach ($this->oXMLReader->getElements('draw:text-box/*', $oNodeFrame) as $oNodeParagraph) {
             $this->levelParagraph = 0;

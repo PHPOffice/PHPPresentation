@@ -1603,4 +1603,25 @@ class ContentTest extends PhpPresentationTestCase
             ],
         ];
     }
+
+    public function testRichTextColumns(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties/style:columns';
+
+        // a single column is the default, and says nothing
+        $this->assertZipXmlElementNotExists('content.xml', $element);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $this->resetPresentationFile();
+        $oRichText->setColumns(3)->setColumnSpacing(20);
+
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:column-count', '3');
+        // 20 pixels, as the gap is measured everywhere else in the model
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:column-gap', '0.529cm');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
 }

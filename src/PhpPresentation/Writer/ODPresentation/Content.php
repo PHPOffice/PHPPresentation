@@ -1079,6 +1079,17 @@ class Content extends AbstractDecoratorWriter
         }
 
         $objWriter->writeAttribute('fo:wrap-option', 'wrap');
+        // style:graphic-properties > style:columns
+        // An element rather than an attribute, so it is written after every attribute of the block
+        if ($shape->getColumns() > 1) {
+            $objWriter->startElement('style:columns');
+            $objWriter->writeAttribute('fo:column-count', $shape->getColumns());
+            $objWriter->writeAttribute(
+                'fo:column-gap',
+                number_format(CommonDrawing::pixelsToCentimeters($shape->getColumnSpacing()), 3, '.', '') . 'cm'
+            );
+            $objWriter->endElement();
+        }
         // > style:graphic-properties
         $objWriter->endElement();
         // > style:style

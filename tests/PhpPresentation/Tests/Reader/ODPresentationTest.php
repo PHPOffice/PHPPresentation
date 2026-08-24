@@ -1304,4 +1304,28 @@ class ODPresentationTest extends TestCase
         self::assertFalse($oHyperlink->isInternal());
         self::assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oHyperlink->getUrl());
     }
+
+    public function testTextColumns(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('AAAA');
+        $oShape->setColumns(3)->setColumnSpacing(20);
+        // and a second shape that never asked for columns, to pin the default
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('BBBB');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertEquals(3, $arrayShape[0]->getColumns());
+        // the gap survives the trip through `fo:column-gap`, which is a length in centimetres
+        self::assertEquals(20, $arrayShape[0]->getColumnSpacing());
+        self::assertInstanceOf(RichText::class, $arrayShape[1]);
+        self::assertEquals(1, $arrayShape[1]->getColumns());
+        self::assertEquals(0, $arrayShape[1]->getColumnSpacing());
+    }
 }

@@ -18,7 +18,7 @@ Below are the properties that you can set for a rich text shape.
 - `verticalOverflow`
 - `upright`
 - `vertical`
-- `columns`
+- `columns` see *Columns*
 - `bottomInset` in pixels
 - `leftInset` in pixels
 - `rightInset` in pixels
@@ -34,9 +34,27 @@ Properties that can be set for each paragraphs are as follow.
 - `lineSpacing` see *Line Spacing*
 - `font` <!-- see *[Font](#font)*-->
 
+## Columns
+
+For a rich text, you can lay the text out in more than one column. The spacing between them is
+given in pixels.
+
+Example:
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\RichText;
+
+$richText = new RichText();
+$richText->setColumns(3);
+$columns = $richText->getColumns();
+```
+
 ## Column Spacing
 
-For a paragraph, you can define the column spacing.
+For a rich text, you can define the spacing between its columns, in pixels. It has no effect on a
+shape left with the single column it starts with.
 
 Example:
 
