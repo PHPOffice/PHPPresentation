@@ -340,6 +340,32 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testShadowSetBackToNull(): void
+    {
+        // one of the two shapes this writer reads a shadow from: a text frame, by writeTxtStyle()
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->setShadow(null);
+
+        $this->assertZipFileExists('content.xml');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // the other: a drawing, by writeDrawingStyle() -- which is what a video is written as too.
+        // No schema assertion here: a `draw:image` this writer produces is not ODF 1.2 valid for a
+        // reason of its own, which testDrawingMimetype() pins down.
+        $oSlide->createDrawingShape()
+            ->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png')
+            ->setShadow(null);
+        $oMedia = new Media();
+        $oMedia->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/videos/sintel_trailer-480p.ogv')
+            ->setShadow(null);
+        $oSlide->addShape($oMedia);
+        $this->resetPresentationFile();
+
+        $this->assertZipFileExists('content.xml');
+        $this->assertZipXmlElementExists('content.xml', '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:image');
+        $this->assertZipXmlElementExists('content.xml', '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:plugin');
+    }
+
     public function testMedia(): void
     {
         $expectedName = 'MyName';

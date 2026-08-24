@@ -150,9 +150,12 @@ class AbstractShapeTest extends TestCase
     {
         $object = new RichText();
 
+        // a shadow the setter was asked to take away is replaced with a fresh one, never a null
         self::assertInstanceOf(AbstractShape::class, $object->setShadow());
-        self::assertNull($object->getShadow());
+        self::assertInstanceOf(Shadow::class, $object->getShadow());
         self::assertInstanceOf(AbstractShape::class, $object->setShadow(new Shadow()));
+        self::assertInstanceOf(Shadow::class, $object->getShadow());
+        self::assertInstanceOf(AbstractShape::class, $object->setShadow(null));
         self::assertInstanceOf(Shadow::class, $object->getShadow());
     }
 
