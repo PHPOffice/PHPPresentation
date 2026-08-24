@@ -159,7 +159,7 @@ class DocumentLayout
      */
     public function getCX(string $unit = self::UNIT_EMU): float
     {
-        return $this->convertUnit($this->dimensionX, self::UNIT_EMU, $unit);
+        return self::convertUnit($this->dimensionX, self::UNIT_EMU, $unit);
     }
 
     /**
@@ -167,7 +167,7 @@ class DocumentLayout
      */
     public function getCY(string $unit = self::UNIT_EMU): float
     {
-        return $this->convertUnit($this->dimensionY, self::UNIT_EMU, $unit);
+        return self::convertUnit($this->dimensionY, self::UNIT_EMU, $unit);
     }
 
     /**
@@ -176,7 +176,7 @@ class DocumentLayout
     public function setCX(float $value, string $unit = self::UNIT_EMU): self
     {
         $this->layout = self::LAYOUT_CUSTOM;
-        $this->dimensionX = $this->convertUnit($value, $unit, self::UNIT_EMU);
+        $this->dimensionX = self::convertUnit($value, $unit, self::UNIT_EMU);
 
         return $this;
     }
@@ -187,15 +187,15 @@ class DocumentLayout
     public function setCY(float $value, string $unit = self::UNIT_EMU): self
     {
         $this->layout = self::LAYOUT_CUSTOM;
-        $this->dimensionY = $this->convertUnit($value, $unit, self::UNIT_EMU);
+        $this->dimensionY = self::convertUnit($value, $unit, self::UNIT_EMU);
 
         return $this;
     }
 
     /**
-     * Convert EMUs to differents units.
+     * Convert a value from one unit to another, without a layout to hold it.
      */
-    protected function convertUnit(float $value, string $fromUnit, string $toUnit): float
+    public static function convertUnit(float $value, string $fromUnit, string $toUnit): float
     {
         // Convert from $fromUnit to EMU
         switch ($fromUnit) {
