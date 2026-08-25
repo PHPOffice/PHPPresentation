@@ -136,12 +136,19 @@ $tableShape = $slide->createTableShape($columns);
 $row = $tableShape->createRow();
 $cellA1 = $row->nextCell();
 $cellA1->getBorders()->getBottom()->setLineStyle(Border::LINE_DOUBLE);
+$cellA1->getBorders()->getBottom()->setDashStyle(Border::DASH_DASH);
 ```
 
 Two neighbouring cells share the edge between them, and PowerPoint draws that edge once. A cell
 therefore keeps its own right and bottom borders unless the neighbour on that side asked for the
 same edge itself — the cell to the right through its **left** border, the cell below through its
 **top** border. When it did, the neighbour's rule is the one that is drawn.
+
+The ODPresentation Writer says this with an ODF `fo:border`, whose styles come from CSS2 and are
+fewer than the OOXML ones. `LINE_NONE` is `none` and `LINE_SINGLE` is `solid`; the compound lines
+(`LINE_DOUBLE`, `LINE_THICKTHIN`, `LINE_THINTHICK`, `LINE_TRI`) all arrive as `double`, and any dash
+pattern other than `DASH_SOLID` arrives as `dotted` or `dashed`. A dash pattern outranks the line
+style, and `LINE_NONE` outranks both.
 
 ### Define the text direction
 For defining the text direction of cell, you can use the `setTextDirection` method of the `getAlignment` method of a Cell object.
