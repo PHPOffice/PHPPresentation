@@ -95,6 +95,27 @@ $shape->getPlotArea()->getAxisX()->setMinBounds(0);
 $shape->getPlotArea()->getAxisX()->setMaxBounds(200);
 ```
 
+#### Number format
+
+!!! warning
+    Available only on the PowerPoint2007 Writer
+
+For Axis, `setFormatCode` defines the number format of the tick labels, as an
+[OOXML format code](https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68).
+The default is `Axis::DEFAULT_FORMAT_CODE` (`general`), which leaves the labels formatted as the source data is.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
+
+$line = new Line();
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->getAxisY()->setFormatCode('#,##0.00');
+```
+
 #### Crossing
 
 !!! warning
