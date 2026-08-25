@@ -1249,8 +1249,7 @@ class PowerPoint2007Test extends TestCase
 
         $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
         self::assertInstanceOf(RichText::class, $arrayShape[0]);
-        // The shape wrote `a:noFill`, so it must come back with a fill that says so, not with none at all
-        self::assertNotNull($arrayShape[0]->getFill());
+        // The shape wrote `a:noFill`, so it must come back with a fill that says so, not an unset one
         self::assertEquals(Fill::FILL_NONE, $arrayShape[0]->getFill()->getFillType());
     }
 
@@ -1465,6 +1464,25 @@ class PowerPoint2007Test extends TestCase
         // Without the slide number this comes back as the raw part name, `slide2.xml`
         self::assertTrue($oHyperlink->isInternal());
         self::assertEquals(2, $oHyperlink->getSlideNumber());
+    }
+
+    public function testFillUnsetSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Nothing was said about my fill');
+        $oShape->setFill(null);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        // The shape wrote no fill of any kind, so `p:spPr` names none and the shape comes back
+        // with a fill that says as much -- never a null, which no writer can read
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertEquals(Fill::FILL_UNSET, $arrayShape[0]->getFill()->getFillType());
     }
 
     public function testTableFirstRowAndBandRow(): void

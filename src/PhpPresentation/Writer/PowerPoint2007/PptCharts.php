@@ -750,11 +750,14 @@ class PptCharts extends AbstractDecoratorWriter
             // c:ser > ##c:dLbls
             $objWriter->endElement();
 
-            if (Fill::FILL_NONE != $series->getFill()->getFillType()) {
+            $seriesFill = $series->getFill();
+            if (Fill::FILL_NONE != $seriesFill->getFillType()
+                && Fill::FILL_UNSET != $seriesFill->getFillType()
+            ) {
                 // c:spPr
                 $objWriter->startElement('c:spPr');
                 // Write fill
-                $this->writeFill($objWriter, $series->getFill());
+                $this->writeFill($objWriter, $seriesFill);
                 // ## c:spPr
                 $objWriter->endElement();
             }
@@ -957,11 +960,14 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->endElement();
 
             // c:spPr
-            if (Fill::FILL_NONE != $series->getFill()->getFillType()) {
+            $seriesFill = $series->getFill();
+            if (Fill::FILL_NONE != $seriesFill->getFillType()
+                && Fill::FILL_UNSET != $seriesFill->getFillType()
+            ) {
                 // c:spPr
                 $objWriter->startElement('c:spPr');
                 // Write fill
-                $this->writeFill($objWriter, $series->getFill());
+                $this->writeFill($objWriter, $seriesFill);
                 // ## c:spPr
                 $objWriter->endElement();
             }
@@ -1164,11 +1170,14 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->endElement();
 
             // c:spPr
-            if (Fill::FILL_NONE != $series->getFill()->getFillType()) {
+            $seriesFill = $series->getFill();
+            if (Fill::FILL_NONE != $seriesFill->getFillType()
+                && Fill::FILL_UNSET != $seriesFill->getFillType()
+            ) {
                 // c:spPr
                 $objWriter->startElement('c:spPr');
                 // Write fill
-                $this->writeFill($objWriter, $series->getFill());
+                $this->writeFill($objWriter, $seriesFill);
                 // ## c:spPr
                 $objWriter->endElement();
             }

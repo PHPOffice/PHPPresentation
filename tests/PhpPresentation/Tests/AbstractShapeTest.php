@@ -80,10 +80,12 @@ class AbstractShapeTest extends TestCase
     {
         $object = new RichText();
 
+        // a shape is born with a fill, and asking for none replaces it rather than removing it
+        self::assertEquals(Fill::FILL_NONE, $object->getFill()->getFillType());
         self::assertInstanceOf(AbstractShape::class, $object->setFill());
-        self::assertNull($object->getFill());
+        self::assertEquals(Fill::FILL_UNSET, $object->getFill()->getFillType());
         self::assertInstanceOf(AbstractShape::class, $object->setFill(new Fill()));
-        self::assertInstanceOf(Fill::class, $object->getFill());
+        self::assertEquals(Fill::FILL_NONE, $object->getFill()->getFillType());
     }
 
     public function testHeight(): void

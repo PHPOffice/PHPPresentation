@@ -21,6 +21,12 @@ Properties:
 - `startColor`
 - `endColor`
 
+A shape always has a fill, so `getFill()` never hands back a null. A shape starts at
+`Fill::FILL_NONE` — no fill, and none inherited — and `setFill(null)` puts it at
+`Fill::FILL_UNSET` instead, which says nothing at all and lets the theme or the placeholder behind
+the shape paint it. `setFill(null)` is deprecated; pass a `Fill` of type `Fill::FILL_UNSET` to say
+the same thing outright.
+
 ## Border
 
 Use this style to define border of a shape as example below.

@@ -568,6 +568,24 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testFillSetBackToNull(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->createTextRun('Nothing was said about my fill');
+        $oShape->setFill(null);
+
+        // A fill taken away is a fill nobody asked for, and `p:spPr` names none of the kinds --
+        // the shape takes the one its theme gives it, which is what a `null` fill always wrote
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element . '/a:noFill');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element . '/a:solidFill');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element . '/a:gradFill');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element . '/a:pattFill');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testFillNoneCellInFilledRow(): void
     {
         $expected = 'E06B20';

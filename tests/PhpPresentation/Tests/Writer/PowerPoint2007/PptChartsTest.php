@@ -348,6 +348,22 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testSeriesFillSetBackToNull(): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->setFill(null);
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oBar);
+
+        // A series that named no colour leaves the choice to the application, so no `c:spPr` is
+        // written for it at all. Reading the fill used to be enough to kill the writer outright.
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser/c:spPr';
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testAxisBounds(): void
     {
         $value = mt_rand(0, 100);

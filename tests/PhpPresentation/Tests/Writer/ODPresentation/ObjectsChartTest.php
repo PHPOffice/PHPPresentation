@@ -336,6 +336,23 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testChartFillSetBackToNull(): void
+    {
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oLine);
+        $oChart->setFill(null);
+
+        // A chart is born at `FILL_NONE`, so a chart that named no fill is drawn like one that
+        // refused it. Reading the fill used to be enough to kill the writer outright.
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleChart\']/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill', 'none');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:stroke', 'none');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testSeriesFill(): void
     {
         $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);

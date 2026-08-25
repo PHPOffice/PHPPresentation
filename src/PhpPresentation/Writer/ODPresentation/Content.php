@@ -1039,6 +1039,10 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
 
                 break;
+            case Fill::FILL_UNSET:
+                // Nobody named a fill, so the style names none and `standard` paints the shape
+
+                break;
             case Fill::FILL_NONE:
             default:
                 $objWriter->writeAttribute('draw:fill', 'none');
@@ -1561,12 +1565,13 @@ class Content extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-    protected function writeStylePartFill(XMLWriter $objWriter, ?Fill $oFill): void
+    protected function writeStylePartFill(XMLWriter $objWriter, Fill $oFill): void
     {
-        if (!$oFill) {
-            return;
-        }
         switch ($oFill->getFillType()) {
+            case Fill::FILL_UNSET:
+                // Nobody named a fill, so the style names none and the parent style paints the shape
+
+                break;
             case Fill::FILL_SOLID:
                 $objWriter->writeAttribute('draw:fill', 'solid');
                 $objWriter->writeAttribute('draw:fill-color', '#' . $oFill->getStartColor()->getRGB());

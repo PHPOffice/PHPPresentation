@@ -104,10 +104,12 @@ class SeriesTest extends TestCase
     {
         $object = new Series();
 
+        // a series is born with a fill, and asking for none replaces it rather than removing it
+        self::assertEquals(Fill::FILL_NONE, $object->getFill()->getFillType());
         self::assertInstanceOf(Series::class, $object->setFill());
-        self::assertNull($object->getFill());
+        self::assertEquals(Fill::FILL_UNSET, $object->getFill()->getFillType());
         self::assertInstanceOf(Series::class, $object->setFill(new Fill()));
-        self::assertInstanceOf(Fill::class, $object->getFill());
+        self::assertEquals(Fill::FILL_NONE, $object->getFill()->getFillType());
     }
 
     public function testFont(): void
