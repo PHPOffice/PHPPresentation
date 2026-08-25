@@ -1083,6 +1083,9 @@ class Content extends AbstractDecoratorWriter
         }
 
         $objWriter->writeAttribute('fo:wrap-option', 'wrap');
+        // The writing mode of the frame orders its columns; the direction of the text comes from
+        // the writing mode each paragraph style states for itself.
+        $objWriter->writeAttribute('style:writing-mode', $shape->isColumnsRTL() ? 'rl-tb' : 'lr-tb');
         // style:graphic-properties > style:columns
         // An element rather than an attribute, so it is written after every attribute of the block
         if ($shape->getColumns() > 1) {

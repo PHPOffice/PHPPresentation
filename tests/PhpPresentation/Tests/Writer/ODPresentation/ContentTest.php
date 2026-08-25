@@ -1620,6 +1620,41 @@ class ContentTest extends PhpPresentationTestCase
         ];
     }
 
+    public function testRichTextColumnsRTL(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:writing-mode', 'lr-tb');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // a shape whose every paragraph reads right to left orders its columns the same way
+        $this->resetPresentationFile();
+        $oRichText->setColumns(2);
+        $oRichText->getActiveParagraph()->getAlignment()->setIsRTL(true);
+
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:writing-mode', 'rl-tb');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // and the order can be said outright, which is the only way to right to left text in
+        // left to right columns
+        $this->resetPresentationFile();
+        $oRichText->setColumnsRTL(false);
+
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:writing-mode', 'lr-tb');
+        // the paragraph keeps saying what it says for itself
+        $this->assertZipXmlAttributeEquals(
+            'content.xml',
+            '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'
+                . $oRichText->getActiveParagraph()->getHashCode() . '\']/style:paragraph-properties',
+            'style:writing-mode',
+            'rl-tb'
+        );
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testRichTextColumns(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();

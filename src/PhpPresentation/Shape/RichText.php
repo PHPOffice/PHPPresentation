@@ -121,6 +121,15 @@ class RichText extends AbstractShape implements ComparableInterface
     private $columnSpacing = 0;
 
     /**
+     * Are the columns ordered right to left?
+     *
+     * Null - the default - takes the order from the paragraphs.
+     *
+     * @var null|bool
+     */
+    private $columnsRTL;
+
+    /**
      * Bottom inset (in pixels).
      *
      * @var float
@@ -671,6 +680,48 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
+     * Get the order of the columns as it was set, null when it was never set.
+     */
+    public function hasColumnsRTL(): ?bool
+    {
+        return $this->columnsRTL;
+    }
+
+    /**
+     * Set the order of the columns.
+     *
+     * Null - the default - takes the order from the paragraphs. The order of the columns and the
+     * direction of the text are independent: left-to-right text in right-to-left columns is a
+     * state both formats can hold, so it has to stay reachable.
+     */
+    public function setColumnsRTL(?bool $value = null): self
+    {
+        $this->columnsRTL = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get the order of the columns, taking it from the paragraphs when it was never set.
+     */
+    public function isColumnsRTL(): bool
+    {
+        if (null !== $this->columnsRTL) {
+            return $this->columnsRTL;
+        }
+        if (empty($this->richTextParagraphs)) {
+            return false;
+        }
+        foreach ($this->richTextParagraphs as $paragraph) {
+            if (!$paragraph->getAlignment()->isRTL()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Get hash code.
      *
      * @return string Hash code
@@ -692,6 +743,7 @@ class RichText extends AbstractShape implements ComparableInterface
             . ($this->vertical ? '1' : '0')
             . $this->columns
             . $this->columnSpacing
+            . (null === $this->columnsRTL ? '' : ($this->columnsRTL ? '1' : '0'))
             . $this->bottomInset
             . $this->leftInset
             . $this->rightInset

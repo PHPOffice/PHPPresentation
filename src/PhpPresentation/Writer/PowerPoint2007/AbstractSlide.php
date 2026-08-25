@@ -290,7 +290,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             if (RichText::WRAP_SQUARE != $shape->getWrap()) {
                 $objWriter->writeAttribute('wrap', $shape->getWrap());
             }
-            $objWriter->writeAttribute('rtlCol', '0');
+            $objWriter->writeAttribute('rtlCol', $shape->isColumnsRTL() ? '1' : '0');
             if (RichText::OVERFLOW_OVERFLOW != $shape->getHorizontalOverflow()) {
                 $objWriter->writeAttribute('horzOverflow', $shape->getHorizontalOverflow());
             }

@@ -88,7 +88,7 @@ class ODPresentation implements ReaderInterface
     protected $oZip;
 
     /**
-     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string}>
+     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string}>
      */
     protected $arrayStyles = [];
 
@@ -367,6 +367,27 @@ class ODPresentation implements ReaderInterface
                     );
                 }
             }
+            // Read the order of the columns
+            if ($nodeGraphicProps->hasAttribute('style:writing-mode')) {
+                switch ($nodeGraphicProps->getAttribute('style:writing-mode')) {
+                    case 'lr-tb':
+                    case 'tb-lr':
+                    case 'lr':
+                        $columnsRTL = false;
+
+                        break;
+                    case 'rl-tb':
+                    case 'tb-rl':
+                    case 'rl':
+                        $columnsRTL = true;
+
+                        break;
+                    case 'tb':
+                    case 'page':
+                    default:
+                        break;
+                }
+            }
             // Read Fill
             if ($nodeGraphicProps->hasAttribute('draw:fill')) {
                 $value = $nodeGraphicProps->getAttribute('draw:fill');
@@ -622,6 +643,7 @@ class ODPresentation implements ReaderInterface
             'background' => $oBackground ?? null,
             'columns' => $columns ?? null,
             'columnSpacing' => $columnSpacing ?? null,
+            'columnsRTL' => $columnsRTL ?? null,
             'fill' => $oFill ?? null,
             'font' => $oFont ?? null,
             'shadow' => $oShadow ?? null,
@@ -780,6 +802,9 @@ class ODPresentation implements ReaderInterface
                 }
                 if (null !== $this->arrayStyles[$keyStyle]['columnSpacing']) {
                     $oShape->setColumnSpacing($this->arrayStyles[$keyStyle]['columnSpacing']);
+                }
+                if (null !== $this->arrayStyles[$keyStyle]['columnsRTL']) {
+                    $oShape->setColumnsRTL($this->arrayStyles[$keyStyle]['columnsRTL']);
                 }
             }
         }
