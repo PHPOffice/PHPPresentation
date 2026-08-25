@@ -128,6 +128,25 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
+    public function testGradientTableRow(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape();
+        $oRow = $oShape->createRow();
+
+        // Neither the cell nor its row asks for a fill, so there is no gradient to define
+        $this->assertZipXmlElementNotExists('styles.xml', '/office:document-styles/office:styles/draw:gradient');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // The gradient of a row is defined once the row asks for one, exactly as a cell's is
+        $oRow->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
+        $this->resetPresentationFile();
+
+        $element = '/office:document-styles/office:styles/draw:gradient';
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', 'gradient_' . $oRow->getFill()->getHashCode());
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
     public function testStrokeDash(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

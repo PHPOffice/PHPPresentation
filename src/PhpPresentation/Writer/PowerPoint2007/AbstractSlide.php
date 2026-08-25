@@ -50,6 +50,7 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
 
@@ -549,7 +550,14 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeBorder($objWriter, $borderDiagonalDown, 'TlToBr');
                 $this->writeBorder($objWriter, $borderDiagonalUp, 'BlToTr');
                 // Fill
-                $this->writeFill($objWriter, $currentCell->getFill());
+                // A cell that was given no fill of its own is painted with the fill of its row,
+                // which OOXML cannot store on the row itself. A cell set to `FILL_NONE` asked for
+                // no fill and keeps its `a:noFill`, even where its row is painted
+                $fill = $currentCell->getFill();
+                if (Fill::FILL_UNSET === $fill->getFillType()) {
+                    $fill = $shape->getRow($row)->getFill();
+                }
+                $this->writeFill($objWriter, $fill);
                 $objWriter->endElement();
                 $objWriter->endElement();
             }

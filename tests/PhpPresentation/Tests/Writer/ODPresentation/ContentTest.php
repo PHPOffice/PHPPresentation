@@ -1138,6 +1138,62 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
+    public function testTableRowFill(): void
+    {
+        $oFill = new Fill();
+        $oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
+
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape(2);
+        $oRow = $oShape->createRow();
+        $oRow->setFill($oFill);
+
+        // ODF puts no fill on a table-row style, so the fill of the row lands on each of its cells
+        foreach (['gr1r0c0', 'gr1r0c1'] as $styleName) {
+            $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $styleName . '\']/style:graphic-properties';
+            $this->assertZipXmlElementExists('content.xml', $element);
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'solid');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill-color', '#E06B20');
+        }
+    }
+
+    public function testTableRowFillUntouched(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape(2);
+        $oShape->createRow();
+
+        // Nobody asked for a fill, on the cell or on its row, which is how a table starts out:
+        // the cell style is still written, and carries no graphic properties at all
+        foreach (['gr1r0c0', 'gr1r0c1'] as $styleName) {
+            $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $styleName . '\']';
+            $this->assertZipXmlElementExists('content.xml', $element);
+            $this->assertZipXmlElementNotExists('content.xml', $element . '/style:graphic-properties');
+        }
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testTableCellFillNoneInFilledRow(): void
+    {
+        $oFill = new Fill();
+        $oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
+
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape(2);
+        $oRow = $oShape->createRow();
+        $oRow->setFill($oFill);
+
+        // The second cell refuses a fill outright, which is not the same as never asking for one:
+        // it stays transparent while its neighbour takes the colour of the row
+        $oRow->getCell(1)->getFill()->setFillType(Fill::FILL_NONE);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill-color', '#E06B20');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c1\']';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlElementNotExists('content.xml', $element . '/style:graphic-properties');
+    }
+
     public function testTableWithColspan(): void
     {
         $value = mt_rand(2, 100);

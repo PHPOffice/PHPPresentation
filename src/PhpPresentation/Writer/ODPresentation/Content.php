@@ -1201,17 +1201,27 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId . 'r' . $keyRow . 'c' . $keyCell);
                 $objWriter->writeAttribute('style:family', 'table-cell');
 
+                // A cell that was given no fill of its own is painted with the fill of its row.
+                // A cell set to `FILL_NONE` asked for no fill and stays transparent, even where
+                // its row is painted.
+                $cellFill = $shapeCell->getFill();
+                if (Fill::FILL_UNSET == $cellFill->getFillType()) {
+                    $cellFill = $shapeRow->getFill();
+                }
+
                 // Note : This element is not valid in the Schema 1.2
                 // style:graphic-properties
-                if (Fill::FILL_NONE != $shapeCell->getFill()->getFillType()) {
+                if (Fill::FILL_NONE != $cellFill->getFillType()
+                    && Fill::FILL_UNSET != $cellFill->getFillType()
+                ) {
                     $objWriter->startElement('style:graphic-properties');
-                    if (Fill::FILL_SOLID == $shapeCell->getFill()->getFillType()) {
+                    if (Fill::FILL_SOLID == $cellFill->getFillType()) {
                         $objWriter->writeAttribute('draw:fill', 'solid');
-                        $objWriter->writeAttribute('draw:fill-color', '#' . $shapeCell->getFill()->getStartColor()->getRGB());
+                        $objWriter->writeAttribute('draw:fill-color', '#' . $cellFill->getStartColor()->getRGB());
                     }
-                    if (Fill::FILL_GRADIENT_LINEAR == $shapeCell->getFill()->getFillType()) {
+                    if (Fill::FILL_GRADIENT_LINEAR == $cellFill->getFillType()) {
                         $objWriter->writeAttribute('draw:fill', 'gradient');
-                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shapeCell->getFill()->getHashCode());
+                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $cellFill->getHashCode());
                     }
                     $objWriter->endElement();
                 }
