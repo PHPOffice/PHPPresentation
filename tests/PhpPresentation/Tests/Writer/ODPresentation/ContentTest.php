@@ -277,6 +277,40 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testListStyleIsNotWrittenWithoutAList(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('Alpha');
+
+        // A paragraph left at Bullet::TYPE_NONE is written as a plain `text:p`, so nothing in the
+        // document names a list style and none is written for it
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $element = '/office:document-content/office:automatic-styles/text:list-style';
+        $this->assertZipXmlElementNotExists('content.xml', $element);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testListStyleIsWrittenOnlyForTheParagraphsThatUseOne(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+        $oRichText->createTextRun('Alpha');
+        $oRichText->createParagraph()->createTextRun('Beta');
+
+        $oPlain = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oPlain->createTextRun('Delta');
+
+        // The bulleted shape keeps its style and the plain one adds none of its own
+        $element = '/office:document-content/office:automatic-styles/text:list-style';
+        $this->assertZipXmlElementCount('content.xml', $element, 1);
+
+        // and the one that is written is the one a list names
+        $element = '/office:document-content/office:automatic-styles/text:list-style[@style:name = //text:list/@text:style-name]';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testInnerList(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
