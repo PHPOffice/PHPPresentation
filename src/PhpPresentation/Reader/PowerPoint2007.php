@@ -208,7 +208,8 @@ class PowerPoint2007 implements ReaderInterface
                 }
                 $type = $oElement->getAttribute('type');
                 $oLayout = $this->oPhpPresentation->getLayout();
-                if (DocumentLayout::LAYOUT_CUSTOM == $type) {
+                // ST_SlideSizeType allows an explicit "custom" value, which the library stores as LAYOUT_CUSTOM (an empty string)
+                if (DocumentLayout::LAYOUT_CUSTOM == $type || 'custom' === $type) {
                     $oLayout->setCX((float) $oElement->getAttribute('cx'));
                     $oLayout->setCY((float) $oElement->getAttribute('cy'));
                 } else {
