@@ -1252,6 +1252,35 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(Fill::FILL_NONE, $arrayShape[0]->getFill()->getFillType());
     }
 
+    public function testDocumentLayoutWithExplicitCustomType(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Part 1:');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        // ST_SlideSizeType allows type="custom"; PowerPoint omits the attribute but other producers write it.
+        // The writer emits type="screen4x3", so swapping it for "custom" says what such a file is without a binary fixture.
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sPresentation = $oZip->getFromName('ppt/presentation.xml');
+        self::assertIsString($sPresentation);
+        $oZip->deleteName('ppt/presentation.xml');
+        $oZip->addFromString(
+            'ppt/presentation.xml',
+            (string) preg_replace('#(<p:sldSz[^>]*type=")[^"]*(")#', '${1}custom${2}', $sPresentation)
+        );
+        $oZip->close();
+
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        self::assertEquals(DocumentLayout::LAYOUT_CUSTOM, $oPhpPresentationRead->getLayout()->getDocumentLayout());
+        self::assertEquals(9144000, $oPhpPresentationRead->getLayout()->getCX());
+        self::assertEquals(6858000, $oPhpPresentationRead->getLayout()->getCY());
+    }
+
     public function testTextRunWithoutProperties(): void
     {
         $oPhpPresentation = new PhpPresentation();
