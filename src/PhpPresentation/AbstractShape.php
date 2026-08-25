@@ -69,7 +69,7 @@ abstract class AbstractShape implements ComparableInterface
     protected $height;
 
     /**
-     * @var null|Fill
+     * @var Fill
      */
     private $fill;
 
@@ -153,9 +153,7 @@ abstract class AbstractShape implements ComparableInterface
         $this->container = null;
         $this->name = $this->name;
         $this->border = clone $this->border;
-        if (isset($this->fill)) {
-            $this->fill = clone $this->fill;
-        }
+        $this->fill = clone $this->fill;
         if (isset($this->shadow)) {
             $this->shadow = clone $this->shadow;
         }
@@ -389,14 +387,21 @@ abstract class AbstractShape implements ComparableInterface
         return $this;
     }
 
-    public function getFill(): ?Fill
+    public function getFill(): Fill
     {
         return $this->fill;
     }
 
+    /**
+     * A shape is born with a fill, and asking for it to be taken away replaces it with one of type
+     * `Fill::FILL_UNSET` rather than with a null: every writer reads it without asking whether it is
+     * there. A shape that never named a fill writes none, which is what a null used to mean.
+     *
+     * @param null|Fill $pValue passing `null` is deprecated, pass a `Fill` of type `Fill::FILL_UNSET`
+     */
     public function setFill(?Fill $pValue = null): self
     {
-        $this->fill = $pValue;
+        $this->fill = $pValue ?? (new Fill())->setFillType(Fill::FILL_UNSET);
 
         return $this;
     }
@@ -458,7 +463,7 @@ abstract class AbstractShape implements ComparableInterface
      */
     public function getHashCode(): string
     {
-        return md5((is_object($this->container) ? $this->container->getHashCode() : '') . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->rotation . (null === $this->getFill() ? '' : $this->getFill()->getHashCode()) . (null === $this->shadow ? '' : $this->shadow->getHashCode()) . (null === $this->hyperlink ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
+        return md5((is_object($this->container) ? $this->container->getHashCode() : '') . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->rotation . $this->getFill()->getHashCode() . (null === $this->shadow ? '' : $this->shadow->getHashCode()) . (null === $this->hyperlink ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
     }
 
     /**

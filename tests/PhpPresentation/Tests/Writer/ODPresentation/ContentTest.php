@@ -200,6 +200,22 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
+    public function testFillSetBackToNull(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Nothing was said about my fill');
+        $oShape->setFill(null);
+
+        // Saving at all is the point: `getFill()` used to hand back the null it was given, and the
+        // switch below dereferenced it. The style now simply names no `draw:fill`, so the shape
+        // takes the one its parent style gives it.
+        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'draw:fill');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'draw:fill-color');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testFillGradientLinearRichText(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();

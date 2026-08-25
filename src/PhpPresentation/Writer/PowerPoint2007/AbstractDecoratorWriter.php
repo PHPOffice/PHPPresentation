@@ -133,15 +133,21 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $objWriter->endElement();
     }
 
+    /**
+     * @param null|Fill $pFill a data point that has no fill in the sparse map of its series arrives
+     *                         here as `null`; a shape whose fill was taken away arrives as `FILL_UNSET`
+     */
     protected function writeFill(XMLWriter $objWriter, ?Fill $pFill): void
     {
-        if (!$pFill) {
+        // A fill nobody asked for is written as nothing at all, so that the shape takes the one its
+        // theme or its placeholder gives it. This is what a `null` fill has always been written as.
+        if (null === $pFill || Fill::FILL_UNSET == $pFill->getFillType()) {
             return;
         }
 
-        // Is it a fill? A fill nobody asked for paints nothing, same as one refused outright --
-        // without this it would fall through to the pattern fill at the end
-        if (Fill::FILL_NONE == $pFill->getFillType() || Fill::FILL_UNSET == $pFill->getFillType()) {
+        // A fill refused outright is `a:noFill` -- without this it would fall through to the
+        // pattern fill at the end
+        if (Fill::FILL_NONE == $pFill->getFillType()) {
             $objWriter->writeElement('a:noFill');
 
             return;

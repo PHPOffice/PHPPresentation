@@ -427,13 +427,13 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('style:family', 'chart');
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
-        if ($chart->getFill()->getFillType() === Fill::FILL_NONE) {
-            $this->xmlContent->writeAttribute('draw:stroke', 'none');
-        } else {
-            $this->xmlContent->writeAttribute('draw:stroke', 'solid');
-        }
+        // A chart that named no fill is drawn like one that refused it: a chart is born at
+        // `FILL_NONE`, so that is what saying nothing has always meant here
+        $isPainted = Fill::FILL_NONE !== $chart->getFill()->getFillType()
+            && Fill::FILL_UNSET !== $chart->getFill()->getFillType();
+        $this->xmlContent->writeAttribute('draw:stroke', $isPainted ? 'solid' : 'none');
         // Without draw:fill, the colour below is taken as a solid background, black by default
-        $this->xmlContent->writeAttribute('draw:fill', Fill::FILL_NONE === $chart->getFill()->getFillType() ? 'none' : 'solid');
+        $this->xmlContent->writeAttribute('draw:fill', $isPainted ? 'solid' : 'none');
         $this->xmlContent->writeAttribute('draw:fill-color', '#' . $chart->getFill()->getStartColor()->getRGB());
         // > style:graphic-properties
         $this->xmlContent->endElement();
@@ -808,7 +808,9 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->startElement('style:graphic-properties');
         // A serie leaving its fill untouched says nothing about its colour, the application picks one, as with the OOXML writer
         $oSeriesFill = $series->getFill();
-        if ($oSeriesFill instanceof Fill && $oSeriesFill->getHashCode() === (new Fill())->getHashCode()) {
+        if (Fill::FILL_UNSET === $oSeriesFill->getFillType()
+            || $oSeriesFill->getHashCode() === (new Fill())->getHashCode()
+        ) {
             $oSeriesFill = null;
         }
         if ($chartType instanceof Line || $chartType instanceof Radar || $chartType instanceof Scatter) {

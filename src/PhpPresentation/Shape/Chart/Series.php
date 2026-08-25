@@ -65,7 +65,7 @@ class Series implements ComparableInterface
     protected $separator;
 
     /**
-     * @var null|Fill
+     * @var Fill
      */
     protected $fill;
 
@@ -211,14 +211,22 @@ class Series implements ComparableInterface
         return $this;
     }
 
-    public function getFill(): ?Fill
+    public function getFill(): Fill
     {
         return $this->fill;
     }
 
+    /**
+     * A series is born with a fill, and asking for it to be taken away replaces it with one of type
+     * `Fill::FILL_UNSET` rather than with a null: every writer reads it without asking whether it is
+     * there. A series that never named a fill leaves the colour to the application, which is what a
+     * null used to mean.
+     *
+     * @param null|Fill $fill passing `null` is deprecated, pass a `Fill` of type `Fill::FILL_UNSET`
+     */
     public function setFill(?Fill $fill = null): self
     {
-        $this->fill = $fill;
+        $this->fill = $fill ?? (new Fill())->setFillType(Fill::FILL_UNSET);
 
         return $this;
     }

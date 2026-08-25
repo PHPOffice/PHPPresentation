@@ -559,6 +559,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 if (Fill::FILL_UNSET === $fill->getFillType()) {
                     $fill = $shape->getRow($row)->getFill();
                 }
+                if (Fill::FILL_UNSET === $fill->getFillType()) {
+                    // Neither the cell nor its row named a fill. PowerPoint would leave `a:tcPr`
+                    // empty and let the table style paint it; this library writes no table styles
+                    // yet, so the cell keeps the `a:noFill` it has always been written with
+                    $fill = new Fill();
+                }
                 $this->writeFill($objWriter, $fill);
                 $objWriter->endElement();
                 $objWriter->endElement();
