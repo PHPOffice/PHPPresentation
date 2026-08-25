@@ -528,17 +528,19 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $borderBottom = $currentCell->getBorders()->getBottom();
                 $borderDiagonalDown = $currentCell->getBorders()->getDiagonalDown();
                 $borderDiagonalUp = $currentCell->getBorders()->getDiagonalUp();
-                // Fix PowerPoint implementation
+                // Two cells share the edge between them, and PowerPoint draws it once. The rule is
+                // taken from the neighbour when the neighbour is the one that asked for it -- so the
+                // side that is inspected has to be the side that is copied, the one facing this cell.
                 if ($hasNextCellRight) {
                     $nextCellRight = $shape->getRow($row)->getCell($cell + 1);
-                    if ($nextCellRight->getBorders()->getRight()->getHashCode() != $defaultBorder->getHashCode()) {
+                    if ($nextCellRight->getBorders()->getLeft()->getHashCode() != $defaultBorder->getHashCode()) {
                         $borderRight = $nextCellRight->getBorders()->getLeft();
                     }
                 }
                 if ($hasNextRowBelow) {
                     $nextRowBelow = $shape->getRow($row + 1);
                     $nextCellBelow = $nextRowBelow->getCell($cell);
-                    if ($nextCellBelow->getBorders()->getBottom()->getHashCode() != $defaultBorder->getHashCode()) {
+                    if ($nextCellBelow->getBorders()->getTop()->getHashCode() != $defaultBorder->getHashCode()) {
                         $borderBottom = $nextCellBelow->getBorders()->getTop();
                     }
                 }
