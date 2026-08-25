@@ -139,8 +139,13 @@ class DocumentLayout
                 break;
             default:
                 $this->layout = self::LAYOUT_CUSTOM;
-                $this->dimensionX = $pValue['cx'];
-                $this->dimensionY = $pValue['cy'];
+                // A size of its own arrives as an array; a name the library has no preset for is a
+                // custom layout too -- ST_SlideSizeType's own `custom` among them -- and keeps the
+                // dimensions it already has for `setCX()` and `setCY()` to say
+                if (is_array($pValue)) {
+                    $this->dimensionX = $pValue['cx'];
+                    $this->dimensionY = $pValue['cy'];
+                }
 
                 break;
         }

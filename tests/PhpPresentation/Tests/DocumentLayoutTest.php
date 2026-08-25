@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -74,6 +75,34 @@ class DocumentLayoutTest extends TestCase
         $object->setCY(7.5, DocumentLayout::UNIT_CENTIMETER);
         self::assertEquals(4799880, $object->getCX());
         self::assertEquals(2700000, $object->getCY());
+    }
+
+    /**
+     * @return array<array{string}>
+     */
+    public static function dataProviderLayoutsWithoutAPreset(): array
+    {
+        return [
+            // ST_SlideSizeType spells a size of its own `custom`; the library spells it `''`
+            ['custom'],
+            // and a name that is nobody's preset -- a typo, or a layout a later format grew
+            ['A5'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderLayoutsWithoutAPreset
+     */
+    #[DataProvider('dataProviderLayoutsWithoutAPreset')]
+    public function testSetLayoutWithoutAPreset(string $layout): void
+    {
+        $object = new DocumentLayout();
+        $object->setDocumentLayout($layout);
+
+        // a name with no preset behind it is a custom layout, not a crash
+        self::assertEquals(DocumentLayout::LAYOUT_CUSTOM, $object->getDocumentLayout());
+        self::assertEquals(9144000, $object->getCX());
+        self::assertEquals(6858000, $object->getCY());
     }
 
     public function testConvertUnitWithoutALayout(): void
