@@ -226,7 +226,7 @@ class Title implements ComparableInterface
     /**
      * Get font.
      */
-    public function getFont(): ?Font
+    public function getFont(): Font
     {
         return $this->font;
     }
@@ -238,7 +238,7 @@ class Title implements ComparableInterface
      */
     public function setFont(?Font $pFont = null): self
     {
-        $this->font = $pFont;
+        $this->font = $pFont ?? new Font();
 
         return $this;
     }

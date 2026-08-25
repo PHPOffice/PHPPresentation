@@ -73,8 +73,9 @@ class ParagraphTest extends TestCase
     {
         $object = new Paragraph();
         self::assertInstanceOf(Font::class, $object->getFont());
+        // a font the setter was asked to take away is replaced with a fresh one, never a null
         self::assertInstanceOf(Paragraph::class, $object->setFont());
-        self::assertNull($object->getFont());
+        self::assertInstanceOf(Font::class, $object->getFont());
         self::assertInstanceOf(Paragraph::class, $object->setFont(new Font()));
         self::assertInstanceOf(Font::class, $object->getFont());
     }

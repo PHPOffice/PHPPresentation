@@ -1605,4 +1605,30 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
+
+    public function testFontSetBackToNull(): void
+    {
+        $oLine = new Line();
+        $oLine->addSeries(new Series('Downloads', $this->seriesData));
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        // every one of these accepts null, and used to store it -- the writer then read a font
+        // off it and died. Passing no argument at all is the same call
+        $oShape->getPlotArea()->getAxisY()->setFont();
+        $oShape->getPlotArea()->getAxisY()->setTickLabelFont();
+        $oShape->getPlotArea()->getAxisX()->setFont(null);
+        $oShape->getTitle()->setFont(null);
+        $oShape->getLegend()->setFont(null);
+        $oLine->getSeries()[0]->setFont(null);
+
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('Alpha')->setFont(null);
+        $oRichText->getActiveParagraph()->setFont(null);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:text-properties';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-family', 'Calibri');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
 }

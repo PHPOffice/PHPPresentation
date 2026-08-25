@@ -50,6 +50,9 @@ class RunTest extends TestCase
         $object = new Run();
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setFont(new Font()));
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        // a font the setter was asked to take away is replaced with a fresh one, never a null
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setFont());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
     public function testLanguage(): void

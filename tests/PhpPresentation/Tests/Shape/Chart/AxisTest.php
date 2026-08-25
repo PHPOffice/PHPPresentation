@@ -85,8 +85,9 @@ class AxisTest extends TestCase
     {
         $object = new Axis();
 
+        // a font the setter was asked to take away is replaced with a fresh one, never a null
         self::assertInstanceOf(Axis::class, $object->setFont());
-        self::assertNull($object->getFont());
+        self::assertInstanceOf(Font::class, $object->getFont());
         self::assertInstanceOf(Axis::class, $object->setFont(new Font()));
         self::assertInstanceOf(Font::class, $object->getFont());
     }
@@ -163,8 +164,9 @@ class AxisTest extends TestCase
         $object = new Axis();
 
         self::assertInstanceOf(Font::class, $object->getTickLabelFont());
+        // a font the setter was asked to take away is replaced with a fresh one, never a null
         self::assertInstanceOf(Axis::class, $object->setTickLabelFont());
-        self::assertNull($object->getTickLabelFont());
+        self::assertInstanceOf(Font::class, $object->getTickLabelFont());
         self::assertInstanceOf(Axis::class, $object->setTickLabelFont(new Font()));
         self::assertInstanceOf(Font::class, $object->getTickLabelFont());
     }

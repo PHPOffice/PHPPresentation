@@ -59,7 +59,7 @@ class Run extends TextElement implements TextElementInterface
      */
     public function setFont(?Font $pFont = null)
     {
-        $this->font = $pFont;
+        $this->font = $pFont ?? new Font();
 
         return $this;
     }

@@ -50,7 +50,7 @@ class Paragraph implements ComparableInterface
     /**
      * Font.
      *
-     * @var null|Font
+     * @var Font
      */
     private $font;
 
@@ -130,7 +130,7 @@ class Paragraph implements ComparableInterface
     /**
      * Get font.
      */
-    public function getFont(): ?Font
+    public function getFont(): Font
     {
         return $this->font;
     }
@@ -138,11 +138,11 @@ class Paragraph implements ComparableInterface
     /**
      * Set font.
      *
-     * @param null|Font $pFont Font
+     * @param null|Font $pFont Font, or null to go back to a fresh one
      */
     public function setFont(?Font $pFont = null): self
     {
-        $this->font = $pFont;
+        $this->font = $pFont ?? new Font();
 
         return $this;
     }
