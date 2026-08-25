@@ -1546,7 +1546,7 @@ class PowerPoint2007 implements ReaderInterface
                 $oParagraph->getBulletStyle()->setBulletColor($oColor);
             }
         }
-        $arraySubElements = $document->getElements('(a:r|a:br)', $oElement);
+        $arraySubElements = $document->getElements('(a:r|a:br|a:fld)', $oElement);
         foreach ($arraySubElements as $oSubElement) {
             if (!($oSubElement instanceof DOMElement)) {
                 continue;
@@ -1554,7 +1554,10 @@ class PowerPoint2007 implements ReaderInterface
             if ('a:br' == $oSubElement->tagName) {
                 $oParagraph->createBreak();
             }
-            if ('a:r' == $oSubElement->tagName) {
+            // A field is a run whose text the application recomputes -- a slide number, a date.
+            // `CT_TextField` holds the same `a:rPr` and `a:t` as a run does (ECMA-376), so it is
+            // read the same way: what the field says is a stand-in, but how it is styled is not.
+            if ('a:r' == $oSubElement->tagName || 'a:fld' == $oSubElement->tagName) {
                 $oElementrPr = $document->getElement('a:rPr', $oSubElement);
 
                 // `a:rPr` is optional (ECMA-376, CT_RegularTextRun), and Keynote's export leaves it
