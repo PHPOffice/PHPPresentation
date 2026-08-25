@@ -29,8 +29,10 @@ use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
+use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Writer\ODPresentation as ODPresentationWriter;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -1357,6 +1359,26 @@ class ODPresentationTest extends TestCase
         $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
         self::assertInstanceOf(RichText::class, $arrayShape[0]);
         self::assertSame($expected, $arrayShape[0]->hasColumnsRTL());
+    }
+
+    public function testSlideBackgroundSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->setBackground(
+            (new BackgroundColor())->setColor(new Color('FF4672A8'))
+        );
+        // a second slide that was given no background, so the two do not write the same style
+        $oPhpPresentation->createSlide();
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $oBackground = $oPhpPresentationRead->getSlide(0)->getBackground();
+        self::assertInstanceOf(BackgroundColor::class, $oBackground);
+        self::assertEquals('4672A8', $oBackground->getColor()->getRGB());
+        self::assertNotInstanceOf(BackgroundColor::class, $oPhpPresentationRead->getSlide(1)->getBackground());
     }
 
     public function testTextColumnsRTL(): void
