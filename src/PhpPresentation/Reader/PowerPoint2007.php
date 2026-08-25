@@ -1116,6 +1116,11 @@ class PowerPoint2007 implements ReaderInterface
             }
         }
 
+        $oElement = $document->getElement('a:graphic/a:graphicData/a:tbl/a:tblPr', $node);
+        // Both attributes default to false when the element or the attribute is absent
+        $oShape->setFirstRow($oElement instanceof DOMElement && in_array($oElement->getAttribute('firstRow'), ['1', 'true'], true));
+        $oShape->setBandRow($oElement instanceof DOMElement && in_array($oElement->getAttribute('bandRow'), ['1', 'true'], true));
+
         $arrayElements = $document->getElements('a:graphic/a:graphicData/a:tbl/a:tblGrid/a:gridCol', $node);
         $oShape->setNumColumns($arrayElements->length);
         $oShape->createRow();

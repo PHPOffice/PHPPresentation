@@ -424,8 +424,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('a:tbl');
         // p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblPr
         $objWriter->startElement('a:tblPr');
-        $objWriter->writeAttribute('firstRow', '1');
-        $objWriter->writeAttribute('bandRow', '1');
+        $objWriter->writeAttributeIf($shape->isFirstRow(), 'firstRow', '1');
+        $objWriter->writeAttributeIf($shape->isBandRow(), 'bandRow', '1');
         $objWriter->endElement();
         // p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblGrid
         $objWriter->startElement('a:tblGrid');
