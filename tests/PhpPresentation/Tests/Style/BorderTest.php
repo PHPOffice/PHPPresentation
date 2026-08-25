@@ -58,6 +58,19 @@ class BorderTest extends TestCase
     }
 
     /**
+     * A border that was given no colour still has a hash, and it is not the hash of one that kept
+     * the black it was born with.
+     */
+    public function testHashCodeWithoutAColor(): void
+    {
+        $object = new Border();
+        $withBlack = $object->getHashCode();
+
+        self::assertNotEmpty($object->setColor()->getHashCode());
+        self::assertNotEquals($withBlack, $object->getHashCode());
+    }
+
+    /**
      * Test get/set dash style.
      */
     public function testSetGetDashStyle(): void

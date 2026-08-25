@@ -47,6 +47,26 @@ Properties:
 - `dashStyle`
 - `color`
 
+A border is born black. `setColor(null)` takes that colour away rather than replacing it with
+another: `getColor()` then returns `null`, and the border is written without a colour of its own —
+an `a:ln` with no fill of its own in PowerPoint2007, no `svg:stroke-color` in ODPresentation — so
+the line is painted in the colour its theme or its parent style gives it. The width, the line style
+and the dash style are written either way.
+
+``` php
+<?php
+
+	// A line whose colour comes from the theme
+	$shape->getBorder()
+		->setLineStyle(Border::LINE_SINGLE)
+		->setLineWidth(4)
+		->setColor(null);
+```
+
+Note that the PowerPoint2007 Reader cannot tell the two apart on the way back: a border written
+without a colour is read as the black a `Border` starts with, because there is nothing in the file
+left to say the colour was never named.
+
 ## Shadow
 
 Use this style to define shadow of a shape as example below.

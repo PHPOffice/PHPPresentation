@@ -80,15 +80,19 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $objWriter->writeAttribute('algn', 'ctr');
 
         // Fill?
+        $borderColor = $pBorder->getColor();
         if (Border::LINE_NONE == $pBorder->getLineStyle()) {
             // a:noFill
             $objWriter->writeElement('a:noFill', null);
-        } else {
+        } elseif (null !== $borderColor) {
             // a:solidFill
             $objWriter->startElement('a:solidFill');
-            $this->writeColor($objWriter, $pBorder->getColor());
+            $this->writeColor($objWriter, $borderColor);
             $objWriter->endElement();
         }
+        // A border that names no colour is written without a fill of its own. The group is optional
+        // in CT_LineProperties, and leaving it out is how the line takes its colour from the theme;
+        // the width, the compound and the dash below are written either way.
 
         // Dash
         $objWriter->startElement('a:prstDash');
