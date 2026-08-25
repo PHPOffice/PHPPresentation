@@ -521,7 +521,25 @@ class ODPresentation implements ReaderInterface
             }
             $oAlignment = new Alignment();
             if ($nodeParagraphProps->hasAttribute('fo:text-align')) {
-                $oAlignment->setHorizontal($nodeParagraphProps->getAttribute('fo:text-align'));
+                switch ($nodeParagraphProps->getAttribute('fo:text-align')) {
+                    case 'right':
+                        $oAlignment->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+
+                        break;
+                    case 'center':
+                        $oAlignment->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+                        break;
+                    case 'justify':
+                        $oAlignment->setHorizontal(Alignment::HORIZONTAL_JUSTIFY);
+
+                        break;
+                    case 'left':
+                    default:
+                        $oAlignment->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+                        break;
+                }
             }
             if ($nodeParagraphProps->hasAttribute('style:writing-mode')) {
                 switch ($nodeParagraphProps->getAttribute('style:writing-mode')) {
@@ -534,7 +552,7 @@ class ODPresentation implements ReaderInterface
                     case 'rl-tb':
                     case 'tb-rl':
                     case 'rl':
-                        $oAlignment->setIsRTL(false);
+                        $oAlignment->setIsRTL(true);
 
                         break;
                     case 'tb':
@@ -766,6 +784,9 @@ class ODPresentation implements ReaderInterface
         if ($oNodeParent->hasAttribute('text:style-name')) {
             $keyStyle = $oNodeParent->getAttribute('text:style-name');
             if (isset($this->arrayStyles[$keyStyle])) {
+                if (null !== $this->arrayStyles[$keyStyle]['alignment']) {
+                    $oParagraph->setAlignment($this->arrayStyles[$keyStyle]['alignment']);
+                }
                 if (!empty($this->arrayStyles[$keyStyle]['spacingAfter'])) {
                     $oParagraph->setSpacingAfter($this->arrayStyles[$keyStyle]['spacingAfter']);
                 }

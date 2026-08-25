@@ -1227,6 +1227,63 @@ class ODPresentationTest extends TestCase
         self::assertEquals(3, $oHyperlink->getSlideNumber());
     }
 
+    /**
+     * @return array<array<string>>
+     */
+    public static function dataProviderHorizontalAlignment(): array
+    {
+        return [
+            [Alignment::HORIZONTAL_LEFT],
+            [Alignment::HORIZONTAL_RIGHT],
+            [Alignment::HORIZONTAL_CENTER],
+            [Alignment::HORIZONTAL_JUSTIFY],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderHorizontalAlignment
+     */
+    #[DataProvider('dataProviderHorizontalAlignment')]
+    public function testHorizontalAlignmentSurvivesTheRoundTrip(string $alignment): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('AAAA');
+        $oShape->getActiveParagraph()->getAlignment()->setHorizontal($alignment);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        // and it is the value the model uses, not the one ODF spells it with
+        self::assertEquals($alignment, $arrayShape[0]->getParagraph()->getAlignment()->getHorizontal());
+    }
+
+    public function testTextDirectionSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('\u{645}\u{631}\u{62d}\u{628}\u{627}');
+        $oShape->getActiveParagraph()->getAlignment()->setIsRTL(true);
+        // and a second shape that reads the other way, to pin the arm next to it
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('AAAA');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        // The writer wrote `style:writing-mode="rl-tb"`, so it has to come back right to left
+        self::assertTrue($arrayShape[0]->getParagraph()->getAlignment()->isRTL());
+        self::assertInstanceOf(RichText::class, $arrayShape[1]);
+        self::assertFalse($arrayShape[1]->getParagraph()->getAlignment()->isRTL());
+    }
+
     public function testHyperlinkToUrl(): void
     {
         $oPhpPresentation = new PhpPresentation();
