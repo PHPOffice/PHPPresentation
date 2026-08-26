@@ -73,6 +73,25 @@ class HTMLTest extends PhpPresentationTestCase
     /**
      * Test a shape whose shadow was taken away.
      */
+    public function testSaveShadowOnRichTextAndTable(): void
+    {
+        $filename = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+
+        $slide = $this->oPresentation->getActiveSlide();
+        $slide->createRichTextShape()->createTextRun('AAA');
+        $slide->createTableShape(1)->createRow()->getCell(0)->createTextRun('BBB');
+        foreach ($slide->getShapeCollection() as $shape) {
+            $shape->getShadow()->setVisible(true)->setAlpha(75)->setBlurRadius(2)->setDirection(45);
+        }
+
+        (new HTML($this->oPresentation))->save($filename);
+        $content = file_get_contents($filename);
+        unlink($filename);
+
+        // one for the text shape, one for the table -- both were dropped before
+        self::assertSame(2, substr_count((string) $content, 'box-shadow'));
+    }
+
     public function testSaveShadowSetBackToNull(): void
     {
         $filename = tempnam(sys_get_temp_dir(), 'PhpPresentation');

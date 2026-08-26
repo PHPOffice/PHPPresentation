@@ -1341,6 +1341,43 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testLineShadow(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createLineShape(10, 10, 100, 100)
+            ->getShadow()->setVisible(true)->setAlpha(75)->setBlurRadius(2)->setDirection(45);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:spPr/a:effectLst/a:outerShdw';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testAutoShapeShadow(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oAutoShape = new AutoShape();
+        $oAutoShape->setType(AutoShape::TYPE_HEART);
+        $oAutoShape->getShadow()->setVisible(true)->setAlpha(75)->setBlurRadius(2)->setDirection(45);
+        $oSlide->addShape($oAutoShape);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:effectLst/a:outerShdw';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testGroupShadow(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oGroup = new Group();
+        $oGroup->createRichTextShape()->createTextRun('AAA');
+        $oGroup->getShadow()->setVisible(true)->setAlpha(75)->setBlurRadius(2)->setDirection(45);
+        $oSlide->addShape($oGroup);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:grpSp/p:grpSpPr/a:effectLst/a:outerShdw';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testRichTextShadow(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

@@ -340,6 +340,19 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testLineShadow(): void
+    {
+        $this->oPresentation->getActiveSlide()->createLineShape(10, 10, 100, 100)
+            ->getShadow()->setVisible(true)->setAlpha(75)->setDirection(45)->setDistance(10);
+
+        // the style the line actually points at, whatever it was named
+        $element = '/office:document-content/office:automatic-styles/style:style'
+            . '[@style:name = //draw:line/@draw:style-name]/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow', 'visible');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testShadowSetBackToNull(): void
     {
         // one of the two shapes this writer reads a shadow from: a text frame, by writeTxtStyle()
