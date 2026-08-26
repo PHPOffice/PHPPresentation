@@ -33,9 +33,13 @@ use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Shape\Table\Cell;
+use PhpOffice\PhpPresentation\Shape\Table\Row;
 use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Borders;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
@@ -88,7 +92,19 @@ class ODPresentation implements ReaderInterface
     protected $oZip;
 
     /**
-     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string}>
+     * Every key `loadStyle()` puts on a style, so that a node naming a style the file does not
+     * define is answered with the same shape rather than a missing offset.
+     *
+     * @var array<int, string>
+     */
+    protected const STYLE_KEYS = [
+        'alignment', 'background', 'columns', 'columnSpacing', 'columnsRTL', 'fill', 'font',
+        'shadow', 'listStyle', 'spacingAfter', 'spacingBefore', 'lineSpacingMode', 'lineSpacing',
+        'rowHeight', 'borders',
+    ];
+
+    /**
+     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders}>
      */
     protected $arrayStyles = [];
 
@@ -638,6 +654,21 @@ class ODPresentation implements ReaderInterface
             }
         }
 
+        // A table row carries its height, and a table cell the borders of its four sides -- the
+        // ODPresentation Writer puts the latter on `style:paragraph-properties`, where the ODF
+        // shorthand `fo:border` stands for all four and the per-side properties override it.
+        $nodeTableRowProps = $this->oXMLReader->getElement('style:table-row-properties', $nodeStyle);
+        if ($nodeTableRowProps instanceof DOMElement && $nodeTableRowProps->hasAttribute('style:row-height')) {
+            // The ODPresentation Writer measures a row height in points -- `Row::setHeight()` is
+            // read as pixels by the PowerPoint2007 Writer, but this is the unit to invert here
+            $rowHeight = (int) round(CommonDrawing::centimetersToPoints(
+                (float) substr($nodeTableRowProps->getAttribute('style:row-height'), 0, -2)
+            ));
+        }
+        if ($nodeParagraphProps instanceof DOMElement) {
+            $borders = $this->loadBorders($nodeParagraphProps);
+        }
+
         $this->arrayStyles[$keyStyle] = [
             'alignment' => $oAlignment ?? null,
             'background' => $oBackground ?? null,
@@ -652,6 +683,8 @@ class ODPresentation implements ReaderInterface
             'spacingBefore' => $spacingBefore ?? null,
             'lineSpacingMode' => $lineSpacingMode ?? null,
             'lineSpacing' => $lineSpacing ?? null,
+            'rowHeight' => $rowHeight ?? null,
+            'borders' => $borders ?? null,
         ];
 
         return true;
@@ -660,6 +693,83 @@ class ODPresentation implements ReaderInterface
     /**
      * Read Slide.
      */
+    /**
+     * Read the four borders an ODF style names.
+     *
+     * `fo:border` is the shorthand for all four sides; a per-side property overrides it. Each
+     * value is the CSS2 shorthand the ODPresentation Writer produces -- a width in points, a
+     * style, and a colour that a border naming none leaves out.
+     *
+     * @return null|Borders null when the style names no border at all
+     */
+    protected function loadBorders(DOMElement $nodeParagraphProps): ?Borders
+    {
+        $sides = [
+            'fo:border-top' => 'getTop',
+            'fo:border-right' => 'getRight',
+            'fo:border-bottom' => 'getBottom',
+            'fo:border-left' => 'getLeft',
+        ];
+        $all = $nodeParagraphProps->hasAttribute('fo:border') ? $nodeParagraphProps->getAttribute('fo:border') : null;
+        if (null === $all && !array_filter(array_keys($sides), function (string $attribute) use ($nodeParagraphProps): bool {
+            return $nodeParagraphProps->hasAttribute($attribute);
+        })) {
+            return null;
+        }
+
+        $oBorders = new Borders();
+        foreach ($sides as $attribute => $getter) {
+            $value = $nodeParagraphProps->hasAttribute($attribute) ? $nodeParagraphProps->getAttribute($attribute) : $all;
+            if (null !== $value) {
+                $this->loadBorder($oBorders->$getter(), $value);
+            }
+        }
+
+        return $oBorders;
+    }
+
+    /**
+     * Read one ODF `fo:border` value into a border.
+     *
+     * The CSS2 border styles are fewer than the OOXML line styles, so what comes back is what
+     * CSS2 can say: `double` is the only compound line, and the ten dash patterns arrive as
+     * `dashed` or `dotted`.
+     */
+    protected function loadBorder(Border $oBorder, string $value): void
+    {
+        $parts = explode(' ', $value);
+        if (isset($parts[0]) && 'pt' === substr($parts[0], -2)) {
+            $oBorder->setLineWidth((float) substr($parts[0], 0, -2) * 1.75);
+        }
+        switch ($parts[1] ?? '') {
+            case 'none':
+                $oBorder->setLineStyle(Border::LINE_NONE);
+
+                break;
+            case 'double':
+                $oBorder->setLineStyle(Border::LINE_DOUBLE)->setDashStyle(Border::DASH_SOLID);
+
+                break;
+            case 'dotted':
+                $oBorder->setLineStyle(Border::LINE_SINGLE)->setDashStyle(Border::DASH_DOT);
+
+                break;
+            case 'dashed':
+                $oBorder->setLineStyle(Border::LINE_SINGLE)->setDashStyle(Border::DASH_DASH);
+
+                break;
+            default:
+                $oBorder->setLineStyle(Border::LINE_SINGLE)->setDashStyle(Border::DASH_SOLID);
+
+                break;
+        }
+        // A border written without the optional third part named no colour, and takes the one its
+        // parent style gives it
+        if (isset($parts[2]) && 0 === strpos($parts[2], '#')) {
+            $oBorder->setColor(new Color('FF' . substr($parts[2], 1)));
+        }
+    }
+
     protected function loadSlide(DOMElement $nodeSlide): bool
     {
         // Core
@@ -676,6 +786,13 @@ class ODPresentation implements ReaderInterface
         }
         foreach ($this->oXMLReader->getElements('draw:frame', $nodeSlide) as $oNodeFrame) {
             if ($oNodeFrame instanceof DOMElement) {
+                // A table is looked for first: a producer may put a replacement image of the
+                // table in the same frame, and the table is what the frame holds
+                if ($this->oXMLReader->getElement('table:table', $oNodeFrame)) {
+                    $this->loadShapeTable($oNodeFrame);
+
+                    continue;
+                }
                 if ($this->loadImages && $this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
                     $this->loadShapeDrawing($oNodeFrame);
 
@@ -829,7 +946,10 @@ class ODPresentation implements ReaderInterface
     /**
      * Read Paragraph.
      */
-    protected function readParagraph(RichText $oShape, DOMElement $oNodeParent): void
+    /**
+     * @param Cell|RichText $oShape anything that opens a paragraph: a text shape or a table cell
+     */
+    protected function readParagraph($oShape, DOMElement $oNodeParent): void
     {
         $oParagraph = $oShape->createParagraph();
         if ($oNodeParent->hasAttribute('text:style-name')) {
@@ -941,6 +1061,117 @@ class ODPresentation implements ReaderInterface
     /**
      * Load file 'styles.xml'.
      */
+    /**
+     * Read Shape Table.
+     *
+     * An ODF table lives inside a `draw:frame` like any other shape, and its first row is wrapped
+     * in `table:table-header-rows` when it is a header row.
+     */
+    protected function loadShapeTable(DOMElement $oNodeFrame): void
+    {
+        $columns = 0;
+        foreach ($this->oXMLReader->getElements('table:table/table:table-column', $oNodeFrame) as $oNodeColumn) {
+            $columns += $oNodeColumn instanceof DOMElement && $oNodeColumn->hasAttribute('table:number-columns-repeated')
+                ? (int) $oNodeColumn->getAttribute('table:number-columns-repeated')
+                : 1;
+        }
+
+        $oShape = $this->oPhpPresentation->getActiveSlide()->createTableShape(max($columns, 1));
+        $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
+        $oShape->setDecorative($this->loadShapeDecorative($oNodeFrame));
+        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
+        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
+        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
+        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
+
+        // A header row is said two ways: this Writer wraps it in `table:table-header-rows`, and
+        // LibreOffice leaves it in place and sets `table:use-first-row-styles` on the table
+        $headerRows = $this->oXMLReader->getElements('table:table/table:table-header-rows/table:table-row', $oNodeFrame);
+        $oNodeTable = $this->oXMLReader->getElement('table:table', $oNodeFrame);
+        $oShape->setFirstRow($headerRows->length > 0
+            || ($oNodeTable instanceof DOMElement && 'true' === $oNodeTable->getAttribute('table:use-first-row-styles')));
+        if ($oNodeTable instanceof DOMElement && $oNodeTable->hasAttribute('table:use-banding-rows-styles')) {
+            $oShape->setBandRow('true' === $oNodeTable->getAttribute('table:use-banding-rows-styles'));
+        }
+
+        // The rows of the header come before the ones the table holds directly
+        foreach ($headerRows as $oNodeRow) {
+            if ($oNodeRow instanceof DOMElement) {
+                $this->loadTableRow($oShape->createRow(), $oNodeRow);
+            }
+        }
+        foreach ($this->oXMLReader->getElements('table:table/table:table-row', $oNodeFrame) as $oNodeRow) {
+            if ($oNodeRow instanceof DOMElement) {
+                $this->loadTableRow($oShape->createRow(), $oNodeRow);
+            }
+        }
+    }
+
+    /**
+     * Read one row of a table, and every cell it holds.
+     */
+    protected function loadTableRow(Row $oRow, DOMElement $oNodeRow): void
+    {
+        $rowStyle = $this->getStyle($oNodeRow, 'table:style-name');
+        if (null !== $rowStyle['rowHeight']) {
+            $oRow->setHeight($rowStyle['rowHeight']);
+        }
+
+        // A cell that names no style of its own takes the one the row names for all of them
+        $defaultCellStyle = $oNodeRow->hasAttribute('table:default-cell-style-name')
+            ? $oNodeRow->getAttribute('table:default-cell-style-name')
+            : '';
+
+        $cellIndex = 0;
+        foreach ($this->oXMLReader->getElements('table:table-cell', $oNodeRow) as $oNodeCell) {
+            if (!$oNodeCell instanceof DOMElement || !$oRow->hasCell($cellIndex)) {
+                continue;
+            }
+            $this->loadTableCell($oRow->getCell($cellIndex), $oNodeCell, $defaultCellStyle);
+            ++$cellIndex;
+        }
+    }
+
+    /**
+     * Read one cell of a table: the fill and the borders its style names, and its text.
+     */
+    protected function loadTableCell(Cell $oCell, DOMElement $oNodeCell, string $defaultCellStyle = ''): void
+    {
+        $cellStyle = $this->getStyle($oNodeCell, 'table:style-name', $defaultCellStyle);
+        if (null !== $cellStyle['fill']) {
+            $oCell->setFill($cellStyle['fill']);
+        }
+        if (null !== $cellStyle['borders']) {
+            $oCell->setBorders($cellStyle['borders']);
+        }
+
+        // A cell holds its text in `text:p`, which is what this Writer and LibreOffice both put
+        // there
+        $oCell->setParagraphs([]);
+        foreach ($this->oXMLReader->getElements('text:p', $oNodeCell) as $oNodeParagraph) {
+            if ($oNodeParagraph instanceof DOMElement) {
+                $this->levelParagraph = 0;
+                $this->readParagraph($oCell, $oNodeParagraph);
+            }
+        }
+
+        if (count($oCell->getParagraphs()) > 0) {
+            $oCell->setActiveParagraph(0);
+        }
+    }
+
+    /**
+     * The style a node names, with every key the reader parses present.
+     *
+     * @return array<string, mixed>
+     */
+    protected function getStyle(DOMElement $oNode, string $attribute, string $fallback = ''): array
+    {
+        $keyStyle = $oNode->hasAttribute($attribute) ? $oNode->getAttribute($attribute) : $fallback;
+
+        return $this->arrayStyles[$keyStyle] ?? array_fill_keys(self::STYLE_KEYS, null);
+    }
+
     protected function loadStylesFile(): void
     {
         foreach ($this->oXMLReader->getElements('/office:document-styles/office:styles/*') as $oElement) {
