@@ -360,6 +360,26 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    /**
+     * A border given no colour is written as an `a:ln` without a fill of its own: the width, the
+     * compound and the dash stay, and the line takes its colour from the theme.
+     */
+    public function testDrawingShapeBorderWithoutAColor(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        $oShape->getBorder()->setLineStyle(Border::LINE_DOUBLE)->setColor();
+
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:ln';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cmpd', Border::LINE_DOUBLE);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element . '/a:solidFill');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element . '/a:noFill');
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:prstDash');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testDrawingShapeFill(): void
     {
         $oColor = new Color(Color::COLOR_DARKRED);

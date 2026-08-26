@@ -1054,7 +1054,12 @@ class Content extends AbstractDecoratorWriter
         if (Border::LINE_NONE == $shape->getBorder()->getLineStyle()) {
             $objWriter->writeAttribute('draw:stroke', 'none');
         } else {
-            $objWriter->writeAttribute('svg:stroke-color', '#' . $shape->getBorder()->getColor()->getRGB());
+            // A border that names no colour is written without `svg:stroke-color`, which the
+            // attribute being optional lets the parent style answer instead
+            $borderColor = $shape->getBorder()->getColor();
+            if (null !== $borderColor) {
+                $objWriter->writeAttribute('svg:stroke-color', '#' . $borderColor->getRGB());
+            }
             $objWriter->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '') . 'cm');
             switch ($shape->getBorder()->getDashStyle()) {
                 case Border::DASH_SOLID:
@@ -1188,7 +1193,10 @@ class Content extends AbstractDecoratorWriter
 
                 break;
         }
-        $objWriter->writeAttribute('svg:stroke-color', '#' . $shape->getBorder()->getColor()->getRGB());
+        $borderColor = $shape->getBorder()->getColor();
+        if (null !== $borderColor) {
+            $objWriter->writeAttribute('svg:stroke-color', '#' . $borderColor->getRGB());
+        }
         $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3) . 'cm');
         $this->writeStylePartShadow($objWriter, $shape->getShadow());
         $objWriter->endElement();
@@ -1201,8 +1209,15 @@ class Content extends AbstractDecoratorWriter
      */
     protected function getBorderValue(Border $border): string
     {
-        return Text::numberFormat($border->getLineWidth() / 1.75, 2) . 'pt '
-            . $this->getBorderStyle($border) . ' #' . $border->getColor()->getRGB();
+        $value = Text::numberFormat($border->getLineWidth() / 1.75, 2) . 'pt '
+            . $this->getBorderStyle($border);
+
+        // `fo:border` takes the CSS2 shorthand, where the colour is the optional third part: a
+        // border that names none is written as a width and a style, and is painted in the colour
+        // the cell's text is
+        $color = $border->getColor();
+
+        return null === $color ? $value : $value . ' #' . $color->getRGB();
     }
 
     /**

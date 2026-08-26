@@ -1207,6 +1207,40 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    /**
+     * A border given no colour is written without `svg:stroke-color`: the stroke and its width stay,
+     * and the parent style answers for the colour.
+     */
+    public function testRichTextBorderWithoutAColor(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->getBorder()->setLineStyle(Border::LINE_SINGLE)->setColor();
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:stroke', 'solid');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'svg:stroke-width');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * `fo:border` takes the CSS2 shorthand, where the colour is the optional third part. A cell
+     * border given no colour is written as a width and a style alone.
+     */
+    public function testTableCellBorderWithoutAColor(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
+        $oCell = $oShape->createRow()->getCell();
+        foreach (['getBottom', 'getTop', 'getLeft', 'getRight'] as $side) {
+            $oCell->getBorders()->{$side}()->setLineStyle(Border::LINE_SINGLE)->setColor();
+        }
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']/style:paragraph-properties';
+        $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'fo:border', 'pt solid');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testTableCellBorderOnEverySide(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
