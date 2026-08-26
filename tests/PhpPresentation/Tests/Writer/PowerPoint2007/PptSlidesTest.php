@@ -876,6 +876,24 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testShadowSetBackToNull(): void
+    {
+        // every shape this writer reads a shadow from: a text body (writeShapeText()), and a
+        // picture (writeShapePic()), which is what a drawing and a video are both written as
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->setShadow(null);
+        $oSlide->createDrawingShape()
+            ->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png')
+            ->setShadow(null);
+        $oMedia = new Media();
+        $oMedia->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/videos/sintel_trailer-480p.ogv')
+            ->setShadow(null);
+        $oSlide->addShape($oMedia);
+
+        $this->assertZipFileExists('ppt/slides/slide1.xml');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testParagraphColumns(): void
     {
         $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();

@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
+use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\HTML;
 
@@ -63,6 +64,29 @@ class HTMLTest extends PhpPresentationTestCase
 
         $object = new HTML($this->oPresentation);
         $object->save($filename);
+
+        self::assertFileExists($filename);
+
+        unlink($filename);
+    }
+
+    /**
+     * Test a shape whose shadow was taken away.
+     */
+    public function testSaveShadowSetBackToNull(): void
+    {
+        $filename = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        $imageFile = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png';
+
+        $slide = $this->oPresentation->getActiveSlide();
+        // the two shapes this writer reads a shadow from: an image, and a video
+        $slide->createDrawingShape()->setName('Drawing')->setPath($imageFile)->setShadow(null);
+        $media = new Media();
+        $media->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/videos/sintel_trailer-480p.ogv')
+            ->setShadow(null);
+        $slide->addShape($media);
+
+        (new HTML($this->oPresentation))->save($filename);
 
         self::assertFileExists($filename);
 

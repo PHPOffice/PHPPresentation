@@ -311,6 +311,20 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
 
+    public function testShadowSetBackToNull(): void
+    {
+        // the sixth reader of getShadow(): a chart writes its own shadow into its own part, and
+        // reads it as `$chart->getShadow()->isVisible()` -- an Error rather than a TypeError, which
+        // is why looking for a non-nullable parameter does not find it
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType(new Line());
+        $oShape->setShadow(null);
+
+        $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), '/c:chartSpace/c:spPr/a:effectLst');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testTitleVisibilityTrue(): void
     {
         $element = '/c:chartSpace/c:chart/c:autoTitleDeleted';

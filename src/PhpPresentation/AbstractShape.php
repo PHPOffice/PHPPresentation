@@ -90,7 +90,7 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Shadow.
      *
-     * @var null|Shadow
+     * @var Shadow
      */
     protected $shadow;
 
@@ -154,9 +154,7 @@ abstract class AbstractShape implements ComparableInterface
         $this->name = $this->name;
         $this->border = clone $this->border;
         $this->fill = clone $this->fill;
-        if (isset($this->shadow)) {
-            $this->shadow = clone $this->shadow;
-        }
+        $this->shadow = clone $this->shadow;
         if (isset($this->placeholder)) {
             $this->placeholder = clone $this->placeholder;
         }
@@ -411,17 +409,20 @@ abstract class AbstractShape implements ComparableInterface
         return $this->border;
     }
 
-    public function getShadow(): ?Shadow
+    public function getShadow(): Shadow
     {
         return $this->shadow;
     }
 
     /**
+     * A shape is born with a shadow, and asking for it to be taken away replaces it with a fresh
+     * one rather than with a null: every writer reads it without asking whether it is there.
+     *
      * @return $this
      */
     public function setShadow(?Shadow $pValue = null)
     {
-        $this->shadow = $pValue;
+        $this->shadow = $pValue ?? new Shadow();
 
         return $this;
     }
