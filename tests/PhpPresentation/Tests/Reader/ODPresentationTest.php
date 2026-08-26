@@ -29,10 +29,13 @@ use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
 use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Writer\ODPresentation as ODPresentationWriter;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -1425,5 +1428,127 @@ class ODPresentationTest extends TestCase
         self::assertInstanceOf(RichText::class, $arrayShape[1]);
         self::assertEquals(1, $arrayShape[1]->getColumns());
         self::assertEquals(0, $arrayShape[1]->getColumnSpacing());
+    }
+
+    public function testTableSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oTable = $oPhpPresentation->getActiveSlide()->createTableShape(2);
+        $oTable->setWidth(400)->setHeight(120)->setOffsetX(10)->setOffsetY(20);
+
+        $oRowHeader = $oTable->createRow();
+        $oRowHeader->setHeight(30);
+        $oRowHeader->getCell(0)->createTextRun('Header')->getFont()->setBold(true);
+        $oRowHeader->getCell(1)->createTextRun('Second');
+        $oRowHeader->getCell(0)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFEEEEEE'));
+
+        $oRowBody = $oTable->createRow();
+        $oRowBody->setHeight(40);
+        $oRowBody->getCell(0)->createTextRun('Alpha');
+        $oRowBody->getCell(1)->createTextRun('Beta');
+        $oRowBody->getCell(1)->getBorders()->getBottom()
+            ->setLineStyle(Border::LINE_SINGLE)
+            ->setDashStyle(Border::DASH_DASH)
+            ->setColor(new Color('FFFF0000'));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        $oTableRead = $arrayShape[0];
+        self::assertInstanceOf(Table::class, $oTableRead);
+
+        self::assertEquals(2, $oTableRead->getNumColumns());
+        self::assertCount(2, $oTableRead->getRows());
+        self::assertEquals(400, $oTableRead->getWidth());
+        self::assertEquals(10, $oTableRead->getOffsetX());
+        self::assertEquals(20, $oTableRead->getOffsetY());
+
+        self::assertEquals(30, $oTableRead->getRow(0)->getHeight());
+        self::assertEquals(40, $oTableRead->getRow(1)->getHeight());
+
+        self::assertEquals('Header', $oTableRead->getRow(0)->getCell(0)->getPlainText());
+        self::assertEquals('Second', $oTableRead->getRow(0)->getCell(1)->getPlainText());
+        self::assertEquals('Alpha', $oTableRead->getRow(1)->getCell(0)->getPlainText());
+        self::assertEquals('Beta', $oTableRead->getRow(1)->getCell(1)->getPlainText());
+
+        $oFont = $oTableRead->getRow(0)->getCell(0)->getParagraph()->getRichTextElements()[0]->getFont();
+        self::assertInstanceOf(Font::class, $oFont);
+        self::assertTrue($oFont->isBold());
+
+        $oFill = $oTableRead->getRow(0)->getCell(0)->getFill();
+        self::assertEquals(Fill::FILL_SOLID, $oFill->getFillType());
+        self::assertEquals('EEEEEE', $oFill->getStartColor()->getRGB());
+
+        $oBorder = $oTableRead->getRow(1)->getCell(1)->getBorders()->getBottom();
+        self::assertEquals(Border::LINE_SINGLE, $oBorder->getLineStyle());
+        self::assertEquals(Border::DASH_DASH, $oBorder->getDashStyle());
+        self::assertInstanceOf(Color::class, $oBorder->getColor());
+        self::assertEquals('FF0000', $oBorder->getColor()->getRGB());
+    }
+
+    /**
+     * @dataProvider dataProviderFirstRow
+     */
+    #[DataProvider('dataProviderFirstRow')]
+    public function testTableHeaderRowSurvivesTheRoundTrip(bool $firstRow): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oTable = $oPhpPresentation->getActiveSlide()->createTableShape(1);
+        $oTable->setFirstRow($firstRow);
+        $oTable->createRow()->getCell(0)->createTextRun('Header');
+        $oTable->createRow()->getCell(0)->createTextRun('Body');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        $oTableRead = $arrayShape[0];
+        self::assertInstanceOf(Table::class, $oTableRead);
+        self::assertEquals($firstRow, $oTableRead->isFirstRow());
+
+        // A header row is wrapped in `table:table-header-rows` and the rest follow it, so the
+        // order the table was written in is the order it reads back in
+        self::assertCount(2, $oTableRead->getRows());
+        self::assertEquals('Header', $oTableRead->getRow(0)->getCell(0)->getPlainText());
+        self::assertEquals('Body', $oTableRead->getRow(1)->getCell(0)->getPlainText());
+    }
+
+    /**
+     * @return array<array<bool>>
+     */
+    public static function dataProviderFirstRow(): iterable
+    {
+        yield [true];
+
+        yield [false];
+    }
+
+    public function testTableWrittenByLibreOffice(): void
+    {
+        // A producer other than this library says a header row with `table:use-first-row-styles`
+        // rather than by wrapping it, names the style of a cell on the row it belongs to, and puts
+        // a replacement image of the table in the same frame -- which is not what the frame holds
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Issue_00141.odp';
+        $oPhpPresentation = (new ODPresentation())->load($file);
+
+        $arrayShape = array_values((array) $oPhpPresentation->getSlide(2)->getShapeCollection());
+        self::assertCount(2, $arrayShape);
+        $oTable = $arrayShape[1];
+        self::assertInstanceOf(Table::class, $oTable);
+
+        self::assertTrue($oTable->isFirstRow());
+        self::assertEquals(3, $oTable->getNumColumns());
+        self::assertCount(3, $oTable->getRows());
+        foreach ([['1', '2', '3'], ['a', 'b', 'c'], ['A', 'B', 'C']] as $rowIndex => $expected) {
+            foreach ($expected as $cellIndex => $text) {
+                self::assertEquals($text, $oTable->getRow($rowIndex)->getCell($cellIndex)->getPlainText());
+            }
+        }
     }
 }
