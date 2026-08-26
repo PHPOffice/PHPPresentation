@@ -24,6 +24,8 @@ use PhpOffice\Common\Drawing;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Line as ChartTypeLine;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
@@ -136,6 +138,91 @@ class ContentTest extends PhpPresentationTestCase
             'content.xml',
             '/office:document-content/office:body/office:presentation/draw:page/draw:frame/svg:desc'
         );
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * A hyperlink given to a shape as a whole, which every kind of shape accepts and only a
+     * picture used to write. Each shape here carries a description as well, so that the schema
+     * check below sees both children and pins their order: `office:event-listeners` precedes
+     * `svg:desc` inside a `draw:frame` and follows it inside `draw:line` and `draw:g`.
+     */
+    public function testShapeHyperlink(): void
+    {
+        $expectedUrl = 'https://github.com/PHPOffice/PHPPresentation/';
+        $oSlide = $this->oPresentation->getActiveSlide();
+
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+
+        $oTable = $oSlide->createTableShape();
+        $oTable->createRow();
+
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType((new ChartTypeLine())->addSeries(new Series('Serie', ['A' => '1'])));
+
+        $oLine = $oSlide->createLineShape(10, 10, 100, 100);
+
+        $oGroup = new Group();
+        $oGroup->createRichTextShape()->createTextRun('BBB');
+        $oSlide->addShape($oGroup);
+
+        $oMedia = new Media();
+        $oMedia->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/videos/sintel_trailer-480p.ogv');
+        $oSlide->addShape($oMedia);
+
+        $basePath = '/office:document-content/office:body/office:presentation/draw:page';
+        $expectedShapes = [
+            $basePath . '/draw:frame[1]' => $oRichText,
+            $basePath . '/draw:frame[2]' => $oTable,
+            $basePath . '/draw:frame[3]' => $oChart,
+            $basePath . '/draw:line' => $oLine,
+            $basePath . '/draw:g' => $oGroup,
+            $basePath . '/draw:frame[4]' => $oMedia,
+        ];
+        foreach ($expectedShapes as $shape) {
+            $shape->setDescription('Alternative Text');
+            $shape->getHyperlink()->setUrl($expectedUrl);
+        }
+
+        foreach ($expectedShapes as $shapePath => $shape) {
+            $element = $shapePath . '/office:event-listeners/presentation:event-listener';
+            $this->assertZipXmlElementExists('content.xml', $element);
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'script:event-name', 'dom:click');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:action', 'show');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', $expectedUrl);
+        }
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * A shape given no hyperlink writes no listener, which is what keeps the element optional
+     * rather than empty.
+     */
+    public function testShapeHyperlinkOmittedWhenAbsent(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+
+        $this->assertZipXmlElementNotExists(
+            'content.xml',
+            '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners'
+        );
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * A hyperlink to another slide, which ODF addresses by the name of the page rather than by
+     * the PowerPoint action string the model stores.
+     */
+    public function testShapeHyperlinkToASlide(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+        $oRichText->getHyperlink()->setSlideNumber(1);
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', '#Slide 1');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 

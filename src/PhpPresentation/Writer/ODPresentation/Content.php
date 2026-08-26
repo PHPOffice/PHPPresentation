@@ -459,6 +459,36 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * Write the hyperlink a shape as a whole carries, which ODF states as a listener for the
+     * click on it rather than as a property of the shape.
+     *
+     * Where the element it belongs to allows it is not the same for every shape: a `draw:frame`
+     * takes it after its content and before `svg:desc`, while `draw:line` and `draw:g` take it
+     * after `svg:desc` instead. The caller places it; this only writes it.
+     */
+    protected function writeShapeHyperlink(XMLWriter $objWriter, AbstractShape $shape): void
+    {
+        if (!$shape->hasHyperlink()) {
+            return;
+        }
+
+        // office:event-listeners
+        $objWriter->startElement('office:event-listeners');
+        // presentation:event-listener
+        $objWriter->startElement('presentation:event-listener');
+        $objWriter->writeAttribute('script:event-name', 'dom:click');
+        $objWriter->writeAttribute('presentation:action', 'show');
+        $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($shape->getHyperlink()));
+        $objWriter->writeAttribute('xlink:type', 'simple');
+        $objWriter->writeAttribute('xlink:show', 'embed');
+        $objWriter->writeAttribute('xlink:actuate', 'onRequest');
+        // > presentation:event-listener
+        $objWriter->endElement();
+        // > office:event-listeners
+        $objWriter->endElement();
+    }
+
+    /**
      * Write picture.
      */
     protected function writeShapeMedia(XMLWriter $objWriter, Media $shape): void
@@ -500,6 +530,7 @@ class Content extends AbstractDecoratorWriter
         // draw:frame > ## draw:plugin
         $objWriter->endElement();
 
+        $this->writeShapeHyperlink($objWriter, $shape);
         $this->writeShapeDescription($objWriter, $shape);
 
         // ## draw:frame
@@ -530,23 +561,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeElement('text:p');
         $objWriter->endElement();
 
-        if ($shape->hasHyperlink()) {
-            // office:event-listeners
-            $objWriter->startElement('office:event-listeners');
-            // presentation:event-listener
-            $objWriter->startElement('presentation:event-listener');
-            $objWriter->writeAttribute('script:event-name', 'dom:click');
-            $objWriter->writeAttribute('presentation:action', 'show');
-            $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($shape->getHyperlink()));
-            $objWriter->writeAttribute('xlink:type', 'simple');
-            $objWriter->writeAttribute('xlink:show', 'embed');
-            $objWriter->writeAttribute('xlink:actuate', 'onRequest');
-            // > presentation:event-listener
-            $objWriter->endElement();
-            // > office:event-listeners
-            $objWriter->endElement();
-        }
-
+        $this->writeShapeHyperlink($objWriter, $shape);
         $this->writeShapeDescription($objWriter, $shape);
 
         $objWriter->endElement();
@@ -725,6 +740,7 @@ class Content extends AbstractDecoratorWriter
         // > draw:text-box
         $objWriter->endElement();
 
+        $this->writeShapeHyperlink($objWriter, $shape);
         $this->writeShapeDescription($objWriter, $shape);
 
         // > draw:frame
@@ -787,6 +803,7 @@ class Content extends AbstractDecoratorWriter
 
         $this->writeShapeDecorative($objWriter, $shape);
         $this->writeShapeDescription($objWriter, $shape);
+        $this->writeShapeHyperlink($objWriter, $shape);
 
         // text:p
         $objWriter->writeElement('text:p');
@@ -930,6 +947,7 @@ class Content extends AbstractDecoratorWriter
             $objWriter->endElement();
         }
 
+        $this->writeShapeHyperlink($objWriter, $shape);
         $this->writeShapeDescription($objWriter, $shape);
 
         // > draw:frame
@@ -964,6 +982,7 @@ class Content extends AbstractDecoratorWriter
         // > draw:object
         $objWriter->endElement();
 
+        $this->writeShapeHyperlink($objWriter, $shape);
         $this->writeShapeDescription($objWriter, $shape);
 
         // > draw:frame
@@ -980,6 +999,7 @@ class Content extends AbstractDecoratorWriter
 
         $this->writeShapeDecorative($objWriter, $group);
         $this->writeShapeDescription($objWriter, $group);
+        $this->writeShapeHyperlink($objWriter, $group);
 
         $shapes = $group->getShapeCollection();
         foreach ($shapes as $shape) {
