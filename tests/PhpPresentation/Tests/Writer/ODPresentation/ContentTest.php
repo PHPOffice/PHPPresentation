@@ -316,6 +316,103 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testStyleIsSharedByEverythingThatWritesIt(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        foreach (['Alpha', 'Beta', 'Delta'] as $text) {
+            $oSlide->createRichTextShape()->createTextRun($text);
+        }
+
+        // Three shapes formatted alike hold different text, so they hash differently -- and write
+        // the same paragraph style and the same text style, which is what names them
+        $this->assertZipXmlElementCount(
+            'content.xml',
+            '/office:document-content/office:automatic-styles/style:style[@style:family=\'paragraph\']',
+            1
+        );
+        $this->assertZipXmlElementCount(
+            'content.xml',
+            '/office:document-content/office:automatic-styles/style:style[@style:family=\'text\']',
+            1
+        );
+
+        // and all three name the one that was written
+        $expected = $this->getRunStyleXPath(1);
+        self::assertSame($expected, $this->getRunStyleXPath(2));
+        self::assertSame($expected, $this->getRunStyleXPath(3));
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testStyleIsNotSharedBetweenRunsThatDiffer(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->createTextRun('Alpha');
+        $oSlide->createRichTextShape()->createTextRun('Beta')->getFont()->setBold(true);
+
+        $this->assertZipXmlElementCount(
+            'content.xml',
+            '/office:document-content/office:automatic-styles/style:style[@style:family=\'text\']',
+            2
+        );
+        self::assertNotSame($this->getRunStyleXPath(1), $this->getRunStyleXPath(2));
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testNestedGroupNamesStylesThatAreWritten(): void
+    {
+        $oInner = new Group();
+        $oInner->createRichTextShape()->createTextRun('Nested');
+        $oOuter = new Group();
+        $oOuter->addShape($oInner);
+        $this->oPresentation->getActiveSlide()->addShape($oOuter);
+
+        // The shapes of a group inside a group are written by a recursive pass, and have to be
+        // collected by one too, or they name styles that nothing defines
+        $frame = '/office:document-content/office:body/office:presentation/draw:page/draw:g/draw:g/draw:frame';
+        foreach ([
+            $frame => 'draw:style-name',
+            $frame . '/draw:text-box/text:p' => 'text:style-name',
+            $frame . '/draw:text-box/text:p/text:span' => 'text:style-name',
+        ] as $xPath => $attribute) {
+            $styleName = $this->getZipXmlAttributeValue('content.xml', $xPath, $attribute);
+            $this->assertZipXmlElementExists(
+                'content.xml',
+                '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $styleName . '\']'
+            );
+        }
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testSlideNoteNamesStylesThatAreWritten(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->createTextRun('Body');
+        $oSlide->getNote()->createRichTextShape()->createTextRun('Note');
+
+        // The note is written by a pass of its own, and its shapes have to be collected with the
+        // rest or it names a paragraph style, a text style and a graphic style that nothing defines
+        $noteText = '/office:document-content/office:body/office:presentation/draw:page'
+            . '/presentation:notes/draw:frame/draw:text-box/text:p';
+        foreach ([$noteText => 'text:style-name', $noteText . '/text:span' => 'text:style-name'] as $xPath => $attribute) {
+            $styleName = $this->getZipXmlAttributeValue('content.xml', $xPath, $attribute);
+            $this->assertZipXmlElementExists(
+                'content.xml',
+                '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $styleName . '\']'
+            );
+        }
+
+        $frameStyle = $this->getZipXmlAttributeValue(
+            'content.xml',
+            '/office:document-content/office:body/office:presentation/draw:page/presentation:notes/draw:frame',
+            'draw:style-name'
+        );
+        $this->assertZipXmlElementExists(
+            'content.xml',
+            '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $frameStyle . '\']'
+        );
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testInnerList(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();

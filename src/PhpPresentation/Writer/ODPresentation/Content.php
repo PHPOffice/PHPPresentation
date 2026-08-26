@@ -52,6 +52,17 @@ use PhpOffice\PhpPresentation\Style\Shadow;
 class Content extends AbstractDecoratorWriter
 {
     /**
+     * The prefix of a generated automatic style name, by family.
+     *
+     * These are the prefixes LibreOffice generates, so that a file this writer produces is named
+     * the way one LibreOffice produces is.
+     */
+    private const STYLE_PREFIX = [
+        'paragraph' => 'P',
+        'text' => 'T',
+    ];
+
+    /**
      * Stores bullet styles for text shapes that include lists.
      *
      * @var array<string, array<string, mixed>>
@@ -59,18 +70,35 @@ class Content extends AbstractDecoratorWriter
     protected $arrStyleBullet = [];
 
     /**
-     * Stores paragraph information for text shapes.
+     * The automatic styles to write, by the name each was given.
      *
-     * @var array<string, Paragraph>
+     * @var array<string, array{family: string, style: Paragraph|Run}>
      */
-    protected $arrStyleParagraph = [];
+    protected $automaticStyles = [];
 
     /**
-     * Stores font styles for text shapes that include lists.
+     * The name each automatic style was given, by what that style writes.
      *
-     * @var array<string, Run>
+     * @var array<string, string>
      */
-    protected $arrStyleTextFont = [];
+    protected $automaticStyleNames = [];
+
+    /**
+     * The name of the automatic style each paragraph and each run wears, by object.
+     *
+     * A generated name follows from the order the styles were added, so the pass that writes the
+     * body cannot recompute it the way it used to recompute a hash. It reads it from here instead.
+     *
+     * @var array<int, string>
+     */
+    protected $automaticStyleNameByObject = [];
+
+    /**
+     * How many names of each family have been generated.
+     *
+     * @var array<string, int>
+     */
+    protected $automaticStyleCounters = [];
 
     /**
      * Used to track the current shape ID.
@@ -166,6 +194,20 @@ class Content extends AbstractDecoratorWriter
                 }
             }
 
+            // The shapes of a slide note are written by writeSlideNote(), which increments the same
+            // shape counter and names the styles of their text -- so they have to be collected here
+            // too, or the note references three styles this pass never defines and the counter the
+            // two passes share falls out of step.
+            if ($pSlide->getNote() instanceof Note) {
+                foreach ($pSlide->getNote()->getShapeCollection() as $shape) {
+                    ++$this->shapeId;
+
+                    if ($shape instanceof RichText) {
+                        $this->writeTxtStyle($objWriter, $shape);
+                    }
+                }
+            }
+
             ++$incSlide;
         }
         // Style : Bullet
@@ -207,130 +249,20 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->endElement();
             }
         }
-        // Style : Paragraph
-        if (!empty($this->arrStyleParagraph)) {
-            foreach ($this->arrStyleParagraph as $key => $item) {
-                // style:style
-                $objWriter->startElement('style:style');
-                $objWriter->writeAttribute('style:name', 'P_' . $key);
-                $objWriter->writeAttribute('style:family', 'paragraph');
-                // style:paragraph-properties
-                $objWriter->startElement('style:paragraph-properties');
-                $objWriter->writeAttributeIf(
-                    $item->getLineSpacingMode() === Paragraph::LINE_SPACING_MODE_PERCENT,
-                    'fo:line-height',
-                    $item->getLineSpacing() . '%'
-                );
-                $objWriter->writeAttributeIf(
-                    $item->getLineSpacingMode() === Paragraph::LINE_SPACING_MODE_POINT,
-                    'fo:line-height',
-                    $item->getLineSpacing() . 'pt'
-                );
-                $objWriter->writeAttribute(
-                    'fo:margin-top',
-                    Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingBefore()), 3) . 'cm'
-                );
-                $objWriter->writeAttribute(
-                    'fo:margin-bottom',
-                    Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingAfter()), 3) . 'cm'
-                );
-                switch ($item->getAlignment()->getHorizontal()) {
-                    case Alignment::HORIZONTAL_LEFT:
-                        $objWriter->writeAttribute('fo:text-align', 'left');
-
-                        break;
-                    case Alignment::HORIZONTAL_RIGHT:
-                        $objWriter->writeAttribute('fo:text-align', 'right');
-
-                        break;
-                    case Alignment::HORIZONTAL_CENTER:
-                        $objWriter->writeAttribute('fo:text-align', 'center');
-
-                        break;
-                    case Alignment::HORIZONTAL_JUSTIFY:
-                        $objWriter->writeAttribute('fo:text-align', 'justify');
-
-                        break;
-                    case Alignment::HORIZONTAL_DISTRIBUTED:
-                        $objWriter->writeAttribute('fo:text-align', 'justify');
-
-                        break;
-                    default:
-                        $objWriter->writeAttribute('fo:text-align', 'left');
-
-                        break;
-                }
-                $objWriter->writeAttribute(
-                    'style:writing-mode',
-                    $item->getAlignment()->isRTL() ? 'rl-tb' : 'lr-tb'
-                );
-                $objWriter->endElement();
-                $objWriter->endElement();
+        // Style : Paragraph, Style : Text : Font
+        // Emitted from the pool, in the order the styles were first needed -- which is the order
+        // `office:automatic-styles` wants, since it precedes the content that references it.
+        foreach ($this->automaticStyles as $styleName => $automaticStyle) {
+            // style:style
+            $objWriter->startElement('style:style');
+            $objWriter->writeAttribute('style:name', $styleName);
+            $objWriter->writeAttribute('style:family', $automaticStyle['family']);
+            if ('paragraph' === $automaticStyle['family']) {
+                $this->writeParagraphStyleBody($objWriter, $automaticStyle['style']);
+            } else {
+                $this->writeTextStyleBody($objWriter, $automaticStyle['style']);
             }
-        }
-        // Style : Text : Font
-        if (!empty($this->arrStyleTextFont)) {
-            foreach ($this->arrStyleTextFont as $key => $item) {
-                // style:style
-                $objWriter->startElement('style:style');
-                $objWriter->writeAttribute('style:name', 'T_' . $key);
-                $objWriter->writeAttribute('style:family', 'text');
-
-                // style:style > style:text-properties
-                $objWriter->startElement('style:text-properties');
-                $objWriter->writeAttribute('fo:color', '#' . $item->getFont()->getColor()->getRGB());
-                switch ($item->getFont()->getCapitalization()) {
-                    case Font::CAPITALIZATION_NONE:
-                        $objWriter->writeAttribute('fo:text-transform', 'none');
-
-                        break;
-                    case Font::CAPITALIZATION_ALL:
-                        $objWriter->writeAttribute('fo:text-transform', 'uppercase');
-
-                        break;
-                    case Font::CAPITALIZATION_SMALL:
-                        $objWriter->writeAttribute('fo:text-transform', 'lowercase');
-
-                        break;
-                }
-                switch ($item->getFont()->getFormat()) {
-                    case Font::FORMAT_LATIN:
-                        $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
-                        $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
-                        $objWriter->writeAttributeIf($item->getFont()->isBold(), 'fo:font-weight', 'bold');
-                        $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'fo:font-style', 'italic');
-                        $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? substr($item->getLanguage(), 0, 2) : 'en'));
-                        $objWriter->writeAttribute('style:script-type', 'latin');
-
-                        break;
-                    case Font::FORMAT_EAST_ASIAN:
-                        $objWriter->writeAttribute('style:font-family-asian', $item->getFont()->getName());
-                        $objWriter->writeAttribute('style:font-size-asian', $item->getFont()->getSize() . 'pt');
-                        $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-asian', 'bold');
-                        $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'style:font-style-asian', 'italic');
-                        $objWriter->writeAttribute('style:language-asian', ($item->getLanguage() ? $item->getLanguage() : 'en'));
-                        $objWriter->writeAttribute('style:script-type', 'asian');
-
-                        break;
-                    case Font::FORMAT_COMPLEX_SCRIPT:
-                        $objWriter->writeAttribute('style:font-family-complex', $item->getFont()->getName());
-                        $objWriter->writeAttribute('style:font-size-complex', $item->getFont()->getSize() . 'pt');
-                        $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-complex', 'bold');
-                        $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'style:font-style-complex', 'italic');
-                        $objWriter->writeAttribute('style:language-complex', ($item->getLanguage() ? $item->getLanguage() : 'en'));
-                        $objWriter->writeAttribute('style:script-type', 'complex');
-
-                        break;
-                }
-                // the underline and the strikethrough are one family for the whole run, whatever
-                // the script the rest of it was spelled for
-                $this->writeFontStates($objWriter, $item->getFont());
-
-                // > style:style > style:text-properties
-                $objWriter->endElement();
-                // > style:style
-                $objWriter->endElement();
-            }
+            $objWriter->endElement();
         }
         $objWriter->endElement();
 
@@ -580,7 +512,7 @@ class Content extends AbstractDecoratorWriter
                 ++$paragraphId;
                 // text:p
                 $objWriter->startElement('text:p');
-                $objWriter->writeAttribute('text:style-name', 'P_' . $paragraph->getHashCode());
+                $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($paragraph));
 
                 // Loop trough rich text elements
                 $richtexts = $paragraph->getRichTextElements();
@@ -591,7 +523,7 @@ class Content extends AbstractDecoratorWriter
                         // text:span
                         $objWriter->startElement('text:span');
                         if ($richtext instanceof Run) {
-                            $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getHashCode());
+                            $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($richtext));
                         }
                         if (true === $richtext->hasHyperlink() && '' != $richtext->getHyperlink()->getUrl()) {
                             // text:a
@@ -646,7 +578,7 @@ class Content extends AbstractDecoratorWriter
                 ++$paragraphId;
                 // text:p
                 $objWriter->startElement('text:p');
-                $objWriter->writeAttribute('text:style-name', 'P_' . $paragraph->getHashCode());
+                $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($paragraph));
 
                 // Loop trough rich text elements
                 $richtexts = $paragraph->getRichTextElements();
@@ -657,7 +589,7 @@ class Content extends AbstractDecoratorWriter
                         // text:span
                         $objWriter->startElement('text:span');
                         if ($richtext instanceof Run) {
-                            $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getHashCode());
+                            $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($richtext));
                         }
                         if (true === $richtext->hasHyperlink() && '' != $richtext->getHyperlink()->getUrl()) {
                             // text:a
@@ -859,7 +791,7 @@ class Content extends AbstractDecoratorWriter
                                     // text:span
                                     $objWriter->startElement('text:span');
                                     if ($shapeRichText instanceof Run) {
-                                        $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getHashCode());
+                                        $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($shapeRichText));
                                     }
                                     if (true === $shapeRichText->hasHyperlink() && '' !== $shapeRichText->getHyperlink()->getUrl()) {
                                         // text:a
@@ -1003,12 +935,194 @@ class Content extends AbstractDecoratorWriter
             if ($shape instanceof Table) {
                 $this->writeTableStyle($objWriter, $shape);
             }
+            // A group inside a group is walked by writeShapeGroup(), so it has to be walked here
+            // too: the styles of the shapes inside it are named by the pass that writes the body
+            // and would otherwise never be collected, nor the shape counter the two passes share
+            // kept in step past that point.
+            if ($shape instanceof Group) {
+                $this->writeGroupStyle($objWriter, $shape);
+            }
         }
     }
 
     /**
-     * Write the default style information for a RichText shape.
+     * Name the automatic style a paragraph wears, sharing one with every paragraph that writes the
+     * same thing.
      */
+    protected function addParagraphStyle(Paragraph $paragraph): string
+    {
+        $bodyWriter = new XMLWriter();
+        $this->writeParagraphStyleBody($bodyWriter, $paragraph);
+
+        return $this->shareAutomaticStyle('paragraph', $bodyWriter->getData(), $paragraph);
+    }
+
+    /**
+     * Name the automatic style a run wears, sharing one with every run that writes the same thing.
+     */
+    protected function addTextStyle(Run $run): string
+    {
+        $bodyWriter = new XMLWriter();
+        $this->writeTextStyleBody($bodyWriter, $run);
+
+        return $this->shareAutomaticStyle('text', $bodyWriter->getData(), $run);
+    }
+
+    /**
+     * Give a style a name, reusing the name of an identical one.
+     *
+     * The key is the family and the body the style writes -- not `getHashCode()`, which is the
+     * identity of the *content*: two paragraphs styled alike but holding different text hash
+     * differently, which is every paragraph of a real document.
+     *
+     * @param string          $family the ODF style family
+     * @param string          $body   the XML this style writes, which is what makes two styles the same
+     * @param Paragraph|Run   $style  the object wearing the style, which the second pass looks the name up by
+     */
+    private function shareAutomaticStyle(string $family, string $body, object $style): string
+    {
+        $key = $family . "\0" . $body;
+        if (!isset($this->automaticStyleNames[$key])) {
+            $counter = ($this->automaticStyleCounters[$family] ?? 0) + 1;
+            $this->automaticStyleCounters[$family] = $counter;
+            $styleName = self::STYLE_PREFIX[$family] . $counter;
+            $this->automaticStyleNames[$key] = $styleName;
+            $this->automaticStyles[$styleName] = [
+                'family' => $family,
+                'style' => $style,
+            ];
+        }
+
+        return $this->automaticStyleNameByObject[spl_object_id($style)] = $this->automaticStyleNames[$key];
+    }
+
+    /**
+     * The name of the automatic style an object was given while the styles were collected.
+     *
+     * @param Paragraph|Run $style
+     */
+    private function getAutomaticStyleName(object $style): string
+    {
+        return $this->automaticStyleNameByObject[spl_object_id($style)];
+    }
+
+    /**
+     * @param Paragraph|Run $item
+     */
+    protected function writeParagraphStyleBody(XMLWriter $objWriter, $item): void
+    {
+        // style:paragraph-properties
+        $objWriter->startElement('style:paragraph-properties');
+        $objWriter->writeAttributeIf(
+            $item->getLineSpacingMode() === Paragraph::LINE_SPACING_MODE_PERCENT,
+            'fo:line-height',
+            $item->getLineSpacing() . '%'
+        );
+        $objWriter->writeAttributeIf(
+            $item->getLineSpacingMode() === Paragraph::LINE_SPACING_MODE_POINT,
+            'fo:line-height',
+            $item->getLineSpacing() . 'pt'
+        );
+        $objWriter->writeAttribute(
+            'fo:margin-top',
+            Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingBefore()), 3) . 'cm'
+        );
+        $objWriter->writeAttribute(
+            'fo:margin-bottom',
+            Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingAfter()), 3) . 'cm'
+        );
+        switch ($item->getAlignment()->getHorizontal()) {
+            case Alignment::HORIZONTAL_LEFT:
+                $objWriter->writeAttribute('fo:text-align', 'left');
+
+                break;
+            case Alignment::HORIZONTAL_RIGHT:
+                $objWriter->writeAttribute('fo:text-align', 'right');
+
+                break;
+            case Alignment::HORIZONTAL_CENTER:
+                $objWriter->writeAttribute('fo:text-align', 'center');
+
+                break;
+            case Alignment::HORIZONTAL_JUSTIFY:
+                $objWriter->writeAttribute('fo:text-align', 'justify');
+
+                break;
+            case Alignment::HORIZONTAL_DISTRIBUTED:
+                $objWriter->writeAttribute('fo:text-align', 'justify');
+
+                break;
+            default:
+                $objWriter->writeAttribute('fo:text-align', 'left');
+
+                break;
+        }
+        $objWriter->writeAttribute(
+            'style:writing-mode',
+            $item->getAlignment()->isRTL() ? 'rl-tb' : 'lr-tb'
+        );
+        $objWriter->endElement();
+    }
+
+    /**
+     * @param Paragraph|Run $item
+     */
+    protected function writeTextStyleBody(XMLWriter $objWriter, $item): void
+    {
+        // style:style > style:text-properties
+        $objWriter->startElement('style:text-properties');
+        $objWriter->writeAttribute('fo:color', '#' . $item->getFont()->getColor()->getRGB());
+        switch ($item->getFont()->getCapitalization()) {
+            case Font::CAPITALIZATION_NONE:
+                $objWriter->writeAttribute('fo:text-transform', 'none');
+
+                break;
+            case Font::CAPITALIZATION_ALL:
+                $objWriter->writeAttribute('fo:text-transform', 'uppercase');
+
+                break;
+            case Font::CAPITALIZATION_SMALL:
+                $objWriter->writeAttribute('fo:text-transform', 'lowercase');
+
+                break;
+        }
+        switch ($item->getFont()->getFormat()) {
+            case Font::FORMAT_LATIN:
+                $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
+                $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
+                $objWriter->writeAttributeIf($item->getFont()->isBold(), 'fo:font-weight', 'bold');
+                $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'fo:font-style', 'italic');
+                $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? substr($item->getLanguage(), 0, 2) : 'en'));
+                $objWriter->writeAttribute('style:script-type', 'latin');
+
+                break;
+            case Font::FORMAT_EAST_ASIAN:
+                $objWriter->writeAttribute('style:font-family-asian', $item->getFont()->getName());
+                $objWriter->writeAttribute('style:font-size-asian', $item->getFont()->getSize() . 'pt');
+                $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-asian', 'bold');
+                $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'style:font-style-asian', 'italic');
+                $objWriter->writeAttribute('style:language-asian', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                $objWriter->writeAttribute('style:script-type', 'asian');
+
+                break;
+            case Font::FORMAT_COMPLEX_SCRIPT:
+                $objWriter->writeAttribute('style:font-family-complex', $item->getFont()->getName());
+                $objWriter->writeAttribute('style:font-size-complex', $item->getFont()->getSize() . 'pt');
+                $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-complex', 'bold');
+                $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'style:font-style-complex', 'italic');
+                $objWriter->writeAttribute('style:language-complex', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                $objWriter->writeAttribute('style:script-type', 'complex');
+
+                break;
+        }
+        // the underline and the strikethrough are one family for the whole run, whatever
+        // the script the rest of it was spelled for
+        $this->writeFontStates($objWriter, $item->getFont());
+
+        // > style:style > style:text-properties
+        $objWriter->endElement();
+    }
+
     protected function writeTxtStyle(XMLWriter $objWriter, RichText $shape): void
     {
         // style:style
@@ -1113,9 +1227,7 @@ class Content extends AbstractDecoratorWriter
             ++$paragraphId;
 
             // Style des paragraphes
-            if (!isset($this->arrStyleParagraph[$paragraph->getHashCode()])) {
-                $this->arrStyleParagraph[$paragraph->getHashCode()] = $paragraph;
-            }
+            $this->addParagraphStyle($paragraph);
 
             // Style des listes
             // Only a paragraph that asks for a bullet is written inside a `text:list`, and only that
@@ -1141,9 +1253,7 @@ class Content extends AbstractDecoratorWriter
                 // Not a line break
                 if ($richtext instanceof Run) {
                     // Style des font text
-                    if (!isset($this->arrStyleTextFont[$richtext->getHashCode()])) {
-                        $this->arrStyleTextFont[$richtext->getHashCode()] = $richtext;
-                    }
+                    $this->addTextStyle($richtext);
                 }
             }
         }
@@ -1323,9 +1433,7 @@ class Content extends AbstractDecoratorWriter
                     foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
                         if ($shapeRichText instanceof Run) {
                             // Style des font text
-                            if (!isset($this->arrStyleTextFont[$shapeRichText->getHashCode()])) {
-                                $this->arrStyleTextFont[$shapeRichText->getHashCode()] = $shapeRichText;
-                            }
+                            $this->addTextStyle($shapeRichText);
                         }
                     }
                 }
