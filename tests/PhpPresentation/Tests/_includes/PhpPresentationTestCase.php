@@ -338,6 +338,34 @@ class PhpPresentationTestCase extends TestCase
         self::assertEquals($nodeList->item($index)->nodeValue, $value);
     }
 
+    /**
+     * Read an attribute back, rather than assert on it.
+     *
+     * A generated style name is the case this exists for: a test that spells the name out, or
+     * recomputes it the way the writer does, passes on a file whose references point at nothing.
+     * Resolving the name from the reference is the way a consumer reads the document.
+     */
+    public function getZipXmlAttributeValue(string $filePath, string $xPath, string $attribute): string
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        /** @var DOMElement $nodeItem */
+        $nodeItem = $nodeList->item(0);
+        self::assertInstanceOf(
+            DOMElement::class,
+            $nodeItem,
+            sprintf('The element "%s" doesn\'t exist in the file "%s"', $xPath, $filePath)
+        );
+        $value = $nodeItem->getAttribute($attribute);
+        self::assertNotSame(
+            '',
+            $value,
+            sprintf('The element "%s" has no attribute "%s" in the file "%s"', $xPath, $attribute, $filePath)
+        );
+
+        return $value;
+    }
+
     public function assertZipXmlElementCount(string $filePath, string $xPath, int $num): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);

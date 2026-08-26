@@ -64,20 +64,22 @@ class StylesTest extends PhpPresentationTestCase
         $oDocumentLayout->setDocumentLayout(['cx' => mt_rand(1, 100), 'cy' => mt_rand(1, 100)]);
         $this->oPresentation->setLayout($oDocumentLayout);
 
-        $element = '/office:document-styles/office:automatic-styles/style:page-layout';
-        $this->assertZipXmlElementExists('styles.xml', $element);
-        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:name', 'sPL0');
-
         $element = '/office:document-styles/office:master-styles/style:master-page';
         $this->assertZipXmlElementExists('styles.xml', $element);
-        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:page-layout-name', 'sPL0');
+
+        // the page layout the master page actually names, whatever it was called
+        $pageLayoutName = $this->getZipXmlAttributeValue('styles.xml', $element, 'style:page-layout-name');
+        $this->assertZipXmlElementExists(
+            'styles.xml',
+            '/office:document-styles/office:automatic-styles/style:page-layout[@style:name=\'' . $pageLayoutName . '\']'
+        );
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testMasterSlideBackgroundColor(): void
     {
-        $element = '/office:document-styles/office:automatic-styles/style:style[@style:name=\'sPres0\']/style:drawing-page-properties';
+        $element = $this->getMasterPageStyleXPath() . '/style:drawing-page-properties';
 
         // The style the master page is drawn with carries no fill until one is asked for
         $this->assertZipXmlElementExists('styles.xml', $element);
@@ -102,15 +104,15 @@ class StylesTest extends PhpPresentationTestCase
         $oBackground->setPath($imagePath);
         $this->oPresentation->getAllMasterSlides()[0]->setBackground($oBackground);
 
-        $element = '/office:document-styles/office:automatic-styles/style:style[@style:name=\'sPres0\']/style:drawing-page-properties';
+        $element = $this->getMasterPageStyleXPath() . '/style:drawing-page-properties';
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:fill', 'bitmap');
-        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:fill-image-name', 'background_sPres0');
 
         // The image the style names has to be in the package, and in the manifest with it
-        $element = '/office:document-styles/office:styles/draw:fill-image[@draw:name=\'background_sPres0\']';
-        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'xlink:href', 'Pictures/background_sPres0.png');
-        $this->assertZipFileExists('Pictures/background_sPres0.png');
-        $this->assertZipXmlElementExists('META-INF/manifest.xml', '/manifest:manifest/manifest:file-entry[@manifest:full-path=\'Pictures/background_sPres0.png\']');
+        $imageName = $this->getZipXmlAttributeValue('styles.xml', $element, 'draw:fill-image-name');
+        $element = '/office:document-styles/office:styles/draw:fill-image[@draw:name=\'' . $imageName . '\']';
+        $imageHref = $this->getZipXmlAttributeValue('styles.xml', $element, 'xlink:href');
+        $this->assertZipFileExists($imageHref);
+        $this->assertZipXmlElementExists('META-INF/manifest.xml', '/manifest:manifest/manifest:file-entry[@manifest:full-path=\'' . $imageHref . '\']');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
@@ -122,8 +124,14 @@ class StylesTest extends PhpPresentationTestCase
         $oCell = $oRow->getCell();
         $oCell->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
 
+        // the gradient defined in `styles.xml` is the one `content.xml` names
+        $gradientName = $this->getZipXmlAttributeValue(
+            'content.xml',
+            '//style:graphic-properties[@draw:fill-gradient-name]',
+            'draw:fill-gradient-name'
+        );
         $element = '/office:document-styles/office:styles/draw:gradient';
-        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', 'gradient_' . $oCell->getFill()->getHashCode());
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', $gradientName);
 
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
@@ -142,8 +150,14 @@ class StylesTest extends PhpPresentationTestCase
         $oRow->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
         $this->resetPresentationFile();
 
+        // the gradient defined in `styles.xml` is the one `content.xml` names
+        $gradientName = $this->getZipXmlAttributeValue(
+            'content.xml',
+            '//style:graphic-properties[@draw:fill-gradient-name]',
+            'draw:fill-gradient-name'
+        );
         $element = '/office:document-styles/office:styles/draw:gradient';
-        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', 'gradient_' . $oRow->getFill()->getHashCode());
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', $gradientName);
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
@@ -202,5 +216,23 @@ class StylesTest extends PhpPresentationTestCase
             $this->assertIsSchemaOpenDocumentValid('1.2');
             $this->resetPresentationFile();
         }
+    }
+
+    /**
+     * The `style:style` of the master page, addressed by the name its `style:master-page` carries.
+     *
+     * The name is a constant in the writer rather than a generated one, but the hole is the same:
+     * with `draw:style-name` broken and every definition still correctly named, a spelled-out name
+     * passes and a resolved one does not.
+     */
+    private function getMasterPageStyleXPath(): string
+    {
+        $styleName = $this->getZipXmlAttributeValue(
+            'styles.xml',
+            '/office:document-styles/office:master-styles/style:master-page',
+            'draw:style-name'
+        );
+
+        return '/office:document-styles/office:automatic-styles/style:style[@style:name=\'' . $styleName . '\']';
     }
 }
