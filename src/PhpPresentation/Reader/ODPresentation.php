@@ -1064,8 +1064,8 @@ class ODPresentation implements ReaderInterface
     /**
      * Read Shape Table.
      *
-     * An ODF table lives inside a `draw:frame` like any other shape, and its first row is wrapped
-     * in `table:table-header-rows` when it is a header row.
+     * An ODF table lives inside a `draw:frame` like any other shape, and says which of its rows
+     * are styled apart on the table itself rather than by where they sit.
      */
     protected function loadShapeTable(DOMElement $oNodeFrame): void
     {
@@ -1084,22 +1084,16 @@ class ODPresentation implements ReaderInterface
         $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
         $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
 
-        // A header row is said two ways: this Writer wraps it in `table:table-header-rows`, and
-        // LibreOffice leaves it in place and sets `table:use-first-row-styles` on the table
-        $headerRows = $this->oXMLReader->getElements('table:table/table:table-header-rows/table:table-row', $oNodeFrame);
+        // A drawing table says which of its rows are styled apart with these two flags, which are
+        // what `firstRow` and `bandRow` say on `a:tblPr`
         $oNodeTable = $this->oXMLReader->getElement('table:table', $oNodeFrame);
-        $oShape->setFirstRow($headerRows->length > 0
-            || ($oNodeTable instanceof DOMElement && 'true' === $oNodeTable->getAttribute('table:use-first-row-styles')));
-        if ($oNodeTable instanceof DOMElement && $oNodeTable->hasAttribute('table:use-banding-rows-styles')) {
-            $oShape->setBandRow('true' === $oNodeTable->getAttribute('table:use-banding-rows-styles'));
-        }
-
-        // The rows of the header come before the ones the table holds directly
-        foreach ($headerRows as $oNodeRow) {
-            if ($oNodeRow instanceof DOMElement) {
-                $this->loadTableRow($oShape->createRow(), $oNodeRow);
+        if ($oNodeTable instanceof DOMElement) {
+            $oShape->setFirstRow('true' === $oNodeTable->getAttribute('table:use-first-row-styles'));
+            if ($oNodeTable->hasAttribute('table:use-banding-rows-styles')) {
+                $oShape->setBandRow('true' === $oNodeTable->getAttribute('table:use-banding-rows-styles'));
             }
         }
+
         foreach ($this->oXMLReader->getElements('table:table/table:table-row', $oNodeFrame) as $oNodeRow) {
             if ($oNodeRow instanceof DOMElement) {
                 $this->loadTableRow($oShape->createRow(), $oNodeRow);

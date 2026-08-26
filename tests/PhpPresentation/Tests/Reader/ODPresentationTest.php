@@ -1512,8 +1512,8 @@ class ODPresentationTest extends TestCase
         self::assertInstanceOf(Table::class, $oTableRead);
         self::assertEquals($firstRow, $oTableRead->isFirstRow());
 
-        // A header row is wrapped in `table:table-header-rows` and the rest follow it, so the
-        // order the table was written in is the order it reads back in
+        // Every row is a row of the table, so the order the table was written in is the order it
+        // reads back in
         self::assertCount(2, $oTableRead->getRows());
         self::assertEquals('Header', $oTableRead->getRow(0)->getCell(0)->getPlainText());
         self::assertEquals('Body', $oTableRead->getRow(1)->getCell(0)->getPlainText());
