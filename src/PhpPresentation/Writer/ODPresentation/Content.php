@@ -1190,6 +1190,7 @@ class Content extends AbstractDecoratorWriter
         }
         $objWriter->writeAttribute('svg:stroke-color', '#' . $shape->getBorder()->getColor()->getRGB());
         $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3) . 'cm');
+        $this->writeStylePartShadow($objWriter, $shape->getShadow());
         $objWriter->endElement();
 
         $objWriter->endElement();

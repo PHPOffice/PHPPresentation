@@ -242,6 +242,7 @@ class HTML extends AbstractWriter implements WriterInterface
         $styles[] = 'height: ' . $shape->getHeight() . 'px';
         $styles[] = 'top: ' . $shape->getOffsetY() . 'px';
         $styles[] = 'left: ' . $shape->getOffsetX() . 'px';
+        $styles = array_merge($styles, $this->getStyleShadow($shape->getShadow()));
 
         $this->bodySlides .= '<div style="' . implode(';', $styles) . '">';
         foreach ($shape->getParagraphs() as $paragraph) {
@@ -262,6 +263,7 @@ class HTML extends AbstractWriter implements WriterInterface
         $styles[] = 'height: ' . $shape->getHeight() . 'px';
         $styles[] = 'top: ' . $shape->getOffsetY() . 'px';
         $styles[] = 'left: ' . $shape->getOffsetX() . 'px';
+        $styles = array_merge($styles, $this->getStyleShadow($shape->getShadow()));
 
         $this->bodySlides .= '<div style="' . implode(';', $styles) . '">';
         $this->bodySlides .= '<table style="width:100%"><tbody>';

@@ -856,6 +856,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         $objWriter->endElement();
         $this->writeBorder($objWriter, $shape->getBorder(), '');
+        $this->writeShadow($objWriter, $shape->getShadow());
         $objWriter->endElement();
         $objWriter->endElement();
     }
@@ -1284,6 +1285,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $this->writeFill($objWriter, $shape->getFill());
         // Outline
         $this->writeOutline($objWriter, $shape->getOutline());
+        // Shadow
+        $this->writeShadow($objWriter, $shape->getShadow());
 
         // p:sp\p:spPr\
         $objWriter->endElement();
@@ -1603,6 +1606,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($group->getExtentY()));
         $objWriter->endElement(); // a:chExt
         $objWriter->endElement(); // a:xfrm
+        $this->writeShadow($objWriter, $group->getShadow());
         $objWriter->endElement(); // p:grpSpPr
 
         $this->writeShapeCollection($objWriter, $group->getShapeCollection(), $shapeId);
