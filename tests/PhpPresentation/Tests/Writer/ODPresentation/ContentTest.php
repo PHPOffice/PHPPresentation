@@ -1476,17 +1476,38 @@ class ContentTest extends PhpPresentationTestCase
 
         $table = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table';
 
-        // The first row is a header row by default, the rest are ordinary rows
-        $this->assertZipXmlElementCount('content.xml', $table . '/table:table-header-rows/table:table-row', 1);
-        $this->assertZipXmlElementCount('content.xml', $table . '/table:table-row', 1);
+        // The first row is a header row by default, and every row stays a row of the table
+        $this->assertZipXmlAttributeEquals('content.xml', $table, 'table:use-first-row-styles', 'true');
+        $this->assertZipXmlElementCount('content.xml', $table . '/table:table-row', 2);
+        // and none of them is wrapped: that is the other ODF table model, and a consumer reading a
+        // drawing table drops the rows it wraps
+        $this->assertZipXmlElementNotExists('content.xml', $table . '/table:table-header-rows');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         // A table whose first row holds data, not column labels
         $this->resetPresentationFile();
         $oShape->setFirstRow(false);
 
-        $this->assertZipXmlElementNotExists('content.xml', $table . '/table:table-header-rows');
+        $this->assertZipXmlAttributeNotExists('content.xml', $table, 'table:use-first-row-styles');
         $this->assertZipXmlElementCount('content.xml', $table . '/table:table-row', 2);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testTableBandRow(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
+        $oShape->createRow();
+
+        $table = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table';
+
+        // Banded rows are on by default, the same as `bandRow` on `a:tblPr`
+        $this->assertZipXmlAttributeEquals('content.xml', $table, 'table:use-banding-rows-styles', 'true');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $this->resetPresentationFile();
+        $oShape->setBandRow(false);
+
+        $this->assertZipXmlAttributeNotExists('content.xml', $table, 'table:use-banding-rows-styles');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
@@ -1679,7 +1700,7 @@ class ContentTest extends PhpPresentationTestCase
         $oCell = $oRow->getCell();
         $oCell->setColSpan($value);
 
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-header-rows/table:table-row/table:table-cell';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'table:number-columns-spanned', $value);
 
@@ -1699,7 +1720,7 @@ class ContentTest extends PhpPresentationTestCase
         $oHyperlink = $oTextRun->getHyperlink();
         $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPresentation/');
 
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-header-rows/table:table-row/table:table-cell/text:p/text:span/text:a';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:a';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
 
@@ -1717,10 +1738,10 @@ class ContentTest extends PhpPresentationTestCase
         $oCell->addText($oRun);
         $oCell->createBreak();
 
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-header-rows/table:table-row/table:table-cell/text:p/text:span';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlElementEquals('content.xml', $element, 'Test');
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-header-rows/table:table-row/table:table-cell/text:p/text:span/text:line-break';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:line-break';
         $this->assertZipXmlElementExists('content.xml', $element);
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
@@ -2212,9 +2233,6 @@ class ContentTest extends PhpPresentationTestCase
 
     /**
      * The `style:style` of a table cell, addressed by the name its `table:table-cell` carries.
-     *
-     * The row is addressed with `//` because the first row of a table is written inside
-     * `table:table-header-rows` and the rest are not.
      */
     private function getTableCellStyleXPath(int $row = 1, int $cell = 1): string
     {

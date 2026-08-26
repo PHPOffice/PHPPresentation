@@ -863,18 +863,17 @@ class Content extends AbstractDecoratorWriter
             $arrayCells = $firstRow->getCells();
             // table:table
             $objWriter->startElement('table:table');
+            // A table on a drawing page says which of its rows are styled apart with the two flags
+            // below, which are what `firstRow` and `bandRow` say on `a:tblPr`. `table:table-header-rows`
+            // is the other ODF table model, the one a text table uses to repeat a header across
+            // pages, and a consumer reading a drawing table drops the rows it wraps.
+            $objWriter->writeAttributeIf($shape->isFirstRow(), 'table:use-first-row-styles', 'true');
+            $objWriter->writeAttributeIf($shape->isBandRow(), 'table:use-banding-rows-styles', 'true');
             foreach ($arrayCells as $shapeCell) {
                 $objWriter->startElement('table:table-column');
                 $objWriter->endElement();
             }
             foreach ($arrayRows as $keyRow => $shapeRow) {
-                // ODF marks a header by wrapping the rows that make it up, so the first row of the
-                // table is written inside table:table-header-rows and the rest follow it as siblings
-                $isHeaderRow = 0 === $keyRow && $shape->isFirstRow();
-                if ($isHeaderRow) {
-                    // table:table-header-rows
-                    $objWriter->startElement('table:table-header-rows');
-                }
                 // table:table-row
                 $objWriter->startElement('table:table-row');
                 $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId . 'r' . $keyRow);
@@ -938,10 +937,6 @@ class Content extends AbstractDecoratorWriter
                 }
                 // > table:table-row
                 $objWriter->endElement();
-                if ($isHeaderRow) {
-                    // > table:table-header-rows
-                    $objWriter->endElement();
-                }
             }
             // > table:table
             $objWriter->endElement();
