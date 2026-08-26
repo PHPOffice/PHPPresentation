@@ -956,6 +956,78 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    /**
+     * @dataProvider dataProviderDataLabel
+     */
+    #[DataProvider('dataProviderDataLabel')]
+    public function testSeriesShowingNoLabelWritesNoDataLabelBlock(string $chartType, string $chartElementName): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+        // A series shows the value by default; the other four are off already.
+        $oSeries->setShowValue(false);
+
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
+        $oChart->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oChart);
+
+        $element = $this->getDataLabelXPath($chartType, $chartElementName);
+
+        // Nothing is shown, so there is no label for the block to describe.
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oSeries->setShowValue(true);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * @dataProvider dataProviderDataLabel
+     */
+    #[DataProvider('dataProviderDataLabel')]
+    public function testSeriesDataLabelNumberFormat(string $chartType, string $chartElementName): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
+        $oChart->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oChart);
+
+        $element = $this->getDataLabelXPath($chartType, $chartElementName) . '/c:numFmt';
+
+        // A series that named no format leaves its labels reading the source data.
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oSeries->setDlblNumFormat('#%');
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'formatCode', '#%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'sourceLinked', '0');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A doughnut writes one data label block for the whole chart; every other type writes one per series.
+     */
+    private function getDataLabelXPath(string $chartType, string $chartElementName): string
+    {
+        return sprintf(
+            '/c:chartSpace/c:chart/c:plotArea/%s%s/c:dLbls',
+            $chartElementName,
+            Doughnut::class === $chartType ? '' : '/c:ser'
+        );
+    }
+
     public function testTypeArea(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -1966,6 +2038,16 @@ class PptChartsTest extends PhpPresentationTestCase
             }
             yield [$symbol];
         }
+    }
+
+    /**
+     * @return array<array<int, string>>
+     */
+    public static function dataProviderDataLabel(): iterable
+    {
+        yield [Area::class, 'c:areaChart'];
+
+        yield from self::dataProviderFont();
     }
 
     /**
