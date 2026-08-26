@@ -45,6 +45,7 @@ use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
@@ -221,10 +222,21 @@ class Content extends AbstractDecoratorWriter
                 foreach ($arrLevel as $level) {
                     if ('' != $level) {
                         $oAlign = $item['oAlign_' . $level];
-                        // text:list-level-style-bullet
-                        $objWriter->startElement('text:list-level-style-bullet');
-                        $objWriter->writeAttribute('text:level', (int) $level + 1);
-                        $objWriter->writeAttribute('text:bullet-char', $oStyle->getBulletChar());
+                        if (Bullet::TYPE_NUMERIC == $oStyle->getBulletType()) {
+                            [$numFormat, $numPrefix, $numSuffix] = $this->getNumericBulletFormat($oStyle->getBulletNumericStyle());
+                            // text:list-level-style-number
+                            $objWriter->startElement('text:list-level-style-number');
+                            $objWriter->writeAttribute('text:level', (int) $level + 1);
+                            $objWriter->writeAttribute('style:num-format', $numFormat);
+                            $objWriter->writeAttributeIf('' !== $numPrefix, 'style:num-prefix', $numPrefix);
+                            $objWriter->writeAttributeIf('' !== $numSuffix, 'style:num-suffix', $numSuffix);
+                            $objWriter->writeAttributeIf(1 != $oStyle->getBulletNumericStartAt(), 'text:start-value', $oStyle->getBulletNumericStartAt());
+                        } else {
+                            // text:list-level-style-bullet
+                            $objWriter->startElement('text:list-level-style-bullet');
+                            $objWriter->writeAttribute('text:level', (int) $level + 1);
+                            $objWriter->writeAttribute('text:bullet-char', $oStyle->getBulletChar());
+                        }
                         // style:list-level-properties
                         $objWriter->startElement('style:list-level-properties');
                         if ($oAlign->getIndent() < 0) {
@@ -337,6 +349,85 @@ class Content extends AbstractDecoratorWriter
 
         // Return
         return $objWriter->getData();
+    }
+
+    /**
+     * The ODF number format each OOXML autonumber alphabet is written as.
+     *
+     * Measured 26 Aug 2026 by writing a deck holding all 41 schemes of `Style\Bullet` and letting
+     * LibreOffice convert it: these are the formats it produced. An alphabet named nowhere here is
+     * written as arabic, and those are exactly the eleven schemes LibreOffice drops the numbering
+     * of altogether -- `arabic1Minus`, `arabic2Minus`, `arabicDbPeriod`, `arabicDbPlain`, the three
+     * `hindi*` and `hindiAlpha1Period`, `ea1JpnChsDbPeriod`, `ea1JpnKorPeriod`, `ea1JpnKorPlain`.
+     * A marker of the wrong alphabet is a smaller loss than a list that stops being one.
+     *
+     * @var array<string, string>
+     */
+    protected const NUMERIC_BULLET_FORMAT = [
+        'alphaLc' => 'a',
+        'alphaUc' => 'A',
+        'romanLc' => 'i',
+        'romanUc' => 'I',
+        'circleNumDb' => "\u{2460}, \u{2461}, \u{2462}, ...",
+        'circleNumWdBlack' => "\u{2460}, \u{2461}, \u{2462}, ...",
+        'circleNumWdWhite' => "\u{2460}, \u{2461}, \u{2462}, ...",
+        'ea1Chs' => "\u{58F9}, \u{8D30}, \u{53C1}, ...",
+        'ea1Cht' => "\u{58F9}, \u{8CB3}, \u{53C3}, ...",
+        'hebrew2' => "\u{05D0}, \u{05D1}, \u{05D2}, ...",
+        // LibreOffice writes the Thai letter sequence for both Thai schemes, the numeric one
+        // included. Measured, not chosen.
+        'thaiAlpha' => "\u{0E01}, \u{0E02}, \u{0E04}, ...",
+        'thaiNum' => "\u{0E01}, \u{0E02}, \u{0E04}, ...",
+    ];
+
+    /**
+     * The prefix and the suffix each OOXML autonumber separator is written as. ODF keeps the
+     * punctuation of a marker apart from its number, so `arabicParenBoth` is a format and two
+     * attributes rather than one token.
+     *
+     * @var array<string, array<int, string>>
+     */
+    protected const NUMERIC_BULLET_SEPARATOR = [
+        'Period' => ['', '.'],
+        'ParenBoth' => ['(', ')'],
+        'ParenR' => ['', ')'],
+        'Minus' => ['', '-'],
+        'Plain' => ['', ''],
+    ];
+
+    /**
+     * The three parts an OOXML autonumber scheme is taken apart into: the format of the number,
+     * then the prefix and the suffix that carry its punctuation.
+     *
+     * @return array<int, string>
+     */
+    protected function getNumericBulletFormat(string $scheme): array
+    {
+        if (!preg_match('/^(.*?)(Period|ParenBoth|ParenR|Minus|Plain)$/', $scheme, $matches)) {
+            return ['1', '', ''];
+        }
+
+        [$prefix, $suffix] = self::NUMERIC_BULLET_SEPARATOR[$matches[2]];
+
+        return [self::NUMERIC_BULLET_FORMAT[$matches[1]] ?? '1', $prefix, $suffix];
+    }
+
+    /**
+     * The name of the `text:list-style` the marker of a paragraph is written under, or an empty
+     * string when the paragraph asks for no marker and is written outside any list.
+     *
+     * A bullet list and a numbered list are the same `text:list` in ODF and differ only in the
+     * style it names, so this one name answers both what to write and where a list ends: two
+     * paragraphs belong to the same list exactly when they name the same style.
+     */
+    protected function getListStyleName(Paragraph $paragraph): string
+    {
+        $bulletType = $paragraph->getBulletStyle()->getBulletType();
+        if (Bullet::TYPE_BULLET != $bulletType && Bullet::TYPE_NUMERIC != $bulletType) {
+            return '';
+        }
+
+        return 'L_' . $paragraph->getBulletStyle()->getHashCode();
     }
 
     /**
@@ -490,25 +581,28 @@ class Content extends AbstractDecoratorWriter
 
         $paragraphs = $shape->getParagraphs();
         $paragraphId = 0;
-        $sCstShpLastBullet = '';
+        $sCstShpOpenList = '';
         $iCstShpLastBulletLvl = 0;
-        $bCstShpHasBullet = false;
         $fieldName = $this->getPlaceholderField($shape);
 
         foreach ($paragraphs as $paragraph) {
-            // Close the bullet list
-            if ('bullet' != $sCstShpLastBullet && true === $bCstShpHasBullet) {
+            $sCstShpListStyle = $this->getListStyleName($paragraph);
+            // Close the open list, when this paragraph is not part of it. It is the paragraph
+            // being written that says so, not the one before it: asking the one before left a
+            // plain paragraph that follows a list inside the last item of that list.
+            if ('' !== $sCstShpOpenList && $sCstShpListStyle !== $sCstShpOpenList) {
                 for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; --$iInc) {
                     // text:list-item
                     $objWriter->endElement();
                     // text:list
                     $objWriter->endElement();
                 }
+                $sCstShpOpenList = '';
             }
             //===============================================
             // Paragraph
             //===============================================
-            if ('none' == $paragraph->getBulletStyle()->getBulletType()) {
+            if ('' === $sCstShpListStyle) {
                 ++$paragraphId;
                 // text:p
                 $objWriter->startElement('text:p');
@@ -551,15 +645,14 @@ class Content extends AbstractDecoratorWriter
                 //===============================================
                 // Bullet list
                 //===============================================
-            } elseif ('bullet' == $paragraph->getBulletStyle()->getBulletType()) {
-                $bCstShpHasBullet = true;
-                // Open the bullet list
-                if ('bullet' != $sCstShpLastBullet || $iCstShpLastBulletLvl < $paragraph->getAlignment()->getLevel()) {
+            } else {
+                // Open the list
+                if ('' === $sCstShpOpenList || $iCstShpLastBulletLvl < $paragraph->getAlignment()->getLevel()) {
                     // text:list
                     $objWriter->startElement('text:list');
-                    $objWriter->writeAttribute('text:style-name', 'L_' . $paragraph->getBulletStyle()->getHashCode());
+                    $objWriter->writeAttribute('text:style-name', $sCstShpListStyle);
                 }
-                if ('bullet' == $sCstShpLastBullet) {
+                if ('' !== $sCstShpOpenList) {
                     if ($iCstShpLastBulletLvl == $paragraph->getAlignment()->getLevel()) {
                         // text:list-item
                         $objWriter->endElement();
@@ -615,12 +708,12 @@ class Content extends AbstractDecoratorWriter
                 }
                 $objWriter->endElement();
             }
-            $sCstShpLastBullet = $paragraph->getBulletStyle()->getBulletType();
+            $sCstShpOpenList = $sCstShpListStyle;
             $iCstShpLastBulletLvl = $paragraph->getAlignment()->getLevel();
         }
 
-        // Close the bullet list
-        if ('bullet' == $sCstShpLastBullet && true === $bCstShpHasBullet) {
+        // Close the open list
+        if ('' !== $sCstShpOpenList) {
             for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; --$iInc) {
                 // text:list-item
                 $objWriter->endElement();
@@ -1230,11 +1323,11 @@ class Content extends AbstractDecoratorWriter
             $this->addParagraphStyle($paragraph);
 
             // Style des listes
-            // Only a paragraph that asks for a bullet is written inside a `text:list`, and only that
-            // list names the style, so collecting one for any other paragraph puts a `text:list-style`
-            // in the file that nothing points at. The condition is the one writeShapeTxt() opens
-            // the list on.
-            if ('bullet' == $paragraph->getBulletStyle()->getBulletType()) {
+            // Only a paragraph that asks for a marker is written inside a `text:list`, and only
+            // that list names the style, so collecting one for any other paragraph puts a
+            // `text:list-style` in the file that nothing points at. The condition is the one
+            // writeShapeTxt() opens the list on.
+            if ('' !== $this->getListStyleName($paragraph)) {
                 $bulletStyleHashCode = $paragraph->getBulletStyle()->getHashCode();
                 if (!isset($this->arrStyleBullet[$bulletStyleHashCode])) {
                     $this->arrStyleBullet[$bulletStyleHashCode]['oStyle'] = $paragraph->getBulletStyle();

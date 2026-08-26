@@ -282,6 +282,152 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    /**
+     * A paragraph whose bullet is numeric, which used to match neither branch of the writer and
+     * so lost its text along with its marker.
+     */
+    public function testNumericBullet(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC);
+        $oRichText->createTextRun('Alpha');
+
+        $textBox = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
+        $this->assertZipXmlElementEquals('content.xml', $textBox . '/text:list/text:list-item/text:p/text:span', 'Alpha');
+        $this->assertZipXmlElementExists(
+            'content.xml',
+            '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-number'
+        );
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @return array<array<int, string>>
+     */
+    public static function dataProviderNumericBulletFormat(): array
+    {
+        return [
+            // The five formats ODF names outright, and the punctuation it keeps apart from them
+            [Bullet::NUMERIC_ARABICPERIOD, '1', '', '.'],
+            [Bullet::NUMERIC_ARABICPLAIN, '1', '', ''],
+            [Bullet::NUMERIC_ARABICPARENBOTH, '1', '(', ')'],
+            [Bullet::NUMERIC_ALPHALCPARENR, 'a', '', ')'],
+            [Bullet::NUMERIC_ALPHAUCPERIOD, 'A', '', '.'],
+            [Bullet::NUMERIC_ROMANLCPERIOD, 'i', '', '.'],
+            [Bullet::NUMERIC_ROMANUCPARENBOTH, 'I', '(', ')'],
+            // The sequences LibreOffice names, measured against its own conversion of the same deck
+            [Bullet::NUMERIC_CIRCLENUMDBPLAIN, "\u{2460}, \u{2461}, \u{2462}, ...", '', ''],
+            [Bullet::NUMERIC_EA1CHSPERIOD, "\u{58F9}, \u{8D30}, \u{53C1}, ...", '', '.'],
+            [Bullet::NUMERIC_HEBREW2MINUS, "\u{05D0}, \u{05D1}, \u{05D2}, ...", '', '-'],
+            [Bullet::NUMERIC_THAINUMPARENR, "\u{0E01}, \u{0E02}, \u{0E04}, ...", '', ')'],
+            // The schemes LibreOffice drops the numbering of: arabic, and the punctuation kept
+            [Bullet::NUMERIC_HINDINUMPARENR, '1', '', ')'],
+            [Bullet::NUMERIC_ARABICDBPLAIN, '1', '', ''],
+            [Bullet::NUMERIC_ARABIC1MINUS, '1', '', '-'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderNumericBulletFormat
+     */
+    #[DataProvider('dataProviderNumericBulletFormat')]
+    public function testNumericBulletFormat(string $scheme, string $expectedFormat, string $expectedPrefix, string $expectedSuffix): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->getActiveParagraph()->getBulletStyle()
+            ->setBulletType(Bullet::TYPE_NUMERIC)
+            ->setBulletNumericStyle($scheme);
+        $oRichText->createTextRun('Alpha');
+
+        $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-number';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:num-format', $expectedFormat);
+        if ('' === $expectedPrefix) {
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:num-prefix');
+        } else {
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:num-prefix', $expectedPrefix);
+        }
+        if ('' === $expectedSuffix) {
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:num-suffix');
+        } else {
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:num-suffix', $expectedSuffix);
+        }
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testNumericBulletStartAt(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->getActiveParagraph()->getBulletStyle()
+            ->setBulletType(Bullet::TYPE_NUMERIC)
+            ->setBulletNumericStartAt(5);
+        $oRichText->createTextRun('Alpha');
+
+        $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-number';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'text:start-value', 5);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testNumericBulletStartAtOmittedWhenFirst(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC);
+        $oRichText->createTextRun('Alpha');
+
+        $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-number';
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'text:start-value');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * A bullet list and a numbered list are two lists, not one: they name two styles, and a
+     * `text:list` names exactly one.
+     */
+    public function testABulletListAndANumberedListAreTwoLists(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+        $oRichText->createTextRun('Alpha');
+        $oParagraph = $oRichText->createParagraph();
+        $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC);
+        $oParagraph->createTextRun('Beta');
+
+        $textBox = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
+        $this->assertZipXmlElementEquals('content.xml', $textBox . '/text:list[1]/text:list-item/text:p/text:span', 'Alpha');
+        $this->assertZipXmlElementEquals('content.xml', $textBox . '/text:list[2]/text:list-item/text:p/text:span', 'Beta');
+        $this->assertZipXmlElementExists(
+            'content.xml',
+            '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-bullet'
+        );
+        $this->assertZipXmlElementExists(
+            'content.xml',
+            '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-number'
+        );
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * The list ends where the paragraphs that asked for a marker end. The paragraph that follows
+     * one used to be written inside the last item of the list it did not ask to join, and only
+     * the second plain paragraph in a row escaped it.
+     */
+    public function testListEndsBeforeAParagraphThatAsksForNoBullet(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+        $oRichText->createTextRun('Alpha');
+        // `createParagraph()` clones the bullet style of the paragraph before it, so asking for
+        // no bullet has to be said out loud
+        $oParagraph = $oRichText->createParagraph();
+        $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
+        $oParagraph->createTextRun('Beta');
+
+        $textBox = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
+        $this->assertZipXmlElementEquals('content.xml', $textBox . '/text:list/text:list-item/text:p/text:span', 'Alpha');
+        $this->assertZipXmlElementEquals('content.xml', $textBox . '/text:p/text:span', 'Beta');
+        $this->assertZipXmlElementNotExists('content.xml', $textBox . '/text:list/text:list-item/text:p[2]');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testListStyleIsNotWrittenWithoutAList(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();

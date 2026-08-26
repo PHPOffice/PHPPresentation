@@ -177,6 +177,21 @@ $paragraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
 $paragraph->getBulletStyle()->setBulletColor(new Color(Color::COLOR_RED));
 ```
 
+A numbered list is the `Bullet::TYPE_NUMERIC` type. The scheme it is numbered with is one of the
+`Bullet::NUMERIC_*` constants, and the number it starts at is `setBulletNumericStartAt()`.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Style\Bullet;
+
+$paragraph = new Paragraph();
+$paragraph->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC);
+$paragraph->getBulletStyle()->setBulletNumericStyle(Bullet::NUMERIC_ALPHALCPARENBOTH);
+$paragraph->getBulletStyle()->setBulletNumericStartAt(3);
+```
+
 ### Line Spacing
 
 For a paragraph, you can define the line spacing.
