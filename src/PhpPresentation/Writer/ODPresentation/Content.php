@@ -1118,14 +1118,20 @@ class Content extends AbstractDecoratorWriter
             }
 
             // Style des listes
-            $bulletStyleHashCode = $paragraph->getBulletStyle()->getHashCode();
-            if (!isset($this->arrStyleBullet[$bulletStyleHashCode])) {
-                $this->arrStyleBullet[$bulletStyleHashCode]['oStyle'] = $paragraph->getBulletStyle();
-                $this->arrStyleBullet[$bulletStyleHashCode]['level'] = '';
-            }
-            if (false === strpos($this->arrStyleBullet[$bulletStyleHashCode]['level'], ';' . $paragraph->getAlignment()->getLevel())) {
-                $this->arrStyleBullet[$bulletStyleHashCode]['level'] .= ';' . $paragraph->getAlignment()->getLevel();
-                $this->arrStyleBullet[$bulletStyleHashCode]['oAlign_' . $paragraph->getAlignment()->getLevel()] = $paragraph->getAlignment();
+            // Only a paragraph that asks for a bullet is written inside a `text:list`, and only that
+            // list names the style, so collecting one for any other paragraph puts a `text:list-style`
+            // in the file that nothing points at. The condition is the one writeShapeTxt() opens
+            // the list on.
+            if ('bullet' == $paragraph->getBulletStyle()->getBulletType()) {
+                $bulletStyleHashCode = $paragraph->getBulletStyle()->getHashCode();
+                if (!isset($this->arrStyleBullet[$bulletStyleHashCode])) {
+                    $this->arrStyleBullet[$bulletStyleHashCode]['oStyle'] = $paragraph->getBulletStyle();
+                    $this->arrStyleBullet[$bulletStyleHashCode]['level'] = '';
+                }
+                if (false === strpos($this->arrStyleBullet[$bulletStyleHashCode]['level'], ';' . $paragraph->getAlignment()->getLevel())) {
+                    $this->arrStyleBullet[$bulletStyleHashCode]['level'] .= ';' . $paragraph->getAlignment()->getLevel();
+                    $this->arrStyleBullet[$bulletStyleHashCode]['oAlign_' . $paragraph->getAlignment()->getLevel()] = $paragraph->getAlignment();
+                }
             }
 
             $richtexts = $paragraph->getRichTextElements();
