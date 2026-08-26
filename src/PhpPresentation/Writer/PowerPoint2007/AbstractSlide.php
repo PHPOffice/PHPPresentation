@@ -382,6 +382,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
+        $this->writeHyperlink($objWriter, $shape);
         $this->writeShapeDecorative($objWriter, $shape);
         $objWriter->endElement();
         // p:graphicFrame/p:nvGraphicFramePr/p:cNvGraphicFramePr
@@ -782,6 +783,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', '');
         $objWriter->writeAttribute('descr', $shape->getDescription());
+        $this->writeHyperlink($objWriter, $shape);
         $this->writeShapeDecorative($objWriter, $shape);
         $objWriter->endElement();
         // p:cNvCxnSpPr
@@ -1223,6 +1225,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
+        $this->writeHyperlink($objWriter, $shape);
         $this->writeShapeDecorative($objWriter, $shape);
         // p:sp\p:nvSpPr\p:cNvPr\
         $objWriter->endElement();
@@ -1342,6 +1345,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
+        $this->writeHyperlink($objWriter, $shape);
         $this->writeShapeDecorative($objWriter, $shape);
         $objWriter->endElement();
         // p:cNvGraphicFramePr
@@ -1573,6 +1577,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('name', 'Group ' . $shapeId++);
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('descr', $group->getDescription());
+        $this->writeHyperlink($objWriter, $group);
         $this->writeShapeDecorative($objWriter, $group);
         $objWriter->endElement(); // p:cNvPr
         // NOTE: Re: $shapeId This seems to be how PowerPoint 2010 does business.

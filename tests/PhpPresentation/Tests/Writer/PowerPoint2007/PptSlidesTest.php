@@ -22,6 +22,7 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\Shape\AutoShape;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
@@ -1395,6 +1396,90 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:grpSp/p:grpSpPr/a:effectLst/a:outerShdw';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A hyperlink on a shape needs `a:hlinkClick` in the shape's `p:cNvPr`. Without it the
+     * relationship the slide's `.rels` already carries points at a target nothing references.
+     */
+    public function testLineHyperlink(): void
+    {
+        $oLine = $this->oPresentation->getActiveSlide()->createLineShape(10, 10, 100, 100);
+        $oLine->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:nvCxnSpPr/p:cNvPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:id', 'rId2');
+        $this->assertZipXmlElementExists(
+            'ppt/slides/_rels/slide1.xml.rels',
+            '/Relationships/Relationship[@Id="rId2"][@Target="https://github.com/PHPOffice/PHPPresentation/"]'
+        );
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testAutoShapeHyperlink(): void
+    {
+        $oAutoShape = new AutoShape();
+        $oAutoShape->setType(AutoShape::TYPE_HEART);
+        $oAutoShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+        $this->oPresentation->getActiveSlide()->addShape($oAutoShape);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:id', 'rId2');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * `CT_NonVisualDrawingProps` puts `a:hlinkClick` before `a:extLst`, so the hyperlink has to be
+     * written before the decorative extension rather than after it.
+     */
+    public function testAutoShapeHyperlinkPrecedesTheDecorativeExtension(): void
+    {
+        $oAutoShape = new AutoShape();
+        $oAutoShape->setType(AutoShape::TYPE_HEART)->setDecorative(true);
+        $oAutoShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+        $this->oPresentation->getActiveSlide()->addShape($oAutoShape);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testTableHyperlink(): void
+    {
+        $oTable = $this->oPresentation->getActiveSlide()->createTableShape();
+        $oTable->createRow();
+        $oTable->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/p:nvGraphicFramePr/p:cNvPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:id', 'rId2');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testChartHyperlink(): void
+    {
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType(new Bar());
+        $oChart->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/p:nvGraphicFramePr/p:cNvPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testGroupHyperlink(): void
+    {
+        $oGroup = new Group();
+        $oGroup->createRichTextShape()->createTextRun('AAA');
+        $oGroup->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+        $this->oPresentation->getActiveSlide()->addShape($oGroup);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:id', 'rId2');
         $this->assertIsSchemaECMA376Valid();
     }
 
