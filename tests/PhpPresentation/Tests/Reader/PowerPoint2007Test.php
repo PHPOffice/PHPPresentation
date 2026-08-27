@@ -658,6 +658,44 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(80, $oShape->getHeight());
     }
 
+    /**
+     * PPTX_GroupNested.pptx comes out of PowerPoint 16 and holds a group inside a group.
+     * The outer one declares the coordinate space of the slide; the inner one was resized
+     * after it was made, so it declares one that is scaled by about eight in x and two in
+     * y, and the shapes inside it are still written at the size they were drawn.
+     */
+    public function testLoadFileGroupNested(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_GroupNested.pptx';
+        $oPhpPresentation = (new PowerPoint2007())->load($file);
+
+        $oSlide = $oPhpPresentation->getSlide(0);
+        self::assertCount(1, $oSlide->getShapeCollection());
+
+        $oOuter = $oSlide->getShapeCollection()[0];
+        self::assertInstanceOf(Group::class, $oOuter);
+        self::assertCount(2, $oOuter->getShapeCollection());
+
+        // Written at 252,55 in a group that declares the space it is already in.
+        $oTriangle = $oOuter->getShapeCollection()[1];
+        self::assertInstanceOf(RichText::class, $oTriangle);
+        self::assertEquals(252, $oTriangle->getOffsetX());
+        self::assertEquals(54, $oTriangle->getOffsetY());
+
+        // Written at 523,199 and 549,334, sized 96x61 and 81x69.
+        $oInner = $oOuter->getShapeCollection()[0];
+        self::assertInstanceOf(Group::class, $oInner);
+        self::assertCount(2, $oInner->getShapeCollection());
+        foreach ([[240, 198, 762, 111], [446, 443, 643, 125]] as $index => [$offsetX, $offsetY, $width, $height]) {
+            $oShape = $oInner->getShapeCollection()[$index];
+            self::assertInstanceOf(RichText::class, $oShape);
+            self::assertEquals($offsetX, $oShape->getOffsetX());
+            self::assertEquals($offsetY, $oShape->getOffsetY());
+            self::assertEquals($width, $oShape->getWidth());
+            self::assertEquals($height, $oShape->getHeight());
+        }
+    }
+
     public function testLoadFileChartBar(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_ChartBar.pptx';

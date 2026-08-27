@@ -893,6 +893,12 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Read one a:off/a:ext/a:chOff/a:chExt pair, in pixels.
      *
+     * Truncated to whole pixels, as every shape this is subtracted from already is:
+     * a shape written a third of a pixel past a:chOff has lost that third by the time
+     * it gets here, so a:chOff keeps the same grid and the two losses cancel. Keeping
+     * the fraction on one side of the subtraction only makes the difference worse,
+     * and a group scaled by eight multiplies whatever is left over.
+     *
      * @return null|array{0: int, 1: int}
      */
     protected function loadGroupPoint(XMLReader $document, DOMElement $oXfrm, string $name, string $attrX, string $attrY): ?array
@@ -922,8 +928,8 @@ class PowerPoint2007 implements ReaderInterface
 
                 continue;
             }
-            $shape->setOffsetX($off[0] + (int) round(($shape->getOffsetX() - $chOff[0]) * $scaleX));
-            $shape->setOffsetY($off[1] + (int) round(($shape->getOffsetY() - $chOff[1]) * $scaleY));
+            $shape->setOffsetX((int) round(($shape->getOffsetX() - $chOff[0]) * $scaleX + $off[0]));
+            $shape->setOffsetY((int) round(($shape->getOffsetY() - $chOff[1]) * $scaleY + $off[1]));
             if (1.0 !== $scaleX) {
                 $shape->setWidth((int) round($shape->getWidth() * $scaleX));
             }
