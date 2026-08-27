@@ -2209,4 +2209,32 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'prst');
         $this->assertIsSchemaECMA376Valid();
     }
+
+    /**
+     * A chart is not a shareable resource the way an image is: each one owns a relationship, a
+     * `_rels` of its own and an embedded workbook. Two charts holding the same numbers used to
+     * compare alike, so the hash table kept one of them and the slide was left pointing at a part
+     * that was never written -- which is what PowerPoint offers to repair.
+     */
+    public function testTwoIdenticalChartsKeepTheirOwnPart(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+
+        $oChart1 = $oSlide->createChartShape();
+        $oChart1->getPlotArea()->setType(new Bar());
+        $oChart2 = $oSlide->createChartShape();
+        $oChart2->getPlotArea()->setType(new Bar());
+
+        $this->assertZipFileExists('ppt/charts/' . $oChart1->getIndexedFilename());
+        $this->assertZipFileExists('ppt/charts/' . $oChart2->getIndexedFilename());
+        $this->assertZipXmlElementExists(
+            'ppt/slides/_rels/slide1.xml.rels',
+            '/Relationships/Relationship[@Id="rId2"][@Target="../charts/' . $oChart1->getIndexedFilename() . '"]'
+        );
+        $this->assertZipXmlElementExists(
+            'ppt/slides/_rels/slide1.xml.rels',
+            '/Relationships/Relationship[@Id="rId3"][@Target="../charts/' . $oChart2->getIndexedFilename() . '"]'
+        );
+        $this->assertIsSchemaECMA376Valid();
+    }
 }
