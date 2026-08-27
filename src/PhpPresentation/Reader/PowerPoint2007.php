@@ -36,11 +36,14 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Shape\Table\Cell;
+use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide;
 use PhpOffice\PhpPresentation\Slide\Note;
@@ -830,8 +833,109 @@ class PowerPoint2007 implements ReaderInterface
         return in_array($oElement->getAttribute('val'), ['1', 'true'], true);
     }
 
-    protected function loadShapeDrawing(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
+    /**
+     * Load a group of shapes.
+     *
+     * @param AbstractSlide|Note $oSlide
+     */
+    protected function loadShapeGroup(XMLReader $document, DOMElement $node, $oSlide, XMLReader $xmlReader, ShapeContainerInterface $oContainer): void
     {
+        $oShape = new Group();
+        $oContainer->addShape($oShape);
+
+        $oElement = $document->getElement('p:nvGrpSpPr/p:cNvPr', $node);
+        if ($oElement instanceof DOMElement) {
+            $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
+            $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
+            $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
+        }
+
+        $oElement = $document->getElement('p:grpSpPr/a:xfrm', $node);
+        if ($oElement instanceof DOMElement && $oElement->hasAttribute('rot')) {
+            $oShape->setRotation((int) CommonDrawing::angleToDegrees((int) $oElement->getAttribute('rot')));
+        }
+
+        $this->loadSlideShapes($document, $oSlide, $node->childNodes, $xmlReader, $oShape);
+        $this->loadGroupTransform($document, $node, $oShape);
+    }
+
+    /**
+     * Map the shapes of a group out of the child coordinate space declared by
+     * a:chOff/a:chExt and into the parent space declared by a:off/a:ext.
+     *
+     * A group carries no coordinates of its own in this library: its offset and
+     * extent are derived from the shapes it holds. So the mapping is baked into
+     * those shapes here, which leaves the group where the file says it is.
+     */
+    protected function loadGroupTransform(XMLReader $document, DOMElement $node, Group $oShape): void
+    {
+        $oXfrm = $document->getElement('p:grpSpPr/a:xfrm', $node);
+        if (!$oXfrm instanceof DOMElement) {
+            return;
+        }
+        $off = $this->loadGroupPoint($document, $oXfrm, 'a:off', 'x', 'y');
+        $chOff = $this->loadGroupPoint($document, $oXfrm, 'a:chOff', 'x', 'y');
+        if (null === $off || null === $chOff) {
+            return;
+        }
+        $ext = $this->loadGroupPoint($document, $oXfrm, 'a:ext', 'cx', 'cy');
+        $chExt = $this->loadGroupPoint($document, $oXfrm, 'a:chExt', 'cx', 'cy');
+        // A missing or zero a:chExt means the group is not scaled.
+        $scaleX = null !== $ext && null !== $chExt && 0 != $chExt[0] ? $ext[0] / $chExt[0] : 1.0;
+        $scaleY = null !== $ext && null !== $chExt && 0 != $chExt[1] ? $ext[1] / $chExt[1] : 1.0;
+        if ($off === $chOff && 1.0 === $scaleX && 1.0 === $scaleY) {
+            return;
+        }
+
+        $this->applyGroupTransform($oShape, $off, $chOff, $scaleX, $scaleY);
+    }
+
+    /**
+     * Read one a:off/a:ext/a:chOff/a:chExt pair, in pixels.
+     *
+     * @return null|array{0: int, 1: int}
+     */
+    protected function loadGroupPoint(XMLReader $document, DOMElement $oXfrm, string $name, string $attrX, string $attrY): ?array
+    {
+        $oElement = $document->getElement($name, $oXfrm);
+        if (!$oElement instanceof DOMElement) {
+            return null;
+        }
+
+        return [
+            (int) CommonDrawing::emuToPixels((int) $oElement->getAttribute($attrX)),
+            (int) CommonDrawing::emuToPixels((int) $oElement->getAttribute($attrY)),
+        ];
+    }
+
+    /**
+     * @param array{0: int, 1: int} $off
+     * @param array{0: int, 1: int} $chOff
+     */
+    protected function applyGroupTransform(Group $oShape, array $off, array $chOff, float $scaleX, float $scaleY): void
+    {
+        foreach ($oShape->getShapeCollection() as $shape) {
+            if ($shape instanceof Group) {
+                // A nested group has no coordinates to move: it reports those of
+                // the shapes it holds, so the mapping goes straight through it.
+                $this->applyGroupTransform($shape, $off, $chOff, $scaleX, $scaleY);
+
+                continue;
+            }
+            $shape->setOffsetX($off[0] + (int) round(($shape->getOffsetX() - $chOff[0]) * $scaleX));
+            $shape->setOffsetY($off[1] + (int) round(($shape->getOffsetY() - $chOff[1]) * $scaleY));
+            if (1.0 !== $scaleX) {
+                $shape->setWidth((int) round($shape->getWidth() * $scaleX));
+            }
+            if (1.0 !== $scaleY) {
+                $shape->setHeight((int) round($shape->getHeight() * $scaleY));
+            }
+        }
+    }
+
+    protected function loadShapeDrawing(XMLReader $document, DOMElement $node, AbstractSlide $oSlide, ?ShapeContainerInterface $oContainer = null): void
+    {
+        $oContainer = $oContainer ?? $oSlide;
         // Core
         $document->registerNamespace('asvg', 'http://schemas.microsoft.com/office/drawing/2016/SVG/main');
         if ($document->getElement('p:blipFill/a:blip/a:extLst/a:ext/asvg:svgBlip', $node)) {
@@ -929,7 +1033,7 @@ class PowerPoint2007 implements ReaderInterface
                 $this->loadShadow($document, $oElement)
             );
         }
-        $oSlide->addShape($oShape);
+        $oContainer->addShape($oShape);
     }
 
     /**
@@ -982,10 +1086,11 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * @param AbstractSlide|Note $oSlide
      */
-    protected function loadShapeRichText(XMLReader $document, DOMElement $node, $oSlide): void
+    protected function loadShapeRichText(XMLReader $document, DOMElement $node, $oSlide, ?ShapeContainerInterface $oContainer = null): void
     {
         // Core
-        $oShape = $oSlide->createRichTextShape();
+        $oShape = new RichText();
+        ($oContainer ?? $oSlide)->addShape($oShape);
         $oShape->setParagraphs([]);
         // Variables
         if ($oSlide instanceof AbstractSlide) {
@@ -1082,11 +1187,12 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    protected function loadShapeTable(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
+    protected function loadShapeTable(XMLReader $document, DOMElement $node, AbstractSlide $oSlide, ?ShapeContainerInterface $oContainer = null): void
     {
         $this->fileRels = $oSlide->getRelsIndex();
 
-        $oShape = $oSlide->createTableShape();
+        $oShape = new Table();
+        ($oContainer ?? $oSlide)->addShape($oShape);
 
         $oElement = $document->getElement('p:cNvPr', $node);
         if ($oElement instanceof DOMElement) {
@@ -1226,8 +1332,9 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    protected function loadShapeChart(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
+    protected function loadShapeChart(XMLReader $document, DOMElement $node, AbstractSlide $oSlide, ?ShapeContainerInterface $oContainer = null): void
     {
+        $oContainer = $oContainer ?? $oSlide;
         $this->fileRels = $oSlide->getRelsIndex();
 
         $oShape = new Chart();
@@ -1455,7 +1562,7 @@ class PowerPoint2007 implements ReaderInterface
                     }
                 }
             }
-            $oSlide->addShape($oShape);
+            $oContainer->addShape($oShape);
         }
     }
 
@@ -1916,11 +2023,13 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * @param AbstractSlide|Note $oSlide
      * @param DOMNodeList<DOMNode> $oElements
+     * @param null|ShapeContainerInterface $oContainer where to put the shapes; the slide itself unless we are inside a group
      *
      * @internal param $baseFile
      */
-    protected function loadSlideShapes(XMLReader $document, $oSlide, DOMNodeList $oElements, XMLReader $xmlReader): void
+    protected function loadSlideShapes(XMLReader $document, $oSlide, DOMNodeList $oElements, XMLReader $xmlReader, ?ShapeContainerInterface $oContainer = null): void
     {
+        $oContainer = $oContainer ?? $oSlide;
         foreach ($oElements as $oNode) {
             if (!($oNode instanceof DOMElement)) {
                 continue;
@@ -1929,22 +2038,26 @@ class PowerPoint2007 implements ReaderInterface
                 case 'p:graphicFrame':
                     if ($oSlide instanceof AbstractSlide) {
                         if ($document->elementExists('a:graphic/a:graphicData/a:tbl', $oNode)) {
-                            $this->loadShapeTable($xmlReader, $oNode, $oSlide);
+                            $this->loadShapeTable($xmlReader, $oNode, $oSlide, $oContainer);
                         }
                         if ($document->elementExists('a:graphic/a:graphicData/c:chart', $oNode)) {
-                            $this->loadShapeChart($xmlReader, $oNode, $oSlide);
+                            $this->loadShapeChart($xmlReader, $oNode, $oSlide, $oContainer);
                         }
                     }
 
                     break;
                 case 'p:pic':
                     if ($this->loadImages && $oSlide instanceof AbstractSlide) {
-                        $this->loadShapeDrawing($xmlReader, $oNode, $oSlide);
+                        $this->loadShapeDrawing($xmlReader, $oNode, $oSlide, $oContainer);
                     }
 
                     break;
                 case 'p:sp':
-                    $this->loadShapeRichText($xmlReader, $oNode, $oSlide);
+                    $this->loadShapeRichText($xmlReader, $oNode, $oSlide, $oContainer);
+
+                    break;
+                case 'p:grpSp':
+                    $this->loadShapeGroup($xmlReader, $oNode, $oSlide, $xmlReader, $oContainer);
 
                     break;
                 default:

@@ -1590,6 +1590,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:grpSpPr');
         // a:xfrm
         $objWriter->startElement('a:xfrm');
+        $objWriter->writeAttributeIf(0 != $group->getRotation(), 'rot', CommonDrawing::degreesToAngle($group->getRotation()));
         // a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($group->getOffsetX()));
