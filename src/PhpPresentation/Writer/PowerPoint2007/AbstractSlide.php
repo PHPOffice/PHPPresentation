@@ -1570,13 +1570,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:nvGrpSpPr');
         // p:cNvPr
         $objWriter->startElement('p:cNvPr');
-        $objWriter->writeAttribute('name', 'Group ' . $shapeId++);
         $objWriter->writeAttribute('id', $shapeId);
+        $objWriter->writeAttribute('name', 'Group ' . $shapeId);
         $objWriter->writeAttribute('descr', $group->getDescription());
         $this->writeHyperlink($objWriter, $group);
         $this->writeShapeDecorative($objWriter, $group);
         $objWriter->endElement(); // p:cNvPr
-        // NOTE: Re: $shapeId This seems to be how PowerPoint 2010 does business.
         // p:cNvGrpSpPr
         $objWriter->writeElement('p:cNvGrpSpPr', null);
         // p:nvPr

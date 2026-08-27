@@ -1411,6 +1411,25 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    /**
+     * A group used to take two identifiers and use the second: it was named after one
+     * and numbered with the next, leaving the first unused. Nothing in a file written
+     * by PowerPoint skips a number like that.
+     */
+    public function testGroupIdIsNotSkipped(): void
+    {
+        $oGroup = new Group();
+        $oGroup->createRichTextShape()->createTextRun('AAA');
+        $this->oPresentation->getActiveSlide()->addShape($oGroup);
+        $this->oPresentation->getActiveSlide()->createRichTextShape()->createTextRun('BBB');
+
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr', 'id', 2);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr', 'name', 'Group 2');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:sp/p:nvSpPr/p:cNvPr', 'id', 3);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr', 'id', 4);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testGroupRotation(): void
     {
         $oGroup = new Group();
