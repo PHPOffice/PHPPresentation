@@ -72,7 +72,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         $objWriter,
                         $relId,
                         'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
-                        '../media/' . str_replace(' ', '_', $shape->getIndexedFilename())
+                        '../media/' . str_replace(' ', '_', $this->writtenPart($shape)->getIndexedFilename())
                     );
                     $shape->relationId = 'rId' . $relId;
                     ++$relId;
@@ -82,7 +82,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         $objWriter,
                         $relId,
                         'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart',
-                        '../charts/' . $shape->getIndexedFilename()
+                        '../charts/' . $this->writtenPart($shape)->getIndexedFilename()
                     );
                     $shape->relationId = 'rId' . $relId;
                     ++$relId;

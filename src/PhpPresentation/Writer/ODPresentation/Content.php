@@ -521,7 +521,7 @@ class Content extends AbstractDecoratorWriter
         $this->writeShapeDecorative($objWriter, $shape);
         // draw:frame > draw:plugin
         $objWriter->startElement('draw:plugin');
-        $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
+        $objWriter->writeAttribute('xlink:href', 'Pictures/' . $this->writtenPart($shape)->getIndexedFilename());
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');
@@ -570,7 +570,7 @@ class Content extends AbstractDecoratorWriter
         $this->writeShapeDecorative($objWriter, $shape);
         // draw:image
         $objWriter->startElement('draw:image');
-        $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
+        $objWriter->writeAttribute('xlink:href', 'Pictures/' . $this->writtenPart($shape)->getIndexedFilename());
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');

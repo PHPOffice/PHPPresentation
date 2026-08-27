@@ -23,6 +23,7 @@ namespace PhpOffice\PhpPresentation\Writer;
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 
 abstract class AbstractDecoratorWriter
 {
@@ -59,6 +60,28 @@ abstract class AbstractDecoratorWriter
     public function getDrawingHashTable()
     {
         return $this->oHashTable;
+    }
+
+    /**
+     * The graphic whose bytes were actually written for this one.
+     *
+     * `HashTable` keeps one entry per hash, so two shapes that compare alike leave a single part
+     * in the archive -- the first of them. The others are handed that one's hash index when they
+     * are added, and this reads it back. A reference has to name the part that exists, not the
+     * name this shape would have had; `getIndexedFilename()` counts instances and knows nothing
+     * about the collapse.
+     *
+     * Answers with the shape itself when the table has not been filled yet, so a writer that runs
+     * without one behaves as it did before.
+     */
+    protected function writtenPart(AbstractGraphic $shape): AbstractGraphic
+    {
+        $hashIndex = $shape->getHashIndex();
+        $written = null === $hashIndex || null === $this->oHashTable
+            ? null
+            : $this->oHashTable->getByIndex($hashIndex);
+
+        return $written instanceof AbstractGraphic ? $written : $shape;
     }
 
     /**
