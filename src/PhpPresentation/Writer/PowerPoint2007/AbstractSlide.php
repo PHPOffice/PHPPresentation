@@ -43,6 +43,7 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
+use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
 use PhpOffice\PhpPresentation\Slide\Note;
@@ -63,7 +64,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     {
         if (count($pSlideMaster->getShapeCollection()) > 0) {
             // Loop trough images and write relationships
-            foreach ($pSlideMaster->getShapeCollection() as $shape) {
+            foreach ($this->flattenShapes($pSlideMaster->getShapeCollection()) as $shape) {
                 if ($shape instanceof ShapeDrawingFile || $shape instanceof ShapeDrawingGd) {
                     // Write relationship for image drawing
                     $this->writeRelationship(
@@ -84,37 +85,32 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                     );
                     $shape->relationId = 'rId' . $relId;
                     ++$relId;
-                } elseif ($shape instanceof Group) {
-                    foreach ($shape->getShapeCollection() as $subShape) {
-                        if ($subShape instanceof ShapeDrawingFile ||
-                            $subShape instanceof ShapeDrawingGd
-                        ) {
-                            // Write relationship for image drawing
-                            $this->writeRelationship(
-                                $objWriter,
-                                $relId,
-                                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
-                                '../media/' . str_replace(' ', '_', $subShape->getIndexedFilename())
-                            );
-                            $subShape->relationId = 'rId' . $relId;
-                            ++$relId;
-                        } elseif ($subShape instanceof ShapeChart) {
-                            // Write relationship for chart drawing
-                            $this->writeRelationship(
-                                $objWriter,
-                                $relId,
-                                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart',
-                                '../charts/' . $subShape->getIndexedFilename()
-                            );
-                            $subShape->relationId = 'rId' . $relId;
-                            ++$relId;
-                        }
-                    }
                 }
             }
         }
 
         return $relId;
+    }
+
+    /**
+     * Every shape a collection holds, a group and the shapes inside it alike, in the
+     * order they are written. A group can hold a group, so the depth is not one.
+     *
+     * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapes
+     *
+     * @return array<int, AbstractShape>
+     */
+    protected function flattenShapes($shapes): array
+    {
+        $flattened = [];
+        foreach ($shapes as $shape) {
+            $flattened[] = $shape;
+            if ($shape instanceof ShapeContainerInterface) {
+                $flattened = array_merge($flattened, $this->flattenShapes($shape->getShapeCollection()));
+            }
+        }
+
+        return $flattened;
     }
 
     /**

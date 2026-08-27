@@ -1484,6 +1484,29 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    /**
+     * A group holds shapes of its own, and one of them can be a group again. The
+     * relationships were written one level down only, so a hyperlink any deeper
+     * than that was written as an `r:id` pointing at nothing.
+     */
+    public function testHyperlinkInNestedGroup(): void
+    {
+        $oGroup = new Group();
+        $oGroup->createRichTextShape()->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+        $oNested = new Group();
+        $oNested->createRichTextShape()->getHyperlink()->setUrl('https://github.com/PHPOffice/');
+        $oGroup->addShape($oNested);
+        $this->oPresentation->getActiveSlide()->addShape($oGroup);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:grpSp/p:grpSp/p:sp/p:nvSpPr/p:cNvPr/a:hlinkClick';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:id', 'rId3');
+        $this->assertZipXmlElementExists(
+            'ppt/slides/_rels/slide1.xml.rels',
+            '/Relationships/Relationship[@Id="rId3"][@Target="https://github.com/PHPOffice/"]'
+        );
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testTableHyperlink(): void
     {
         $oTable = $this->oPresentation->getActiveSlide()->createTableShape();
