@@ -72,7 +72,16 @@ abstract class AbstractDecoratorWriter
      * about the collapse.
      *
      * Answers with the shape itself when the table has not been filled yet, so a writer that runs
-     * without one behaves as it did before.
+     * without one behaves as it did before, and when the entry is of another class: `__CLASS__` in
+     * `AbstractGraphic::getHashCode()` is a literal rather than late static binding, so two
+     * different kinds of graphic are not guaranteed to hash apart, and a part is only ever
+     * interchangeable with one of its own kind.
+     *
+     * @template T of AbstractGraphic
+     *
+     * @param T $shape
+     *
+     * @return T
      */
     protected function writtenPart(AbstractGraphic $shape): AbstractGraphic
     {
@@ -81,7 +90,12 @@ abstract class AbstractDecoratorWriter
             ? null
             : $this->oHashTable->getByIndex($hashIndex);
 
-        return $written instanceof AbstractGraphic ? $written : $shape;
+        if (!$written instanceof $shape) {
+            return $shape;
+        }
+
+        /** @var T $written */
+        return $written;
     }
 
     /**
