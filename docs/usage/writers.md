@@ -10,6 +10,20 @@ $writer = IOFactory::createWriter($oPhpPresentation, 'HTML');
 $writer->save(__DIR__ . '/sample.html');
 ```
 
+## Keynote
+The name of the writer is `Keynote`.
+
+``` php
+<?php
+
+$writer = IOFactory::createWriter($oPhpPresentation, 'Keynote');
+$writer->save(__DIR__ . '/sample.key');
+```
+
+The writer writes the text of every slide, its speaker note and the images it uses, as the
+`index.apxl` package Keynote '09 reads. The `Index/*.iwa` shape of Keynote '13 and later is not
+written.
+
 ## ODPresentation
 The name of the writer is `ODPresentation`.
 

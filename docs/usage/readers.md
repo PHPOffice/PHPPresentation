@@ -1,5 +1,35 @@
 # Readers
 
+## Keynote
+The name of the reader is `Keynote`.
+
+``` php
+<?php
+
+$reader = IOFactory::createReader('Keynote');
+$reader->load(__DIR__ . '/sample.key');
+```
+
+The reader reads the text of every slide, its speaker note and the images the slide uses, out of a
+Keynote '13 (and later) package -- its `Index/*.iwa` components -- as well as out of the
+`index.apxl` document of a Keynote '09 package. Anything else the format carries (styles, tables,
+charts, transitions) is not read yet.
+
+### Options
+
+#### Load without images
+
+You can load a presentation without images.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Reader\Keynote;
+
+$reader = new Keynote();
+$reader->load(__DIR__ . '/sample.key', Keynote::SKIP_IMAGES);
+```
+
 ## ODPresentation
 The name of the reader is `ODPresentation`.
 
