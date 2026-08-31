@@ -1249,28 +1249,32 @@ class Content extends AbstractDecoratorWriter
             $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
         }
         // Fill
-        switch ($shape->getFill()->getFillType()) {
-            case Fill::FILL_GRADIENT_LINEAR:
-            case Fill::FILL_GRADIENT_PATH:
-                $objWriter->writeAttribute('draw:fill', 'gradient');
-                $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shape->getFill()->getHashCode());
+        if (in_array($shape->getFill()->getFillType(), Fill::PATTERN_TYPES, true)) {
+            $this->writePatternFill($objWriter, $shape->getFill());
+        } else {
+            switch ($shape->getFill()->getFillType()) {
+                case Fill::FILL_GRADIENT_LINEAR:
+                case Fill::FILL_GRADIENT_PATH:
+                    $objWriter->writeAttribute('draw:fill', 'gradient');
+                    $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shape->getFill()->getHashCode());
 
-                break;
-            case Fill::FILL_SOLID:
-                $objWriter->writeAttribute('draw:fill', 'solid');
-                $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
+                    break;
+                case Fill::FILL_SOLID:
+                    $objWriter->writeAttribute('draw:fill', 'solid');
+                    $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
 
-                break;
-            case Fill::FILL_UNSET:
-                // Nobody named a fill, so the style names none and `standard` paints the shape
+                    break;
+                case Fill::FILL_UNSET:
+                    // Nobody named a fill, so the style names none and `standard` paints the shape
 
-                break;
-            case Fill::FILL_NONE:
-            default:
-                $objWriter->writeAttribute('draw:fill', 'none');
-                $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
+                    break;
+                case Fill::FILL_NONE:
+                default:
+                    $objWriter->writeAttribute('draw:fill', 'none');
+                    $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
 
-                break;
+                    break;
+            }
         }
         // Border
         if (Border::LINE_NONE == $shape->getBorder()->getLineStyle()) {
@@ -1513,6 +1517,9 @@ class Content extends AbstractDecoratorWriter
                     if (Fill::FILL_GRADIENT_LINEAR == $cellFill->getFillType()) {
                         $objWriter->writeAttribute('draw:fill', 'gradient');
                         $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $cellFill->getHashCode());
+                    }
+                    if (in_array($cellFill->getFillType(), Fill::PATTERN_TYPES, true)) {
+                        $this->writePatternFill($objWriter, $cellFill);
                     }
                     $objWriter->endElement();
                 }
