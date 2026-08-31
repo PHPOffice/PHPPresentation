@@ -2114,4 +2114,58 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr');
         $this->assertIsSchemaECMA376Valid();
     }
+
+    /**
+     * `a:pattFill` names its pattern in `prst`. The attribute was never written, and the schema has
+     * it optional, so every pattern fill came out as its two colours and no pattern at all --
+     * four data points asking for four different patterns were written identically.
+     */
+    public function testTypeDoughnutDataPointPatternFill(): void
+    {
+        $patterns = [
+            Fill::FILL_PATTERN_WDDNDIAG,
+            Fill::FILL_PATTERN_LGGRID,
+            Fill::FILL_PATTERN_SOLIDDMND,
+            Fill::FILL_PATTERN_DIAGBRICK,
+        ];
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        foreach ($patterns as $index => $pattern) {
+            $oSeries->getDataPointFill($index)
+                ->setFillType($pattern)
+                ->setStartColor(new Color('FF1F4E79'))
+                ->setEndColor(new Color(Color::COLOR_WHITE));
+        }
+        $oDoughnut = new Doughnut();
+        $oDoughnut->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oDoughnut);
+
+        $basePath = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:ser';
+        foreach ($patterns as $index => $pattern) {
+            $element = $basePath . '/c:dPt[' . ($index + 1) . ']/c:spPr/a:pattFill';
+            $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+            $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'prst', $pattern);
+        }
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A fill type naming no preset is written as it was before, rather than as a `prst` the schema
+     * would refuse.
+     */
+    public function testTypeDoughnutDataPointFillOfNoKnownPattern(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getDataPointFill(0)->setFillType('notAPattern')->setStartColor(new Color(Color::COLOR_BLUE));
+        $oDoughnut = new Doughnut();
+        $oDoughnut->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oDoughnut);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:ser/c:dPt[1]/c:spPr/a:pattFill';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'prst');
+        $this->assertIsSchemaECMA376Valid();
+    }
 }

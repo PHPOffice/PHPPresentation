@@ -218,6 +218,14 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         // a:pattFill
         $objWriter->startElement('a:pattFill');
 
+        // The pattern itself. Without `prst` the element carries two colours and no pattern, which
+        // is what every pattern fill written here used to come out as -- and it is valid, because
+        // the schema has the attribute optional, so nothing ever said so. A fill type that names no
+        // preset is written as it was before, rather than as an attribute the schema would refuse.
+        if (in_array($pFill->getFillType(), Fill::PATTERN_TYPES, true)) {
+            $objWriter->writeAttribute('prst', $pFill->getFillType());
+        }
+
         // fgClr
         $objWriter->startElement('a:fgClr');
 

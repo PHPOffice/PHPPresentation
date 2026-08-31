@@ -518,6 +518,8 @@ class PptSlidesTest extends PhpPresentationTestCase
         $oFill = $oCell->getFill();
         $oFill->setFillType(Fill::FILL_PATTERN_LIGHTTRELLIS)->setStartColor(new Color('FF' . $expected1))->setEndColor(new Color('FF' . $expected2));
 
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:pattFill';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'prst', Fill::FILL_PATTERN_TRELLIS);
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:pattFill/a:fgClr/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected1);
