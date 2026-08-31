@@ -45,6 +45,12 @@ The constants are named after the pattern they write: `Fill::FILL_PATTERN_LGGRID
 `Fill::FILL_PATTERN_SOLIDDMND`, `Fill::FILL_PATTERN_DIAGBRICK`, and so on down `Fill::PATTERN_TYPES`,
 which lists all of them.
 
+OpenDocument has no preset patterns. It has `draw:hatch`, which is one, two or three families of
+parallel lines, so the patterns that *are* lines — the diagonals, the horizontals, the verticals,
+the crosses, the grids and the checks — are written as the hatch that draws them, and the rest —
+the bricks, the confetti, the diamonds, the sphere, the percentage screens — are painted solid in
+`startColor`. A deck that has to look the same in both formats stays with the line patterns.
+
 ## Border
 
 Use this style to define border of a shape as example below.

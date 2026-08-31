@@ -47,6 +47,13 @@ class Styles extends AbstractDecoratorWriter
     protected $arrayGradient = [];
 
     /**
+     * Stores draw:hatch nodes.
+     *
+     * @var array<int, string>
+     */
+    protected $arrayHatch = [];
+
+    /**
      * Stores font styles draw:stroke-dash nodes.
      *
      * @var array<int, string>
@@ -211,6 +218,9 @@ class Styles extends AbstractDecoratorWriter
                 $this->writeGradientFill($objWriter, $oFill);
             }
         }
+        if (isset(self::HATCH_ODF[$oFill->getFillType()]) && !in_array($oFill->getHashCode(), $this->arrayHatch)) {
+            $this->writeHatchFill($objWriter, $oFill);
+        }
         $oBorder = $shape->getBorder();
         if (Border::DASH_SOLID != $oBorder->getDashStyle()) {
             if (!in_array($oBorder->getDashStyle(), $this->arrayStrokeDash)) {
@@ -310,6 +320,9 @@ class Styles extends AbstractDecoratorWriter
                         $this->writeGradientFill($objWriter, $fill);
                     }
                 }
+                if (isset(self::HATCH_ODF[$fill->getFillType()]) && !in_array($fill->getHashCode(), $this->arrayHatch)) {
+                    $this->writeHatchFill($objWriter, $fill);
+                }
             }
         }
     }
@@ -346,6 +359,28 @@ class Styles extends AbstractDecoratorWriter
         $objWriter->writeAttribute('draw:angle', $oFill->getRotation() - 90);
         $objWriter->endElement();
         $this->arrayGradient[] = $oFill->getHashCode();
+    }
+
+    /**
+     * Write the hatch a pattern fill is drawn as.
+     *
+     * Only the patterns ODF can say are written; a pattern that is not a family of lines is
+     * painted solid by the caller and names no hatch at all.
+     */
+    protected function writeHatchFill(XMLWriter $objWriter, Fill $oFill): void
+    {
+        [$style, $rotation, $distance] = self::HATCH_ODF[$oFill->getFillType()];
+
+        $objWriter->startElement('draw:hatch');
+        $objWriter->writeAttribute('draw:name', 'hatch_' . $oFill->getHashCode());
+        $objWriter->writeAttribute('draw:display-name', 'hatch_' . $oFill->getHashCode());
+        $objWriter->writeAttribute('draw:style', $style);
+        $objWriter->writeAttribute('draw:color', '#' . $oFill->getStartColor()->getRGB());
+        $objWriter->writeAttribute('draw:distance', $distance);
+        $objWriter->writeAttribute('draw:rotation', (string) $rotation);
+        $objWriter->endElement();
+
+        $this->arrayHatch[] = $oFill->getHashCode();
     }
 
     /**

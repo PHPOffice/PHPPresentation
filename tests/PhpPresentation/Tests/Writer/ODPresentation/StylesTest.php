@@ -116,6 +116,71 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testPatternFillHatch(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->getFill()->setFillType(Fill::FILL_PATTERN_WDDNDIAG)
+            ->setStartColor(new Color('FF4472C4'))
+            ->setEndColor(new Color('FFFFFFFF'));
+
+        // the hatch defined in `styles.xml` is the one `content.xml` names
+        $element = '//style:graphic-properties[@draw:fill-hatch-name]';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'hatch');
+        // The ground the lines are drawn on, which is painted only because this says so
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill-hatch-solid', 'true');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill-color', '#FFFFFF');
+        $hatchName = $this->getZipXmlAttributeValue('content.xml', $element, 'draw:fill-hatch-name');
+
+        $element = '/office:document-styles/office:styles/draw:hatch';
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', $hatchName);
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:style', 'single');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:color', '#4472C4');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:rotation', '315');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:distance', '0.2cm');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testPatternFillWithoutHatch(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        // Confetti is not a family of lines, and a hatch is all ODF has: the shape is painted in
+        // the colour of the pattern rather than left with no fill at all.
+        $oShape->getFill()->setFillType(Fill::FILL_PATTERN_SMCONFETTI)
+            ->setStartColor(new Color('FFFF0000'))
+            ->setEndColor(new Color('FF00FF00'));
+
+        $this->assertZipXmlElementNotExists('styles.xml', '/office:document-styles/office:styles/draw:hatch');
+        $element = '//style:style[@style:family=\'graphic\']/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill-color', '#FF0000');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testPatternFillTable(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape();
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oCell->getFill()->setFillType(Fill::FILL_PATTERN_LGGRID)
+            ->setStartColor(new Color('FFFF7700'))
+            ->setEndColor(new Color('FFFFFFFF'));
+
+        // the hatch defined in `styles.xml` is the one `content.xml` names
+        $hatchName = $this->getZipXmlAttributeValue(
+            'content.xml',
+            '//style:graphic-properties[@draw:fill-hatch-name]',
+            'draw:fill-hatch-name'
+        );
+        $element = '/office:document-styles/office:styles/draw:hatch';
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', $hatchName);
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:style', 'double');
+
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
     public function testGradientTable(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

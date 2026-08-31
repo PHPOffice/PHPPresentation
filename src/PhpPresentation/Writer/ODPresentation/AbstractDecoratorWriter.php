@@ -23,6 +23,7 @@ namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Slide\AbstractBackground;
+use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 
 abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer\AbstractDecoratorWriter
@@ -51,6 +52,53 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         Font::UNDERLINE_WAVYDOUBLE => ['wave', 'double', null],
         Font::UNDERLINE_WAVYHEAVY => ['wave', 'single', 'bold'],
         Font::UNDERLINE_WORDS => ['solid', 'single', null],
+    ];
+
+    /**
+     * DrawingML names fifty-four preset patterns; ODF has `draw:hatch`, which is one, two or three
+     * families of parallel lines and nothing else.
+     *
+     * The patterns below are the ones that are lines, mapped to the style, the angle and the
+     * spacing that draw them. The other twenty-two -- the bricks, the confetti, the diamonds, the
+     * sphere, the weave of a plaid, the percentage screens -- are not lines at all, and ODF has no
+     * way to say them. Those are painted solid in the colour of the pattern rather than dropped:
+     * a shape filled with the wrong texture is nearer what was asked for than an empty one.
+     *
+     * @var array<string, array{0: string, 1: int, 2: string}>
+     */
+    protected const HATCH_ODF = [
+        Fill::FILL_PATTERN_HORZ => ['single', 0, '0.1cm'],
+        Fill::FILL_PATTERN_VERT => ['single', 90, '0.1cm'],
+        Fill::FILL_PATTERN_LTHORZ => ['single', 0, '0.2cm'],
+        Fill::FILL_PATTERN_LTVERT => ['single', 90, '0.2cm'],
+        Fill::FILL_PATTERN_DKHORZ => ['single', 0, '0.05cm'],
+        Fill::FILL_PATTERN_DKVERT => ['single', 90, '0.05cm'],
+        Fill::FILL_PATTERN_NARHORZ => ['single', 0, '0.05cm'],
+        Fill::FILL_PATTERN_NARVERT => ['single', 90, '0.05cm'],
+        Fill::FILL_PATTERN_DASHHORZ => ['single', 0, '0.2cm'],
+        Fill::FILL_PATTERN_DASHVERT => ['single', 90, '0.2cm'],
+        Fill::FILL_PATTERN_CROSS => ['double', 0, '0.1cm'],
+        Fill::FILL_PATTERN_DNDIAG => ['single', 315, '0.1cm'],
+        Fill::FILL_PATTERN_UPDIAG => ['single', 45, '0.1cm'],
+        Fill::FILL_PATTERN_LTDNDIAG => ['single', 315, '0.2cm'],
+        Fill::FILL_PATTERN_LTUPDIAG => ['single', 45, '0.2cm'],
+        Fill::FILL_PATTERN_DKDNDIAG => ['single', 315, '0.05cm'],
+        Fill::FILL_PATTERN_DKUPDIAG => ['single', 45, '0.05cm'],
+        Fill::FILL_PATTERN_WDDNDIAG => ['single', 315, '0.2cm'],
+        Fill::FILL_PATTERN_WDUPDIAG => ['single', 45, '0.2cm'],
+        Fill::FILL_PATTERN_DASHDNDIAG => ['single', 315, '0.2cm'],
+        Fill::FILL_PATTERN_DASHUPDIAG => ['single', 45, '0.2cm'],
+        Fill::FILL_PATTERN_DIAGCROSS => ['double', 45, '0.1cm'],
+        Fill::FILL_PATTERN_SMGRID => ['double', 0, '0.05cm'],
+        Fill::FILL_PATTERN_LGGRID => ['double', 0, '0.2cm'],
+        Fill::FILL_PATTERN_DOTGRID => ['double', 0, '0.2cm'],
+        Fill::FILL_PATTERN_SMCHECK => ['double', 45, '0.05cm'],
+        Fill::FILL_PATTERN_LGCHECK => ['double', 45, '0.2cm'],
+        Fill::FILL_PATTERN_TRELLIS => ['double', 45, '0.1cm'],
+        Fill::FILL_PATTERN_WEAVE => ['double', 45, '0.1cm'],
+        Fill::FILL_PATTERN_PLAID => ['triple', 0, '0.1cm'],
+        Fill::FILL_PATTERN_ZIGZAG => ['single', 0, '0.1cm'],
+        Fill::FILL_PATTERN_WAVE => ['single', 0, '0.2cm'],
     ];
 
     /**
@@ -83,6 +131,29 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
             $objWriter->writeAttribute('style:text-line-through-style', 'solid');
             $objWriter->writeAttribute('style:text-line-through-type', self::STRIKETHROUGH_ODF[$font->getStrikethrough()]);
         }
+    }
+
+    /**
+     * The fill attributes of a pattern, into the `style:graphic-properties` the caller has open.
+     *
+     * A pattern ODF can draw is a hatch, whose lines are the start colour and whose ground is the
+     * end colour; `draw:fill-hatch-solid` is what says the ground is painted at all, and without it
+     * the lines are drawn over whatever is behind the shape. A pattern ODF cannot draw is painted
+     * in the colour of its lines.
+     */
+    protected function writePatternFill(XMLWriter $objWriter, Fill $fill): void
+    {
+        if (!isset(self::HATCH_ODF[$fill->getFillType()])) {
+            $objWriter->writeAttribute('draw:fill', 'solid');
+            $objWriter->writeAttribute('draw:fill-color', '#' . $fill->getStartColor()->getRGB());
+
+            return;
+        }
+
+        $objWriter->writeAttribute('draw:fill', 'hatch');
+        $objWriter->writeAttribute('draw:fill-hatch-name', 'hatch_' . $fill->getHashCode());
+        $objWriter->writeAttribute('draw:fill-hatch-solid', 'true');
+        $objWriter->writeAttribute('draw:fill-color', '#' . $fill->getEndColor()->getRGB());
     }
 
     /**
