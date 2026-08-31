@@ -26,8 +26,10 @@
         <!-- PptSlides needs more coupling (default: 13) -->
         <!-- Writer/Office2007/AbstractSlide needs more coupling (default: 13) -->
         <!-- Reader/PowerPoint2007 reads a chart axis, and an axis is a class of its own -->
+        <!-- Reader/PowerPoint2007 reads a group, which is a shape holding shapes: the group,
+             the container it is put in, and the table it can hold are three more classes -->
 		<properties>
-            <property name="maximum" value="39" />
+            <property name="maximum" value="43" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">

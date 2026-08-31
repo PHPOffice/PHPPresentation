@@ -31,6 +31,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -604,6 +605,95 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
+    }
+
+    /**
+     * The shapes of a group are written in the coordinate space a:chOff/a:chExt declares,
+     * which is not necessarily the slide's. PPTX_Group.pptx declares one that is offset and
+     * scaled, so reading it back at face value would put every shape in the wrong place.
+     */
+    public function testLoadFileGroup(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_Group.pptx';
+        $oPhpPresentation = (new PowerPoint2007())->load($file);
+
+        $oSlide = $oPhpPresentation->getSlide(0);
+        self::assertCount(2, $oSlide->getShapeCollection());
+
+        // The shape outside the group is untouched by any of this.
+        $oFree = $oSlide->getShapeCollection()[0];
+        self::assertInstanceOf(RichText::class, $oFree);
+        self::assertEquals(50, $oFree->getOffsetX());
+        self::assertEquals(50, $oFree->getOffsetY());
+
+        // a:off is 200px to the right of a:chOff, and a:ext is twice a:chExt.
+        $oGroup = $oSlide->getShapeCollection()[1];
+        self::assertInstanceOf(Group::class, $oGroup);
+        self::assertEquals(30, $oGroup->getRotation());
+        self::assertEquals(500, $oGroup->getOffsetX());
+        self::assertEquals(100, $oGroup->getOffsetY());
+        self::assertEquals(760, $oGroup->getExtentX());
+        self::assertEquals(680, $oGroup->getExtentY());
+        self::assertCount(3, $oGroup->getShapeCollection());
+
+        // Written at 300,100 and 500,260, sized 180x60.
+        foreach ([[500, 100], [900, 420]] as $index => [$offsetX, $offsetY]) {
+            $oShape = $oGroup->getShapeCollection()[$index];
+            self::assertInstanceOf(RichText::class, $oShape);
+            self::assertEquals($offsetX, $oShape->getOffsetX());
+            self::assertEquals($offsetY, $oShape->getOffsetY());
+            self::assertEquals(360, $oShape->getWidth());
+            self::assertEquals(120, $oShape->getHeight());
+        }
+
+        // A group inside the group: the mapping reaches its shapes too.
+        $oInner = $oGroup->getShapeCollection()[2];
+        self::assertInstanceOf(Group::class, $oInner);
+        self::assertCount(1, $oInner->getShapeCollection());
+        $oShape = $oInner->getShapeCollection()[0];
+        self::assertInstanceOf(RichText::class, $oShape);
+        self::assertEquals(700, $oShape->getOffsetX());
+        self::assertEquals(700, $oShape->getOffsetY());
+        self::assertEquals(200, $oShape->getWidth());
+        self::assertEquals(80, $oShape->getHeight());
+    }
+
+    /**
+     * PPTX_GroupNested.pptx comes out of PowerPoint 16 and holds a group inside a group.
+     * The outer one declares the coordinate space of the slide; the inner one was resized
+     * after it was made, so it declares one that is scaled by about eight in x and two in
+     * y, and the shapes inside it are still written at the size they were drawn.
+     */
+    public function testLoadFileGroupNested(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_GroupNested.pptx';
+        $oPhpPresentation = (new PowerPoint2007())->load($file);
+
+        $oSlide = $oPhpPresentation->getSlide(0);
+        self::assertCount(1, $oSlide->getShapeCollection());
+
+        $oOuter = $oSlide->getShapeCollection()[0];
+        self::assertInstanceOf(Group::class, $oOuter);
+        self::assertCount(2, $oOuter->getShapeCollection());
+
+        // Written at 252,55 in a group that declares the space it is already in.
+        $oTriangle = $oOuter->getShapeCollection()[1];
+        self::assertInstanceOf(RichText::class, $oTriangle);
+        self::assertEquals(252, $oTriangle->getOffsetX());
+        self::assertEquals(54, $oTriangle->getOffsetY());
+
+        // Written at 523,199 and 549,334, sized 96x61 and 81x69.
+        $oInner = $oOuter->getShapeCollection()[0];
+        self::assertInstanceOf(Group::class, $oInner);
+        self::assertCount(2, $oInner->getShapeCollection());
+        foreach ([[240, 198, 762, 111], [446, 443, 643, 125]] as $index => [$offsetX, $offsetY, $width, $height]) {
+            $oShape = $oInner->getShapeCollection()[$index];
+            self::assertInstanceOf(RichText::class, $oShape);
+            self::assertEquals($offsetX, $oShape->getOffsetX());
+            self::assertEquals($offsetY, $oShape->getOffsetY());
+            self::assertEquals($width, $oShape->getWidth());
+            self::assertEquals($height, $oShape->getHeight());
+        }
     }
 
     public function testLoadFileChartBar(): void

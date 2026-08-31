@@ -1386,6 +1386,62 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    /**
+     * a:chOff/a:chExt declare the coordinate space the shapes of a group are written in.
+     * The library keeps those shapes in slide coordinates, so the space it declares is the
+     * group's own box: the transform is the identity one, and it has to stay that way or
+     * every shape in the group moves.
+     */
+    public function testGroupTransform(): void
+    {
+        $oGroup = new Group();
+        $oShape = $oGroup->createRichTextShape();
+        $oShape->setOffsetX(300)->setOffsetY(100)->setWidth(180)->setHeight(60);
+        $oShape->createTextRun('AAA');
+        $this->oPresentation->getActiveSlide()->addShape($oGroup);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:grpSp/p:grpSpPr/a:xfrm';
+        foreach ([['a:off', 'x', 2857500], ['a:chOff', 'x', 2857500], ['a:off', 'y', 952500], ['a:chOff', 'y', 952500]] as [$node, $attribute, $value]) {
+            $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '/' . $node, $attribute, $value);
+        }
+        foreach ([['a:ext', 'cx', 1714500], ['a:chExt', 'cx', 1714500], ['a:ext', 'cy', 571500], ['a:chExt', 'cy', 571500]] as [$node, $attribute, $value]) {
+            $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '/' . $node, $attribute, $value);
+        }
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'rot');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A group used to take two identifiers and use the second: it was named after one
+     * and numbered with the next, leaving the first unused. Nothing in a file written
+     * by PowerPoint skips a number like that.
+     */
+    public function testGroupIdIsNotSkipped(): void
+    {
+        $oGroup = new Group();
+        $oGroup->createRichTextShape()->createTextRun('AAA');
+        $this->oPresentation->getActiveSlide()->addShape($oGroup);
+        $this->oPresentation->getActiveSlide()->createRichTextShape()->createTextRun('BBB');
+
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr', 'id', 2);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr', 'name', 'Group 2');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:sp/p:nvSpPr/p:cNvPr', 'id', 3);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr', 'id', 4);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testGroupRotation(): void
+    {
+        $oGroup = new Group();
+        $oGroup->createRichTextShape()->createTextRun('AAA');
+        $oGroup->setRotation(30);
+        $this->oPresentation->getActiveSlide()->addShape($oGroup);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:grpSp/p:grpSpPr/a:xfrm';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'rot', 1800000);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testGroupShadow(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -1444,6 +1500,29 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr/a:hlinkClick';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A group holds shapes of its own, and one of them can be a group again. The
+     * relationships were written one level down only, so a hyperlink any deeper
+     * than that was written as an `r:id` pointing at nothing.
+     */
+    public function testHyperlinkInNestedGroup(): void
+    {
+        $oGroup = new Group();
+        $oGroup->createRichTextShape()->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+        $oNested = new Group();
+        $oNested->createRichTextShape()->getHyperlink()->setUrl('https://github.com/PHPOffice/');
+        $oGroup->addShape($oNested);
+        $this->oPresentation->getActiveSlide()->addShape($oGroup);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:grpSp/p:grpSp/p:sp/p:nvSpPr/p:cNvPr/a:hlinkClick';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:id', 'rId3');
+        $this->assertZipXmlElementExists(
+            'ppt/slides/_rels/slide1.xml.rels',
+            '/Relationships/Relationship[@Id="rId3"][@Target="https://github.com/PHPOffice/"]'
+        );
         $this->assertIsSchemaECMA376Valid();
     }
 

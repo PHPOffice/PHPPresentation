@@ -26,7 +26,6 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
-use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
@@ -140,7 +139,7 @@ class PptSlides extends AbstractSlide
         // Write hyperlink relationships?
         if (count($pSlide->getShapeCollection()) > 0) {
             // Loop trough hyperlinks and write relationships
-            foreach ($pSlide->getShapeCollection() as $shape) {
+            foreach ($this->flattenShapes($pSlide->getShapeCollection()) as $shape) {
                 // Hyperlink on shape
                 if ($shape->hasHyperlink()) {
                     // Write relationship for hyperlink
@@ -213,83 +212,6 @@ class PptSlides extends AbstractSlide
                         }
                     }
                 }
-
-                if ($shape instanceof Group) {
-                    foreach ($shape->getShapeCollection() as $subShape) {
-                        // Hyperlink on shape
-                        if ($subShape->hasHyperlink()) {
-                            // Write relationship for hyperlink
-                            $hyperlink = $subShape->getHyperlink();
-                            $hyperlink->relationId = 'rId' . $relId;
-
-                            if (!$hyperlink->isInternal()) {
-                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
-                            } else {
-                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
-                            }
-
-                            ++$relId;
-                        }
-
-                        // Hyperlink on rich text run
-                        if ($subShape instanceof RichText) {
-                            foreach ($subShape->getParagraphs() as $paragraph) {
-                                foreach ($paragraph->getRichTextElements() as $element) {
-                                    if ($element instanceof Run || $element instanceof TextElement) {
-                                        if ($element->hasHyperlink()) {
-                                            // Write relationship for hyperlink
-                                            $hyperlink = $element->getHyperlink();
-                                            $hyperlink->relationId = 'rId' . $relId;
-
-                                            if (!$hyperlink->isInternal()) {
-                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
-                                            } else {
-                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
-                                            }
-
-                                            ++$relId;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        // Hyperlink in table
-                        if ($subShape instanceof ShapeTable) {
-                            // Rows
-                            $countRows = count($subShape->getRows());
-                            for ($row = 0; $row < $countRows; ++$row) {
-                                // Cells in rows
-                                $countCells = count($subShape->getRow($row)->getCells());
-                                for ($cell = 0; $cell < $countCells; ++$cell) {
-                                    $currentCell = $subShape->getRow($row)->getCell($cell);
-                                    // Paragraphs in cell
-                                    foreach ($currentCell->getParagraphs() as $paragraph) {
-                                        // RichText in paragraph
-                                        foreach ($paragraph->getRichTextElements() as $element) {
-                                            // Run or Text in RichText
-                                            if ($element instanceof Run || $element instanceof TextElement) {
-                                                if ($element->hasHyperlink()) {
-                                                    // Write relationship for hyperlink
-                                                    $hyperlink = $element->getHyperlink();
-                                                    $hyperlink->relationId = 'rId' . $relId;
-
-                                                    if (!$hyperlink->isInternal()) {
-                                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
-                                                    } else {
-                                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
-                                                    }
-
-                                                    ++$relId;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -297,20 +219,12 @@ class PptSlides extends AbstractSlide
         if (count($pSlide->getShapeCollection()) > 0) {
             $hasSlideComment = false;
 
-            // Loop trough images and write relationships
-            foreach ($pSlide->getShapeCollection() as $shape) {
+            // Loop trough comments and write relationships
+            foreach ($this->flattenShapes($pSlide->getShapeCollection()) as $shape) {
                 if ($shape instanceof Comment) {
                     $hasSlideComment = true;
 
                     break;
-                } elseif ($shape instanceof Group) {
-                    foreach ($shape->getShapeCollection() as $subShape) {
-                        if ($subShape instanceof Comment) {
-                            $hasSlideComment = true;
-
-                            break 2;
-                        }
-                    }
                 }
             }
 
