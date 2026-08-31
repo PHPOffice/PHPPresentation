@@ -1687,6 +1687,7 @@ class PowerPoint2007 implements ReaderInterface
 
         return $series;
     }
+
     /**
      * @param Cell|RichText $oShape
      */
