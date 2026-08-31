@@ -67,6 +67,23 @@ use ZipArchive;
 class PowerPoint2007 implements ReaderInterface
 {
     /**
+     * The nine plots the Writer knows, by the element each is written as.
+     *
+     * @var array<string, class-string<Chart\Type\AbstractType>>
+     */
+    private const CHART_TYPES = [
+        'c:areaChart' => Chart\Type\Area::class,
+        'c:barChart' => Chart\Type\Bar::class,
+        'c:bar3DChart' => Chart\Type\Bar3D::class,
+        'c:doughnutChart' => Chart\Type\Doughnut::class,
+        'c:lineChart' => Chart\Type\Line::class,
+        'c:pieChart' => Chart\Type\Pie::class,
+        'c:pie3DChart' => Chart\Type\Pie3D::class,
+        'c:radarChart' => Chart\Type\Radar::class,
+        'c:scatterChart' => Chart\Type\Scatter::class,
+    ];
+
+    /**
      * Output Object.
      *
      * @var PhpPresentation
@@ -1395,95 +1412,8 @@ class PowerPoint2007 implements ReaderInterface
                         $oShape->getTitle()->setVisible(false);
                     }
 
-                    if ($oElement = $xmlReader->getElement('/c:chartSpace/c:chart/c:plotArea/c:barChart')) {
-                        $shapeType = new Chart\Type\Bar();
-
-                        $elementBarDir = $xmlReader->getElement('c:barDir', $oElement);
-                        if ($elementBarDir instanceof DOMElement) {
-                            $shapeType->setBarDirection($elementBarDir->getAttribute('val'));
-                        }
-
-                        $elementGrouping = $xmlReader->getElement('c:grouping', $oElement);
-                        if ($elementGrouping instanceof DOMElement) {
-                            $shapeType->setBarGrouping($elementGrouping->getAttribute('val'));
-                        }
-
-                        $elementSeries = $xmlReader->getElements('c:ser', $oElement);
-                        foreach ($elementSeries as $elementSerie) {
-                            $series = new Chart\Series();
-                            if ($elementTitle = $xmlReader->getElement('c:tx/c:strRef/c:strCache/c:pt/c:v', $elementSerie)) {
-                                $series->setTitle($elementTitle->nodeValue);
-                            }
-
-                            $numPoints = 0;
-                            $elementCategory = $xmlReader->getElement('c:cat/c:strRef/c:strCache', $elementSerie);
-                            if ($elementCategoryNumPoints = $xmlReader->getElement('c:ptCount', $elementCategory)) {
-                                $numPoints = (int) $elementCategoryNumPoints->getAttribute('val');
-                            }
-                            $elementValue = $xmlReader->getElement('c:val/c:numRef/c:numCache', $elementSerie);
-                            for ($inc = 0; $inc < $numPoints; ++$inc) {
-                                $key = '';
-                                $val = '0';
-                                if ($subElementCategory = $xmlReader->getElement('c:pt[@idx="' . $inc . '"]/c:v', $elementCategory)) {
-                                    $key = $subElementCategory->nodeValue;
-                                }
-                                if ($subElementValue = $xmlReader->getElement('c:pt[@idx="' . $inc . '"]/c:v', $elementValue)) {
-                                    $val = $subElementValue->nodeValue;
-                                }
-                                $series->addValue($key, $val);
-                            }
-
-                            if ($elementFill = $xmlReader->getElement('c:spPr', $elementSerie)) {
-                                $series->setFill(
-                                    $this->loadStyleFill($xmlReader, $elementFill)
-                                );
-                            }
-
-                            if ($elementFill = $xmlReader->getElement('a:ln', $elementSerie)) {
-                                $series->setOutline(
-                                    $this->loadStyleOutline($xmlReader, $elementFill)
-                                );
-                            }
-
-                            $this->loadSeriesDataPoints($xmlReader, $elementSerie, $series);
-
-                            if ($elementShowLegendKey = $xmlReader->getElement('c:dLbls/c:showLegendKey', $elementSerie)) {
-                                $series->setShowLegendKey((bool) $elementShowLegendKey->getAttribute('val'));
-                            }
-
-                            if ($elementShowVal = $xmlReader->getElement('c:dLbls/c:showVal', $elementSerie)) {
-                                $series->setShowValue((bool) $elementShowVal->getAttribute('val'));
-                            }
-
-                            if ($elementShowCatName = $xmlReader->getElement('c:dLbls/c:showCatName', $elementSerie)) {
-                                $series->setShowCategoryName((bool) $elementShowCatName->getAttribute('val'));
-                            }
-
-                            if ($elementShowSerName = $xmlReader->getElement('c:dLbls/c:showSerName', $elementSerie)) {
-                                $series->setShowSeriesName((bool) $elementShowSerName->getAttribute('val'));
-                            }
-
-                            if ($elementShowPercent = $xmlReader->getElement('c:dLbls/c:showPercent', $elementSerie)) {
-                                $series->setShowPercentage((bool) $elementShowPercent->getAttribute('val'));
-                            }
-
-                            if ($elementShowLeaderLines = $xmlReader->getElement('c:dLbls/c:showLeaderLines', $elementSerie)) {
-                                $series->setShowLeaderLines((bool) $elementShowLeaderLines->getAttribute('val'));
-                            }
-
-                            $shapeType->addSeries($series);
-                        }
-
-                        $elementGapWidth = $xmlReader->getElement('c:gapWidth', $oElement);
-                        if ($elementGapWidth instanceof DOMElement) {
-                            $shapeType->setGapWidthPercent((int) $elementGapWidth->getAttribute('val'));
-                        }
-
-                        $elementOverlap = $xmlReader->getElement('c:overlap', $oElement);
-                        if ($elementOverlap instanceof DOMElement) {
-                            $shapeType->setOverlapWidthPercent((int) $elementOverlap->getAttribute('val'));
-                        }
-
+                    $shapeType = $this->loadTypeChart($xmlReader);
+                    if ($shapeType instanceof Chart\Type\AbstractType) {
                         $oShape->getPlotArea()->setType($shapeType);
                     }
 
@@ -1572,6 +1502,191 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
+    /**
+     * Read the plot of a chart, whichever of the nine kinds it is.
+     *
+     * `c:plotArea` holds exactly one of these elements, and the name of it is the whole of what
+     * says which chart this is: a doughnut and a pie carry the same series, the same categories and
+     * the same labels, and differ by the element they sit in.
+     */
+    protected function loadTypeChart(XMLReader $xmlReader): ?Chart\Type\AbstractType
+    {
+        foreach (self::CHART_TYPES as $name => $class) {
+            $oElement = $xmlReader->getElement('/c:chartSpace/c:chart/c:plotArea/' . $name);
+            if (!$oElement instanceof DOMElement) {
+                continue;
+            }
+
+            $shapeType = new $class();
+            $this->loadTypeChartProperties($xmlReader, $oElement, $shapeType);
+
+            foreach ($xmlReader->getElements('c:ser', $oElement) as $elementSerie) {
+                if ($elementSerie instanceof DOMElement) {
+                    $shapeType->addSeries($this->loadSeries($xmlReader, $elementSerie));
+                }
+            }
+
+            return $shapeType;
+        }
+
+        return null;
+    }
+
+    /**
+     * The settings that belong to the kind of chart this is, rather than to its series.
+     *
+     * Read by what the type can be told rather than by which element it came from: `c:gapWidth` is
+     * written by the bar charts and by the doughnut, and only the first has somewhere to put it.
+     */
+    protected function loadTypeChartProperties(XMLReader $xmlReader, DOMElement $oElement, Chart\Type\AbstractType $shapeType): void
+    {
+        if ($shapeType instanceof Chart\Type\AbstractTypeBar) {
+            $element = $xmlReader->getElement('c:barDir', $oElement);
+            if ($element instanceof DOMElement) {
+                $shapeType->setBarDirection($element->getAttribute('val'));
+            }
+
+            $element = $xmlReader->getElement('c:grouping', $oElement);
+            if ($element instanceof DOMElement) {
+                $shapeType->setBarGrouping($element->getAttribute('val'));
+            }
+
+            $element = $xmlReader->getElement('c:gapWidth', $oElement);
+            if ($element instanceof DOMElement) {
+                $shapeType->setGapWidthPercent((int) $element->getAttribute('val'));
+            }
+
+            $element = $xmlReader->getElement('c:overlap', $oElement);
+            if ($element instanceof DOMElement) {
+                $shapeType->setOverlapWidthPercent((int) $element->getAttribute('val'));
+            }
+        }
+
+        if ($shapeType instanceof Chart\Type\Doughnut) {
+            $element = $xmlReader->getElement('c:holeSize', $oElement);
+            if ($element instanceof DOMElement) {
+                $shapeType->setHoleSize((int) $element->getAttribute('val'));
+            }
+
+            $element = $xmlReader->getElement('c:firstSliceAng', $oElement);
+            if ($element instanceof DOMElement) {
+                $shapeType->setFirstSliceAngle((int) $element->getAttribute('val'));
+            }
+        }
+
+        // Written inside the first series, and held on the type: a pie explodes as a whole, and a
+        // line is smooth or is not, whatever the file repeats for every series it has.
+        if ($shapeType instanceof Chart\Type\AbstractTypePie) {
+            $element = $xmlReader->getElement('c:ser/c:explosion', $oElement);
+            if ($element instanceof DOMElement) {
+                $shapeType->setExplosion((int) $element->getAttribute('val'));
+            }
+        }
+
+        if ($shapeType instanceof Chart\Type\AbstractTypeLine) {
+            $element = $xmlReader->getElement('c:ser/c:smooth', $oElement);
+            if ($element instanceof DOMElement) {
+                $shapeType->setIsSmooth((bool) $element->getAttribute('val'));
+            }
+        }
+    }
+
+    /**
+     * The points a series holds, from whichever element of it holds them.
+     *
+     * A chart written with a worksheet points at the cells and keeps a copy of what it last read
+     * there (`c:numRef/c:numCache`); one written without a worksheet holds the points itself
+     * (`c:numLit`). The two carry the same `c:ptCount` and the same `c:pt`. Whether they are called
+     * `str` or `num` follows the values rather than the axis, so both are looked for on both. A
+     * scatter chart calls its two axes `c:xVal` and `c:yVal` where every other chart says `c:cat`
+     * and `c:val`, and means the same by them.
+     */
+    private function loadSeriesPoints(XMLReader $xmlReader, DOMElement $elementSerie, string ...$names): ?DOMElement
+    {
+        foreach ($names as $name) {
+            foreach (['c:strRef/c:strCache', 'c:numRef/c:numCache', 'c:strLit', 'c:numLit'] as $holder) {
+                $element = $xmlReader->getElement($name . '/' . $holder, $elementSerie);
+                if ($element instanceof DOMElement) {
+                    return $element;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Read one `c:ser`, which is the same element whatever chart holds it.
+     */
+    protected function loadSeries(XMLReader $xmlReader, DOMElement $elementSerie): Chart\Series
+    {
+        $series = new Chart\Series();
+        // The name of the series is a cell of the worksheet when there is one, and the text itself
+        // when there is not.
+        $elementTitle = $xmlReader->getElement('c:tx/c:strRef/c:strCache/c:pt/c:v', $elementSerie)
+            ?? $xmlReader->getElement('c:tx/c:v', $elementSerie);
+        if ($elementTitle instanceof DOMElement) {
+            $series->setTitle($elementTitle->nodeValue);
+        }
+
+        $numPoints = 0;
+        $elementCategory = $this->loadSeriesPoints($xmlReader, $elementSerie, 'c:cat', 'c:xVal');
+        if ($elementCategoryNumPoints = $xmlReader->getElement('c:ptCount', $elementCategory)) {
+            $numPoints = (int) $elementCategoryNumPoints->getAttribute('val');
+        }
+        $elementValue = $this->loadSeriesPoints($xmlReader, $elementSerie, 'c:val', 'c:yVal');
+        for ($inc = 0; $inc < $numPoints; ++$inc) {
+            $key = '';
+            $val = '0';
+            if ($subElementCategory = $xmlReader->getElement('c:pt[@idx="' . $inc . '"]/c:v', $elementCategory)) {
+                $key = $subElementCategory->nodeValue;
+            }
+            if ($subElementValue = $xmlReader->getElement('c:pt[@idx="' . $inc . '"]/c:v', $elementValue)) {
+                $val = $subElementValue->nodeValue;
+            }
+            $series->addValue($key, $val);
+        }
+
+        if ($elementFill = $xmlReader->getElement('c:spPr', $elementSerie)) {
+            $series->setFill(
+                $this->loadStyleFill($xmlReader, $elementFill)
+            );
+        }
+
+        if ($elementFill = $xmlReader->getElement('a:ln', $elementSerie)) {
+            $series->setOutline(
+                $this->loadStyleOutline($xmlReader, $elementFill)
+            );
+        }
+
+        $this->loadSeriesDataPoints($xmlReader, $elementSerie, $series);
+
+        if ($elementShowLegendKey = $xmlReader->getElement('c:dLbls/c:showLegendKey', $elementSerie)) {
+            $series->setShowLegendKey((bool) $elementShowLegendKey->getAttribute('val'));
+        }
+
+        if ($elementShowVal = $xmlReader->getElement('c:dLbls/c:showVal', $elementSerie)) {
+            $series->setShowValue((bool) $elementShowVal->getAttribute('val'));
+        }
+
+        if ($elementShowCatName = $xmlReader->getElement('c:dLbls/c:showCatName', $elementSerie)) {
+            $series->setShowCategoryName((bool) $elementShowCatName->getAttribute('val'));
+        }
+
+        if ($elementShowSerName = $xmlReader->getElement('c:dLbls/c:showSerName', $elementSerie)) {
+            $series->setShowSeriesName((bool) $elementShowSerName->getAttribute('val'));
+        }
+
+        if ($elementShowPercent = $xmlReader->getElement('c:dLbls/c:showPercent', $elementSerie)) {
+            $series->setShowPercentage((bool) $elementShowPercent->getAttribute('val'));
+        }
+
+        if ($elementShowLeaderLines = $xmlReader->getElement('c:dLbls/c:showLeaderLines', $elementSerie)) {
+            $series->setShowLeaderLines((bool) $elementShowLeaderLines->getAttribute('val'));
+        }
+
+        return $series;
+    }
     /**
      * @param Cell|RichText $oShape
      */

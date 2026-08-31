@@ -29,7 +29,16 @@ use PhpOffice\PhpPresentation\Reader\PowerPoint2007;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
@@ -1243,6 +1252,145 @@ class PowerPoint2007Test extends TestCase
 
         self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointFill(1)->getFillType());
         self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointOutline(1)->getFill()->getFillType());
+    }
+
+    /**
+     * @param class-string<AbstractType> $className
+     *
+     * @dataProvider dataProviderChartTypes
+     */
+    #[DataProvider('dataProviderChartTypes')]
+    public function testChartTypeIsReadBack(string $className): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oType = new $className();
+        $oType->addSeries(new Series('Downloads', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($oType);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $oTypeRead = $arrayShape[0]->getPlotArea()->getType();
+        self::assertInstanceOf($className, $oTypeRead);
+
+        $seriesRead = $oTypeRead->getSeries();
+        self::assertCount(1, $seriesRead);
+        $seriesRead = reset($seriesRead);
+        self::assertEquals('Downloads', $seriesRead->getTitle());
+        self::assertEquals(['Jan' => '1', 'Feb' => '5', 'Mar' => '2'], $seriesRead->getValues());
+    }
+
+    /**
+     * @return array<int, array<int, string>>
+     */
+    public static function dataProviderChartTypes(): array
+    {
+        return [
+            [Area::class],
+            [Bar::class],
+            [Bar3D::class],
+            [Doughnut::class],
+            [Line::class],
+            [Pie::class],
+            [Pie3D::class],
+            [Radar::class],
+            [Scatter::class],
+        ];
+    }
+
+    public function testBarSettingsAreReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oBar = new Bar();
+        $oBar->setBarDirection(Bar::DIRECTION_HORIZONTAL)
+            ->setBarGrouping(Bar::GROUPING_STACKED)
+            ->setGapWidthPercent(42)
+            ->setOverlapWidthPercent(17);
+        $oBar->addSeries(new Series('Downloads', ['Jan' => '1', 'Feb' => '5']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($oBar);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $oBarRead = $arrayShape[0]->getPlotArea()->getType();
+        self::assertInstanceOf(Bar::class, $oBarRead);
+        self::assertEquals(Bar::DIRECTION_HORIZONTAL, $oBarRead->getBarDirection());
+        self::assertEquals(Bar::GROUPING_STACKED, $oBarRead->getBarGrouping());
+        self::assertEquals(42, $oBarRead->getGapWidthPercent());
+        self::assertEquals(17, $oBarRead->getOverlapWidthPercent());
+    }
+
+    public function testPieSettingsAreReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oDoughnut = new Doughnut();
+        $oDoughnut->setHoleSize(35)->setFirstSliceAngle(90);
+        $oDoughnut->addSeries(new Series('Downloads', ['Jan' => '1', 'Feb' => '5']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($oDoughnut);
+
+        // The explosion of a slice is written by the pie in three dimensions alone, so it is the one
+        // that can be read back.
+        $oPie3D = new Pie3D();
+        $oPie3D->setExplosion(25);
+        $oPie3D->addSeries(new Series('Downloads', ['Jan' => '1', 'Feb' => '5']));
+        $oPhpPresentation->createSlide()->createChartShape()->getPlotArea()->setType($oPie3D);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $oDoughnutRead = $arrayShape[0]->getPlotArea()->getType();
+        self::assertInstanceOf(Doughnut::class, $oDoughnutRead);
+        self::assertEquals(35, $oDoughnutRead->getHoleSize());
+        self::assertEquals(90, $oDoughnutRead->getFirstSliceAngle());
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(1)->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $oPie3DRead = $arrayShape[0]->getPlotArea()->getType();
+        self::assertInstanceOf(Pie3D::class, $oPie3DRead);
+        self::assertEquals(25, $oPie3DRead->getExplosion());
+    }
+
+    public function testLineSmoothIsReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oLine = new Line();
+        $oLine->setIsSmooth(true);
+        $oLine->addSeries(new Series('Downloads', ['Jan' => '1', 'Feb' => '5']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($oLine);
+
+        $oLine = new Line();
+        $oLine->setIsSmooth(false);
+        $oLine->addSeries(new Series('Downloads', ['Jan' => '1', 'Feb' => '5']));
+        $oPhpPresentation->createSlide()->createChartShape()->getPlotArea()->setType($oLine);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $oLineRead = $arrayShape[0]->getPlotArea()->getType();
+        self::assertInstanceOf(Line::class, $oLineRead);
+        self::assertTrue($oLineRead->isSmooth());
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(1)->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $oLineRead = $arrayShape[0]->getPlotArea()->getType();
+        self::assertInstanceOf(Line::class, $oLineRead);
+        self::assertFalse($oLineRead->isSmooth());
     }
 
     public function testAxisTextIsReadBack(): void

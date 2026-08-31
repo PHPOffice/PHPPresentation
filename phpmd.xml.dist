@@ -28,8 +28,9 @@
         <!-- Reader/PowerPoint2007 reads a chart axis, and an axis is a class of its own -->
         <!-- Reader/PowerPoint2007 reads a group, which is a shape holding shapes: the group,
              the container it is put in, and the table it can hold are three more classes -->
+        <!-- Reader/PowerPoint2007 reads the nine kinds of chart, and each kind is a class -->
 		<properties>
-            <property name="maximum" value="43" />
+            <property name="maximum" value="47" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">
