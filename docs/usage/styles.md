@@ -27,6 +27,24 @@ A shape always has a fill, so `getFill()` never hands back a null. A shape start
 the shape paint it. `setFill(null)` is deprecated; pass a `Fill` of type `Fill::FILL_UNSET` to say
 the same thing outright.
 
+### Patterns
+
+A fill type may also be one of the 54 patterns DrawingML defines, in which case `startColor` paints
+the pattern and `endColor` paints the ground behind it.
+
+``` php
+<?php
+
+$shape->getFill()
+    ->setFillType(Fill::FILL_PATTERN_WDDNDIAG)
+    ->setStartColor(new Color('FF4472C4'))
+    ->setEndColor(new Color('FFFFFFFF'));
+```
+
+The constants are named after the pattern they write: `Fill::FILL_PATTERN_LGGRID`,
+`Fill::FILL_PATTERN_SOLIDDMND`, `Fill::FILL_PATTERN_DIAGBRICK`, and so on down `Fill::PATTERN_TYPES`,
+which lists all of them.
+
 ## Border
 
 Use this style to define border of a shape as example below.

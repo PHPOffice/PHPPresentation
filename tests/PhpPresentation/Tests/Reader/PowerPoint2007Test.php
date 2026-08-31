@@ -1254,6 +1254,41 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointOutline(1)->getFill()->getFillType());
     }
 
+    public function testSeriesDataPointPatternFillIsReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSeries = new Series('Downloads', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $oSeries->getDataPointFill(0)
+            ->setFillType(Fill::FILL_PATTERN_WDDNDIAG)
+            ->setStartColor(new Color(Color::COLOR_BLUE))
+            ->setEndColor(new Color(Color::COLOR_YELLOW));
+        // A pattern the writer leaves without `prst`, because it is not one: the element that comes
+        // out carries two colours and names no pattern, and there is no fill type to read it back
+        // as. It has to arrive as no fill at all rather than as the string it went in as.
+        $oSeries->getDataPointFill(1)->setFillType('notAPattern');
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($oBar);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $oBarRead = $arrayShape[0]->getPlotArea()->getType();
+        self::assertInstanceOf(Bar::class, $oBarRead);
+        $seriesRead = $oBarRead->getSeries();
+        $seriesRead = reset($seriesRead);
+
+        self::assertEquals(Fill::FILL_PATTERN_WDDNDIAG, $seriesRead->getDataPointFill(0)->getFillType());
+        self::assertEquals('0000FF', $seriesRead->getDataPointFill(0)->getStartColor()->getRGB());
+        self::assertEquals('FFFF00', $seriesRead->getDataPointFill(0)->getEndColor()->getRGB());
+
+        self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointFill(1)->getFillType());
+    }
+
     /**
      * @param class-string<AbstractType> $className
      *

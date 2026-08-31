@@ -2008,6 +2008,29 @@ class PowerPoint2007 implements ReaderInterface
             return $oFill;
         }
 
+        // Pattern fill. `prst` is what names the pattern, and it is optional in the schema, so a
+        // `a:pattFill` without one names none -- there is no fill type to read it back as, and it
+        // is written by nothing that knows what it is doing. Read as the absence of a fill, the
+        // way an element this reader does not know is.
+        $oElementFill = $xmlReader->getElement('a:pattFill', $oElement);
+        if ($oElementFill instanceof DOMElement
+            && in_array($oElementFill->getAttribute('prst'), Fill::PATTERN_TYPES, true)) {
+            $oFill = new Fill();
+            $oFill->setFillType($oElementFill->getAttribute('prst'));
+
+            $oElementColor = $xmlReader->getElement('a:fgClr/a:srgbClr', $oElementFill);
+            if ($oElementColor instanceof DOMElement) {
+                $oFill->setStartColor($this->loadStyleColor($xmlReader, $oElementColor));
+            }
+
+            $oElementColor = $xmlReader->getElement('a:bgClr/a:srgbClr', $oElementFill);
+            if ($oElementColor instanceof DOMElement) {
+                $oFill->setEndColor($this->loadStyleColor($xmlReader, $oElementColor));
+            }
+
+            return $oFill;
+        }
+
         // Solid fill
         $oElementFill = $xmlReader->getElement('a:solidFill', $oElement);
         if ($oElementFill instanceof DOMElement) {
