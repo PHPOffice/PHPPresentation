@@ -244,3 +244,31 @@ use PhpOffice\PhpPresentation\Shape\RichText\Run;
 $run = new Run();
 $run->setLanguage('fr-FR');
 ```
+## Field
+
+A field is a run whose text the application recomputes: the number of the slide it ended up on,
+the number of slides there are, the date the presentation is opened on. It stands among the runs
+of a paragraph rather than taking the whole shape, so a sentence can be part written and part
+computed.
+
+The text a field is created with is what it stands in for: an application that does not know the
+kind of field shows that text instead of computing one.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\RichText\Field;
+
+$paragraph = $slide->createRichTextShape()->getActiveParagraph();
+$paragraph->createTextRun('page ');
+$paragraph->createField(Field::TYPE_SLIDENUM, '<nr.>');
+$paragraph->createTextRun(' of ');
+$paragraph->createField(Field::TYPE_SLIDECOUNT, '12');
+```
+
+`Field::TYPE_SLIDENUM`, `Field::TYPE_SLIDECOUNT` and `Field::TYPE_DATETIME` are the kinds named
+here, but the kind is an open string rather than a list, so any name a reading application knows
+can be given: `datetime1` to `datetime13` for the dated formats, `author`, `file`.
+
+Only the PowerPoint2007 writer writes fields as fields. The other writers write what the field
+stands in for, as the text it is.

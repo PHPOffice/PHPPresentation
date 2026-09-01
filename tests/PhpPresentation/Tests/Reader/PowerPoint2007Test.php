@@ -43,6 +43,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table;
@@ -1905,5 +1906,38 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(18, $arrayElements[0]->getFont()->getSize());
         self::assertTrue($arrayElements[0]->getFont()->isBold());
         self::assertEquals('FFCC0000', $arrayElements[0]->getFont()->getColor()->getARGB());
+    }
+
+    public function testFieldIsReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oParagraph = $oPhpPresentation->getActiveSlide()->createRichTextShape()->getActiveParagraph();
+        $oParagraph->createTextRun('page ');
+        $oParagraph->createField(Field::TYPE_SLIDENUM, '<nr.>')->getFont()->setBold(true);
+        $oParagraph->createTextRun(' of ');
+        $oParagraph->createField(Field::TYPE_SLIDECOUNT, '12');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $arrayElements = $arrayShape[0]->getActiveParagraph()->getRichTextElements();
+        self::assertCount(4, $arrayElements);
+
+        // what a field says is a stand-in for what it means, so the kind of field has to come back
+        self::assertInstanceOf(Field::class, $arrayElements[1]);
+        self::assertEquals(Field::TYPE_SLIDENUM, $arrayElements[1]->getType());
+        self::assertEquals('<nr.>', $arrayElements[1]->getText());
+        self::assertTrue($arrayElements[1]->getFont()->isBold());
+
+        self::assertInstanceOf(Field::class, $arrayElements[3]);
+        self::assertEquals(Field::TYPE_SLIDECOUNT, $arrayElements[3]->getType());
+
+        // and the runs around it stay runs
+        self::assertNotInstanceOf(Field::class, $arrayElements[0]);
+        self::assertEquals('page ', $arrayElements[0]->getText());
     }
 }
