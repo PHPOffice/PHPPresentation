@@ -36,6 +36,7 @@ use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
+use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
@@ -61,6 +62,22 @@ class Content extends AbstractDecoratorWriter
     private const STYLE_PREFIX = [
         'paragraph' => 'P',
         'text' => 'T',
+    ];
+
+    /**
+     * The element each kind of field writes its text with, where OpenDocument has one.
+     *
+     * The dated formats are not here: they are resolved by their prefix, since OOXML numbers
+     * fourteen of them and OpenDocument has two elements for the lot.
+     */
+    private const FIELD_ODF = [
+        Field::TYPE_SLIDENUM => 'text:page-number',
+        Field::TYPE_SLIDECOUNT => 'text:page-count',
+        'author' => 'text:author-name',
+        'file' => 'text:file-name',
+        'file1' => 'text:file-name',
+        'file2' => 'text:file-name',
+        'file3' => 'text:file-name',
     ];
 
     /**
@@ -641,8 +658,8 @@ class Content extends AbstractDecoratorWriter
                             $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($richtext->getHyperlink()));
                             $objWriter->text($richtext->getText());
                             $objWriter->endElement();
-                        } elseif (null !== $fieldName) {
-                            $objWriter->writeElement($fieldName, $richtext->getText());
+                        } elseif (null !== ($field = $this->getFieldElement($richtext, $fieldName))) {
+                            $objWriter->writeElement($field, $richtext->getText());
                         } else {
                             $objWriter->text($richtext->getText());
                         }
@@ -706,8 +723,8 @@ class Content extends AbstractDecoratorWriter
                             $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($richtext->getHyperlink()));
                             $objWriter->text($richtext->getText());
                             $objWriter->endElement();
-                        } elseif (null !== $fieldName) {
-                            $objWriter->writeElement($fieldName, $richtext->getText());
+                        } elseif (null !== ($field = $this->getFieldElement($richtext, $fieldName))) {
+                            $objWriter->writeElement($field, $richtext->getText());
                         } else {
                             $objWriter->text($richtext->getText());
                         }
@@ -745,6 +762,31 @@ class Content extends AbstractDecoratorWriter
 
         // > draw:frame
         $objWriter->endElement();
+    }
+
+    /**
+     * The element a field writes its text with.
+     *
+     * OpenDocument names a field by what it is rather than by how it is formatted, so the
+     * fourteen dated formats OOXML numbers all say "date" here -- save the four that carry no
+     * date at all -- and the format itself would travel as a data style. A field OpenDocument
+     * has no element for is written as the text it stands in for, which is what an application
+     * that cannot compute it would show anyway.
+     */
+    protected function getFieldElement(TextElement $richtext, ?string $placeholderField): ?string
+    {
+        if (!$richtext instanceof Field) {
+            return $placeholderField;
+        }
+
+        $type = $richtext->getType();
+        if (0 === strpos($type, 'datetime')) {
+            return in_array($type, ['datetime10', 'datetime11', 'datetime12', 'datetime13'], true)
+                ? 'text:time'
+                : 'text:date';
+        }
+
+        return self::FIELD_ODF[$type] ?? null;
     }
 
     /**

@@ -27,6 +27,7 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table;
@@ -1550,5 +1551,37 @@ class ODPresentationTest extends TestCase
                 self::assertEquals($text, $oTable->getRow($rowIndex)->getCell($cellIndex)->getPlainText());
             }
         }
+    }
+
+    public function testFieldSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oParagraph = $oPhpPresentation->getActiveSlide()->createRichTextShape()->getActiveParagraph();
+        $oParagraph->createTextRun('page ');
+        $oParagraph->createField(Field::TYPE_SLIDENUM, '<nr.>');
+        $oParagraph->createTextRun(' of ');
+        $oParagraph->createField(Field::TYPE_SLIDECOUNT, '12');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $arrayElements = $arrayShape[0]->getParagraph()->getRichTextElements();
+        self::assertCount(4, $arrayElements);
+
+        self::assertInstanceOf(Field::class, $arrayElements[1]);
+        self::assertEquals(Field::TYPE_SLIDENUM, $arrayElements[1]->getType());
+        // the text a field carries is what it stands in for, and it belongs to the field rather
+        // than to the span around it
+        self::assertEquals('<nr.>', $arrayElements[1]->getText());
+
+        self::assertInstanceOf(Field::class, $arrayElements[3]);
+        self::assertEquals(Field::TYPE_SLIDECOUNT, $arrayElements[3]->getType());
+
+        self::assertNotInstanceOf(Field::class, $arrayElements[2]);
+        self::assertEquals(' of ', $arrayElements[2]->getText());
     }
 }

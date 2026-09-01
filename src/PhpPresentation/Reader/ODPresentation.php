@@ -32,6 +32,7 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\Table\Cell;
 use PhpOffice\PhpPresentation\Shape\Table\Row;
@@ -52,6 +53,23 @@ use ZipArchive;
  */
 class ODPresentation implements ReaderInterface
 {
+    /**
+     * The kind of field each OpenDocument field element stands for.
+     *
+     * `text:time` says only that there is no date in it: which of the timed formats it is travels
+     * as a data style this reader does not read, so the plainest of them is what comes back.
+     *
+     * @var array<string, string>
+     */
+    protected const FIELD_OOXML = [
+        'text:page-number' => Field::TYPE_SLIDENUM,
+        'text:page-count' => Field::TYPE_SLIDECOUNT,
+        'text:date' => Field::TYPE_DATETIME,
+        'text:time' => 'datetime10',
+        'text:author-name' => 'author',
+        'text:file-name' => 'file',
+    ];
+
     /**
      * The reverse of what the Writer spells out: a style, a type and a width back into the single
      * token OOXML names an underline with. `words` is not here -- ODF says it with a mode.
@@ -995,7 +1013,16 @@ class ODPresentation implements ReaderInterface
         if ($this->oXMLReader->elementExists('text:line-break', $oNodeParent)) {
             $oParagraph->createBreak();
         } else {
-            $oTextRun = $oParagraph->createTextRun();
+            // A field is a run whose text the reading application recomputes, and OpenDocument
+            // wraps it in the same `text:span` an ordinary run gets, so what it is has to be
+            // looked for before the run is made
+            $oNodeField = $this->oXMLReader->getElement(
+                '(' . implode('|', array_keys(self::FIELD_OOXML)) . ')',
+                $oNodeParent
+            );
+            $oTextRun = $oNodeField instanceof DOMElement
+                ? $oParagraph->createField(self::FIELD_OOXML[$oNodeField->nodeName])
+                : $oParagraph->createTextRun();
             if ($oNodeParent->hasAttribute('text:style-name')) {
                 $keyStyle = $oNodeParent->getAttribute('text:style-name');
                 if (isset($this->arrayStyles[$keyStyle])) {
@@ -1013,6 +1040,9 @@ class ODPresentation implements ReaderInterface
                         $oTextRun->getHyperlink()->setUrl($href);
                     }
                 }
+            } elseif ($oNodeField instanceof DOMElement) {
+                // the span holds the field, and the field holds the text it stands in for
+                $oTextRun->setText($oNodeField->nodeValue);
             } else {
                 $oTextRun->setText($oNodeParent->nodeValue);
             }
