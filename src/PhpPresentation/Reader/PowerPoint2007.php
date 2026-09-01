@@ -1942,8 +1942,11 @@ class PowerPoint2007 implements ReaderInterface
         $oColor->setRGB($oElement->getAttribute('val'));
         $oElementAlpha = $xmlReader->getElement('a:alpha', $oElement);
         if ($oElementAlpha instanceof DOMElement && $oElementAlpha->hasAttribute('val')) {
-            $alpha = strtoupper(dechex((int) (((int) $oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
-            $oColor->setRGB($oElement->getAttribute('val'), $alpha);
+            // `a:alpha` counts in thousandths of a percent, which is the percent `setAlpha()` takes
+            // and turns into the hex pair in front of the colour. Doing that arithmetic here read
+            // every alpha but `FF` back as none at all, and wrote it as a single character, which
+            // took the first digit of the colour with it.
+            $oColor->setAlpha((int) round((int) $oElementAlpha->getAttribute('val') / 1000));
         }
 
         return $oColor;

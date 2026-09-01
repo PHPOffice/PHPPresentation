@@ -123,7 +123,8 @@ class Color implements ComparableInterface
             $alpha = 100;
         }
         $alpha = round(($alpha / 100) * 255);
-        $alpha = dechex((int) $alpha);
+        // upper case, as the colour behind it and the `COLOR_*` constants are
+        $alpha = strtoupper(dechex((int) $alpha));
         $alpha = str_pad($alpha, 2, '0', STR_PAD_LEFT);
         // The colour keeps its six characters whether it arrived with an alpha in front of it or not
         $this->argb = $alpha . $this->getRGB();

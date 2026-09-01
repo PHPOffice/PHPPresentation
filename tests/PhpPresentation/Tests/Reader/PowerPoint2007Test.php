@@ -1254,6 +1254,51 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(Fill::FILL_NONE, $seriesRead->getDataPointOutline(1)->getFill()->getFillType());
     }
 
+    /**
+     * @dataProvider dataProviderColorAlpha
+     */
+    #[DataProvider('dataProviderColorAlpha')]
+    public function testColorAlphaIsReadBack(string $argb, int $expectedAlpha): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSeries = new Series('Downloads', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $oSeries->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color($argb));
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($oBar);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $seriesRead = $arrayShape[0]->getPlotArea()->getType()->getSeries();
+        $seriesRead = reset($seriesRead);
+
+        // the colour comes back whole: an alpha that is not `FF` used to be read as `0`, and as a
+        // single character it took the first digit of the colour with it
+        self::assertEquals($argb, $seriesRead->getFill()->getStartColor()->getARGB());
+        self::assertEquals(substr($argb, 2), $seriesRead->getFill()->getStartColor()->getRGB());
+        self::assertEquals($expectedAlpha, $seriesRead->getFill()->getStartColor()->getAlpha());
+    }
+
+    /**
+     * @return array<array{string, int}>
+     */
+    public static function dataProviderColorAlpha(): array
+    {
+        return [
+            // ARGB written, and the percent it is read back as
+            ['FFFF7700', 100],
+            // 84%: the plate a data label sits on
+            ['D6FFFFFF', 84],
+            // an alpha of one hex digit, which has to keep its leading zero
+            ['0A00FF00', 4],
+        ];
+    }
+
     public function testSeriesDataPointPatternFillIsReadBack(): void
     {
         $oPhpPresentation = new PhpPresentation();
