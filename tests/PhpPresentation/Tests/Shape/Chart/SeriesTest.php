@@ -112,6 +112,18 @@ class SeriesTest extends TestCase
         self::assertEquals(Fill::FILL_NONE, $object->getFill()->getFillType());
     }
 
+    public function testLabelFill(): void
+    {
+        $object = new Series();
+
+        // unlike the series fill, the labels are born with none, and asking for none puts it back
+        self::assertEquals(Fill::FILL_UNSET, $object->getLabelFill()->getFillType());
+        self::assertInstanceOf(Series::class, $object->setLabelFill(new Fill()));
+        self::assertEquals(Fill::FILL_NONE, $object->getLabelFill()->getFillType());
+        self::assertInstanceOf(Series::class, $object->setLabelFill());
+        self::assertEquals(Fill::FILL_UNSET, $object->getLabelFill()->getFillType());
+    }
+
     public function testFont(): void
     {
         $object = new Series();

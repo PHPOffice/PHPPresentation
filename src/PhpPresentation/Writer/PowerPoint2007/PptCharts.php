@@ -307,6 +307,23 @@ class PptCharts extends AbstractDecoratorWriter
             || $series->hasShowPercentage();
     }
 
+    /**
+     * The plate a data label sits on. A series that never named a label fill writes no `c:spPr`
+     * at all, rather than an empty one, and the application draws the label as it always did.
+     */
+    protected function writeDataLabelsFill(XMLWriter $objWriter, Series $series): void
+    {
+        $fill = $series->getLabelFill();
+        if (Fill::FILL_UNSET == $fill->getFillType()) {
+            return;
+        }
+
+        // c:ser > c:dLbls > c:spPr
+        $objWriter->startElement('c:spPr');
+        $this->writeFill($objWriter, $fill);
+        $objWriter->endElement();
+    }
+
     protected function writeElementWithValAttribute(XMLWriter $objWriter, string $elementName, string $value): void
     {
         $objWriter->startElement($elementName);
@@ -758,6 +775,8 @@ class PptCharts extends AbstractDecoratorWriter
                     $objWriter->endElement();
                 }
 
+                $this->writeDataLabelsFill($objWriter, $series);
+
                 // c:ser > c:dLbls > c:showVal
                 $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
@@ -906,6 +925,8 @@ class PptCharts extends AbstractDecoratorWriter
                     $objWriter->writeAttribute('sourceLinked', '0');
                     $objWriter->endElement();
                 }
+
+                $this->writeDataLabelsFill($objWriter, $series);
 
                 // c:txPr
                 $objWriter->startElement('c:txPr');
@@ -1133,6 +1154,8 @@ class PptCharts extends AbstractDecoratorWriter
                     $objWriter->endElement();
                 }
 
+                $this->writeDataLabelsFill($objWriter, $series);
+
                 // c:txPr
                 $objWriter->startElement('c:txPr');
 
@@ -1354,6 +1377,8 @@ class PptCharts extends AbstractDecoratorWriter
                     $objWriter->endElement();
                 }
 
+                $this->writeDataLabelsFill($objWriter, $series);
+
                 // c:dLbls\c:txPr
                 $objWriter->startElement('c:txPr');
                 $objWriter->writeElement('a:bodyPr', null);
@@ -1496,6 +1521,8 @@ class PptCharts extends AbstractDecoratorWriter
                     $objWriter->writeAttribute('sourceLinked', '0');
                     $objWriter->endElement();
                 }
+
+                $this->writeDataLabelsFill($objWriter, $series);
 
                 // c:txPr
                 $objWriter->startElement('c:txPr');
@@ -1672,6 +1699,8 @@ class PptCharts extends AbstractDecoratorWriter
                     $objWriter->endElement();
                 }
 
+                $this->writeDataLabelsFill($objWriter, $series);
+
                 // c:txPr
                 $objWriter->startElement('c:txPr');
 
@@ -1833,6 +1862,8 @@ class PptCharts extends AbstractDecoratorWriter
                     $objWriter->writeAttribute('sourceLinked', '0');
                     $objWriter->endElement();
                 }
+
+                $this->writeDataLabelsFill($objWriter, $series);
 
                 // c:txPr
                 $objWriter->startElement('c:txPr');
@@ -2022,6 +2053,8 @@ class PptCharts extends AbstractDecoratorWriter
                     $objWriter->endElement();
                 }
 
+                $this->writeDataLabelsFill($objWriter, $series);
+
                 // c:txPr
                 $objWriter->startElement('c:txPr');
 
@@ -2196,6 +2229,8 @@ class PptCharts extends AbstractDecoratorWriter
                     $objWriter->writeAttribute('sourceLinked', '0');
                     $objWriter->endElement();
                 }
+
+                $this->writeDataLabelsFill($objWriter, $series);
 
                 // c:txPr
                 $objWriter->startElement('c:txPr');

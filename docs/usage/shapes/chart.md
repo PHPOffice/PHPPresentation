@@ -344,6 +344,20 @@ $series = new Series('Downloads', $seriesData);
 $series->setLabelPosition(Series::LABEL_INSIDEEND);
 ```
 
+#### Label Fill
+You can draw a plate behind the data labels, so that they stay readable over the chart.
+A series that names no label fill leaves the labels as the application draws them.
+
+``` php
+<?php
+
+$series = new Series('Downloads', $seriesData);
+// White, and see-through enough to read the chart under it
+$series->getLabelFill()
+    ->setFillType(Fill::FILL_SOLID)
+    ->setStartColor(new Color('D6FFFFFF'));
+```
+
 #### Marker
 You can custom the marker of a serie, for Line & Scatter charts.
 
