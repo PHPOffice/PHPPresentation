@@ -52,6 +52,7 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007 as PowerPoint2007Writer;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -1966,5 +1967,51 @@ class PowerPoint2007Test extends TestCase
         // and the runs around it stay runs
         self::assertNotInstanceOf(Field::class, $arrayElements[0]);
         self::assertEquals('page ', $arrayElements[0]->getText());
+    }
+
+    public function testShapeShadowSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->getShadow()
+            ->setVisible(true)
+            ->setAlignment(Shadow::SHADOW_BOTTOM_RIGHT)
+            ->setColor(new Color('FF00FF00'))
+            ->setAlpha(40);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // the alignment was read off `a:effectLst` rather than off the shadow inside it, and the
+        // colour is written as `a:srgbClr` while only `a:prstClr` was read back
+        $oShadow = $arrayShape[0]->getShadow();
+        self::assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $oShadow->getAlignment());
+        self::assertEquals('FF00FF00', $oShadow->getColor()->getARGB());
+        self::assertEquals(40, $oShadow->getAlpha());
+    }
+
+    public function testShapeWrapSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->setWrap(RichText::WRAP_NONE);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // `wrap` is written on `a:bodyPr` beside the insets, and nothing read it back
+        self::assertEquals(RichText::WRAP_NONE, $arrayShape[0]->getWrap());
     }
 }

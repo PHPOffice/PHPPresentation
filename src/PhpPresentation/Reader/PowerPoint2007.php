@@ -1082,21 +1082,26 @@ class PowerPoint2007 implements ReaderInterface
                     $oShadow->setDirection((int) CommonDrawing::angleToDegrees((int) $nodeShadow->getAttribute('dir')));
                 }
                 if ($nodeShadow->hasAttribute('algn')) {
-                    $oShadow->setAlignment($node->getAttribute('algn'));
+                    $oShadow->setAlignment($nodeShadow->getAttribute('algn'));
                 }
 
-                // Get color define by prstClr
-                $oSubElement = $document->getElement('a:prstClr', $nodeShadow);
-                if ($oSubElement instanceof DOMElement && $oSubElement->hasAttribute('val')) {
+                // The colour is written as `a:srgbClr` and only a preset one was read back. The
+                // alpha inside it is the shadow's own, which is what the Writer puts there.
+                foreach (['a:srgbClr', 'a:prstClr'] as $colorElement) {
+                    $oSubElement = $document->getElement($colorElement, $nodeShadow);
+                    if (!$oSubElement instanceof DOMElement || !$oSubElement->hasAttribute('val')) {
+                        continue;
+                    }
                     $oColor = new Color();
                     $oColor->setRGB($oSubElement->getAttribute('val'));
+                    $oShadow->setColor($oColor);
 
                     $oSubElt = $document->getElement('a:alpha', $oSubElement);
                     if ($oSubElt instanceof DOMElement && $oSubElt->hasAttribute('val')) {
-                        $oColor->setAlpha((int) $oSubElt->getAttribute('val') / 1000);
+                        $oShadow->setAlpha((int) ((int) $oSubElt->getAttribute('val') / 1000));
                     }
 
-                    $oShadow->setColor($oColor);
+                    break;
                 }
 
                 return $oShadow;
@@ -1188,6 +1193,10 @@ class PowerPoint2007 implements ReaderInterface
             }
             if ($bodyPr->hasAttribute('rtlCol')) {
                 $oShape->setColumnsRTL((bool) (int) $bodyPr->getAttribute('rtlCol'));
+            }
+            // `none` and `square` are the two values a shape's wrap holds, spelled the same way
+            if ($bodyPr->hasAttribute('wrap')) {
+                $oShape->setWrap($bodyPr->getAttribute('wrap'));
             }
         }
 
