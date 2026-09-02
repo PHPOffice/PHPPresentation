@@ -14,7 +14,7 @@ $slide = $presentation->createSlide();
 
 ## Add slide to a specific position
 
-Use the method `addSlide` to add an existing slide to a specific position. Without the parameter `$position`, it will be added at the end of slides collection.
+Use the method `addSlide` to add an existing slide to a specific position. Without the parameter `$index`, it will be added at the end of slides collection.
 
 ``` php
 <?php
@@ -29,6 +29,23 @@ $presentation->addSlide($slide, 1);
 ## Add it after all slides
 $presentation->addSlide($slide);
 ```
+
+## Move a slide
+
+There is no single method for it: read the slide's current index, take it out, and add it back
+where you want it.
+
+``` php
+<?php
+
+$index = $presentation->getIndex($slide);
+$presentation->removeSlideByIndex($index);
+$presentation->addSlide($slide, $newIndex);
+```
+
+`getIndex` returns `null` for a slide the presentation does not hold, so check it before removing
+anything. `$newIndex` counts in the collection *without* the slide being moved, which matters when
+a slide moves later in the deck: in `A B C D`, moving `A` to 2 gives `B C A D`.
 
 ## Properties
 
