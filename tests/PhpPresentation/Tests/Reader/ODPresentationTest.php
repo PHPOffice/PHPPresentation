@@ -1641,4 +1641,46 @@ class ODPresentationTest extends TestCase
         self::assertEquals(11, $arrayShape[0]->getParagraph()->getSpacingBefore());
         self::assertEquals(13, $arrayShape[0]->getParagraph()->getSpacingAfter());
     }
+
+    public function testShapeBorderSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->getBorder()
+            ->setLineStyle(Border::LINE_SINGLE)
+            ->setDashStyle(Border::DASH_LARGEDASHDOT)
+            ->setLineWidth(4)
+            ->setColor(new Color('FFFF0000'));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // the graphic style of a shape says its border as a stroke, and nothing read it back
+        $oBorder = $arrayShape[0]->getBorder();
+        self::assertEquals(Border::LINE_SINGLE, $oBorder->getLineStyle());
+        self::assertEquals(Border::DASH_LARGEDASHDOT, $oBorder->getDashStyle());
+        self::assertEquals(4, $oBorder->getLineWidth());
+        self::assertEquals('FFFF0000', $oBorder->getColor()->getARGB());
+    }
+
+    public function testShapeWithoutABorderSaysSoAfterTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Sample');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertEquals(Border::LINE_NONE, $arrayShape[0]->getBorder()->getLineStyle());
+    }
 }

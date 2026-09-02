@@ -1302,7 +1302,9 @@ class Content extends AbstractDecoratorWriter
                 if (null !== $borderColor) {
                     $objWriter->writeAttribute('svg:stroke-color', '#' . $borderColor->getRGB());
                 }
-                $objWriter->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '') . 'cm');
+                // six decimals rather than three: a point is 127/3600 cm, and three decimals lose
+                // about a seventieth of a point of the width
+                $objWriter->writeAttribute('svg:stroke-width', round(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 6) . 'cm');
                 switch ($shape->getBorder()->getDashStyle()) {
                     case Border::DASH_SOLID:
                         $objWriter->writeAttribute('draw:stroke', 'solid');
@@ -1433,7 +1435,7 @@ class Content extends AbstractDecoratorWriter
             if (null !== $borderColor) {
                 $objWriter->writeAttribute('svg:stroke-color', '#' . $borderColor->getRGB());
             }
-            $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3) . 'cm');
+            $objWriter->writeAttribute('svg:stroke-width', round(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 6) . 'cm');
             $this->writeStylePartShadow($objWriter, $shape->getShadow());
             $objWriter->endElement();
         }, $shape);
