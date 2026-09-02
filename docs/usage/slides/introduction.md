@@ -32,20 +32,19 @@ $presentation->addSlide($slide);
 
 ## Move a slide
 
-There is no single method for it: read the slide's current index, take it out, and add it back
-where you want it.
+Use the method `moveSlide` to move a slide that is already in the presentation to another position.
 
 ``` php
 <?php
 
-$index = $presentation->getIndex($slide);
-$presentation->removeSlideByIndex($index);
-$presentation->addSlide($slide, $newIndex);
+$presentation->moveSlide($slide, 2);
 ```
 
-`getIndex` returns `null` for a slide the presentation does not hold, so check it before removing
-anything. `$newIndex` counts in the collection *without* the slide being moved, which matters when
-a slide moves later in the deck: in `A B C D`, moving `A` to 2 gives `B C A D`.
+The slide is taken out before it is put back, so the index counts in the collection *without* it.
+In a presentation of `A B C D`, moving `A` to 2 gives `B C A D`.
+
+It throws an `OutOfBoundsException` for an index past the last slide, and an
+`InvalidParameterException` for a slide the presentation does not hold.
 
 ## Properties
 
