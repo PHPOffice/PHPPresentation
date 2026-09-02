@@ -116,4 +116,31 @@ class PptMediaTest extends PhpPresentationTestCase
         $this->assertZipFileExists('ppt/media/' . $oShape->getIndexedFilename());
         $this->assertIsSchemaECMA376Valid();
     }
+
+    /**
+     * Two shapes holding the same picture leave one part in the archive that both of them point
+     * at. The reference used to be written from `getIndexedFilename()`, which counts instances and
+     * knows nothing about that collapse, so the second shape named a part nobody had written.
+     */
+    public function testTwoIdenticalDrawingsShareOneWrittenPart(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+
+        $oShape1 = $oSlide->createDrawingShape();
+        $oShape1->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        $oShape2 = $oSlide->createDrawingShape();
+        $oShape2->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $this->assertZipFileExists('ppt/media/' . $oShape1->getIndexedFilename());
+        $this->assertZipFileNotExists('ppt/media/' . $oShape2->getIndexedFilename());
+        $this->assertZipXmlElementExists(
+            'ppt/slides/_rels/slide1.xml.rels',
+            '/Relationships/Relationship[@Id="rId2"][@Target="../media/' . $oShape1->getIndexedFilename() . '"]'
+        );
+        $this->assertZipXmlElementExists(
+            'ppt/slides/_rels/slide1.xml.rels',
+            '/Relationships/Relationship[@Id="rId3"][@Target="../media/' . $oShape1->getIndexedFilename() . '"]'
+        );
+        $this->assertIsSchemaECMA376Valid();
+    }
 }

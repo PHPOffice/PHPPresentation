@@ -2310,4 +2310,28 @@ class ContentTest extends PhpPresentationTestCase
 
         return '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $styleName . '\']';
     }
+
+    /**
+     * The hash table leaves one `Pictures/` entry for two shapes holding the same image, and the
+     * manifest declares that one entry. `draw:image` was written from `getIndexedFilename()`
+     * instead, so the second shape named a picture the archive does not carry.
+     */
+    public function testTwoIdenticalDrawingsShareOneWrittenPart(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+
+        $oShape1 = $oSlide->createDrawingShape();
+        $oShape1->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        $oShape2 = $oSlide->createDrawingShape();
+        $oShape2->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $this->assertZipFileExists('Pictures/' . $oShape1->getIndexedFilename());
+        $this->assertZipFileNotExists('Pictures/' . $oShape2->getIndexedFilename());
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame[1]/draw:image';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'Pictures/' . $oShape1->getIndexedFilename());
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame[2]/draw:image';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'Pictures/' . $oShape1->getIndexedFilename());
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
 }

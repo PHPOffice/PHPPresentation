@@ -187,6 +187,11 @@ class Chart extends AbstractGraphic implements ComparableInterface
      */
     public function getHashCode(): string
     {
-        return md5(parent::getHashCode() . $this->title->getHashCode() . $this->legend->getHashCode() . $this->plotArea->getHashCode() . $this->view3D->getHashCode() . ($this->includeSpreadsheet ? 1 : 0) . __CLASS__);
+        // A chart is not a shareable resource the way an image is. Two pictures of the same bytes
+        // are one part that two shapes point at, and that is the whole reason the hash table
+        // deduplicates; two charts that happen to hold the same numbers are still two charts, each
+        // with its own relationship, its own `_rels` and its own embedded workbook. The image index
+        // is what keeps them apart, and it is per instance.
+        return md5(parent::getHashCode() . $this->title->getHashCode() . $this->legend->getHashCode() . $this->plotArea->getHashCode() . $this->view3D->getHashCode() . ($this->includeSpreadsheet ? 1 : 0) . $this->getImageIndex() . __CLASS__);
     }
 }

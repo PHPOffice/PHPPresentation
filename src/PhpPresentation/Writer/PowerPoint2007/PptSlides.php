@@ -107,18 +107,18 @@ class PptSlides extends AbstractSlide
                     if ($currentShape instanceof Media) {
                         // Write relationship for image drawing
                         $currentShape->relationId = 'rId' . $relId;
-                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/video', '../media/' . $currentShape->getIndexedFilename());
+                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/video', '../media/' . $this->writtenPart($currentShape)->getIndexedFilename());
                         ++$relId;
-                        $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $currentShape->getIndexedFilename());
+                        $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $this->writtenPart($currentShape)->getIndexedFilename());
                         ++$relId;
                     } elseif ($currentShape instanceof ShapeDrawing\AbstractDrawingAdapter) {
                         // Write relationship for image drawing
-                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $currentShape->getIndexedFilename());
+                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $this->writtenPart($currentShape)->getIndexedFilename());
                         $currentShape->relationId = 'rId' . $relId;
                         ++$relId;
                     } elseif ($currentShape instanceof ShapeChart) {
                         // Write relationship for chart drawing
-                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $currentShape->getIndexedFilename());
+                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $this->writtenPart($currentShape)->getIndexedFilename());
                         $currentShape->relationId = 'rId' . $relId;
                         ++$relId;
                     } elseif ($currentShape instanceof ShapeContainerInterface) {
