@@ -1641,4 +1641,35 @@ class ODPresentationTest extends TestCase
         self::assertEquals(11, $arrayShape[0]->getParagraph()->getSpacingBefore());
         self::assertEquals(13, $arrayShape[0]->getParagraph()->getSpacingAfter());
     }
+
+    /**
+     * @return array<array<int>>
+     */
+    public static function dataProviderRotation(): array
+    {
+        return [[0], [30], [90], [145], [270]];
+    }
+
+    #[DataProvider('dataProviderRotation')]
+    public function testRotatedShapePositionSurvivesTheRoundTrip(int $rotation): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->setOffsetX(400)->setOffsetY(100)->setWidth(200)->setHeight(100)->setRotation($rotation);
+        $oShape->createTextRun('Turned');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // a turned shape is written as a rotation and a translation instead of `svg:x`/`svg:y`,
+        // and nothing read either of them back
+        self::assertEquals($rotation, $arrayShape[0]->getRotation());
+        self::assertEquals(400, $arrayShape[0]->getOffsetX());
+        self::assertEquals(100, $arrayShape[0]->getOffsetY());
+    }
 }
