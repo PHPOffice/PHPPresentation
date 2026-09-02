@@ -38,6 +38,7 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Writer\ODPresentation as ODPresentationWriter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -1640,5 +1641,60 @@ class ODPresentationTest extends TestCase
         // centimetre were not enough to give a whole number of points back
         self::assertEquals(11, $arrayShape[0]->getParagraph()->getSpacingBefore());
         self::assertEquals(13, $arrayShape[0]->getParagraph()->getSpacingAfter());
+    }
+
+    public function testRichTextFillSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4472C4'));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // the graphic style of a text box carries its fill, and it was read and then handed only
+        // to a drawing
+        $oFill = $arrayShape[0]->getFill();
+        self::assertEquals(Fill::FILL_SOLID, $oFill->getFillType());
+        self::assertEquals('FF4472C4', $oFill->getStartColor()->getARGB());
+    }
+
+    public function testRichTextShadowSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->getShadow()
+            ->setVisible(true)
+            ->setDirection(45)
+            ->setDistance(7)
+            ->setAlpha(40)
+            ->setColor(new Color('FF00FF00'));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        $oShadow = $arrayShape[0]->getShadow();
+        self::assertInstanceOf(Shadow::class, $oShadow);
+        self::assertTrue($oShadow->isVisible());
+        self::assertEquals(45, $oShadow->getDirection());
+        self::assertEquals(7, $oShadow->getDistance());
+        self::assertEquals(40, $oShadow->getAlpha());
+        self::assertEquals('FF00FF00', $oShadow->getColor()->getARGB());
+
+        // ODF has no shadow blur -- the schema has no attribute for one -- so the blur radius is
+        // the one property of a Shadow this format cannot carry
+        self::assertEquals(6, $oShadow->getBlurRadius());
     }
 }
