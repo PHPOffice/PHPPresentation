@@ -62,6 +62,8 @@ class Content extends AbstractDecoratorWriter
     private const STYLE_PREFIX = [
         'paragraph' => 'P',
         'text' => 'T',
+        'graphic' => 'gr',
+        'drawing-page' => 'dp',
     ];
 
     /**
@@ -90,7 +92,7 @@ class Content extends AbstractDecoratorWriter
     /**
      * The automatic styles to write, by the name each was given.
      *
-     * @var array<string, array{family: string, style: Paragraph|Run}>
+     * @var array<string, array{family: string, write: callable(XMLWriter): void}>
      */
     protected $automaticStyles = [];
 
@@ -102,7 +104,7 @@ class Content extends AbstractDecoratorWriter
     protected $automaticStyleNames = [];
 
     /**
-     * The name of the automatic style each paragraph and each run wears, by object.
+     * The name of the automatic style each styled object wears, by object.
      *
      * A generated name follows from the order the styles were added, so the pass that writes the
      * body cannot recompute it the way it used to recompute a hash. It reads it from here instead.
@@ -186,44 +188,17 @@ class Content extends AbstractDecoratorWriter
         $incSlide = 0;
         foreach ($this->getPresentation()->getAllSlides() as $pSlide) {
             // Slides
-            $this->writeStyleSlide($objWriter, $pSlide, $incSlide);
+            $this->addSlideStyle($pSlide, $incSlide);
 
-            // Images
-            $shapes = $pSlide->getShapeCollection();
-            foreach ($shapes as $shape) {
-                // Increment $this->shapeId
-                ++$this->shapeId;
-
-                // Check type
-                if ($shape instanceof RichText) {
-                    $this->writeTxtStyle($objWriter, $shape);
-                }
-                if ($shape instanceof AbstractDrawingAdapter) {
-                    $this->writeDrawingStyle($objWriter, $shape);
-                }
-                if ($shape instanceof Line) {
-                    $this->writeLineStyle($objWriter, $shape);
-                }
-                if ($shape instanceof Table) {
-                    $this->writeTableStyle($objWriter, $shape);
-                }
-                if ($shape instanceof Group) {
-                    $this->writeGroupStyle($objWriter, $shape);
-                }
-            }
+            // Shapes
+            $this->addShapeStyles($objWriter, $pSlide->getShapeCollection());
 
             // The shapes of a slide note are written by writeSlideNote(), which increments the same
             // shape counter and names the styles of their text -- so they have to be collected here
             // too, or the note references three styles this pass never defines and the counter the
             // two passes share falls out of step.
             if ($pSlide->getNote() instanceof Note) {
-                foreach ($pSlide->getNote()->getShapeCollection() as $shape) {
-                    ++$this->shapeId;
-
-                    if ($shape instanceof RichText) {
-                        $this->writeTxtStyle($objWriter, $shape);
-                    }
-                }
+                $this->addShapeStyles($objWriter, $pSlide->getNote()->getShapeCollection());
             }
 
             ++$incSlide;
@@ -278,7 +253,6 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->endElement();
             }
         }
-        // Style : Paragraph, Style : Text : Font
         // Emitted from the pool, in the order the styles were first needed -- which is the order
         // `office:automatic-styles` wants, since it precedes the content that references it.
         foreach ($this->automaticStyles as $styleName => $automaticStyle) {
@@ -286,11 +260,7 @@ class Content extends AbstractDecoratorWriter
             $objWriter->startElement('style:style');
             $objWriter->writeAttribute('style:name', $styleName);
             $objWriter->writeAttribute('style:family', $automaticStyle['family']);
-            if ('paragraph' === $automaticStyle['family']) {
-                $this->writeParagraphStyleBody($objWriter, $automaticStyle['style']);
-            } else {
-                $this->writeTextStyleBody($objWriter, $automaticStyle['style']);
-            }
+            ($automaticStyle['write'])($objWriter);
             $objWriter->endElement();
         }
         $objWriter->endElement();
@@ -311,8 +281,8 @@ class Content extends AbstractDecoratorWriter
             $objWriter->startElement('draw:page');
             $objWriter->writeAttribute('draw:name', $this->getSlideName($pSlide, $i + 1));
             $objWriter->writeAttribute('draw:master-page-name', 'Standard');
-            $objWriter->writeAttribute('draw:style-name', 'stylePage' . $i);
-            // Images
+            $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($pSlide));
+            // Shapes
             $shapes = $pSlide->getShapeCollection();
             foreach ($shapes as $shape) {
                 // Increment $this->shapeId
@@ -517,7 +487,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
+        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
         $this->writeShapeDecorative($objWriter, $shape);
         // draw:frame > draw:plugin
         $objWriter->startElement('draw:plugin');
@@ -566,7 +536,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
+        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
         $this->writeShapeDecorative($objWriter, $shape);
         // draw:image
         $objWriter->startElement('draw:image');
@@ -591,7 +561,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
+        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         if ($shape->getRotation() != 0) {
@@ -837,7 +807,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:line
         $objWriter->startElement('draw:line');
-        $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
+        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
         $objWriter->writeAttribute('svg:x1', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y1', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x2', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX() + $shape->getWidth()), 3) . 'cm');
@@ -1063,34 +1033,34 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Writes the style information for a group of shapes.
+     * Name the automatic style every shape of a collection wears, walking a group the way the pass
+     * that writes the body walks one -- nested groups included, which writeShapeGroup() does and
+     * collecting the styles used not to.
+     *
+     * @param iterable<AbstractShape> $shapes
      */
-    protected function writeGroupStyle(XMLWriter $objWriter, Group $group): void
+    protected function addShapeStyles(XMLWriter $objWriter, iterable $shapes): void
     {
-        $shapes = $group->getShapeCollection();
         foreach ($shapes as $shape) {
             // Increment $this->shapeId
             ++$this->shapeId;
 
             // Check type
             if ($shape instanceof RichText) {
-                $this->writeTxtStyle($objWriter, $shape);
+                $this->addTxtStyle($shape);
             }
             if ($shape instanceof AbstractDrawingAdapter) {
-                $this->writeDrawingStyle($objWriter, $shape);
+                $this->addDrawingStyle($shape);
             }
             if ($shape instanceof Line) {
-                $this->writeLineStyle($objWriter, $shape);
+                $this->addLineStyle($shape);
             }
             if ($shape instanceof Table) {
                 $this->writeTableStyle($objWriter, $shape);
             }
-            // A group inside a group is walked by writeShapeGroup(), so it has to be walked here
-            // too: the styles of the shapes inside it are named by the pass that writes the body
-            // and would otherwise never be collected, nor the shape counter the two passes share
-            // kept in step past that point.
+            // A group inside a group is walked by writeShapeGroup(), so it has to be walked here too
             if ($shape instanceof Group) {
-                $this->writeGroupStyle($objWriter, $shape);
+                $this->addShapeStyles($objWriter, $shape->getShapeCollection());
             }
         }
     }
@@ -1101,10 +1071,9 @@ class Content extends AbstractDecoratorWriter
      */
     protected function addParagraphStyle(Paragraph $paragraph): string
     {
-        $bodyWriter = new XMLWriter();
-        $this->writeParagraphStyleBody($bodyWriter, $paragraph);
-
-        return $this->shareAutomaticStyle('paragraph', $bodyWriter->getData(), $paragraph);
+        return $this->shareAutomaticStyle('paragraph', function (XMLWriter $objWriter) use ($paragraph): void {
+            $this->writeParagraphStyleBody($objWriter, $paragraph);
+        }, $paragraph);
     }
 
     /**
@@ -1112,10 +1081,9 @@ class Content extends AbstractDecoratorWriter
      */
     protected function addTextStyle(Run $run): string
     {
-        $bodyWriter = new XMLWriter();
-        $this->writeTextStyleBody($bodyWriter, $run);
-
-        return $this->shareAutomaticStyle('text', $bodyWriter->getData(), $run);
+        return $this->shareAutomaticStyle('text', function (XMLWriter $objWriter) use ($run): void {
+            $this->writeTextStyleBody($objWriter, $run);
+        }, $run);
     }
 
     /**
@@ -1125,13 +1093,19 @@ class Content extends AbstractDecoratorWriter
      * identity of the *content*: two paragraphs styled alike but holding different text hash
      * differently, which is every paragraph of a real document.
      *
-     * @param string          $family the ODF style family
-     * @param string          $body   the XML this style writes, which is what makes two styles the same
-     * @param Paragraph|Run   $style  the object wearing the style, which the second pass looks the name up by
+     * @param string                   $family    the ODF style family
+     * @param callable(XMLWriter): void $writeBody writes everything inside `style:style` -- which is
+     *                                            what makes two styles the same, and what the pass
+     *                                            that writes the definitions replays
+     * @param object                   $owner     the object wearing the style, which the second pass
+     *                                            looks the name up by
      */
-    private function shareAutomaticStyle(string $family, string $body, object $style): string
+    private function shareAutomaticStyle(string $family, callable $writeBody, object $owner): string
     {
-        $key = $family . "\0" . $body;
+        $bodyWriter = new XMLWriter();
+        $writeBody($bodyWriter);
+
+        $key = $family . "\0" . $bodyWriter->getData();
         if (!isset($this->automaticStyleNames[$key])) {
             $counter = ($this->automaticStyleCounters[$family] ?? 0) + 1;
             $this->automaticStyleCounters[$family] = $counter;
@@ -1139,21 +1113,19 @@ class Content extends AbstractDecoratorWriter
             $this->automaticStyleNames[$key] = $styleName;
             $this->automaticStyles[$styleName] = [
                 'family' => $family,
-                'style' => $style,
+                'write' => $writeBody,
             ];
         }
 
-        return $this->automaticStyleNameByObject[spl_object_id($style)] = $this->automaticStyleNames[$key];
+        return $this->automaticStyleNameByObject[spl_object_id($owner)] = $this->automaticStyleNames[$key];
     }
 
     /**
      * The name of the automatic style an object was given while the styles were collected.
-     *
-     * @param Paragraph|Run $style
      */
-    private function getAutomaticStyleName(object $style): string
+    private function getAutomaticStyleName(object $owner): string
     {
-        return $this->automaticStyleNameByObject[spl_object_id($style)];
+        return $this->automaticStyleNameByObject[spl_object_id($owner)];
     }
 
     /**
@@ -1273,107 +1245,106 @@ class Content extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-    protected function writeTxtStyle(XMLWriter $objWriter, RichText $shape): void
+    /**
+     * Name the automatic style a text shape wears, and collect the styles of the text inside it.
+     */
+    protected function addTxtStyle(RichText $shape): void
     {
-        // style:style
-        $objWriter->startElement('style:style');
-        $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId);
-        $objWriter->writeAttribute('style:family', 'graphic');
-        $objWriter->writeAttribute('style:parent-style-name', 'standard');
-        // style:graphic-properties
-        $objWriter->startElement('style:graphic-properties');
-        $objWriter->writeAttribute('style:mirror', 'none');
-        $this->writeStylePartShadow($objWriter, $shape->getShadow());
-        if (is_bool($shape->hasAutoShrinkVertical())) {
-            $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
-        }
-        if (is_bool($shape->hasAutoShrinkHorizontal())) {
-            $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
-        }
-        // Fill
-        if (in_array($shape->getFill()->getFillType(), Fill::PATTERN_TYPES, true)) {
-            $this->writePatternFill($objWriter, $shape->getFill());
-        } else {
-            switch ($shape->getFill()->getFillType()) {
-                case Fill::FILL_GRADIENT_LINEAR:
-                case Fill::FILL_GRADIENT_PATH:
-                    $objWriter->writeAttribute('draw:fill', 'gradient');
-                    $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shape->getFill()->getHashCode());
-
-                    break;
-                case Fill::FILL_SOLID:
-                    $objWriter->writeAttribute('draw:fill', 'solid');
-                    $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
-
-                    break;
-                case Fill::FILL_UNSET:
-                    // Nobody named a fill, so the style names none and `standard` paints the shape
-
-                    break;
-                case Fill::FILL_NONE:
-                default:
-                    $objWriter->writeAttribute('draw:fill', 'none');
-                    $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
-
-                    break;
+        $this->shareAutomaticStyle('graphic', function (XMLWriter $objWriter) use ($shape): void {
+            $objWriter->writeAttribute('style:parent-style-name', 'standard');
+            // style:graphic-properties
+            $objWriter->startElement('style:graphic-properties');
+            $objWriter->writeAttribute('style:mirror', 'none');
+            $this->writeStylePartShadow($objWriter, $shape->getShadow());
+            if (is_bool($shape->hasAutoShrinkVertical())) {
+                $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
             }
-        }
-        // Border
-        if (Border::LINE_NONE == $shape->getBorder()->getLineStyle()) {
-            $objWriter->writeAttribute('draw:stroke', 'none');
-        } else {
-            // A border that names no colour is written without `svg:stroke-color`, which the
-            // attribute being optional lets the parent style answer instead
-            $borderColor = $shape->getBorder()->getColor();
-            if (null !== $borderColor) {
-                $objWriter->writeAttribute('svg:stroke-color', '#' . $borderColor->getRGB());
+            if (is_bool($shape->hasAutoShrinkHorizontal())) {
+                $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
             }
-            $objWriter->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '') . 'cm');
-            switch ($shape->getBorder()->getDashStyle()) {
-                case Border::DASH_SOLID:
-                    $objWriter->writeAttribute('draw:stroke', 'solid');
+            // Fill
+            if (in_array($shape->getFill()->getFillType(), Fill::PATTERN_TYPES, true)) {
+                $this->writePatternFill($objWriter, $shape->getFill());
+            } else {
+                switch ($shape->getFill()->getFillType()) {
+                    case Fill::FILL_GRADIENT_LINEAR:
+                    case Fill::FILL_GRADIENT_PATH:
+                        $objWriter->writeAttribute('draw:fill', 'gradient');
+                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shape->getFill()->getHashCode());
 
-                    break;
-                case Border::DASH_DASH:
-                case Border::DASH_DASHDOT:
-                case Border::DASH_DOT:
-                case Border::DASH_LARGEDASH:
-                case Border::DASH_LARGEDASHDOT:
-                case Border::DASH_LARGEDASHDOTDOT:
-                case Border::DASH_SYSDASH:
-                case Border::DASH_SYSDASHDOT:
-                case Border::DASH_SYSDASHDOTDOT:
-                case Border::DASH_SYSDOT:
-                    $objWriter->writeAttribute('draw:stroke', 'dash');
-                    $objWriter->writeAttribute('draw:stroke-dash', 'strokeDash_' . $shape->getBorder()->getDashStyle());
+                        break;
+                    case Fill::FILL_SOLID:
+                        $objWriter->writeAttribute('draw:fill', 'solid');
+                        $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
 
-                    break;
-                default:
-                    $objWriter->writeAttribute('draw:stroke', 'none');
+                        break;
+                    case Fill::FILL_UNSET:
+                        // Nobody named a fill, so the style names none and `standard` paints the shape
 
-                    break;
+                        break;
+                    case Fill::FILL_NONE:
+                    default:
+                        $objWriter->writeAttribute('draw:fill', 'none');
+                        $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
+
+                        break;
+                }
             }
-        }
+            // Border
+            if (Border::LINE_NONE == $shape->getBorder()->getLineStyle()) {
+                $objWriter->writeAttribute('draw:stroke', 'none');
+            } else {
+                // A border that names no colour is written without `svg:stroke-color`, which the
+                // attribute being optional lets the parent style answer instead
+                $borderColor = $shape->getBorder()->getColor();
+                if (null !== $borderColor) {
+                    $objWriter->writeAttribute('svg:stroke-color', '#' . $borderColor->getRGB());
+                }
+                $objWriter->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '') . 'cm');
+                switch ($shape->getBorder()->getDashStyle()) {
+                    case Border::DASH_SOLID:
+                        $objWriter->writeAttribute('draw:stroke', 'solid');
 
-        $objWriter->writeAttribute('fo:wrap-option', 'wrap');
-        // The writing mode of the frame orders its columns; the direction of the text comes from
-        // the writing mode each paragraph style states for itself.
-        $objWriter->writeAttribute('style:writing-mode', $shape->isColumnsRTL() ? 'rl-tb' : 'lr-tb');
-        // style:graphic-properties > style:columns
-        // An element rather than an attribute, so it is written after every attribute of the block
-        if ($shape->getColumns() > 1) {
-            $objWriter->startElement('style:columns');
-            $objWriter->writeAttribute('fo:column-count', $shape->getColumns());
-            $objWriter->writeAttribute(
-                'fo:column-gap',
-                number_format(CommonDrawing::pixelsToCentimeters($shape->getColumnSpacing()), 3, '.', '') . 'cm'
-            );
+                        break;
+                    case Border::DASH_DASH:
+                    case Border::DASH_DASHDOT:
+                    case Border::DASH_DOT:
+                    case Border::DASH_LARGEDASH:
+                    case Border::DASH_LARGEDASHDOT:
+                    case Border::DASH_LARGEDASHDOTDOT:
+                    case Border::DASH_SYSDASH:
+                    case Border::DASH_SYSDASHDOT:
+                    case Border::DASH_SYSDASHDOTDOT:
+                    case Border::DASH_SYSDOT:
+                        $objWriter->writeAttribute('draw:stroke', 'dash');
+                        $objWriter->writeAttribute('draw:stroke-dash', 'strokeDash_' . $shape->getBorder()->getDashStyle());
+
+                        break;
+                    default:
+                        $objWriter->writeAttribute('draw:stroke', 'none');
+
+                        break;
+                }
+            }
+
+            $objWriter->writeAttribute('fo:wrap-option', 'wrap');
+            // The writing mode of the frame orders its columns; the direction of the text comes from
+            // the writing mode each paragraph style states for itself.
+            $objWriter->writeAttribute('style:writing-mode', $shape->isColumnsRTL() ? 'rl-tb' : 'lr-tb');
+            // style:graphic-properties > style:columns
+            // An element rather than an attribute, so it is written after every attribute of the block
+            if ($shape->getColumns() > 1) {
+                $objWriter->startElement('style:columns');
+                $objWriter->writeAttribute('fo:column-count', $shape->getColumns());
+                $objWriter->writeAttribute(
+                    'fo:column-gap',
+                    number_format(CommonDrawing::pixelsToCentimeters($shape->getColumnSpacing()), 3, '.', '') . 'cm'
+                );
+                $objWriter->endElement();
+            }
+            // > style:graphic-properties
             $objWriter->endElement();
-        }
-        // > style:graphic-properties
-        $objWriter->endElement();
-        // > style:style
-        $objWriter->endElement();
+        }, $shape);
 
         $paragraphs = $shape->getParagraphs();
         $paragraphId = 0;
@@ -1414,64 +1385,56 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the default style information for an AbstractDrawingAdapter.
+     * Name the automatic style an AbstractDrawingAdapter wears.
      */
-    protected function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawingAdapter $shape): void
+    protected function addDrawingStyle(AbstractDrawingAdapter $shape): void
     {
-        // style:style
-        $objWriter->startElement('style:style');
-        $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId);
-        $objWriter->writeAttribute('style:family', 'graphic');
-        $objWriter->writeAttribute('style:parent-style-name', 'standard');
+        $this->shareAutomaticStyle('graphic', function (XMLWriter $objWriter) use ($shape): void {
+            $objWriter->writeAttribute('style:parent-style-name', 'standard');
 
-        // style:graphic-properties
-        $objWriter->startElement('style:graphic-properties');
-        $objWriter->writeAttribute('draw:stroke', 'none');
-        $objWriter->writeAttribute('style:mirror', 'none');
-        $this->writeStylePartFill($objWriter, $shape->getFill());
-        $this->writeStylePartShadow($objWriter, $shape->getShadow());
-        $objWriter->endElement();
-
-        $objWriter->endElement();
+            // style:graphic-properties
+            $objWriter->startElement('style:graphic-properties');
+            $objWriter->writeAttribute('draw:stroke', 'none');
+            $objWriter->writeAttribute('style:mirror', 'none');
+            $this->writeStylePartFill($objWriter, $shape->getFill());
+            $this->writeStylePartShadow($objWriter, $shape->getShadow());
+            $objWriter->endElement();
+        }, $shape);
     }
 
     /**
-     * Write the default style information for a Line shape.
+     * Name the automatic style a Line shape wears.
      */
-    protected function writeLineStyle(XMLWriter $objWriter, Line $shape): void
+    protected function addLineStyle(Line $shape): void
     {
-        // style:style
-        $objWriter->startElement('style:style');
-        $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId);
-        $objWriter->writeAttribute('style:family', 'graphic');
-        $objWriter->writeAttribute('style:parent-style-name', 'standard');
+        $this->shareAutomaticStyle('graphic', function (XMLWriter $objWriter) use ($shape): void {
+            $objWriter->writeAttribute('style:parent-style-name', 'standard');
 
-        // style:graphic-properties
-        $objWriter->startElement('style:graphic-properties');
-        $objWriter->writeAttribute('draw:fill', 'none');
-        switch ($shape->getBorder()->getLineStyle()) {
-            case Border::LINE_NONE:
-                $objWriter->writeAttribute('draw:stroke', 'none');
+            // style:graphic-properties
+            $objWriter->startElement('style:graphic-properties');
+            $objWriter->writeAttribute('draw:fill', 'none');
+            switch ($shape->getBorder()->getLineStyle()) {
+                case Border::LINE_NONE:
+                    $objWriter->writeAttribute('draw:stroke', 'none');
 
-                break;
-            case Border::LINE_SINGLE:
-                $objWriter->writeAttribute('draw:stroke', 'solid');
+                    break;
+                case Border::LINE_SINGLE:
+                    $objWriter->writeAttribute('draw:stroke', 'solid');
 
-                break;
-            default:
-                $objWriter->writeAttribute('draw:stroke', 'none');
+                    break;
+                default:
+                    $objWriter->writeAttribute('draw:stroke', 'none');
 
-                break;
-        }
-        $borderColor = $shape->getBorder()->getColor();
-        if (null !== $borderColor) {
-            $objWriter->writeAttribute('svg:stroke-color', '#' . $borderColor->getRGB());
-        }
-        $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3) . 'cm');
-        $this->writeStylePartShadow($objWriter, $shape->getShadow());
-        $objWriter->endElement();
-
-        $objWriter->endElement();
+                    break;
+            }
+            $borderColor = $shape->getBorder()->getColor();
+            if (null !== $borderColor) {
+                $objWriter->writeAttribute('svg:stroke-color', '#' . $borderColor->getRGB());
+            }
+            $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3) . 'cm');
+            $this->writeStylePartShadow($objWriter, $shape->getShadow());
+            $objWriter->endElement();
+        }, $shape);
     }
 
     /**
@@ -1621,244 +1584,240 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write style of a slide.
+     * Name the automatic style a slide wears.
      */
-    protected function writeStyleSlide(XMLWriter $objWriter, Slide $slide, int $incPage): void
+    protected function addSlideStyle(Slide $slide, int $incPage): void
     {
-        // style:style
-        $objWriter->startElement('style:style');
-        $objWriter->writeAttribute('style:family', 'drawing-page');
-        $objWriter->writeAttribute('style:name', 'stylePage' . $incPage);
-        // style:style/style:drawing-page-properties
-        $objWriter->startElement('style:drawing-page-properties');
-        $objWriter->writeAttributeIf(!$slide->isVisible(), 'presentation:visibility', 'hidden');
-        if (null !== ($oTransition = $slide->getTransition())) {
-            $objWriter->writeAttribute('presentation:duration', 'PT' . number_format($oTransition->getAdvanceTimeTrigger() / 1000, 6, '.', '') . 'S');
-            $objWriter->writeAttributeIf($oTransition->hasManualTrigger(), 'presentation:transition-type', 'manual');
-            $objWriter->writeAttributeIf($oTransition->hasTimeTrigger(), 'presentation:transition-type', 'automatic');
-            switch ($oTransition->getSpeed()) {
-                case Transition::SPEED_FAST:
-                    $objWriter->writeAttribute('presentation:transition-speed', 'fast');
+        $this->shareAutomaticStyle('drawing-page', function (XMLWriter $objWriter) use ($slide, $incPage): void {
+            // style:style/style:drawing-page-properties
+            $objWriter->startElement('style:drawing-page-properties');
+            $objWriter->writeAttributeIf(!$slide->isVisible(), 'presentation:visibility', 'hidden');
+            if (null !== ($oTransition = $slide->getTransition())) {
+                $objWriter->writeAttribute('presentation:duration', 'PT' . number_format($oTransition->getAdvanceTimeTrigger() / 1000, 6, '.', '') . 'S');
+                $objWriter->writeAttributeIf($oTransition->hasManualTrigger(), 'presentation:transition-type', 'manual');
+                $objWriter->writeAttributeIf($oTransition->hasTimeTrigger(), 'presentation:transition-type', 'automatic');
+                switch ($oTransition->getSpeed()) {
+                    case Transition::SPEED_FAST:
+                        $objWriter->writeAttribute('presentation:transition-speed', 'fast');
 
-                    break;
-                case Transition::SPEED_MEDIUM:
-                    $objWriter->writeAttribute('presentation:transition-speed', 'medium');
+                        break;
+                    case Transition::SPEED_MEDIUM:
+                        $objWriter->writeAttribute('presentation:transition-speed', 'medium');
 
-                    break;
-                case Transition::SPEED_SLOW:
-                    $objWriter->writeAttribute('presentation:transition-speed', 'slow');
+                        break;
+                    case Transition::SPEED_SLOW:
+                        $objWriter->writeAttribute('presentation:transition-speed', 'slow');
 
-                    break;
+                        break;
+                }
+
+                // http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#property-presentation_transition-style
+                switch ($oTransition->getTransitionType()) {
+                    case Transition::TRANSITION_BLINDS_HORIZONTAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'horizontal-stripes');
+
+                        break;
+                    case Transition::TRANSITION_BLINDS_VERTICAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'vertical-stripes');
+
+                        break;
+                    case Transition::TRANSITION_CHECKER_HORIZONTAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'horizontal-checkerboard');
+
+                        break;
+                    case Transition::TRANSITION_CHECKER_VERTICAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'vertical-checkerboard');
+
+                        break;
+                    case Transition::TRANSITION_CIRCLE:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_COMB_HORIZONTAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_COMB_VERTICAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_COVER_DOWN:
+                        $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-bottom');
+
+                        break;
+                    case Transition::TRANSITION_COVER_LEFT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-left');
+
+                        break;
+                    case Transition::TRANSITION_COVER_LEFT_DOWN:
+                        $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-lowerleft');
+
+                        break;
+                    case Transition::TRANSITION_COVER_LEFT_UP:
+                        $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-upperleft');
+
+                        break;
+                    case Transition::TRANSITION_COVER_RIGHT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-right');
+
+                        break;
+                    case Transition::TRANSITION_COVER_RIGHT_DOWN:
+                        $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-lowerright');
+
+                        break;
+                    case Transition::TRANSITION_COVER_RIGHT_UP:
+                        $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-upperright');
+
+                        break;
+                    case Transition::TRANSITION_COVER_UP:
+                        $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-top');
+
+                        break;
+                    case Transition::TRANSITION_CUT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_DIAMOND:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_DISSOLVE:
+                        $objWriter->writeAttribute('presentation:transition-style', 'dissolve');
+
+                        break;
+                    case Transition::TRANSITION_FADE:
+                        $objWriter->writeAttribute('presentation:transition-style', 'fade-from-center');
+
+                        break;
+                    case Transition::TRANSITION_NEWSFLASH:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_PLUS:
+                        $objWriter->writeAttribute('presentation:transition-style', 'close');
+
+                        break;
+                    case Transition::TRANSITION_PULL_DOWN:
+                        $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-bottom');
+
+                        break;
+                    case Transition::TRANSITION_PULL_LEFT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-left');
+
+                        break;
+                    case Transition::TRANSITION_PULL_RIGHT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-right');
+
+                        break;
+                    case Transition::TRANSITION_PULL_UP:
+                        $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-top');
+
+                        break;
+                    case Transition::TRANSITION_PUSH_DOWN:
+                        $objWriter->writeAttribute('presentation:transition-style', 'roll-from-bottom');
+
+                        break;
+                    case Transition::TRANSITION_PUSH_LEFT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'roll-from-left');
+
+                        break;
+                    case Transition::TRANSITION_PUSH_RIGHT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'roll-from-right');
+
+                        break;
+                    case Transition::TRANSITION_PUSH_UP:
+                        $objWriter->writeAttribute('presentation:transition-style', 'roll-from-top');
+
+                        break;
+                    case Transition::TRANSITION_RANDOM:
+                        $objWriter->writeAttribute('presentation:transition-style', 'random');
+
+                        break;
+                    case Transition::TRANSITION_RANDOMBAR_HORIZONTAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'horizontal-lines');
+
+                        break;
+                    case Transition::TRANSITION_RANDOMBAR_VERTICAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'vertical-lines');
+
+                        break;
+                    case Transition::TRANSITION_SPLIT_IN_HORIZONTAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'close-horizontal');
+
+                        break;
+                    case Transition::TRANSITION_SPLIT_OUT_HORIZONTAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'open-horizontal');
+
+                        break;
+                    case Transition::TRANSITION_SPLIT_IN_VERTICAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'close-vertical');
+
+                        break;
+                    case Transition::TRANSITION_SPLIT_OUT_VERTICAL:
+                        $objWriter->writeAttribute('presentation:transition-style', 'open-vertical');
+
+                        break;
+                    case Transition::TRANSITION_STRIPS_LEFT_DOWN:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_STRIPS_LEFT_UP:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_STRIPS_RIGHT_DOWN:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_STRIPS_RIGHT_UP:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_WEDGE:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_WIPE_DOWN:
+                        $objWriter->writeAttribute('presentation:transition-style', 'fade-from-bottom');
+
+                        break;
+                    case Transition::TRANSITION_WIPE_LEFT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'fade-from-left');
+
+                        break;
+                    case Transition::TRANSITION_WIPE_RIGHT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'fade-from-right');
+
+                        break;
+                    case Transition::TRANSITION_WIPE_UP:
+                        $objWriter->writeAttribute('presentation:transition-style', 'fade-from-top');
+
+                        break;
+                    case Transition::TRANSITION_ZOOM_IN:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                    case Transition::TRANSITION_ZOOM_OUT:
+                        $objWriter->writeAttribute('presentation:transition-style', 'none');
+
+                        break;
+                }
             }
-
-            // http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#property-presentation_transition-style
-            switch ($oTransition->getTransitionType()) {
-                case Transition::TRANSITION_BLINDS_HORIZONTAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'horizontal-stripes');
-
-                    break;
-                case Transition::TRANSITION_BLINDS_VERTICAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'vertical-stripes');
-
-                    break;
-                case Transition::TRANSITION_CHECKER_HORIZONTAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'horizontal-checkerboard');
-
-                    break;
-                case Transition::TRANSITION_CHECKER_VERTICAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'vertical-checkerboard');
-
-                    break;
-                case Transition::TRANSITION_CIRCLE:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_COMB_HORIZONTAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_COMB_VERTICAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_COVER_DOWN:
-                    $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-bottom');
-
-                    break;
-                case Transition::TRANSITION_COVER_LEFT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-left');
-
-                    break;
-                case Transition::TRANSITION_COVER_LEFT_DOWN:
-                    $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-lowerleft');
-
-                    break;
-                case Transition::TRANSITION_COVER_LEFT_UP:
-                    $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-upperleft');
-
-                    break;
-                case Transition::TRANSITION_COVER_RIGHT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-right');
-
-                    break;
-                case Transition::TRANSITION_COVER_RIGHT_DOWN:
-                    $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-lowerright');
-
-                    break;
-                case Transition::TRANSITION_COVER_RIGHT_UP:
-                    $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-upperright');
-
-                    break;
-                case Transition::TRANSITION_COVER_UP:
-                    $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-top');
-
-                    break;
-                case Transition::TRANSITION_CUT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_DIAMOND:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_DISSOLVE:
-                    $objWriter->writeAttribute('presentation:transition-style', 'dissolve');
-
-                    break;
-                case Transition::TRANSITION_FADE:
-                    $objWriter->writeAttribute('presentation:transition-style', 'fade-from-center');
-
-                    break;
-                case Transition::TRANSITION_NEWSFLASH:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_PLUS:
-                    $objWriter->writeAttribute('presentation:transition-style', 'close');
-
-                    break;
-                case Transition::TRANSITION_PULL_DOWN:
-                    $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-bottom');
-
-                    break;
-                case Transition::TRANSITION_PULL_LEFT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-left');
-
-                    break;
-                case Transition::TRANSITION_PULL_RIGHT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-right');
-
-                    break;
-                case Transition::TRANSITION_PULL_UP:
-                    $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-top');
-
-                    break;
-                case Transition::TRANSITION_PUSH_DOWN:
-                    $objWriter->writeAttribute('presentation:transition-style', 'roll-from-bottom');
-
-                    break;
-                case Transition::TRANSITION_PUSH_LEFT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'roll-from-left');
-
-                    break;
-                case Transition::TRANSITION_PUSH_RIGHT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'roll-from-right');
-
-                    break;
-                case Transition::TRANSITION_PUSH_UP:
-                    $objWriter->writeAttribute('presentation:transition-style', 'roll-from-top');
-
-                    break;
-                case Transition::TRANSITION_RANDOM:
-                    $objWriter->writeAttribute('presentation:transition-style', 'random');
-
-                    break;
-                case Transition::TRANSITION_RANDOMBAR_HORIZONTAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'horizontal-lines');
-
-                    break;
-                case Transition::TRANSITION_RANDOMBAR_VERTICAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'vertical-lines');
-
-                    break;
-                case Transition::TRANSITION_SPLIT_IN_HORIZONTAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'close-horizontal');
-
-                    break;
-                case Transition::TRANSITION_SPLIT_OUT_HORIZONTAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'open-horizontal');
-
-                    break;
-                case Transition::TRANSITION_SPLIT_IN_VERTICAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'close-vertical');
-
-                    break;
-                case Transition::TRANSITION_SPLIT_OUT_VERTICAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'open-vertical');
-
-                    break;
-                case Transition::TRANSITION_STRIPS_LEFT_DOWN:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_STRIPS_LEFT_UP:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_STRIPS_RIGHT_DOWN:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_STRIPS_RIGHT_UP:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_WEDGE:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_WIPE_DOWN:
-                    $objWriter->writeAttribute('presentation:transition-style', 'fade-from-bottom');
-
-                    break;
-                case Transition::TRANSITION_WIPE_LEFT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'fade-from-left');
-
-                    break;
-                case Transition::TRANSITION_WIPE_RIGHT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'fade-from-right');
-
-                    break;
-                case Transition::TRANSITION_WIPE_UP:
-                    $objWriter->writeAttribute('presentation:transition-style', 'fade-from-top');
-
-                    break;
-                case Transition::TRANSITION_ZOOM_IN:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
-                case Transition::TRANSITION_ZOOM_OUT:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-
-                    break;
+            $oBackground = $slide->getBackground();
+            if ($oBackground instanceof Slide\AbstractBackground) {
+                $objWriter->writeAttribute('presentation:background-visible', 'true');
+                if ($oBackground instanceof Slide\Background\Color) {
+                    $objWriter->writeAttribute('draw:fill', 'solid');
+                    $objWriter->writeAttribute('draw:fill-color', '#' . $oBackground->getColor()->getRGB());
+                }
+                if ($oBackground instanceof Slide\Background\Image) {
+                    $objWriter->writeAttribute('draw:fill', 'bitmap');
+                    $objWriter->writeAttribute('draw:fill-image-name', 'background_' . $incPage);
+                    $objWriter->writeAttribute('style:repeat', 'stretch');
+                }
             }
-        }
-        $oBackground = $slide->getBackground();
-        if ($oBackground instanceof Slide\AbstractBackground) {
-            $objWriter->writeAttribute('presentation:background-visible', 'true');
-            if ($oBackground instanceof Slide\Background\Color) {
-                $objWriter->writeAttribute('draw:fill', 'solid');
-                $objWriter->writeAttribute('draw:fill-color', '#' . $oBackground->getColor()->getRGB());
-            }
-            if ($oBackground instanceof Slide\Background\Image) {
-                $objWriter->writeAttribute('draw:fill', 'bitmap');
-                $objWriter->writeAttribute('draw:fill-image-name', 'background_' . $incPage);
-                $objWriter->writeAttribute('style:repeat', 'stretch');
-            }
-        }
-        $objWriter->endElement();
-        // > style:style
-        $objWriter->endElement();
+            $objWriter->endElement();
+        }, $slide);
     }
 
     protected function writeStylePartFill(XMLWriter $objWriter, Fill $oFill): void
