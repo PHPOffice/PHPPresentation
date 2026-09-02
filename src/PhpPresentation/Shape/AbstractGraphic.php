@@ -138,17 +138,27 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
      */
     public function setWidthAndHeight(int $width = 0, int $height = 0)
     {
-        $xratio = $width / $this->width;
-        $yratio = $height / $this->height;
-        if ($this->resizeProportional && !(0 == $width || 0 == $height)) {
+        // There is a proportion to keep only when all four numbers are there: a shape with no
+        // dimensions yet has no ratio, and neither has one being asked for a zero dimension. The
+        // two divisions used to be run before any of that was checked. Where there is no
+        // proportion to keep, both dimensions are set as they are asked for, which is what
+        // `AbstractShape::setWidthAndHeight()` does and what the name says.
+        if ($this->resizeProportional && 0 != $width && 0 != $height && 0 != $this->width && 0 != $this->height) {
+            $xratio = $width / $this->width;
+            $yratio = $height / $this->height;
             if (($xratio * $this->height) < $height) {
-                $this->height = (int) ceil($xratio * $this->height);
                 $this->width = $width;
+                $this->height = (int) ceil($xratio * $this->height);
             } else {
                 $this->width = (int) ceil($yratio * $this->width);
                 $this->height = $height;
             }
+
+            return $this;
         }
+
+        $this->width = $width;
+        $this->height = $height;
 
         return $this;
     }
