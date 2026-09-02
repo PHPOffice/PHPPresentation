@@ -825,7 +825,8 @@ class ContentTest extends PhpPresentationTestCase
 
         $element = $this->getParagraphStyleXPath() . '/style:paragraph-properties';
         $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:margin-top');
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:margin-top', '4.339cm');
+        // six decimals of a centimetre, so that 123 points come back as 123 rather than as 122.99
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:margin-top', '4.339167cm');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
@@ -836,7 +837,8 @@ class ContentTest extends PhpPresentationTestCase
 
         $element = $this->getParagraphStyleXPath() . '/style:paragraph-properties';
         $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:margin-bottom');
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:margin-bottom', '4.339cm');
+        // six decimals of a centimetre, so that 123 points come back as 123 rather than as 122.99
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:margin-bottom', '4.339167cm');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
