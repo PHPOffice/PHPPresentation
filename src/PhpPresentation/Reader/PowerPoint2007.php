@@ -1173,17 +1173,19 @@ class PowerPoint2007 implements ReaderInterface
         // FBU-20210202+ Read body definitions
         $bodyPr = $document->getElement('p:txBody/a:bodyPr', $node);
         if ($bodyPr instanceof DOMElement) {
+            // the insets are EMU in the file and pixels in the model, which is the unit the
+            // Writer converts back from
             if ($bodyPr->hasAttribute('lIns')) {
-                $oShape->setInsetLeft((int) $bodyPr->getAttribute('lIns'));
+                $oShape->setInsetLeft(CommonDrawing::emuToPixels((int) $bodyPr->getAttribute('lIns')));
             }
             if ($bodyPr->hasAttribute('tIns')) {
-                $oShape->setInsetTop((int) $bodyPr->getAttribute('tIns'));
+                $oShape->setInsetTop(CommonDrawing::emuToPixels((int) $bodyPr->getAttribute('tIns')));
             }
             if ($bodyPr->hasAttribute('rIns')) {
-                $oShape->setInsetRight((int) $bodyPr->getAttribute('rIns'));
+                $oShape->setInsetRight(CommonDrawing::emuToPixels((int) $bodyPr->getAttribute('rIns')));
             }
             if ($bodyPr->hasAttribute('bIns')) {
-                $oShape->setInsetBottom((int) $bodyPr->getAttribute('bIns'));
+                $oShape->setInsetBottom(CommonDrawing::emuToPixels((int) $bodyPr->getAttribute('bIns')));
             }
             if ($bodyPr->hasAttribute('anchorCtr')) {
                 $oShape->setVerticalAlignCenter((int) $bodyPr->getAttribute('anchorCtr'));

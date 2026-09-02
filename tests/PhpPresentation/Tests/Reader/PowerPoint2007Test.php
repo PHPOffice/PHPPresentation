@@ -2037,4 +2037,45 @@ class PowerPoint2007Test extends TestCase
         // `wrap` is written on `a:bodyPr` beside the insets, and nothing read it back
         self::assertEquals(RichText::WRAP_NONE, $arrayShape[0]->getWrap());
     }
+
+    public function testTextInsetsSurviveTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->setInsetLeft(12.0)->setInsetTop(6.0)->setInsetRight(24.0)->setInsetBottom(3.0);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // an inset is EMU in the file and pixels in the model, so it comes back as the number that
+        // went in and not as that number times the 9525 EMU of a pixel
+        self::assertEquals(12.0, $arrayShape[0]->getInsetLeft());
+        self::assertEquals(6.0, $arrayShape[0]->getInsetTop());
+        self::assertEquals(24.0, $arrayShape[0]->getInsetRight());
+        self::assertEquals(3.0, $arrayShape[0]->getInsetBottom());
+    }
+
+    public function testDefaultTextInsetsAreNotChangedByTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Sample');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertEquals(9.6, $arrayShape[0]->getInsetLeft());
+        self::assertEquals(4.8, $arrayShape[0]->getInsetTop());
+        self::assertEquals(9.6, $arrayShape[0]->getInsetRight());
+        self::assertEquals(4.8, $arrayShape[0]->getInsetBottom());
+    }
 }
