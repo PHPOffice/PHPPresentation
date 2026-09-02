@@ -39,6 +39,7 @@ use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
+use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
@@ -596,6 +597,21 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 if ($element instanceof BreakElement) {
                     // a:br
                     $objWriter->writeElement('a:br', null);
+                } elseif ($element instanceof Field) {
+                    // a:fld
+                    $objWriter->startElement('a:fld');
+                    $objWriter->writeAttribute('id', $this->getGUID());
+                    $objWriter->writeAttributeIf('' !== $element->getType(), 'type', $element->getType());
+
+                    // a:rPr
+                    $this->writeRunStyles($objWriter, $element);
+
+                    // a:t
+                    $objWriter->startElement('a:t');
+                    $objWriter->writeCData(Text::controlCharacterPHP2OOXML($element->getText()));
+                    $objWriter->endElement();
+
+                    $objWriter->endElement();
                 } elseif ($element instanceof Run || $element instanceof TextElement) {
                     // a:r
                     $objWriter->startElement('a:r');

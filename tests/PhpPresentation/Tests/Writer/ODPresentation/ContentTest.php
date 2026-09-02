@@ -30,6 +30,7 @@ use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
+use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Slide\Transition;
@@ -1019,6 +1020,67 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('content.xml', $element, 'draw:stroke-dash');
         $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:stroke-dash', 'strokeDash_');
         $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:stroke-dash', $oRichText1->getBorder()->getDashStyle());
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public static function dataProviderField(): array
+    {
+        return [
+            [Field::TYPE_SLIDENUM, 'text:page-number'],
+            [Field::TYPE_DATETIME, 'text:date'],
+            // OpenDocument names a field by what it is, so the fourteen dated formats OOXML
+            // numbers come down to the two it has
+            ['datetime3', 'text:date'],
+            ['datetime11', 'text:time'],
+            ['author', 'text:author-name'],
+            ['file2', 'text:file-name'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderField
+     */
+    #[DataProvider('dataProviderField')]
+    public function testRichTextField(string $type, string $expectedElement): void
+    {
+        $oParagraph = $this->oPresentation->getActiveSlide()->createRichTextShape()->getActiveParagraph();
+        $oParagraph->createTextRun('page ');
+        $oParagraph->createField($type, '7');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span';
+        // the field is written where it stands, and the run beside it stays a run
+        $this->assertZipXmlElementEquals('content.xml', $element . '[1]', 'page ');
+        $this->assertZipXmlElementNotExists('content.xml', $element . '[1]/' . $expectedElement);
+        $this->assertZipXmlElementEquals('content.xml', $element . '[2]/' . $expectedElement, '7');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testRichTextFieldSlideCount(): void
+    {
+        $oParagraph = $this->oPresentation->getActiveSlide()->createRichTextShape()->getActiveParagraph();
+        $oParagraph->createField(Field::TYPE_SLIDECOUNT, '12');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:page-count';
+        $this->assertZipXmlElementEquals('content.xml', $element, '12');
+        // No schema assertion here, and the file is not the reason. libxml rejects
+        // `text:page-count` inside a `text:span` -- along with every other element of the two
+        // groups the schema spells as one `<element>` holding a choice of names -- while accepting
+        // the same element as a direct child of `text:p`, which has the identical content model
+        // (`zeroOrMore paragraph-content-or-hyperlink`). Jing, the reference RELAX NG
+        // implementation, validates this file. LibreOffice writes the count inside a span too.
+    }
+
+    public function testRichTextFieldOfNoKnownKind(): void
+    {
+        $oParagraph = $this->oPresentation->getActiveSlide()->createRichTextShape()->getActiveParagraph();
+        // OpenDocument has no element for this one, so what is left is the text it stands in for
+        $oParagraph->createField('slidename', 'Slide 7');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span';
+        $this->assertZipXmlElementEquals('content.xml', $element, 'Slide 7');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 

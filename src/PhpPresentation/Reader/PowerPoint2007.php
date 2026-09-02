@@ -1794,7 +1794,9 @@ class PowerPoint2007 implements ReaderInterface
 
                 // `a:rPr` is optional (ECMA-376, CT_RegularTextRun), and Keynote's export leaves it
                 // out, so the run is made before its properties are looked at rather than by them
-                $oText = $oParagraph->createTextRun();
+                $oText = 'a:fld' == $oSubElement->tagName
+                    ? $oParagraph->createField($oSubElement->getAttribute('type'))
+                    : $oParagraph->createTextRun();
                 if ($oElementrPr instanceof DOMElement) {
                     if ($oElementrPr->hasAttribute('b')) {
                         $att = $oElementrPr->getAttribute('b');

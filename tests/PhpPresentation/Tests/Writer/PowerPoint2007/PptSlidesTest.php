@@ -28,6 +28,7 @@ use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Animation;
 use PhpOffice\PhpPresentation\Slide\Transition;
@@ -1114,6 +1115,41 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:br';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testRichTextField(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oParagraph = $oRichText->getActiveParagraph();
+        $oParagraph->createTextRun('page ');
+        $oParagraph->createField(Field::TYPE_SLIDENUM, '<nr.>')->getFont()->setBold(true);
+        $oParagraph->createTextRun(' of ');
+        $oParagraph->createField(Field::TYPE_SLIDECOUNT, '12');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld';
+        // a field stands beside the runs it is written among, not in place of the whole shape
+        $this->assertZipXmlElementCount('ppt/slides/slide1.xml', $element, 2);
+        $this->assertZipXmlElementCount('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r', 2);
+        $this->assertZipXmlAttributeStartsWith('ppt/slides/slide1.xml', $element . '[1]', 'id', '{');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '[1]', 'type', Field::TYPE_SLIDENUM);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '[2]', 'type', Field::TYPE_SLIDECOUNT);
+        // and it is styled like the run it is, rather than falling back to the shape's default
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '[1]/a:rPr', 'b', 1);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '[1]/a:t');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testRichTextFieldWithoutType(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->getActiveParagraph()->createField('', 'AAA');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld';
+        // `type` is optional, and an empty one is not a type
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'type');
         $this->assertIsSchemaECMA376Valid();
     }
 

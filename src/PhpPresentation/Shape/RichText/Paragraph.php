@@ -216,6 +216,21 @@ class Paragraph implements ComparableInterface
     }
 
     /**
+     * Create field (a run whose text the application recomputes).
+     *
+     * @param string $type Field type
+     * @param string $pText Text the field last had, for whoever cannot compute it
+     */
+    public function createField(string $type = Field::TYPE_SLIDENUM, string $pText = ''): Field
+    {
+        $field = new Field($type, $pText);
+        $field->setFont(clone $this->font);
+        $this->addText($field);
+
+        return $field;
+    }
+
+    /**
      * Convert to string.
      *
      * @return string
