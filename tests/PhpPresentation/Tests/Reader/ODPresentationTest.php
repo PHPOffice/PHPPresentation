@@ -1650,6 +1650,9 @@ class ODPresentationTest extends TestCase
         return [[0], [30], [90], [145], [270]];
     }
 
+    /**
+     * @dataProvider dataProviderRotation
+     */
     #[DataProvider('dataProviderRotation')]
     public function testRotatedShapePositionSurvivesTheRoundTrip(int $rotation): void
     {
