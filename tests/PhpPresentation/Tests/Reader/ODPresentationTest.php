@@ -1351,8 +1351,8 @@ class ODPresentationTest extends TestCase
         self::assertIsString($sContent);
         $oZip->deleteName('content.xml');
         $oZip->addFromString('content.xml', str_replace(
-            'fo:wrap-option="wrap" style:writing-mode="lr-tb"',
-            'fo:wrap-option="wrap" style:writing-mode="' . $writingMode . '"',
+            'style:writing-mode="lr-tb"',
+            'style:writing-mode="' . $writingMode . '"',
             $sContent
         ));
         $oZip->close();
@@ -1640,5 +1640,52 @@ class ODPresentationTest extends TestCase
         // centimetre were not enough to give a whole number of points back
         self::assertEquals(11, $arrayShape[0]->getParagraph()->getSpacingBefore());
         self::assertEquals(13, $arrayShape[0]->getParagraph()->getSpacingAfter());
+    }
+
+    public function testTextBoxFramePropertiesSurviveTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->setWrap(RichText::WRAP_NONE);
+        $oShape->setVerticalAlignCenter(RichText::VALIGN_CENTER);
+        $oShape->setInsetBottom(3)->setInsetLeft(12)->setInsetRight(24)->setInsetTop(6);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // the frame of a text box carries its insets as padding, and says both how the text
+        // wraps in it and where it hangs from; none of the three was written or read
+        self::assertEquals(RichText::WRAP_NONE, $arrayShape[0]->getWrap());
+        self::assertEquals(RichText::VALIGN_CENTER, $arrayShape[0]->getVerticalAlignCenter());
+        self::assertEquals(3, $arrayShape[0]->getInsetBottom());
+        self::assertEquals(12, $arrayShape[0]->getInsetLeft());
+        self::assertEquals(24, $arrayShape[0]->getInsetRight());
+        self::assertEquals(6, $arrayShape[0]->getInsetTop());
+    }
+
+    public function testTextBoxDefaultFramePropertiesSurviveTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Sample');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // the two insets a shape is born with are fractions of a pixel, and they come back whole
+        self::assertEquals(9.6, $arrayShape[0]->getInsetLeft());
+        self::assertEquals(4.8, $arrayShape[0]->getInsetTop());
+        self::assertEquals(RichText::WRAP_SQUARE, $arrayShape[0]->getWrap());
+        self::assertEquals(RichText::VALIGN_NOTCENTER, $arrayShape[0]->getVerticalAlignCenter());
     }
 }
