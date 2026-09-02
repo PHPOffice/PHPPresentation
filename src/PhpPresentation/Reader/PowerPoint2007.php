@@ -2217,6 +2217,12 @@ class PowerPoint2007 implements ReaderInterface
                     $this->loadShapeGroup($xmlReader, $oNode, $oSlide, $xmlReader, $oContainer);
 
                     break;
+
+                case 'p:grpSp':
+                    $oNodes = $document->getElements('*', $oNode);
+                    $this->loadSlideShapes($document, $oSlide, $oNodes, $xmlReader);
+
+                    break;
                 default:
                     //throw new FeatureNotImplementedException();
             }
