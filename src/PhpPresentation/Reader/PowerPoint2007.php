@@ -1661,6 +1661,13 @@ class PowerPoint2007 implements ReaderInterface
 
         $this->loadSeriesDataPoints($xmlReader, $elementSerie, $series);
 
+        // the plate the data labels sit on, which is a `c:spPr` of its own inside `c:dLbls`
+        if ($elementFill = $xmlReader->getElement('c:dLbls/c:spPr', $elementSerie)) {
+            $series->setLabelFill(
+                $this->loadStyleFill($xmlReader, $elementFill)
+            );
+        }
+
         if ($elementShowLegendKey = $xmlReader->getElement('c:dLbls/c:showLegendKey', $elementSerie)) {
             $series->setShowLegendKey((bool) $elementShowLegendKey->getAttribute('val'));
         }

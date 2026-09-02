@@ -1300,6 +1300,33 @@ class PowerPoint2007Test extends TestCase
         ];
     }
 
+    public function testSeriesLabelFillIsReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSeries = new Series('Downloads', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        // the plate the labels sit on: white, and see-through enough to read the chart under it
+        $oSeries->getLabelFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('D6FFFFFF'));
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($oBar);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $seriesRead = $arrayShape[0]->getPlotArea()->getType()->getSeries();
+        $seriesRead = reset($seriesRead);
+
+        self::assertEquals(Fill::FILL_SOLID, $seriesRead->getLabelFill()->getFillType());
+        self::assertEquals('FFFFFF', $seriesRead->getLabelFill()->getStartColor()->getRGB());
+        self::assertEquals(84, $seriesRead->getLabelFill()->getStartColor()->getAlpha());
+        // the serie keeps its own fill, which is not the one behind the labels
+        self::assertNotEquals(Fill::FILL_SOLID, $seriesRead->getFill()->getFillType());
+    }
+
     public function testSeriesDataPointPatternFillIsReadBack(): void
     {
         $oPhpPresentation = new PhpPresentation();

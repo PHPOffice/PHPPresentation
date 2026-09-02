@@ -1017,6 +1017,47 @@ class PptChartsTest extends PhpPresentationTestCase
     }
 
     /**
+     * @dataProvider dataProviderDataLabel
+     */
+    #[DataProvider('dataProviderDataLabel')]
+    public function testSeriesDataLabelFill(string $chartType, string $chartElementName): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
+        $oChart->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oChart);
+
+        $element = $this->getDataLabelXPath($chartType, $chartElementName) . '/c:spPr';
+
+        // A series that named no label fill leaves the labels as the application draws them.
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertIsSchemaECMA376Valid();
+
+        // The plate a label sits on: white, and see-through enough to read the chart under it.
+        $oSeries->getLabelFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('D6FFFFFF'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals(
+            'ppt/charts/' . $oShape->getIndexedFilename(),
+            $element . '/a:solidFill/a:srgbClr',
+            'val',
+            'FFFFFF'
+        );
+        $this->assertZipXmlAttributeEquals(
+            'ppt/charts/' . $oShape->getIndexedFilename(),
+            $element . '/a:solidFill/a:srgbClr/a:alpha',
+            'val',
+            '84000'
+        );
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
      * A doughnut writes one data label block for the whole chart; every other type writes one per series.
      */
     private function getDataLabelXPath(string $chartType, string $chartElementName): string

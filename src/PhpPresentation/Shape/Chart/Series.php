@@ -75,6 +75,13 @@ class Series implements ComparableInterface
     protected $font;
 
     /**
+     * The fill behind the data labels, not behind the series itself.
+     *
+     * @var Fill
+     */
+    protected $labelFill;
+
+    /**
      * @var string
      */
     protected $labelPosition = 'ctr';
@@ -158,6 +165,8 @@ class Series implements ComparableInterface
     public function __construct(string $title = 'Series Title', array $values = [])
     {
         $this->fill = new Fill();
+        // the labels are born with no fill of their own: the application draws them as it always did
+        $this->labelFill = (new Fill())->setFillType(Fill::FILL_UNSET);
         $this->font = new Font();
         $this->font->setName('Calibri');
         $this->font->setSize(9);
@@ -227,6 +236,27 @@ class Series implements ComparableInterface
     public function setFill(?Fill $fill = null): self
     {
         $this->fill = $fill ?? (new Fill())->setFillType(Fill::FILL_UNSET);
+
+        return $this;
+    }
+
+    /**
+     * The fill drawn behind the data labels. A series that never named one carries a fill of type
+     * `Fill::FILL_UNSET`, which is written as nothing at all.
+     */
+    public function getLabelFill(): Fill
+    {
+        return $this->labelFill;
+    }
+
+    /**
+     * A semi-transparent plate under the labels is a `Fill::FILL_SOLID` whose colour carries an
+     * alpha, e.g. `new Color('D6FFFFFF')`. Asking for the fill to be taken away replaces it with
+     * one of type `Fill::FILL_UNSET` rather than with a null, as `setFill()` does.
+     */
+    public function setLabelFill(?Fill $fill = null): self
+    {
+        $this->labelFill = $fill ?? (new Fill())->setFillType(Fill::FILL_UNSET);
 
         return $this;
     }
