@@ -24,6 +24,7 @@ use DateTime;
 use DOMElement;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
@@ -901,8 +902,7 @@ class ODPresentation implements ReaderInterface
         $shape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $shape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $shape->setResizeProportional(true);
-        $shape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
-        $shape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
+        $this->loadShapeOffset($shape, $oNodeFrame);
 
         if ($oNodeFrame->hasAttribute('draw:style-name')) {
             $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
@@ -913,6 +913,36 @@ class ODPresentation implements ReaderInterface
         }
 
         $this->oPhpPresentation->getActiveSlide()->addShape($shape);
+    }
+
+    /**
+     * Read where a shape sits, and the rotation a `draw:transform` gives it.
+     *
+     * A frame that is turned carries no `svg:x`/`svg:y`. It names a rotation about the origin
+     * followed by a translation instead, so the point written is where the top left corner lands
+     * once the shape has been turned, not where it started, and the offset has to be turned back
+     * out of it. The rotation is negated because ODF counts it the other way round.
+     */
+    protected function loadShapeOffset(AbstractShape $shape, DOMElement $oNodeFrame): void
+    {
+        $pattern = '/rotate\s*\(\s*(-?[\d.]+)\s*\)\s*translate\s*\(\s*(-?[\d.]+)cm\s+(-?[\d.]+)cm\s*\)/';
+        if (1 === preg_match($pattern, $oNodeFrame->getAttribute('draw:transform'), $matches)) {
+            $rotation = -(float) $matches[1];
+            $halfWidth = CommonDrawing::pixelsToCentimeters($shape->getWidth()) / 2;
+            $halfHeight = CommonDrawing::pixelsToCentimeters($shape->getHeight()) / 2;
+            $shape->setRotation((int) round(rad2deg($rotation)));
+            $shape->setOffsetX((int) round(CommonDrawing::centimetersToPixels(
+                (float) $matches[2] - $halfWidth + $halfWidth * cos($rotation) - $halfHeight * sin($rotation)
+            )));
+            $shape->setOffsetY((int) round(CommonDrawing::centimetersToPixels(
+                (float) $matches[3] - $halfHeight + $halfWidth * sin($rotation) + $halfHeight * cos($rotation)
+            )));
+
+            return;
+        }
+
+        $shape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
+        $shape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
     }
 
     /**
@@ -928,8 +958,7 @@ class ODPresentation implements ReaderInterface
         $oShape->setDecorative($this->loadShapeDecorative($oNodeFrame));
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
-        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
-        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
+        $this->loadShapeOffset($oShape, $oNodeFrame);
 
         if ($oNodeFrame->hasAttribute('draw:style-name')) {
             $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
@@ -1113,8 +1142,7 @@ class ODPresentation implements ReaderInterface
         $oShape->setDecorative($this->loadShapeDecorative($oNodeFrame));
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
-        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
-        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
+        $this->loadShapeOffset($oShape, $oNodeFrame);
 
         // A drawing table says which of its rows are styled apart with these two flags, which are
         // what `firstRow` and `bandRow` say on `a:tblPr`

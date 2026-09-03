@@ -567,11 +567,21 @@ class Content extends AbstractDecoratorWriter
         if ($shape->getRotation() != 0) {
             $rotRad = deg2rad($shape->getRotation());
 
-            $translateX = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm';
-            $translateY = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm';
+            // `translate` moves the frame after `rotate` has already turned it about the
+            // origin, while the rotation a shape carries is about its own centre. The point
+            // to write is therefore where the top left corner ends up once the shape has been
+            // turned, not where it started.
+            $halfWidth = CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()) / 2;
+            $halfHeight = CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()) / 2;
+            $translateX = CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX())
+                + $halfWidth - $halfWidth * cos($rotRad) + $halfHeight * sin($rotRad);
+            $translateY = CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY())
+                + $halfHeight - $halfWidth * sin($rotRad) - $halfHeight * cos($rotRad);
             $objWriter->writeAttribute(
                 'draw:transform',
-                'rotate (-' . $rotRad . ') translate (' . $translateX . ' ' . $translateY . ')'
+                'rotate (-' . $rotRad . ') translate ('
+                    . Text::numberFormat($translateX, 3) . 'cm '
+                    . Text::numberFormat($translateY, 3) . 'cm)'
             );
         } else {
             $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
