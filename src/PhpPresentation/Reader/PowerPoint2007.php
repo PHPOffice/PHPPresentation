@@ -1085,21 +1085,18 @@ class PowerPoint2007 implements ReaderInterface
                     $oShadow->setAlignment($nodeShadow->getAttribute('algn'));
                 }
 
-                // The colour is written as `a:srgbClr` and only a preset one was read back. The
-                // alpha inside it is the shadow's own, which is what the Writer puts there.
+                // The colour is written as `a:srgbClr` and only a preset one was read back.
+                // `loadStyleColor()` already reads a colour and the `a:alpha` inside it, and the
+                // alpha a shadow's colour carries is the shadow's own -- it is the one the Writer
+                // puts there -- so both are taken from it rather than parsed a second time here.
                 foreach (['a:srgbClr', 'a:prstClr'] as $colorElement) {
                     $oSubElement = $document->getElement($colorElement, $nodeShadow);
                     if (!$oSubElement instanceof DOMElement || !$oSubElement->hasAttribute('val')) {
                         continue;
                     }
-                    $oColor = new Color();
-                    $oColor->setRGB($oSubElement->getAttribute('val'));
+                    $oColor = $this->loadStyleColor($document, $oSubElement);
                     $oShadow->setColor($oColor);
-
-                    $oSubElt = $document->getElement('a:alpha', $oSubElement);
-                    if ($oSubElt instanceof DOMElement && $oSubElt->hasAttribute('val')) {
-                        $oShadow->setAlpha((int) ((int) $oSubElt->getAttribute('val') / 1000));
-                    }
+                    $oShadow->setAlpha($oColor->getAlpha());
 
                     break;
                 }

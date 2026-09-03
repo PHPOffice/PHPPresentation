@@ -1969,7 +1969,11 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('page ', $arrayElements[0]->getText());
     }
 
-    public function testShapeShadowSurvivesTheRoundTrip(): void
+    /**
+     * @dataProvider dataProviderShadowAlpha
+     */
+    #[DataProvider('dataProviderShadowAlpha')]
+    public function testShapeShadowSurvivesTheRoundTrip(string $argb, int $alpha, string $expectedARGB): void
     {
         $oPhpPresentation = new PhpPresentation();
         $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
@@ -1977,8 +1981,8 @@ class PowerPoint2007Test extends TestCase
         $oShape->getShadow()
             ->setVisible(true)
             ->setAlignment(Shadow::SHADOW_BOTTOM_RIGHT)
-            ->setColor(new Color('FF00FF00'))
-            ->setAlpha(40);
+            ->setColor(new Color($argb))
+            ->setAlpha($alpha);
 
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
         (new PowerPoint2007Writer($oPhpPresentation))->save($file);
@@ -1992,8 +1996,27 @@ class PowerPoint2007Test extends TestCase
         // colour is written as `a:srgbClr` while only `a:prstClr` was read back
         $oShadow = $arrayShape[0]->getShadow();
         self::assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $oShadow->getAlignment());
-        self::assertEquals('FF00FF00', $oShadow->getColor()->getARGB());
-        self::assertEquals(40, $oShadow->getAlpha());
+        self::assertEquals($expectedARGB, $oShadow->getColor()->getARGB());
+        self::assertEquals($alpha, $oShadow->getAlpha());
+    }
+
+    /**
+     * A shadow states how see-through it is twice: on its own `alpha`, and in the two characters in
+     * front of its colour. The file has room for one of them, `a:alpha` inside `a:srgbClr`, and it
+     * is the shadow's that is written there -- so that is the one both come back carrying.
+     *
+     * @return array<array{string, int, string}>
+     */
+    public static function dataProviderShadowAlpha(): array
+    {
+        return [
+            // an opaque colour on a shadow that is not: the colour gives way to what the file says
+            ['FF00FF00', 40, '6600FF00'],
+            // a colour see-through on its own account, on a shadow that is not
+            ['80FF0000', 100, 'FFFF0000'],
+            // the two agreeing, which is the only case where neither has to give way
+            ['66FF0000', 40, '66FF0000'],
+        ];
     }
 
     public function testShapeWrapSurvivesTheRoundTrip(): void
