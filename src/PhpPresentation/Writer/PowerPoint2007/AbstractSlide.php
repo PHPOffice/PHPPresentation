@@ -825,6 +825,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
+            $objWriter->writeAttribute('flipH', 1);
+            $objWriter->writeAttribute('flipV', 1);
             // a:off
             $objWriter->startElement('a:off');
             $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
@@ -848,7 +850,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0) {
-            $objWriter->writeAttribute('flipV', 1);
+            $objWriter->writeAttribute('flipH', 1);
             // a:off
             $objWriter->startElement('a:off');
             $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));

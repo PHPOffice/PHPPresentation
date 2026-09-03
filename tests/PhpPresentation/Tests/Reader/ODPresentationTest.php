@@ -26,6 +26,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -1640,5 +1641,47 @@ class ODPresentationTest extends TestCase
         // centimetre were not enough to give a whole number of points back
         self::assertEquals(11, $arrayShape[0]->getParagraph()->getSpacingBefore());
         self::assertEquals(13, $arrayShape[0]->getParagraph()->getSpacingAfter());
+    }
+
+    /**
+     * A line runs between two points, and a negative width or height is how the model says it
+     * runs right to left or bottom to top.
+     *
+     * @return array<string, array{int, int, int, int}>
+     */
+    public static function dataProviderLine(): array
+    {
+        return [
+            'down and to the right' => [10, 20, 110, 220],
+            'up and to the right' => [10, 220, 110, 20],
+            'down and to the left' => [110, 20, 10, 220],
+            'up and to the left' => [110, 220, 10, 20],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderLine
+     */
+    #[DataProvider('dataProviderLine')]
+    public function testLineSurvivesTheRoundTrip(int $fromX, int $fromY, int $toX, int $toY): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createLineShape($fromX, $fromY, $toX, $toY);
+        $oShape->setDescription('A line');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        // a line is a shape of the page, not the content of a frame, and only frames were read
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(Line::class, $arrayShape[0]);
+        self::assertEquals($fromX, $arrayShape[0]->getOffsetX());
+        self::assertEquals($fromY, $arrayShape[0]->getOffsetY());
+        self::assertEquals($toX - $fromX, $arrayShape[0]->getWidth());
+        self::assertEquals($toY - $fromY, $arrayShape[0]->getHeight());
+        self::assertEquals('A line', $arrayShape[0]->getDescription());
     }
 }

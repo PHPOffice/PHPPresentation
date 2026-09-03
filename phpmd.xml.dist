@@ -29,8 +29,9 @@
         <!-- Reader/PowerPoint2007 reads a group, which is a shape holding shapes: the group,
              the container it is put in, and the table it can hold are three more classes -->
         <!-- Reader/PowerPoint2007 reads the nine kinds of chart, and each kind is a class -->
+        <!-- Reader/PowerPoint2007 reads a line, which is a shape class of its own -->
 		<properties>
-            <property name="maximum" value="47" />
+            <property name="maximum" value="48" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">
