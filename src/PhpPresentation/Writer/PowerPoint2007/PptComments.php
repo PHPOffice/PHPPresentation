@@ -47,7 +47,7 @@ class PptComments extends AbstractDecoratorWriter
          * @var Comment[]
          */
         $arrayComment = [];
-        foreach ($oSlide->getShapeCollection() as $oShape) {
+        foreach ($this->flattenShapes($oSlide->getShapeCollection()) as $oShape) {
             if ($oShape instanceof Comment) {
                 $arrayComment[] = $oShape;
             }
