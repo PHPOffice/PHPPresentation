@@ -118,11 +118,12 @@ class ODPresentation implements ReaderInterface
     protected const STYLE_KEYS = [
         'alignment', 'background', 'columns', 'columnSpacing', 'columnsRTL', 'fill', 'font',
         'shadow', 'listStyle', 'spacingAfter', 'spacingBefore', 'lineSpacingMode', 'lineSpacing',
-        'rowHeight', 'borders',
+        'rowHeight', 'borders', 'insetBottom', 'insetLeft', 'insetRight', 'insetTop',
+        'verticalAlignCenter', 'wrap',
     ];
 
     /**
-     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders}>
+     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, insetBottom: null|float, insetLeft: null|float, insetRight: null|float, insetTop: null|float, verticalAlignCenter: null|int, wrap: null|string}>
      */
     protected $arrayStyles = [];
 
@@ -422,6 +423,35 @@ class ODPresentation implements ReaderInterface
                         break;
                 }
             }
+            // Read the insets, which a text box says as the padding of its frame
+            // `centimetersToPixels()` gives back an int and an inset is a float, so the conversion
+            // is spelled out to keep the two defaults, 9.6 and 4.8, as they were written. Rounded
+            // to the six decimals the Writer puts in the file, so that 0.254cm comes back as 9.6
+            // rather than as 9.600000000000001.
+            if ($nodeGraphicProps->hasAttribute('fo:padding-bottom')) {
+                $insetBottom = round((float) substr($nodeGraphicProps->getAttribute('fo:padding-bottom'), 0, -2) / 2.54 * CommonDrawing::DPI_96, 6);
+            }
+            if ($nodeGraphicProps->hasAttribute('fo:padding-left')) {
+                $insetLeft = round((float) substr($nodeGraphicProps->getAttribute('fo:padding-left'), 0, -2) / 2.54 * CommonDrawing::DPI_96, 6);
+            }
+            if ($nodeGraphicProps->hasAttribute('fo:padding-right')) {
+                $insetRight = round((float) substr($nodeGraphicProps->getAttribute('fo:padding-right'), 0, -2) / 2.54 * CommonDrawing::DPI_96, 6);
+            }
+            if ($nodeGraphicProps->hasAttribute('fo:padding-top')) {
+                $insetTop = round((float) substr($nodeGraphicProps->getAttribute('fo:padding-top'), 0, -2) / 2.54 * CommonDrawing::DPI_96, 6);
+            }
+            // Read whether the text is centred between the top and the bottom of the frame
+            if ($nodeGraphicProps->hasAttribute('draw:textarea-vertical-align')) {
+                $verticalAlignCenter = 'middle' === $nodeGraphicProps->getAttribute('draw:textarea-vertical-align')
+                    ? RichText::VALIGN_CENTER
+                    : RichText::VALIGN_NOTCENTER;
+            }
+            // Read whether the text wraps inside the frame
+            if ($nodeGraphicProps->hasAttribute('fo:wrap-option')) {
+                $wrap = 'no-wrap' === $nodeGraphicProps->getAttribute('fo:wrap-option')
+                    ? RichText::WRAP_NONE
+                    : RichText::WRAP_SQUARE;
+            }
             // Read Fill
             if ($nodeGraphicProps->hasAttribute('draw:fill')) {
                 $value = $nodeGraphicProps->getAttribute('draw:fill');
@@ -705,6 +735,12 @@ class ODPresentation implements ReaderInterface
             'lineSpacing' => $lineSpacing ?? null,
             'rowHeight' => $rowHeight ?? null,
             'borders' => $borders ?? null,
+            'insetBottom' => $insetBottom ?? null,
+            'insetLeft' => $insetLeft ?? null,
+            'insetRight' => $insetRight ?? null,
+            'insetTop' => $insetTop ?? null,
+            'verticalAlignCenter' => $verticalAlignCenter ?? null,
+            'wrap' => $wrap ?? null,
         ];
 
         return true;
@@ -942,6 +978,24 @@ class ODPresentation implements ReaderInterface
                 }
                 if (null !== $this->arrayStyles[$keyStyle]['columnsRTL']) {
                     $oShape->setColumnsRTL($this->arrayStyles[$keyStyle]['columnsRTL']);
+                }
+                if (null !== $this->arrayStyles[$keyStyle]['insetBottom']) {
+                    $oShape->setInsetBottom($this->arrayStyles[$keyStyle]['insetBottom']);
+                }
+                if (null !== $this->arrayStyles[$keyStyle]['insetLeft']) {
+                    $oShape->setInsetLeft($this->arrayStyles[$keyStyle]['insetLeft']);
+                }
+                if (null !== $this->arrayStyles[$keyStyle]['insetRight']) {
+                    $oShape->setInsetRight($this->arrayStyles[$keyStyle]['insetRight']);
+                }
+                if (null !== $this->arrayStyles[$keyStyle]['insetTop']) {
+                    $oShape->setInsetTop($this->arrayStyles[$keyStyle]['insetTop']);
+                }
+                if (null !== $this->arrayStyles[$keyStyle]['verticalAlignCenter']) {
+                    $oShape->setVerticalAlignCenter($this->arrayStyles[$keyStyle]['verticalAlignCenter']);
+                }
+                if (null !== $this->arrayStyles[$keyStyle]['wrap']) {
+                    $oShape->setWrap($this->arrayStyles[$keyStyle]['wrap']);
                 }
             }
         }

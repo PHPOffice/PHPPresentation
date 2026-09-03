@@ -30,6 +30,7 @@ use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
+use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
@@ -1136,6 +1137,37 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeExists('content.xml', $element, 'draw:transform');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:transform', 'rotate (-' . deg2rad($expectedValue) . ') translate (0.000cm 0.000cm)');
+    }
+
+    public function testRichTextFrameProperties(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->setWrap(RichText::WRAP_NONE);
+        $oShape->setVerticalAlignCenter(RichText::VALIGN_CENTER);
+        $oShape->setInsetBottom(3)->setInsetLeft(12)->setInsetRight(24)->setInsetTop(6);
+
+        $element = $this->getShapeStyleXPath() . '/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:wrap-option', 'no-wrap');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:textarea-vertical-align', 'middle');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:padding-bottom', '0.079375cm');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:padding-left', '0.3175cm');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:padding-right', '0.635cm');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:padding-top', '0.15875cm');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testRichTextFramePropertiesDefaults(): void
+    {
+        $this->oPresentation->getActiveSlide()->createRichTextShape();
+
+        // the two insets a shape is born with are 9.6 and 4.8 pixels, which are whole numbers of
+        // centimetres once converted, and the frame wraps its text and hangs it from the top
+        $element = $this->getShapeStyleXPath() . '/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:wrap-option', 'wrap');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:textarea-vertical-align', 'top');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:padding-left', '0.254cm');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:padding-top', '0.127cm');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testRichTextShadow(): void

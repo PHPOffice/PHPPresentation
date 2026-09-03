@@ -1329,7 +1329,26 @@ class Content extends AbstractDecoratorWriter
                 }
             }
 
-            $objWriter->writeAttribute('fo:wrap-option', 'wrap');
+            // OpenDocument says whether the text wraps inside the frame at all, which is what the
+            // two values a shape's wrap can hold mean; it is not the wrap around a shape.
+            $objWriter->writeAttribute('fo:wrap-option', RichText::WRAP_NONE === $shape->getWrap() ? 'no-wrap' : 'wrap');
+            $objWriter->writeAttribute(
+                'draw:textarea-vertical-align',
+                RichText::VALIGN_CENTER === $shape->getVerticalAlignCenter() ? 'middle' : 'top'
+            );
+            // The insets of a text box are the padding of its frame. `pixelsToCentimeters()` takes
+            // an int, and an inset is a float -- the default two are 9.6 and 4.8 -- so the same
+            // conversion is spelled out here rather than rounding them to whole pixels first.
+            // Six decimals rather than the three the lengths beside it carry: a pixel is
+            // 127/4800 cm, and three decimals lose about a sixtieth of a pixel of it.
+            foreach ([
+                'fo:padding-bottom' => $shape->getInsetBottom(),
+                'fo:padding-left' => $shape->getInsetLeft(),
+                'fo:padding-right' => $shape->getInsetRight(),
+                'fo:padding-top' => $shape->getInsetTop(),
+            ] as $attribute => $inset) {
+                $objWriter->writeAttribute($attribute, round($inset / CommonDrawing::DPI_96 * 2.54, 6) . 'cm');
+            }
             // The writing mode of the frame orders its columns; the direction of the text comes from
             // the writing mode each paragraph style states for itself.
             $objWriter->writeAttribute('style:writing-mode', $shape->isColumnsRTL() ? 'rl-tb' : 'lr-tb');
