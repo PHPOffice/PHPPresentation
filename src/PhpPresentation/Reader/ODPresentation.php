@@ -31,6 +31,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -825,6 +826,12 @@ class ODPresentation implements ReaderInterface
                 }
             }
         }
+        // a line is a shape of the page in its own right, not the content of a frame
+        foreach ($this->oXMLReader->getElements('draw:line', $nodeSlide) as $oNodeLine) {
+            if ($oNodeLine instanceof DOMElement) {
+                $this->loadShapeLine($oNodeLine);
+            }
+        }
 
         return true;
     }
@@ -911,6 +918,28 @@ class ODPresentation implements ReaderInterface
                 $shape->setFill($this->arrayStyles[$keyStyle]['fill']);
             }
         }
+
+        $this->oPhpPresentation->getActiveSlide()->addShape($shape);
+    }
+
+    /**
+     * Read a Line.
+     *
+     * ODF says a line by the two points it runs between, so there is nothing to flip: a line that
+     * runs right to left simply has an `svg:x2` smaller than its `svg:x1`, which is the negative
+     * width the model carries.
+     */
+    protected function loadShapeLine(DOMElement $oNodeLine): void
+    {
+        $point = function (string $attribute) use ($oNodeLine): int {
+            return $oNodeLine->hasAttribute($attribute)
+                ? (int) CommonDrawing::centimetersToPixels((float) substr($oNodeLine->getAttribute($attribute), 0, -2))
+                : 0;
+        };
+
+        $shape = new Line($point('svg:x1'), $point('svg:y1'), $point('svg:x2'), $point('svg:y2'));
+        $shape->setDescription($this->loadShapeDescription($oNodeLine));
+        $shape->setDecorative($this->loadShapeDecorative($oNodeLine));
 
         $this->oPhpPresentation->getActiveSlide()->addShape($shape);
     }

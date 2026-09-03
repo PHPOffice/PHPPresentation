@@ -38,6 +38,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
+use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -1106,6 +1107,54 @@ class PowerPoint2007 implements ReaderInterface
         }
 
         return null;
+    }
+
+    /**
+     * Read a Line, which is written as a connection shape.
+     *
+     * The two ends the shape was given are the offset and the extent of its `a:xfrm`. An extent
+     * cannot be negative, so a line that runs right to left or bottom to top is written from the
+     * other end with `flipH` or `flipV` saying so, and the two ends are put back here.
+     *
+     * @param AbstractSlide|Note $oSlide
+     */
+    protected function loadShapeLine(XMLReader $document, DOMElement $node, $oSlide, ?ShapeContainerInterface $oContainer = null): void
+    {
+        $fromX = $fromY = $width = $height = 0;
+
+        $oElement = $document->getElement('p:spPr/a:xfrm/a:off', $node);
+        if ($oElement instanceof DOMElement) {
+            $fromX = (int) CommonDrawing::emuToPixels((int) $oElement->getAttribute('x'));
+            $fromY = (int) CommonDrawing::emuToPixels((int) $oElement->getAttribute('y'));
+        }
+
+        $oElement = $document->getElement('p:spPr/a:xfrm/a:ext', $node);
+        if ($oElement instanceof DOMElement) {
+            $width = (int) CommonDrawing::emuToPixels((int) $oElement->getAttribute('cx'));
+            $height = (int) CommonDrawing::emuToPixels((int) $oElement->getAttribute('cy'));
+        }
+
+        $oElement = $document->getElement('p:spPr/a:xfrm', $node);
+        if ($oElement instanceof DOMElement) {
+            if ('1' === $oElement->getAttribute('flipH')) {
+                $fromX += $width;
+                $width = -$width;
+            }
+            if ('1' === $oElement->getAttribute('flipV')) {
+                $fromY += $height;
+                $height = -$height;
+            }
+        }
+
+        $oShape = new Line($fromX, $fromY, $fromX + $width, $fromY + $height);
+        ($oContainer ?? $oSlide)->addShape($oShape);
+
+        $oElement = $document->getElement('p:nvCxnSpPr/p:cNvPr', $node);
+        if ($oElement instanceof DOMElement) {
+            $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
+            $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
+            $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
+        }
     }
 
     /**
@@ -2217,6 +2266,10 @@ class PowerPoint2007 implements ReaderInterface
                     break;
                 case 'p:sp':
                     $this->loadShapeRichText($xmlReader, $oNode, $oSlide, $oContainer);
+
+                    break;
+                case 'p:cxnSp':
+                    $this->loadShapeLine($xmlReader, $oNode, $oSlide, $oContainer);
 
                     break;
                 case 'p:grpSp':
