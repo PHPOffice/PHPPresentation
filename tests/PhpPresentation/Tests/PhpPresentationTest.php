@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\DocumentProperties;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
@@ -190,5 +191,81 @@ class PhpPresentationTest extends TestCase
         self::assertEquals('Slide 1', $presentation->getSlide(0)->getName());
         self::assertEquals('Slide 2', $presentation->getSlide(1)->getName());
         self::assertEquals('Slide 3', $presentation->getSlide(2)->getName());
+    }
+
+    /**
+     * A presentation of slides named A, B, C, D and nothing else.
+     */
+    private function getNamedPresentation(): PhpPresentation
+    {
+        $presentation = new PhpPresentation();
+        $presentation->removeSlideByIndex(0);
+        foreach (['A', 'B', 'C', 'D'] as $name) {
+            $presentation->createSlide()->setName($name);
+        }
+
+        return $presentation;
+    }
+
+    private function getSlideNames(PhpPresentation $presentation): string
+    {
+        $names = [];
+        foreach ($presentation->getAllSlides() as $slide) {
+            $names[] = $slide->getName();
+        }
+
+        return implode(' ', $names);
+    }
+
+    public function testMoveSlideEarlier(): void
+    {
+        $presentation = $this->getNamedPresentation();
+        $presentation->moveSlide($presentation->getSlide(3), 0);
+
+        self::assertEquals('D A B C', $this->getSlideNames($presentation));
+    }
+
+    public function testMoveSlideLater(): void
+    {
+        // the slide is taken out before it is put back, so the index counts in the collection
+        // without it -- A moved to 2 lands between C and D, not between B and C
+        $presentation = $this->getNamedPresentation();
+        $presentation->moveSlide($presentation->getSlide(0), 2);
+
+        self::assertEquals('B C A D', $this->getSlideNames($presentation));
+    }
+
+    public function testMoveSlideToWhereItAlreadyIs(): void
+    {
+        $presentation = $this->getNamedPresentation();
+        $presentation->moveSlide($presentation->getSlide(1), 1);
+
+        self::assertEquals('A B C D', $this->getSlideNames($presentation));
+    }
+
+    public function testMoveSlideReturnsThePresentation(): void
+    {
+        $presentation = $this->getNamedPresentation();
+
+        self::assertSame($presentation, $presentation->moveSlide($presentation->getSlide(0), 1));
+    }
+
+    public function testMoveSlideNotInThePresentation(): void
+    {
+        $presentation = $this->getNamedPresentation();
+        $stranger = new Slide();
+        $stranger->setName('Stranger');
+
+        $this->expectException(InvalidParameterException::class);
+        $presentation->moveSlide($stranger, 0);
+    }
+
+    public function testMoveSlideOutOfBounds(): void
+    {
+        $presentation = $this->getNamedPresentation();
+
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (4) is out of bounds (0, 3)');
+        $presentation->moveSlide($presentation->getSlide(0), 4);
     }
 }
