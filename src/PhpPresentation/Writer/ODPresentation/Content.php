@@ -1145,13 +1145,15 @@ class Content extends AbstractDecoratorWriter
             'fo:line-height',
             $item->getLineSpacing() . 'pt'
         );
+        // six decimals rather than three: a point is 127/3600 cm, and three decimals lose about a
+        // seventieth of a point of the spacing
         $objWriter->writeAttribute(
             'fo:margin-top',
-            Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingBefore()), 3) . 'cm'
+            round(CommonDrawing::pointstoCentimeters($item->getSpacingBefore()), 6) . 'cm'
         );
         $objWriter->writeAttribute(
             'fo:margin-bottom',
-            Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingAfter()), 3) . 'cm'
+            round(CommonDrawing::pointstoCentimeters($item->getSpacingAfter()), 6) . 'cm'
         );
         switch ($item->getAlignment()->getHorizontal()) {
             case Alignment::HORIZONTAL_LEFT:

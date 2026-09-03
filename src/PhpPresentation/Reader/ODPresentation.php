@@ -576,15 +576,17 @@ class ODPresentation implements ReaderInterface
         $nodeParagraphProps = $this->oXMLReader->getElement('style:paragraph-properties', $nodeStyle);
         if ($nodeParagraphProps instanceof DOMElement) {
             if ($nodeParagraphProps->hasAttribute('fo:line-height')) {
-                $lineHeightUnit = $this->getExpressionUnit($nodeParagraphProps->getAttribute('fo:margin-bottom'));
+                $lineHeightUnit = $this->getExpressionUnit($nodeParagraphProps->getAttribute('fo:line-height'));
                 $lineSpacingMode = $lineHeightUnit == '%' ? Paragraph::LINE_SPACING_MODE_PERCENT : Paragraph::LINE_SPACING_MODE_POINT;
-                $lineSpacing = $this->getExpressionValue($nodeParagraphProps->getAttribute('fo:margin-bottom'));
+                $lineSpacing = $this->getExpressionValue($nodeParagraphProps->getAttribute('fo:line-height'));
             }
+            // rounded because a spacing goes into the file as centimetres, and a whole number of
+            // points is not a whole number of them
             if ($nodeParagraphProps->hasAttribute('fo:margin-bottom')) {
-                $spacingAfter = self::sizeToPoint($nodeParagraphProps->getAttribute('fo:margin-bottom'));
+                $spacingAfter = round((float) self::sizeToPoint($nodeParagraphProps->getAttribute('fo:margin-bottom')), 4);
             }
             if ($nodeParagraphProps->hasAttribute('fo:margin-top')) {
-                $spacingBefore = self::sizeToPoint($nodeParagraphProps->getAttribute('fo:margin-top'));
+                $spacingBefore = round((float) self::sizeToPoint($nodeParagraphProps->getAttribute('fo:margin-top')), 4);
             }
             $oAlignment = new Alignment();
             if ($nodeParagraphProps->hasAttribute('fo:text-align')) {

@@ -1584,4 +1584,61 @@ class ODPresentationTest extends TestCase
         self::assertNotInstanceOf(Field::class, $arrayElements[2]);
         self::assertEquals(' of ', $arrayElements[2]->getText());
     }
+
+    /**
+     * @return array<array<int|string>>
+     */
+    public static function dataProviderLineSpacing(): array
+    {
+        return [
+            [Paragraph::LINE_SPACING_MODE_PERCENT, 150],
+            [Paragraph::LINE_SPACING_MODE_POINT, 22],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderLineSpacing
+     */
+    #[DataProvider('dataProviderLineSpacing')]
+    public function testLineSpacingSurvivesTheRoundTrip(string $mode, int $spacing): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->getActiveParagraph()->setLineSpacingMode($mode)->setLineSpacing($spacing);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // the line height was read out of the margin below the paragraph rather than out of
+        // itself, so every spacing came back as the margin in centimetres, rounded down
+        self::assertEquals($mode, $arrayShape[0]->getParagraph()->getLineSpacingMode());
+        self::assertEquals($spacing, $arrayShape[0]->getParagraph()->getLineSpacing());
+    }
+
+    public function testParagraphSpacingSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->getActiveParagraph()->setSpacingBefore(11)->setSpacingAfter(13);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // a spacing is points here and centimetres in the file, and three decimals of a
+        // centimetre were not enough to give a whole number of points back
+        self::assertEquals(11, $arrayShape[0]->getParagraph()->getSpacingBefore());
+        self::assertEquals(13, $arrayShape[0]->getParagraph()->getSpacingAfter());
+    }
 }
