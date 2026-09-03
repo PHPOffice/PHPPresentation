@@ -1717,6 +1717,88 @@ class ContentTest extends PhpPresentationTestCase
         }
     }
 
+    /**
+     * A row style was the one generated style nothing held to its reference: breaking every
+     * `table:table-row/@table:style-name` failed no test at all, where breaking the cell reference
+     * failed sixteen. This is that net.
+     */
+    public function testTableRowStyleIsAddressedByItsReference(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape(2);
+        $oRow = $oShape->createRow();
+        $oRow->setHeight(20);
+
+        $element = $this->getTableRowStyleXPath();
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:family', 'table-row');
+
+        $element .= '/style:table-row-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'style:row-height', 'cm');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * Rows that write the same thing, and cells that write the same thing, are one style each --
+     * however many of them a table has.
+     */
+    public function testAlikeRowsAndCellsShareOneStyle(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape(3);
+        for ($row = 0; $row < 4; ++$row) {
+            $oShape->createRow()->setHeight(20);
+        }
+
+        $definitions = '/office:document-content/office:automatic-styles/style:style';
+        $this->assertZipXmlElementCount('content.xml', $definitions . '[@style:family=\'table-row\']', 1);
+        $this->assertZipXmlElementCount('content.xml', $definitions . '[@style:family=\'table-cell\']', 1);
+
+        // and every reference in the document names the one definition of its family
+        $rowStyle = $this->getZipXmlAttributeValue('content.xml', '//table:table-row[1]', 'table:style-name');
+        $cellStyle = $this->getZipXmlAttributeValue('content.xml', '//table:table-row[1]/table:table-cell[1]', 'table:style-name');
+        for ($row = 1; $row <= 4; ++$row) {
+            self::assertEquals($rowStyle, $this->getZipXmlAttributeValue('content.xml', sprintf('//table:table-row[%d]', $row), 'table:style-name'));
+            for ($cell = 1; $cell <= 3; ++$cell) {
+                self::assertEquals($cellStyle, $this->getZipXmlAttributeValue('content.xml', sprintf('//table:table-row[%d]/table:table-cell[%d]', $row, $cell), 'table:style-name'));
+            }
+        }
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * The other half of the same claim: the pool shares what is alike and nothing else.
+     */
+    public function testUnalikeRowsAndCellsDoNotShareAStyle(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape(2);
+        foreach ([['FFFF0000', 'FF00FF00'], ['FF0000FF', 'FFFFFF00']] as $indexRow => $colors) {
+            $oRow = $oShape->createRow();
+            $oRow->setHeight(20 + $indexRow);
+            foreach ($oRow->getCells() as $indexCell => $oCell) {
+                $oCell->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color($colors[$indexCell]));
+            }
+        }
+
+        $definitions = '/office:document-content/office:automatic-styles/style:style';
+        $this->assertZipXmlElementCount('content.xml', $definitions . '[@style:family=\'table-row\']', 2);
+        $this->assertZipXmlElementCount('content.xml', $definitions . '[@style:family=\'table-cell\']', 4);
+
+        // two heights are two names, and four colours are four
+        self::assertNotEquals(
+            $this->getZipXmlAttributeValue('content.xml', '//table:table-row[1]', 'table:style-name'),
+            $this->getZipXmlAttributeValue('content.xml', '//table:table-row[2]', 'table:style-name')
+        );
+        $cellStyles = [];
+        for ($row = 1; $row <= 2; ++$row) {
+            for ($cell = 1; $cell <= 2; ++$cell) {
+                $cellStyles[] = $this->getZipXmlAttributeValue('content.xml', sprintf('//table:table-row[%d]/table:table-cell[%d]', $row, $cell), 'table:style-name');
+            }
+        }
+        self::assertCount(4, array_unique($cellStyles));
+    }
+
     public function testTableRowFillUntouched(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createTableShape(2);
@@ -2302,6 +2384,17 @@ class ContentTest extends PhpPresentationTestCase
     {
         return $this->getAutomaticStyleXPath(
             sprintf('//table:table-row[%d]/table:table-cell[%d]', $row, $cell),
+            'table:style-name'
+        );
+    }
+
+    /**
+     * The `style:style` of a table row, addressed by the name its `table:table-row` carries.
+     */
+    private function getTableRowStyleXPath(int $row = 1): string
+    {
+        return $this->getAutomaticStyleXPath(
+            sprintf('//table:table-row[%d]', $row),
             'table:style-name'
         );
     }

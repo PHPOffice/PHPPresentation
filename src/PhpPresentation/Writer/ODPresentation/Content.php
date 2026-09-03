@@ -64,6 +64,8 @@ class Content extends AbstractDecoratorWriter
         'text' => 'T',
         'graphic' => 'gr',
         'drawing-page' => 'dp',
+        'table-row' => 'ro',
+        'table-cell' => 'ce',
     ];
 
     /**
@@ -885,18 +887,18 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->startElement('table:table-column');
                 $objWriter->endElement();
             }
-            foreach ($arrayRows as $keyRow => $shapeRow) {
+            foreach ($arrayRows as $shapeRow) {
                 // table:table-row
                 $objWriter->startElement('table:table-row');
-                $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId . 'r' . $keyRow);
+                $objWriter->writeAttribute('table:style-name', $this->getAutomaticStyleName($shapeRow));
                 //@todo getFill
 
                 $numColspan = 0;
-                foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
+                foreach ($shapeRow->getCells() as $shapeCell) {
                     if (0 == $numColspan) {
                         // table:table-cell
                         $objWriter->startElement('table:table-cell');
-                        $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId . 'r' . $keyRow . 'c' . $keyCell);
+                        $objWriter->writeAttribute('table:style-name', $this->getAutomaticStyleName($shapeCell));
                         if ($shapeCell->getColspan() > 1) {
                             $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColspan());
                             $numColspan = $shapeCell->getColspan() - 1;
@@ -1056,7 +1058,7 @@ class Content extends AbstractDecoratorWriter
                 $this->addLineStyle($shape);
             }
             if ($shape instanceof Table) {
-                $this->writeTableStyle($objWriter, $shape);
+                $this->addTableStyle($shape);
             }
             // A group inside a group is walked by writeShapeGroup(), so it has to be walked here too
             if ($shape instanceof Group) {
@@ -1480,76 +1482,69 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the default style information for a Table shape.
+     * Name the automatic styles the rows and the cells of a Table shape wear.
      */
-    protected function writeTableStyle(XMLWriter $objWriter, Table $shape): void
+    protected function addTableStyle(Table $shape): void
     {
-        foreach ($shape->getRows() as $keyRow => $shapeRow) {
-            // style:style
-            $objWriter->startElement('style:style');
-            $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId . 'r' . $keyRow);
-            $objWriter->writeAttribute('style:family', 'table-row');
+        foreach ($shape->getRows() as $shapeRow) {
+            $this->shareAutomaticStyle('table-row', function (XMLWriter $objWriter) use ($shapeRow): void {
+                // style:table-row-properties
+                $objWriter->startElement('style:table-row-properties');
+                $objWriter->writeAttribute('style:row-height', Text::numberFormat(CommonDrawing::pointsToCentimeters($shapeRow->getHeight()), 3) . 'cm');
+                $objWriter->endElement();
+            }, $shapeRow);
 
-            // style:table-row-properties
-            $objWriter->startElement('style:table-row-properties');
-            $objWriter->writeAttribute('style:row-height', Text::numberFormat(CommonDrawing::pointsToCentimeters($shapeRow->getHeight()), 3) . 'cm');
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
-                // style:style
-                $objWriter->startElement('style:style');
-                $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId . 'r' . $keyRow . 'c' . $keyCell);
-                $objWriter->writeAttribute('style:family', 'table-cell');
-
-                // A cell that was given no fill of its own is painted with the fill of its row.
-                // A cell set to `FILL_NONE` asked for no fill and stays transparent, even where
-                // its row is painted.
-                $cellFill = $shapeCell->getFill();
-                if (Fill::FILL_UNSET == $cellFill->getFillType()) {
-                    $cellFill = $shapeRow->getFill();
-                }
-
-                // Note : This element is not valid in the Schema 1.2
-                // style:graphic-properties
-                if (Fill::FILL_NONE != $cellFill->getFillType()
-                    && Fill::FILL_UNSET != $cellFill->getFillType()
-                ) {
-                    $objWriter->startElement('style:graphic-properties');
-                    if (Fill::FILL_SOLID == $cellFill->getFillType()) {
-                        $objWriter->writeAttribute('draw:fill', 'solid');
-                        $objWriter->writeAttribute('draw:fill-color', '#' . $cellFill->getStartColor()->getRGB());
+            foreach ($shapeRow->getCells() as $shapeCell) {
+                // The body a cell writes is read out of two objects, which is why it is a closure
+                // and not a string: the cell, and the row it sits in, because a cell that named no
+                // fill of its own is painted with the row's
+                $this->shareAutomaticStyle('table-cell', function (XMLWriter $objWriter) use ($shapeCell, $shapeRow): void {
+                    // A cell that was given no fill of its own is painted with the fill of its row.
+                    // A cell set to `FILL_NONE` asked for no fill and stays transparent, even where
+                    // its row is painted.
+                    $cellFill = $shapeCell->getFill();
+                    if (Fill::FILL_UNSET == $cellFill->getFillType()) {
+                        $cellFill = $shapeRow->getFill();
                     }
-                    if (Fill::FILL_GRADIENT_LINEAR == $cellFill->getFillType()) {
-                        $objWriter->writeAttribute('draw:fill', 'gradient');
-                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $cellFill->getHashCode());
+
+                    // Note : This element is not valid in the Schema 1.2
+                    // style:graphic-properties
+                    if (Fill::FILL_NONE != $cellFill->getFillType()
+                        && Fill::FILL_UNSET != $cellFill->getFillType()
+                    ) {
+                        $objWriter->startElement('style:graphic-properties');
+                        if (Fill::FILL_SOLID == $cellFill->getFillType()) {
+                            $objWriter->writeAttribute('draw:fill', 'solid');
+                            $objWriter->writeAttribute('draw:fill-color', '#' . $cellFill->getStartColor()->getRGB());
+                        }
+                        if (Fill::FILL_GRADIENT_LINEAR == $cellFill->getFillType()) {
+                            $objWriter->writeAttribute('draw:fill', 'gradient');
+                            $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $cellFill->getHashCode());
+                        }
+                        if (in_array($cellFill->getFillType(), Fill::PATTERN_TYPES, true)) {
+                            $this->writePatternFill($objWriter, $cellFill);
+                        }
+                        $objWriter->endElement();
                     }
-                    if (in_array($cellFill->getFillType(), Fill::PATTERN_TYPES, true)) {
-                        $this->writePatternFill($objWriter, $cellFill);
+                    // >style:graphic-properties
+
+                    // style:paragraph-properties
+                    $objWriter->startElement('style:paragraph-properties');
+                    $cellBorders = $shapeCell->getBorders();
+                    $cellBordersBottomHashCode = $cellBorders->getBottom()->getHashCode();
+                    if ($cellBordersBottomHashCode == $cellBorders->getTop()->getHashCode()
+                        && $cellBordersBottomHashCode == $cellBorders->getLeft()->getHashCode()
+                        && $cellBordersBottomHashCode == $cellBorders->getRight()->getHashCode()) {
+                        $objWriter->writeAttribute('fo:border', $this->getBorderValue($cellBorders->getBottom()));
+                    } else {
+                        $objWriter->writeAttribute('fo:border-bottom', $this->getBorderValue($cellBorders->getBottom()));
+                        $objWriter->writeAttribute('fo:border-top', $this->getBorderValue($cellBorders->getTop()));
+                        $objWriter->writeAttribute('fo:border-right', $this->getBorderValue($cellBorders->getRight()));
+                        $objWriter->writeAttribute('fo:border-left', $this->getBorderValue($cellBorders->getLeft()));
                     }
                     $objWriter->endElement();
-                }
-                // >style:graphic-properties
-
-                // style:paragraph-properties
-                $objWriter->startElement('style:paragraph-properties');
-                $cellBorders = $shapeCell->getBorders();
-                $cellBordersBottomHashCode = $cellBorders->getBottom()->getHashCode();
-                if ($cellBordersBottomHashCode == $cellBorders->getTop()->getHashCode()
-                    && $cellBordersBottomHashCode == $cellBorders->getLeft()->getHashCode()
-                    && $cellBordersBottomHashCode == $cellBorders->getRight()->getHashCode()) {
-                    $objWriter->writeAttribute('fo:border', $this->getBorderValue($cellBorders->getBottom()));
-                } else {
-                    $objWriter->writeAttribute('fo:border-bottom', $this->getBorderValue($cellBorders->getBottom()));
-                    $objWriter->writeAttribute('fo:border-top', $this->getBorderValue($cellBorders->getTop()));
-                    $objWriter->writeAttribute('fo:border-right', $this->getBorderValue($cellBorders->getRight()));
-                    $objWriter->writeAttribute('fo:border-left', $this->getBorderValue($cellBorders->getLeft()));
-                }
-                // >style:paragraph-properties
-                $objWriter->endElement();
-                // >style:style
-                $objWriter->endElement();
+                    // >style:paragraph-properties
+                }, $shapeCell);
 
                 foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
                     foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
