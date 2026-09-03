@@ -86,7 +86,7 @@ class ContentTypes extends AbstractDecoratorWriter
             if (count($oSlide->getNote()->getShapeCollection()) > 0) {
                 $this->writeOverrideContentType($objWriter, '/ppt/notesSlides/notesSlide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.notesSlide+xml');
             }
-            foreach ($oSlide->getShapeCollection() as $oShape) {
+            foreach ($this->flattenShapes($oSlide->getShapeCollection()) as $oShape) {
                 if ($oShape instanceof Comment) {
                     $this->writeOverrideContentType($objWriter, '/ppt/comments/comment' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.comments+xml');
                     $hasComments = true;
