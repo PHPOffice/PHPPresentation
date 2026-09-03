@@ -52,6 +52,7 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007 as PowerPoint2007Writer;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -1966,5 +1967,74 @@ class PowerPoint2007Test extends TestCase
         // and the runs around it stay runs
         self::assertNotInstanceOf(Field::class, $arrayElements[0]);
         self::assertEquals('page ', $arrayElements[0]->getText());
+    }
+
+    /**
+     * @dataProvider dataProviderShadowAlpha
+     */
+    #[DataProvider('dataProviderShadowAlpha')]
+    public function testShapeShadowSurvivesTheRoundTrip(string $argb, int $alpha, string $expectedARGB): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->getShadow()
+            ->setVisible(true)
+            ->setAlignment(Shadow::SHADOW_BOTTOM_RIGHT)
+            ->setColor(new Color($argb))
+            ->setAlpha($alpha);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // the alignment was read off `a:effectLst` rather than off the shadow inside it, and the
+        // colour is written as `a:srgbClr` while only `a:prstClr` was read back
+        $oShadow = $arrayShape[0]->getShadow();
+        self::assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $oShadow->getAlignment());
+        self::assertEquals($expectedARGB, $oShadow->getColor()->getARGB());
+        self::assertEquals($alpha, $oShadow->getAlpha());
+    }
+
+    /**
+     * A shadow states how see-through it is twice: on its own `alpha`, and in the two characters in
+     * front of its colour. The file has room for one of them, `a:alpha` inside `a:srgbClr`, and it
+     * is the shadow's that is written there -- so that is the one both come back carrying.
+     *
+     * @return array<array{string, int, string}>
+     */
+    public static function dataProviderShadowAlpha(): array
+    {
+        return [
+            // an opaque colour on a shadow that is not: the colour gives way to what the file says
+            ['FF00FF00', 40, '6600FF00'],
+            // a colour see-through on its own account, on a shadow that is not
+            ['80FF0000', 100, 'FFFF0000'],
+            // the two agreeing, which is the only case where neither has to give way
+            ['66FF0000', 40, '66FF0000'],
+        ];
+    }
+
+    public function testShapeWrapSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->setWrap(RichText::WRAP_NONE);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // `wrap` is written on `a:bodyPr` beside the insets, and nothing read it back
+        self::assertEquals(RichText::WRAP_NONE, $arrayShape[0]->getWrap());
     }
 }

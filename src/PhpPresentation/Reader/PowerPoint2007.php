@@ -1082,21 +1082,23 @@ class PowerPoint2007 implements ReaderInterface
                     $oShadow->setDirection((int) CommonDrawing::angleToDegrees((int) $nodeShadow->getAttribute('dir')));
                 }
                 if ($nodeShadow->hasAttribute('algn')) {
-                    $oShadow->setAlignment($node->getAttribute('algn'));
+                    $oShadow->setAlignment($nodeShadow->getAttribute('algn'));
                 }
 
-                // Get color define by prstClr
-                $oSubElement = $document->getElement('a:prstClr', $nodeShadow);
-                if ($oSubElement instanceof DOMElement && $oSubElement->hasAttribute('val')) {
-                    $oColor = new Color();
-                    $oColor->setRGB($oSubElement->getAttribute('val'));
-
-                    $oSubElt = $document->getElement('a:alpha', $oSubElement);
-                    if ($oSubElt instanceof DOMElement && $oSubElt->hasAttribute('val')) {
-                        $oColor->setAlpha((int) $oSubElt->getAttribute('val') / 1000);
+                // The colour is written as `a:srgbClr` and only a preset one was read back.
+                // `loadStyleColor()` already reads a colour and the `a:alpha` inside it, and the
+                // alpha a shadow's colour carries is the shadow's own -- it is the one the Writer
+                // puts there -- so both are taken from it rather than parsed a second time here.
+                foreach (['a:srgbClr', 'a:prstClr'] as $colorElement) {
+                    $oSubElement = $document->getElement($colorElement, $nodeShadow);
+                    if (!$oSubElement instanceof DOMElement || !$oSubElement->hasAttribute('val')) {
+                        continue;
                     }
-
+                    $oColor = $this->loadStyleColor($document, $oSubElement);
                     $oShadow->setColor($oColor);
+                    $oShadow->setAlpha($oColor->getAlpha());
+
+                    break;
                 }
 
                 return $oShadow;
@@ -1188,6 +1190,10 @@ class PowerPoint2007 implements ReaderInterface
             }
             if ($bodyPr->hasAttribute('rtlCol')) {
                 $oShape->setColumnsRTL((bool) (int) $bodyPr->getAttribute('rtlCol'));
+            }
+            // `none` and `square` are the two values a shape's wrap holds, spelled the same way
+            if ($bodyPr->hasAttribute('wrap')) {
+                $oShape->setWrap($bodyPr->getAttribute('wrap'));
             }
         }
 
