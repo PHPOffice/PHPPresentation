@@ -41,6 +41,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Group;
+use PhpOffice\PhpPresentation\Shape\Line as LineShape;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
@@ -2036,5 +2037,47 @@ class PowerPoint2007Test extends TestCase
 
         // `wrap` is written on `a:bodyPr` beside the insets, and nothing read it back
         self::assertEquals(RichText::WRAP_NONE, $arrayShape[0]->getWrap());
+    }
+
+    /**
+     * A line runs between two points, and a negative width or height is how the model says it
+     * runs right to left or bottom to top.
+     *
+     * @return array<string, array{int, int, int, int}>
+     */
+    public static function dataProviderLine(): array
+    {
+        return [
+            'down and to the right' => [10, 20, 110, 220],
+            'up and to the right' => [10, 220, 110, 20],
+            'down and to the left' => [110, 20, 10, 220],
+            'up and to the left' => [110, 220, 10, 20],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderLine
+     */
+    #[DataProvider('dataProviderLine')]
+    public function testLineSurvivesTheRoundTrip(int $fromX, int $fromY, int $toX, int $toY): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createLineShape($fromX, $fromY, $toX, $toY);
+        $oShape->setDescription('A line');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        // a line was written as a connection shape and read back as nothing at all
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(LineShape::class, $arrayShape[0]);
+        self::assertEquals($fromX, $arrayShape[0]->getOffsetX());
+        self::assertEquals($fromY, $arrayShape[0]->getOffsetY());
+        self::assertEquals($toX - $fromX, $arrayShape[0]->getWidth());
+        self::assertEquals($toY - $fromY, $arrayShape[0]->getHeight());
+        self::assertEquals('A line', $arrayShape[0]->getDescription());
     }
 }
