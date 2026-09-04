@@ -683,7 +683,8 @@ class PowerPoint97 implements ReaderInterface
      */
     private static function getBytes(string $data, int $pos, int $length): string
     {
-        return str_pad(substr($data, $pos, $length), $length, "\x00");
+        // before PHP 8.0 a read that starts past the end of the string answers false, not ''
+        return str_pad((string) substr($data, $pos, $length), $length, "\x00");
     }
 
     /**
