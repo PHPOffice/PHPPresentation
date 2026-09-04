@@ -62,6 +62,9 @@ class MainDocumentPartTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider dataProviderSamples
+     */
     #[DataProvider('dataProviderSamples')]
     public function testReadsAPresentationWhoseMainPartIsElsewhere(string $sample): void
     {
