@@ -34,7 +34,7 @@ class CommentAuthors extends AbstractDecoratorWriter
          */
         $arrayAuthors = [];
         foreach ($this->getPresentation()->getAllSlides() as $oSlide) {
-            foreach ($oSlide->getShapeCollection() as $oShape) {
+            foreach ($this->flattenShapes($oSlide->getShapeCollection()) as $oShape) {
                 if (!($oShape instanceof Comment)) {
                     continue;
                 }
