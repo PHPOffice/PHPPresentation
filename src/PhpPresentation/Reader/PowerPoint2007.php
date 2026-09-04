@@ -21,6 +21,12 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Reader;
 
 use DateTime;
+use DK\OpenXml\Encryption\EncryptedOfficeFile;
+use DK\OpenXml\Encryption\EncryptionLimits;
+use DK\OpenXml\Exception\OpenXmlException;
+use DK\OpenXml\OfficeFileDetector;
+use DK\OpenXml\OfficeFileFormat;
+use DK\OpenXml\OpenXmlPackage;
 use DOMElement;
 use DOMNode;
 use DOMNodeList;
@@ -59,7 +65,6 @@ use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Style\TextStyle;
-use ZipArchive;
 
 /**
  * Serialized format reader.
@@ -84,7 +89,6 @@ class PowerPoint2007 implements ReaderInterface
         'application/vnd.ms-powerpoint.template.macroEnabled.main+xml',
     ];
 
-    private const REL_OFFICE_DOCUMENT = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument';
     private const REL_CORE_PROPERTIES = 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties';
     private const REL_CUSTOM_PROPERTIES = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties';
     private const REL_VIEW_PROPS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/viewProps';
@@ -111,6 +115,34 @@ class PowerPoint2007 implements ReaderInterface
     ];
 
     /**
+     * The password a protected presentation was locked with.
+     *
+     * @var null|string
+     */
+    protected $encryptionPassword;
+
+    /**
+     * How much password work a file is allowed to ask of the reader.
+     *
+     * @var int
+     */
+    protected $maxEncryptionSpinCount = 1000000;
+
+    /**
+     * Where a protected presentation was decrypted to.
+     *
+     * @var null|string
+     */
+    protected $decrypted;
+
+    /**
+     * Which file that was decrypted from.
+     *
+     * @var null|string
+     */
+    protected $decryptedFrom;
+
+    /**
      * Output Object.
      *
      * @var PhpPresentation
@@ -120,7 +152,7 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Output Object.
      *
-     * @var ZipArchive
+     * @var OpenXmlPackage
      */
     protected $oZip;
 
@@ -172,6 +204,38 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
+     * Give the password a protected presentation was locked with.
+     */
+    public function setEncryptionPassword(string $encryptionPassword): self
+    {
+        $this->encryptionPassword = $encryptionPassword;
+
+        return $this;
+    }
+
+    /**
+     * Cap the password-hash iterations a file may ask for.
+     *
+     * The iteration count is written in the file, which an attacker controls, so a presentation
+     * that asks for more work than this is refused rather than performed.
+     */
+    public function setMaxEncryptionSpinCount(int $maxEncryptionSpinCount): self
+    {
+        $this->maxEncryptionSpinCount = $maxEncryptionSpinCount;
+
+        return $this;
+    }
+
+    public function __destruct()
+    {
+        if (null !== $this->decrypted) {
+            @unlink($this->decrypted);
+            $this->decrypted = null;
+            $this->decryptedFrom = null;
+        }
+    }
+
+    /**
      * Does a file support UnserializePhpPresentation ?
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
@@ -181,17 +245,18 @@ class PowerPoint2007 implements ReaderInterface
             throw new FileNotFoundException($pFilename);
         }
 
-        // Is it a zip ?
+        $pFilename = $this->decrypt($pFilename);
+
+        // Is it an OPC package, and does it relate to a presentation ?
         if (!$this->openPackage($pFilename)) {
             return false;
         }
 
-        // Is it an OpenXML Document, and does it relate to a presentation ?
-        $this->loadRels(self::relsOf(''));
-        $mainDocumentPart = $this->mainDocumentPart();
+        // opening a package reads what it holds, which is worth keeping: `load()` asks this
+        // first and would otherwise open the same file a second time to read it
+        $this->filename = $pFilename;
 
-        return null !== $mainDocumentPart
-            && in_array($this->contentTypeOf($mainDocumentPart), self::MAIN_DOCUMENT_TYPES, true);
+        return true;
     }
 
     /**
@@ -214,9 +279,13 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected function openPackage(string $pFilename): bool
     {
-        $this->oZip = new ZipArchive();
+        try {
+            $this->oZip = OpenXmlPackage::open($pFilename, expecting: self::MAIN_DOCUMENT_TYPES);
+        } catch (OpenXmlException $e) {
+            return false;
+        }
 
-        return true === $this->oZip->open($pFilename);
+        return true;
     }
 
     /**
@@ -226,7 +295,43 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected function getFromName(string $path)
     {
-        return $this->oZip->getFromName($path);
+        $name = '/' . ltrim($path, '/');
+
+        try {
+            return $this->oZip->hasPart($name) ? $this->oZip->readPart($name) : false;
+        } catch (OpenXmlException $e) {
+            // `[Content_Types].xml` and the like are the package itself rather than parts of it,
+            // and are answered by raising rather than by saying the package has no such part
+            return false;
+        }
+    }
+
+    /**
+     * A protected presentation is an OPC package inside a compound file, so it is decrypted to a
+     * file of its own first and read from there. The file lives as long as this Reader does.
+     */
+    protected function decrypt(string $pFilename): string
+    {
+        if (null === $this->encryptionPassword
+            || OfficeFileFormat::EncryptedOpcPackage !== OfficeFileDetector::detect($pFilename)) {
+            return $pFilename;
+        }
+
+        if (null !== $this->decrypted && $this->decryptedFrom === $pFilename) {
+            return $this->decrypted;
+        }
+
+        $this->__destruct();
+        $this->decrypted = (string) tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        EncryptedOfficeFile::decrypt(
+            $pFilename,
+            $this->decrypted,
+            $this->encryptionPassword,
+            new EncryptionLimits($this->maxEncryptionSpinCount)
+        );
+        $this->decryptedFrom = $pFilename;
+
+        return $this->decrypted;
     }
 
     /**
@@ -305,43 +410,9 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected function mainDocumentPart(): ?string
     {
-        return $this->targetOfRel(self::relsOf(''), self::REL_OFFICE_DOCUMENT);
-    }
+        $mainDocumentPart = $this->oZip->getMainDocumentPart();
 
-    /**
-     * Content type of a part, as the package's content-type stream declares it.
-     *
-     * A part is covered either by an `Override` naming it or by the `Default` for its extension,
-     * and the first of those wins.
-     */
-    protected function contentTypeOf(string $part): ?string
-    {
-        $contentTypes = $this->getFromName('[Content_Types].xml');
-        if (false === $contentTypes) {
-            return null;
-        }
-        $xmlReader = new XMLReader();
-        // @phpstan-ignore-next-line
-        if (!$xmlReader->getDomFromString($contentTypes)) {
-            return null;
-        }
-
-        foreach ($xmlReader->getElements('*') as $node) {
-            if ($node instanceof DOMElement && 'Override' === $node->localName
-                && 0 === strcasecmp(ltrim($node->getAttribute('PartName'), '/'), $part)) {
-                return $node->getAttribute('ContentType');
-            }
-        }
-
-        $extension = pathinfo($part, PATHINFO_EXTENSION);
-        foreach ($xmlReader->getElements('*') as $node) {
-            if ($node instanceof DOMElement && 'Default' === $node->localName
-                && 0 === strcasecmp($node->getAttribute('Extension'), $extension)) {
-                return $node->getAttribute('ContentType');
-            }
-        }
-
-        return null;
+        return null === $mainDocumentPart ? null : ltrim($mainDocumentPart->getName(), '/');
     }
 
     /**
@@ -352,9 +423,11 @@ class PowerPoint2007 implements ReaderInterface
         $this->oPhpPresentation = new PhpPresentation();
         $this->oPhpPresentation->removeSlideByIndex();
         $this->oPhpPresentation->setAllMasterSlides([]);
+        $pFilename = $this->decrypt($pFilename);
+        if (!$this->oZip instanceof OpenXmlPackage || $this->filename !== $pFilename) {
+            $this->openPackage($pFilename);
+        }
         $this->filename = $pFilename;
-
-        $this->openPackage($this->filename);
 
         // Every part below is reached from the package, and then from the main document part, by
         // the relationship that points at it. `ppt/presentation.xml` and the names beside it are

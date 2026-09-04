@@ -21,7 +21,8 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Writer;
 
 use DirectoryIterator;
-use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
+use DK\OpenXml\Encryption\AgileEncryptionOptions;
+use DK\OpenXml\Encryption\EncryptedOfficeFile;
 use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
 use PhpOffice\PhpPresentation\Exception\FileCopyException;
 use PhpOffice\PhpPresentation\Exception\FileRemoveException;
@@ -64,8 +65,22 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         // Set HashTable variables
         $this->oDrawingHashTable = new HashTable();
 
-        $this->setZipAdapter(new ZipArchiveAdapter());
+        $this->setZipAdapter(new OpenXmlPackageAdapter());
     }
+
+    /**
+     * The password to lock the presentation with.
+     *
+     * @var null|string
+     */
+    protected $encryptionPassword;
+
+    /**
+     * The password-hash iterations to lock it with.
+     *
+     * @var int
+     */
+    protected $encryptionSpinCount = 100000;
 
     /**
      * Save PhpPresentation to file.
@@ -122,6 +137,8 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         // Close file
         $oZip->close();
 
+        $this->encrypt($pFilename);
+
         // If a temporary file was used, copy it to the correct file stream
         if ($originalFilename != $pFilename) {
             if (false === copy($pFilename, $originalFilename)) {
@@ -130,6 +147,63 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
             if (false === @unlink($pFilename)) {
                 throw new FileRemoveException($pFilename);
             }
+        }
+    }
+
+    /**
+     * Lock the presentation with a password.
+     */
+    public function setEncryptionPassword(string $encryptionPassword): self
+    {
+        $this->encryptionPassword = $encryptionPassword;
+
+        return $this;
+    }
+
+    /**
+     * Say which Agile profile to lock the presentation with.
+     *
+     * Only AES-256 with SHA-512 is written, which is what Office writes and the strongest of the
+     * profiles ECMA-376 allows; the weaker ones are read but not produced. The signature takes
+     * them anyway so that a caller who names a profile is told it cannot be written rather than
+     * given a different one silently, and so that it reads the same as PhpSpreadsheet's.
+     */
+    public function setEncryptionProfile(int $keyBits, string $hashAlgorithm, int $spinCount = 100000): self
+    {
+        if (256 !== $keyBits || 0 !== strcasecmp($hashAlgorithm, 'SHA512')) {
+            throw new InvalidParameterException(
+                'keyBits, hashAlgorithm',
+                $keyBits . ', ' . $hashAlgorithm,
+                'only AES-256 with SHA512 is written'
+            );
+        }
+        $this->encryptionSpinCount = $spinCount;
+
+        return $this;
+    }
+
+    /**
+     * A protected presentation is the package wrapped in a compound file, which is written from
+     * the package rather than in place, so it is written beside it and moved over it.
+     */
+    protected function encrypt(string $pFilename): void
+    {
+        if (null === $this->encryptionPassword) {
+            return;
+        }
+
+        $locked = $pFilename . '.locked';
+        EncryptedOfficeFile::encrypt(
+            $pFilename,
+            $locked,
+            $this->encryptionPassword,
+            new AgileEncryptionOptions($this->encryptionSpinCount)
+        );
+
+        if (false === @rename($locked, $pFilename)) {
+            @unlink($locked);
+
+            throw new FileCopyException($locked, $pFilename);
         }
     }
 
