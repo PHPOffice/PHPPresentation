@@ -248,15 +248,7 @@ class PowerPoint2007 implements ReaderInterface
         $pFilename = $this->decrypt($pFilename);
 
         // Is it an OPC package, and does it relate to a presentation ?
-        if (!$this->openPackage($pFilename)) {
-            return false;
-        }
-
-        // opening a package reads what it holds, which is worth keeping: `load()` asks this
-        // first and would otherwise open the same file a second time to read it
-        $this->filename = $pFilename;
-
-        return true;
+        return $this->openPackage($pFilename);
     }
 
     /**
@@ -279,11 +271,20 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected function openPackage(string $pFilename): bool
     {
+        // Opening a package reads what it holds, which is worth keeping: a caller that asks
+        // `canRead()` before `load()`, and `load()` itself, which asks it, would otherwise open
+        // the same file again to read it. The package reads its parts lazily and refuses to serve
+        // one once the file behind it has changed, so a kept package is never a stale one.
+        if ($this->oZip instanceof OpenXmlPackage && $this->filename === $pFilename) {
+            return true;
+        }
+
         try {
             $this->oZip = OpenXmlPackage::open($pFilename, expecting: self::MAIN_DOCUMENT_TYPES);
         } catch (OpenXmlException $e) {
             return false;
         }
+        $this->filename = $pFilename;
 
         return true;
     }
@@ -424,10 +425,7 @@ class PowerPoint2007 implements ReaderInterface
         $this->oPhpPresentation->removeSlideByIndex();
         $this->oPhpPresentation->setAllMasterSlides([]);
         $pFilename = $this->decrypt($pFilename);
-        if (!$this->oZip instanceof OpenXmlPackage || $this->filename !== $pFilename) {
-            $this->openPackage($pFilename);
-        }
-        $this->filename = $pFilename;
+        $this->openPackage($pFilename);
 
         // Every part below is reached from the package, and then from the main document part, by
         // the relationship that points at it. `ppt/presentation.xml` and the names beside it are
