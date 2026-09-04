@@ -299,6 +299,50 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $element = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments"]';
         $this->assertZipXmlElementExists('ppt/slides/_rels/slide1.xml.rels', $element);
+
+        // the relationship was written and the part it points at was not, so the package held a
+        // target that is not there and PowerPoint asked to repair the file
+        $this->assertZipFileExists('ppt/comments/comment1.xml');
+        $element = '/*[local-name()="Types"]/*[local-name()="Override"][@PartName="/ppt/comments/comment1.xml"]';
+        $this->assertZipXmlElementExists('[Content_Types].xml', $element);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testCommentInGroupAuthor(): void
+    {
+        $oAuthor = new Comment\Author();
+        $oAuthor->setName('Alice');
+        $oComment = new Comment();
+        $oComment->setAuthor($oAuthor);
+        $oGroup = new Group();
+        $oGroup->addShape($oComment);
+        $this->oPresentation->getActiveSlide()->addShape($oGroup);
+
+        $this->assertZipFileExists('ppt/commentAuthors.xml');
+        $element = '/p:cmAuthorLst/p:cmAuthor[@name="Alice"]';
+        $this->assertZipXmlElementExists('ppt/commentAuthors.xml', $element);
+
+        $element = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/commentAuthors"]';
+        $this->assertZipXmlElementExists('ppt/_rels/presentation.xml.rels', $element);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testHyperlinkWithoutUrlWritesNoRelationship(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Delta');
+        $oRun->getHyperlink()->setIsTextColorUsed(true);
+
+        // a hyperlink that was never given a url has nothing to point at, and the relationship
+        // written for it named an external target that is the empty string
+        $element = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink"]';
+        $this->assertZipXmlElementNotExists('ppt/slides/_rels/slide1.xml.rels', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
         $this->assertIsSchemaECMA376Valid();
     }
 

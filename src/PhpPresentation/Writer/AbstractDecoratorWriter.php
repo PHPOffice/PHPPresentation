@@ -20,13 +20,37 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer;
 
+use ArrayObject;
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
+use PhpOffice\PhpPresentation\ShapeContainerInterface;
 
 abstract class AbstractDecoratorWriter
 {
+    /**
+     * Every shape a collection holds, a group and the shapes inside it alike, in the
+     * order they are written. A group can hold a group, so the depth is not one.
+     *
+     * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapes
+     *
+     * @return array<int, AbstractShape>
+     */
+    protected function flattenShapes($shapes): array
+    {
+        $flattened = [];
+        foreach ($shapes as $shape) {
+            $flattened[] = $shape;
+            if ($shape instanceof ShapeContainerInterface) {
+                $flattened = array_merge($flattened, $this->flattenShapes($shape->getShapeCollection()));
+            }
+        }
+
+        return $flattened;
+    }
+
     abstract public function render(): ZipInterface;
 
     /**
