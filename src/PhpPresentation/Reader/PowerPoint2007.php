@@ -67,6 +67,33 @@ use ZipArchive;
 class PowerPoint2007 implements ReaderInterface
 {
     /**
+     * The content types a package's main document part may have for it to be a presentation.
+     *
+     * A part is what its content type says it is; `/ppt/presentation.xml` is the name Office
+     * happens to give the part rather than one the specification requires, so the package is
+     * asked what its main document is instead of being searched for a well-known name.
+     *
+     * @var list<string>
+     */
+    private const MAIN_DOCUMENT_TYPES = [
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml',
+        'application/vnd.openxmlformats-officedocument.presentationml.slideshow.main+xml',
+        'application/vnd.openxmlformats-officedocument.presentationml.template.main+xml',
+        'application/vnd.ms-powerpoint.presentation.macroEnabled.main+xml',
+        'application/vnd.ms-powerpoint.slideshow.macroEnabled.main+xml',
+        'application/vnd.ms-powerpoint.template.macroEnabled.main+xml',
+    ];
+
+    private const REL_OFFICE_DOCUMENT = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument';
+    private const REL_CORE_PROPERTIES = 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties';
+    private const REL_CUSTOM_PROPERTIES = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties';
+    private const REL_VIEW_PROPS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/viewProps';
+    private const REL_PRES_PROPS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/presProps';
+    private const REL_SLIDE_LAYOUT = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout';
+    private const REL_NOTES_SLIDE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide';
+    private const REL_THEME = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme';
+
+    /**
      * The nine plots the Writer knows, by the element each is written as.
      *
      * @var array<string, class-string<Chart\Type\AbstractType>>
@@ -101,6 +128,20 @@ class PowerPoint2007 implements ReaderInterface
      * @var array<string, array<string, array<string, string>>>
      */
     protected $arrayRels = [];
+
+    /**
+     * Name of the main document part, without its leading slash.
+     *
+     * @var string
+     */
+    protected $mainPart = '';
+
+    /**
+     * Name of the part holding the relationships of the main document part.
+     *
+     * @var string
+     */
+    protected $mainRels = '';
 
     /**
      * @var SlideLayout[]
@@ -140,17 +181,17 @@ class PowerPoint2007 implements ReaderInterface
             throw new FileNotFoundException($pFilename);
         }
 
-        $oZip = new ZipArchive();
         // Is it a zip ?
-        if (true === $oZip->open($pFilename)) {
-            // Is it an OpenXML Document ?
-            // Is it a Presentation ?
-            if (is_array($oZip->statName('[Content_Types].xml')) && is_array($oZip->statName('ppt/presentation.xml'))) {
-                return true;
-            }
+        if (!$this->openPackage($pFilename)) {
+            return false;
         }
 
-        return false;
+        // Is it an OpenXML Document, and does it relate to a presentation ?
+        $this->loadRels(self::relsOf(''));
+        $mainDocumentPart = $this->mainDocumentPart();
+
+        return null !== $mainDocumentPart
+            && in_array($this->contentTypeOf($mainDocumentPart), self::MAIN_DOCUMENT_TYPES, true);
     }
 
     /**
@@ -169,6 +210,141 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
+     * Open the package the presentation is read from.
+     */
+    protected function openPackage(string $pFilename): bool
+    {
+        $this->oZip = new ZipArchive();
+
+        return true === $this->oZip->open($pFilename);
+    }
+
+    /**
+     * Contents of one part of the package, or false when it holds no part of that name.
+     *
+     * @return false|string
+     */
+    protected function getFromName(string $path)
+    {
+        return $this->oZip->getFromName($path);
+    }
+
+    /**
+     * Name of the part holding a part's relationships.
+     *
+     * A part keeps them in a `_rels` folder beside it, in a file named after it, which is where
+     * `ppt/slides/slide1.xml` gets `ppt/slides/_rels/slide1.xml.rels`.
+     */
+    protected static function relsOf(string $part): string
+    {
+        $folder = trim(dirname('/' . ltrim($part, '/')), '/');
+
+        return ('' === $folder ? '' : $folder . '/') . '_rels/' . basename($part) . '.rels';
+    }
+
+    /**
+     * Resolve a relationship target against the part the relationship was declared on.
+     *
+     * Targets are relative to the folder of their source part, so `../media/image1.png` declared
+     * on `ppt/slides/_rels/slide1.xml.rels` names `ppt/media/image1.png`.
+     */
+    protected static function resolve(string $relsPart, string $target): string
+    {
+        $path = 0 === strncmp($target, '/', 1)
+            ? $target
+            : dirname('/' . ltrim($relsPart, '/'), 2) . '/' . $target;
+
+        $segments = [];
+        foreach (explode('/', $path) as $segment) {
+            if ('' === $segment || '.' === $segment) {
+                continue;
+            }
+            if ('..' === $segment) {
+                array_pop($segments);
+
+                continue;
+            }
+            $segments[] = $segment;
+        }
+
+        return implode('/', $segments);
+    }
+
+    /**
+     * Name of the part a relationship of the given type points at, or null when there is none.
+     */
+    protected function targetOfRel(string $relsPart, string $type): ?string
+    {
+        foreach ($this->arrayRels[$relsPart] ?? [] as $rel) {
+            if ($type === $rel['Type']) {
+                return self::resolve($relsPart, $rel['Target']);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Contents of the part a relationship of the given type points at, or null when there is none.
+     *
+     * @return null|string
+     */
+    protected function getFromRel(string $relsPart, string $type)
+    {
+        $target = $this->targetOfRel($relsPart, $type);
+        if (null === $target) {
+            return null;
+        }
+        $contents = $this->getFromName($target);
+
+        return false === $contents ? null : $contents;
+    }
+
+    /**
+     * Name of the part the package relates to as its main document, or null when it relates to none.
+     */
+    protected function mainDocumentPart(): ?string
+    {
+        return $this->targetOfRel(self::relsOf(''), self::REL_OFFICE_DOCUMENT);
+    }
+
+    /**
+     * Content type of a part, as the package's content-type stream declares it.
+     *
+     * A part is covered either by an `Override` naming it or by the `Default` for its extension,
+     * and the first of those wins.
+     */
+    protected function contentTypeOf(string $part): ?string
+    {
+        $contentTypes = $this->getFromName('[Content_Types].xml');
+        if (false === $contentTypes) {
+            return null;
+        }
+        $xmlReader = new XMLReader();
+        // @phpstan-ignore-next-line
+        if (!$xmlReader->getDomFromString($contentTypes)) {
+            return null;
+        }
+
+        foreach ($xmlReader->getElements('*') as $node) {
+            if ($node instanceof DOMElement && 'Override' === $node->localName
+                && 0 === strcasecmp(ltrim($node->getAttribute('PartName'), '/'), $part)) {
+                return $node->getAttribute('ContentType');
+            }
+        }
+
+        $extension = pathinfo($part, PATHINFO_EXTENSION);
+        foreach ($xmlReader->getElements('*') as $node) {
+            if ($node instanceof DOMElement && 'Default' === $node->localName
+                && 0 === strcasecmp($node->getAttribute('Extension'), $extension)) {
+                return $node->getAttribute('ContentType');
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Load PhpPresentation Serialized file.
      */
     protected function loadFile(string $pFilename): PhpPresentation
@@ -178,37 +354,51 @@ class PowerPoint2007 implements ReaderInterface
         $this->oPhpPresentation->setAllMasterSlides([]);
         $this->filename = $pFilename;
 
-        $this->oZip = new ZipArchive();
-        $this->oZip->open($this->filename);
-        $docPropsCore = $this->oZip->getFromName('docProps/core.xml');
-        if (false !== $docPropsCore) {
+        $this->openPackage($this->filename);
+
+        // Every part below is reached from the package, and then from the main document part, by
+        // the relationship that points at it. `ppt/presentation.xml` and the names beside it are
+        // what Office happens to write rather than what the specification requires.
+        $packageRels = self::relsOf('');
+        $this->loadRels($packageRels);
+
+        $docPropsCore = $this->getFromRel($packageRels, self::REL_CORE_PROPERTIES);
+        if (null !== $docPropsCore) {
             $this->loadDocumentProperties($docPropsCore);
         }
 
-        $docThumbnail = $this->oZip->getFromName('_rels/.rels');
+        $docThumbnail = $this->getFromName($packageRels);
         if ($docThumbnail !== false) {
             $this->loadThumbnailProperties($docThumbnail);
         }
 
-        $docPropsCustom = $this->oZip->getFromName('docProps/custom.xml');
-        if (false !== $docPropsCustom) {
+        $docPropsCustom = $this->getFromRel($packageRels, self::REL_CUSTOM_PROPERTIES);
+        if (null !== $docPropsCustom) {
             $this->loadCustomProperties($docPropsCustom);
         }
 
-        $pptViewProps = $this->oZip->getFromName('ppt/viewProps.xml');
-        if (false !== $pptViewProps) {
+        $mainDocumentPart = $this->mainDocumentPart();
+        if (null === $mainDocumentPart) {
+            return $this->oPhpPresentation;
+        }
+        $this->mainPart = $mainDocumentPart;
+        $this->mainRels = self::relsOf($this->mainPart);
+        $this->loadRels($this->mainRels);
+
+        $pptViewProps = $this->getFromRel($this->mainRels, self::REL_VIEW_PROPS);
+        if (null !== $pptViewProps) {
             $this->loadViewProperties($pptViewProps);
         }
 
-        $pptPresentation = $this->oZip->getFromName('ppt/presentation.xml');
+        $pptPresentation = $this->getFromName($this->mainPart);
         if (false !== $pptPresentation) {
             $this->loadDocumentLayout($pptPresentation);
             $this->loadSlides($pptPresentation);
         }
 
-        $pptPresProps = $this->oZip->getFromName('ppt/presProps.xml');
-        if (false !== $pptPresProps) {
-            $this->loadPresentationProperties($pptPresentation);
+        $pptPresProps = $this->getFromRel($this->mainRels, self::REL_PRES_PROPS);
+        if (null !== $pptPresProps) {
+            $this->loadPresentationProperties($pptPresProps);
         }
 
         return $this->oPhpPresentation;
@@ -297,7 +487,7 @@ class PowerPoint2007 implements ReaderInterface
             $path = $oElement->getAttribute('Target');
             $this->oPhpPresentation
                 ->getPresentationProperties()
-                ->setThumbnailPath('', PresentationProperties::THUMBNAIL_DATA, $this->oZip->getFromName($path));
+                ->setThumbnailPath('', PresentationProperties::THUMBNAIL_DATA, $this->getFromName($path));
         }
     }
 
@@ -410,8 +600,7 @@ class PowerPoint2007 implements ReaderInterface
         $xmlReader = new XMLReader();
         // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
-            $fileRels = 'ppt/_rels/presentation.xml.rels';
-            $this->loadRels($fileRels);
+            $fileRels = $this->mainRels;
             // Load the Masterslides
             $this->loadMasterSlides($xmlReader, $fileRels);
             // Continue with loading the slides
@@ -420,16 +609,16 @@ class PowerPoint2007 implements ReaderInterface
                     continue;
                 }
                 $rId = $oElement->getAttribute('r:id');
-                $pathSlide = isset($this->arrayRels[$fileRels][$rId]) ? $this->arrayRels[$fileRels][$rId]['Target'] : '';
+                $pathSlide = isset($this->arrayRels[$fileRels][$rId]) ? self::resolve($fileRels, $this->arrayRels[$fileRels][$rId]['Target']) : '';
                 if (!empty($pathSlide)) {
-                    $pptSlide = $this->oZip->getFromName('ppt/' . $pathSlide);
+                    $pptSlide = $this->getFromName($pathSlide);
                     if (false !== $pptSlide) {
-                        $slideRels = 'ppt/slides/_rels/' . basename($pathSlide) . '.rels';
+                        $slideRels = self::relsOf($pathSlide);
                         $this->loadRels($slideRels);
-                        $this->loadSlide($pptSlide, basename($pathSlide));
+                        $this->loadSlide($pptSlide, $pathSlide);
                         foreach ($this->arrayRels[$slideRels] as $rel) {
-                            if ('http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide' == $rel['Type']) {
-                                $this->loadSlideNote(basename($rel['Target']), $this->oPhpPresentation->getActiveSlide());
+                            if (self::REL_NOTES_SLIDE == $rel['Type']) {
+                                $this->loadSlideNote(self::resolve($slideRels, $rel['Target']), $this->oPhpPresentation->getActiveSlide());
                             }
                         }
                     }
@@ -451,12 +640,12 @@ class PowerPoint2007 implements ReaderInterface
             $rId = $oElement->getAttribute('r:id');
             // Get the path to the masterslide from the array with _rels files
             $pathMasterSlide = isset($this->arrayRels[$fileRels][$rId]) ?
-                $this->arrayRels[$fileRels][$rId]['Target'] : '';
+                self::resolve($fileRels, $this->arrayRels[$fileRels][$rId]['Target']) : '';
             if (!empty($pathMasterSlide)) {
-                $pptMasterSlide = $this->oZip->getFromName('ppt/' . $pathMasterSlide);
+                $pptMasterSlide = $this->getFromName($pathMasterSlide);
                 if (false !== $pptMasterSlide) {
-                    $this->loadRels('ppt/slideMasters/_rels/' . basename($pathMasterSlide) . '.rels');
-                    $this->loadMasterSlide($pptMasterSlide, basename($pathMasterSlide));
+                    $this->loadRels(self::relsOf($pathMasterSlide));
+                    $this->loadMasterSlide($pptMasterSlide, $pathMasterSlide);
                 }
             }
         }
@@ -465,7 +654,7 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Extract data from slide.
      */
-    protected function loadSlide(string $sPart, string $baseFile): void
+    protected function loadSlide(string $sPart, string $partName): void
     {
         $xmlReader = new XMLReader();
         // @phpstan-ignore-next-line
@@ -474,7 +663,7 @@ class PowerPoint2007 implements ReaderInterface
             // Core
             $oSlide = $this->oPhpPresentation->createSlide();
             $this->oPhpPresentation->setActiveSlideIndex($this->oPhpPresentation->getSlideCount() - 1);
-            $oSlide->setRelsIndex('ppt/slides/_rels/' . $baseFile . '.rels');
+            $oSlide->setRelsIndex(self::relsOf($partName));
 
             // Name
             $oElement = $xmlReader->getElement('/p:sld/p:cSld');
@@ -511,18 +700,11 @@ class PowerPoint2007 implements ReaderInterface
                 }
                 $oElementImage = $xmlReader->getElement('a:blipFill/a:blip', $oElement);
                 if ($oElementImage instanceof DOMElement) {
-                    $relImg = $this->arrayRels['ppt/slides/_rels/' . $baseFile . '.rels'][$oElementImage->getAttribute('r:embed')];
+                    $relImg = $this->arrayRels[$oSlide->getRelsIndex()][$oElementImage->getAttribute('r:embed')];
                     if (is_array($relImg)) {
                         // File
-                        $pathImage = 'ppt/slides/' . $relImg['Target'];
-                        $pathImage = explode('/', $pathImage);
-                        foreach ($pathImage as $key => $partPath) {
-                            if ('..' == $partPath) {
-                                unset($pathImage[$key - 1], $pathImage[$key]);
-                            }
-                        }
-                        $pathImage = implode('/', $pathImage);
-                        $contentImg = $this->oZip->getFromName($pathImage);
+                        $pathImage = self::resolve($oSlide->getRelsIndex(), $relImg['Target']);
+                        $contentImg = $this->getFromName($pathImage);
 
                         $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPpt2007Bkg');
                         file_put_contents($tmpBkgImg, $contentImg);
@@ -544,11 +726,11 @@ class PowerPoint2007 implements ReaderInterface
 
             // Layout
             $oSlide = $this->oPhpPresentation->getActiveSlide();
-            foreach ($this->arrayRels['ppt/slides/_rels/' . $baseFile . '.rels'] as $valueRel) {
-                if ('http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout' == $valueRel['Type']) {
-                    $layoutBasename = basename($valueRel['Target']);
-                    if (array_key_exists($layoutBasename, $this->arraySlideLayouts)) {
-                        $oSlide->setSlideLayout($this->arraySlideLayouts[$layoutBasename]);
+            foreach ($this->arrayRels[$oSlide->getRelsIndex()] as $valueRel) {
+                if (self::REL_SLIDE_LAYOUT == $valueRel['Type']) {
+                    $layoutPart = self::resolve($oSlide->getRelsIndex(), $valueRel['Target']);
+                    if (array_key_exists($layoutPart, $this->arraySlideLayouts)) {
+                        $oSlide->setSlideLayout($this->arraySlideLayouts[$layoutPart]);
                     }
 
                     break;
@@ -557,7 +739,7 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    protected function loadMasterSlide(string $sPart, string $baseFile): void
+    protected function loadMasterSlide(string $sPart, string $partName): void
     {
         $xmlReader = new XMLReader();
         // @phpstan-ignore-next-line
@@ -565,7 +747,7 @@ class PowerPoint2007 implements ReaderInterface
             // Core
             $oSlideMaster = $this->oPhpPresentation->createMasterSlide();
             $oSlideMaster->setTextStyles(new TextStyle(false));
-            $oSlideMaster->setRelsIndex('ppt/slideMasters/_rels/' . $baseFile . '.rels');
+            $oSlideMaster->setRelsIndex(self::relsOf($partName));
 
             // Background
             $oElement = $xmlReader->getElement('/p:sldMaster/p:cSld/p:bg');
@@ -665,8 +847,8 @@ class PowerPoint2007 implements ReaderInterface
 
             // Load the theme
             foreach ($this->arrayRels[$oSlideMaster->getRelsIndex()] as $arrayRel) {
-                if ('http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme' == $arrayRel['Type']) {
-                    $pptTheme = $this->oZip->getFromName('ppt/' . substr($arrayRel['Target'], strrpos($arrayRel['Target'], '../') + 3));
+                if (self::REL_THEME == $arrayRel['Type']) {
+                    $pptTheme = $this->getFromName(self::resolve($oSlideMaster->getRelsIndex(), $arrayRel['Target']));
                     if (false !== $pptTheme) {
                         $this->loadTheme($pptTheme, $oSlideMaster);
                     }
@@ -683,13 +865,13 @@ class PowerPoint2007 implements ReaderInterface
                 $rId = $oElement->getAttribute('r:id');
                 // Get the path to the masterslide from the array with _rels files
                 $pathLayoutSlide = isset($this->arrayRels[$oSlideMaster->getRelsIndex()][$rId]) ?
-                    $this->arrayRels[$oSlideMaster->getRelsIndex()][$rId]['Target'] : '';
+                    self::resolve($oSlideMaster->getRelsIndex(), $this->arrayRels[$oSlideMaster->getRelsIndex()][$rId]['Target']) : '';
                 if (!empty($pathLayoutSlide)) {
-                    $pptLayoutSlide = $this->oZip->getFromName('ppt/' . substr($pathLayoutSlide, strrpos($pathLayoutSlide, '../') + 3));
+                    $pptLayoutSlide = $this->getFromName($pathLayoutSlide);
                     if (false !== $pptLayoutSlide) {
-                        $this->loadRels('ppt/slideLayouts/_rels/' . basename($pathLayoutSlide) . '.rels');
+                        $this->loadRels(self::relsOf($pathLayoutSlide));
                         $oSlideMaster->addSlideLayout(
-                            $this->loadLayoutSlide($pptLayoutSlide, basename($pathLayoutSlide), $oSlideMaster)
+                            $this->loadLayoutSlide($pptLayoutSlide, $pathLayoutSlide, $oSlideMaster)
                         );
                     }
                 }
@@ -697,14 +879,14 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    protected function loadLayoutSlide(string $sPart, string $baseFile, SlideMaster $oSlideMaster): ?SlideLayout
+    protected function loadLayoutSlide(string $sPart, string $partName, SlideMaster $oSlideMaster): ?SlideLayout
     {
         $xmlReader = new XMLReader();
         // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             // Core
             $oSlideLayout = new SlideLayout($oSlideMaster);
-            $oSlideLayout->setRelsIndex('ppt/slideLayouts/_rels/' . $baseFile . '.rels');
+            $oSlideLayout->setRelsIndex(self::relsOf($partName));
 
             // Name
             $oElement = $xmlReader->getElement('/p:sldLayout/p:cSld');
@@ -731,7 +913,7 @@ class PowerPoint2007 implements ReaderInterface
             // Shapes
             $oElements = $xmlReader->getElements('/p:sldLayout/p:cSld/p:spTree/*');
             $this->loadSlideShapes($xmlReader, $oSlideLayout, $oElements, $xmlReader);
-            $this->arraySlideLayouts[$baseFile] = &$oSlideLayout;
+            $this->arraySlideLayouts[$partName] = &$oSlideLayout;
 
             return $oSlideLayout;
         }
@@ -798,15 +980,8 @@ class PowerPoint2007 implements ReaderInterface
             $relImg = $this->arrayRels[$oSlide->getRelsIndex()][$oElementImage->getAttribute('r:embed')];
             if (is_array($relImg)) {
                 // File
-                $pathImage = 'ppt/slides/' . $relImg['Target'];
-                $pathImage = explode('/', $pathImage);
-                foreach ($pathImage as $key => $partPath) {
-                    if ('..' == $partPath) {
-                        unset($pathImage[$key - 1], $pathImage[$key]);
-                    }
-                }
-                $pathImage = implode('/', $pathImage);
-                $contentImg = $this->oZip->getFromName($pathImage);
+                $pathImage = self::resolve($oSlide->getRelsIndex(), $relImg['Target']);
+                $contentImg = $this->getFromName($pathImage);
 
                 $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPpt2007Bkg');
                 file_put_contents($tmpBkgImg, $contentImg);
@@ -819,9 +994,9 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    protected function loadSlideNote(string $baseFile, Slide $oSlide): void
+    protected function loadSlideNote(string $partName, Slide $oSlide): void
     {
-        $sPart = $this->oZip->getFromName('ppt/notesSlides/' . $baseFile);
+        $sPart = $this->getFromName($partName);
         $xmlReader = new XMLReader();
         // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
@@ -988,15 +1163,8 @@ class PowerPoint2007 implements ReaderInterface
         $oElement = $document->getElement('p:blipFill/a:blip', $node);
         if ($oElement instanceof DOMElement) {
             if ($oElement->hasAttribute('r:embed') && isset($this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target'])) {
-                $pathImage = 'ppt/slides/' . $this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target'];
-                $pathImage = explode('/', $pathImage);
-                foreach ($pathImage as $key => $partPath) {
-                    if ('..' == $partPath) {
-                        unset($pathImage[$key - 1], $pathImage[$key]);
-                    }
-                }
-                $pathImage = implode('/', $pathImage);
-                $imageFile = $this->oZip->getFromName($pathImage);
+                $pathImage = self::resolve($fileRels, $this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target']);
+                $imageFile = $this->getFromName($pathImage);
                 if (!empty($imageFile)) {
                     if ($oShape instanceof Gd) {
                         $info = getimagesizefromstring($imageFile);
@@ -1401,15 +1569,8 @@ class PowerPoint2007 implements ReaderInterface
 
         $chartElement = $document->getElement('a:graphic/a:graphicData/c:chart', $node);
         if ($chartElement->hasAttribute('r:id') && isset($this->arrayRels[$this->fileRels][$chartElement->getAttribute('r:id')]['Target'])) {
-            $pathImage = 'ppt/slides/' . $this->arrayRels[$this->fileRels][$chartElement->getAttribute('r:id')]['Target'];
-            $pathImage = explode('/', $pathImage);
-            foreach ($pathImage as $key => $partPath) {
-                if ('..' == $partPath) {
-                    unset($pathImage[$key - 1], $pathImage[$key]);
-                }
-            }
-            $pathChart = implode('/', $pathImage);
-            $fileChart = $this->oZip->getFromName($pathChart);
+            $pathChart = self::resolve($this->fileRels, $this->arrayRels[$this->fileRels][$chartElement->getAttribute('r:id')]['Target']);
+            $fileChart = $this->getFromName($pathChart);
             if (false !== $fileChart) {
                 $xmlReader = new XMLReader();
                 // @phpstan-ignore-next-line
@@ -2165,7 +2326,7 @@ class PowerPoint2007 implements ReaderInterface
 
     protected function loadRels(string $fileRels): void
     {
-        $sPart = $this->oZip->getFromName($fileRels);
+        $sPart = $this->getFromName($fileRels);
         if (false !== $sPart) {
             $xmlReader = new XMLReader();
             // @phpstan-ignore-next-line
