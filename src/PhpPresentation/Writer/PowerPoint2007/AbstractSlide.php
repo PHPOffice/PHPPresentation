@@ -44,7 +44,6 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
-use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
 use PhpOffice\PhpPresentation\Slide\Note;
@@ -91,27 +90,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         }
 
         return $relId;
-    }
-
-    /**
-     * Every shape a collection holds, a group and the shapes inside it alike, in the
-     * order they are written. A group can hold a group, so the depth is not one.
-     *
-     * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapes
-     *
-     * @return array<int, AbstractShape>
-     */
-    protected function flattenShapes($shapes): array
-    {
-        $flattened = [];
-        foreach ($shapes as $shape) {
-            $flattened[] = $shape;
-            if ($shape instanceof ShapeContainerInterface) {
-                $flattened = array_merge($flattened, $this->flattenShapes($shape->getShapeCollection()));
-            }
-        }
-
-        return $flattened;
     }
 
     /**
