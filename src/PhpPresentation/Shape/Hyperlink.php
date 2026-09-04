@@ -49,9 +49,12 @@ class Hyperlink
     /**
      * Slide relation ID (should not be used by user code!).
      *
+     * Empty while the hyperlink has no relationship of its own, which is what a hyperlink with
+     * no url is written as.
+     *
      * @var string
      */
-    public $relationId;
+    public $relationId = '';
 
     /**
      * Hash index.

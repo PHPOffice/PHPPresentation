@@ -26,6 +26,7 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
@@ -142,17 +143,7 @@ class PptSlides extends AbstractSlide
             foreach ($this->flattenShapes($pSlide->getShapeCollection()) as $shape) {
                 // Hyperlink on shape
                 if ($shape->hasHyperlink()) {
-                    // Write relationship for hyperlink
-                    $hyperlink = $shape->getHyperlink();
-                    $hyperlink->relationId = 'rId' . $relId;
-
-                    if (!$hyperlink->isInternal()) {
-                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
-                    } else {
-                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
-                    }
-
-                    ++$relId;
+                    $this->writeHyperlinkRelationship($objWriter, $shape->getHyperlink(), $relId);
                 }
 
                 // Hyperlink on rich text run
@@ -161,17 +152,7 @@ class PptSlides extends AbstractSlide
                         foreach ($paragraph->getRichTextElements() as $element) {
                             if ($element instanceof Run || $element instanceof TextElement) {
                                 if ($element->hasHyperlink()) {
-                                    // Write relationship for hyperlink
-                                    $hyperlink = $element->getHyperlink();
-                                    $hyperlink->relationId = 'rId' . $relId;
-
-                                    if (!$hyperlink->isInternal()) {
-                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
-                                    } else {
-                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
-                                    }
-
-                                    ++$relId;
+                                    $this->writeHyperlinkRelationship($objWriter, $element->getHyperlink(), $relId);
                                 }
                             }
                         }
@@ -194,17 +175,7 @@ class PptSlides extends AbstractSlide
                                     // Run or Text in RichText
                                     if ($element instanceof Run || $element instanceof TextElement) {
                                         if ($element->hasHyperlink()) {
-                                            // Write relationship for hyperlink
-                                            $hyperlink = $element->getHyperlink();
-                                            $hyperlink->relationId = 'rId' . $relId;
-
-                                            if (!$hyperlink->isInternal()) {
-                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
-                                            } else {
-                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
-                                            }
-
-                                            ++$relId;
+                                            $this->writeHyperlinkRelationship($objWriter, $element->getHyperlink(), $relId);
                                         }
                                     }
                                 }
@@ -639,5 +610,33 @@ class PptSlides extends AbstractSlide
 
         // ##p:timing
         $objWriter->endElement();
+    }
+
+    /**
+     * Write the relationship a hyperlink needs, and remember the id it was given.
+     *
+     * A hyperlink that was never given a url has nothing to point at: the `a:hlinkClick` it is
+     * written as says to colour the text as a link, and there is no relationship to make. Writing
+     * one anyway leaves the package with an external target that is the empty string.
+     */
+    protected function writeHyperlinkRelationship(XMLWriter $objWriter, Hyperlink $hyperlink, int &$relId): void
+    {
+        if ($hyperlink->isInternal()) {
+            $hyperlink->relationId = 'rId' . $relId;
+            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+            ++$relId;
+
+            return;
+        }
+
+        if ('' === $hyperlink->getUrl()) {
+            $hyperlink->relationId = '';
+
+            return;
+        }
+
+        $hyperlink->relationId = 'rId' . $relId;
+        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+        ++$relId;
     }
 }

@@ -302,6 +302,23 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testHyperlinkWithoutUrlWritesNoRelationship(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Delta');
+        $oRun->getHyperlink()->setIsTextColorUsed(true);
+
+        // a hyperlink that was never given a url has nothing to point at, and the relationship
+        // written for it named an external target that is the empty string
+        $element = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink"]';
+        $this->assertZipXmlElementNotExists('ppt/slides/_rels/slide1.xml.rels', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testDrawingWithHyperlink(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
