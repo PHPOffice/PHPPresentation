@@ -24,7 +24,7 @@
         "ext-zip": "*",
         "phpoffice/common": "^1",
         "phpoffice/phpspreadsheet": "^1.9 || ^2.0 || ^3.0 || ^4.0 || ^5.0",
-        "dkulyk/openxml-package": "dev-feature/detect-opc-and-expected-type",
+        "dkulyk/openxml-package": "dev-main#51acb41dfd42b15e0d2798b71e1c1cfd7951560c",
         "dkulyk/compound-file": "^0.2.5"
     },
     "require-dev": {
