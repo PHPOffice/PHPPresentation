@@ -24,7 +24,7 @@
         "ext-zip": "*",
         "phpoffice/common": "^1",
         "phpoffice/phpspreadsheet": "^1.9 || ^2.0 || ^3.0 || ^4.0 || ^5.0",
-        "dkulyk/openxml-package": "dev-main#4edd908a4521dfbea1df4259dd60b19d0171b139",
+        "dkulyk/openxml-package": "dev-main#7b8bae48d6b9641db8d32de57f541f8610f7a5b4",
         "dkulyk/compound-file": "^0.2.5"
     },
     "require-dev": {
