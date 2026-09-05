@@ -63,7 +63,7 @@ class PptSlideMastersTest extends TestCase
         $collection = [];
         // a drawing with no file of its own has no extension either, and the part it would be
         // written to could not be named
-        foreach (range(1, 3) as $ignored) {
+        for ($i = 0; $i < 3; ++$i) {
             $drawing = new ShapeDrawingFile();
             $drawing->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
             $collection[] = $drawing;
