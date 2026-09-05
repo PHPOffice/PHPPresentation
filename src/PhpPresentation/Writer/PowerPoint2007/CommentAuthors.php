@@ -20,14 +20,14 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Comment\Author;
 
 class CommentAuthors extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         /**
          * @var Author[]
@@ -49,10 +49,10 @@ class CommentAuthors extends AbstractDecoratorWriter
             }
         }
         if (!empty($arrayAuthors)) {
-            $this->getZip()->addFromString('ppt/commentAuthors.xml', $this->writeCommentsAuthors($arrayAuthors));
+            $this->oPackage->addPart('/ppt/commentAuthors.xml', 'application/vnd.openxmlformats-officedocument.presentationml.commentAuthors+xml', $this->writeCommentsAuthors($arrayAuthors));
         }
 
-        return $this->getZip();
+        return $this->oPackage;
     }
 
     /**

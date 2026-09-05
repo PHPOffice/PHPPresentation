@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\DocumentLayout;
 
 class PptPresentation extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -190,9 +190,9 @@ class PptPresentation extends AbstractDecoratorWriter
 
         $objWriter->endElement();
 
-        $this->oZip->addFromString('ppt/presentation.xml', $objWriter->getData());
+        $this->oPackage->addPart('/ppt/presentation.xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml', $objWriter->getData());
 
         // Return
-        return $this->oZip;
+        return $this->oPackage;
     }
 }

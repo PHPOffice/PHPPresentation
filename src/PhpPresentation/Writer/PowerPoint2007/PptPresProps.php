@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\XMLWriter;
 
 class PptPresProps extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         $presentationPpts = $this->oPresentation->getPresentationProperties();
 
@@ -88,8 +88,8 @@ class PptPresProps extends AbstractDecoratorWriter
         // > p:presentationPr
         $objWriter->endElement();
 
-        $this->getZip()->addFromString('ppt/presProps.xml', $objWriter->getData());
+        $this->oPackage->addPart('/ppt/presProps.xml', 'application/vnd.openxmlformats-officedocument.presentationml.presProps+xml', $objWriter->getData());
 
-        return $this->getZip();
+        return $this->oPackage;
     }
 }

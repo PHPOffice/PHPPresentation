@@ -60,7 +60,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * @return mixed
      */
-    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, XMLWriter $objWriter, int $relId)
+    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, string $source, int $relId)
     {
         if (count($pSlideMaster->getShapeCollection()) > 0) {
             // Loop trough images and write relationships
@@ -68,7 +68,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 if ($shape instanceof ShapeDrawingFile || $shape instanceof ShapeDrawingGd) {
                     // Write relationship for image drawing
                     $this->writeRelationship(
-                        $objWriter,
+                        $source,
                         $relId,
                         'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
                         '../media/' . str_replace(' ', '_', $this->writtenPart($shape)->getIndexedFilename())
@@ -78,7 +78,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 } elseif ($shape instanceof ShapeChart) {
                     // Write relationship for chart drawing
                     $this->writeRelationship(
-                        $objWriter,
+                        $source,
                         $relId,
                         'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart',
                         '../charts/' . $this->writtenPart($shape)->getIndexedFilename()
