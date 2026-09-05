@@ -86,19 +86,22 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * Say that one part points at another.
      *
      * The package writes the `.rels` parts itself, so a relationship is declared rather than
-     * spelled out. The identifier stays the caller's to choose: the parts that hold a reference
-     * name it -- `r:embed="rId2"` -- and are written by their own decorator, which counts the
-     * relationships in the same order this is called in.
+     * spelled out, and it is the package that numbers one -- `rId1`, `rId2`, in the order they are
+     * declared. A part that names a relationship in its own body -- `r:embed="rId2"` -- is written
+     * from the identifier answered here rather than from a count kept beside it.
      *
      * @param null|string $source Part the relationship belongs to, null for the package itself
-     * @param int $pId Relationship ID. rId will be prepended!
      * @param string $pType Relationship type
      * @param string $pTarget Relationship target
      * @param string $pTargetMode Relationship target mode
+     *
+     * @return string The identifier the package gave it
      */
-    protected function writeRelationship(?string $source, int $pId, string $pType, string $pTarget, string $pTargetMode = ''): void
+    protected function writeRelationship(?string $source, string $pType, string $pTarget, string $pTargetMode = ''): string
     {
-        $this->oPackage->addRelationship($pType, $pTarget, 'External' === $pTargetMode, 'rId' . $pId, $source);
+        return $this->oPackage
+            ->addRelationship($pType, $pTarget, 'External' === $pTargetMode, null, $source)
+            ->getId();
     }
 
     /**

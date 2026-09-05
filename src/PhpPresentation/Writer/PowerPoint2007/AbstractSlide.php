@@ -57,39 +57,28 @@ use PhpOffice\PhpPresentation\Style\Shadow;
 
 abstract class AbstractSlide extends AbstractDecoratorWriter
 {
-    /**
-     * @return mixed
-     */
-    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, string $source, int $relId)
+    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, string $source): void
     {
         if (count($pSlideMaster->getShapeCollection()) > 0) {
             // Loop trough images and write relationships
             foreach ($this->flattenShapes($pSlideMaster->getShapeCollection()) as $shape) {
                 if ($shape instanceof ShapeDrawingFile || $shape instanceof ShapeDrawingGd) {
                     // Write relationship for image drawing
-                    $this->writeRelationship(
+                    $shape->relationId = $this->writeRelationship(
                         $source,
-                        $relId,
                         'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
                         '../media/' . str_replace(' ', '_', $this->writtenPart($shape)->getIndexedFilename())
                     );
-                    $shape->relationId = 'rId' . $relId;
-                    ++$relId;
                 } elseif ($shape instanceof ShapeChart) {
                     // Write relationship for chart drawing
-                    $this->writeRelationship(
+                    $shape->relationId = $this->writeRelationship(
                         $source,
-                        $relId,
                         'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart',
                         '../charts/' . $this->writtenPart($shape)->getIndexedFilename()
                     );
-                    $shape->relationId = 'rId' . $relId;
-                    ++$relId;
                 }
             }
         }
-
-        return $relId;
     }
 
     /**
