@@ -674,11 +674,25 @@ class PowerPoint97 implements ReaderInterface
     }
 
     /**
+     * Read a fixed number of bytes out of a stream, past its end if need be.
+     *
+     * A stream is a chain of sectors, and the last of those is only partly filled: the bytes after
+     * the stream's length are the zeros the sector was padded with. Several of the structures below
+     * are read until a byte fails a sanity check and are terminated by exactly those zeros, so a
+     * read that runs past the end is answered with them rather than with a warning per byte.
+     */
+    private static function getBytes(string $data, int $pos, int $length): string
+    {
+        // before PHP 8.0 a read that starts past the end of the string answers false, not ''
+        return str_pad((string) substr($data, $pos, $length), $length, "\x00");
+    }
+
+    /**
      * Read 8-bit unsigned integer.
      */
     public static function getInt1d(string $data, int $pos): int
     {
-        return ord($data[$pos]);
+        return ord(self::getBytes($data, $pos, 1));
     }
 
     /**
@@ -686,7 +700,9 @@ class PowerPoint97 implements ReaderInterface
      */
     public static function getInt2d(string $data, int $pos): int
     {
-        return ord($data[$pos]) | (ord($data[$pos + 1]) << 8);
+        $data = self::getBytes($data, $pos, 2);
+
+        return ord($data[0]) | (ord($data[1]) << 8);
     }
 
     /**
@@ -694,6 +710,9 @@ class PowerPoint97 implements ReaderInterface
      */
     public static function getInt4d(string $data, int $pos): int
     {
+        $data = self::getBytes($data, $pos, 4);
+        $pos = 0;
+
         // FIX: represent numbers correctly on 64-bit system
         // http://sourceforge.net/tracker/index.php?func=detail&aid=1487372&group_id=99160&atid=623334
         // Hacked by Andreas Rehm 2006 to ensure correct result of the <<24 block on 32 and 64bit systems

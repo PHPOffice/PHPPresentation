@@ -153,4 +153,19 @@ class PowerPoint97Test extends TestCase
         $oSlide = $oPhpPresentation->getSlide(0);
         self::assertCount(4, $oSlide->getShapeCollection());
     }
+
+    /**
+     * The structures a stream holds are read until a byte fails a sanity check, and the zeros a
+     * sector was padded with are what stops that. A stream that ends without them is read to its
+     * last byte and one past it, which answers with those zeros rather than with a warning.
+     */
+    public function testReadsPastTheEndOfAStream(): void
+    {
+        $stream = "\x01\x02\x03";
+
+        self::assertSame(0, PowerPoint97::getInt1d($stream, 3));
+        self::assertSame(0x0003, PowerPoint97::getInt2d($stream, 2));
+        self::assertSame(0x00030201, PowerPoint97::getInt4d($stream, 0));
+        self::assertSame(0, PowerPoint97::getInt4d($stream, 8));
+    }
 }
