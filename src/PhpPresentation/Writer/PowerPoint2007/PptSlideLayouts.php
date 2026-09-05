@@ -58,21 +58,16 @@ class PptSlideLayouts extends AbstractSlide
      */
     protected function writeSlideLayoutRelationships(string $source, SlideLayout $oSlideLayout): void
     {
-        $relId = 0;
-
         // Write slideMaster relationship
-        $this->writeRelationship($source, ++$relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $oSlideLayout->getSlideMaster()->getRelsIndex() . '.xml');
+        $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $oSlideLayout->getSlideMaster()->getRelsIndex() . '.xml');
 
         // Write drawing relationships?
-        $relId = $this->writeDrawingRelations($oSlideLayout, $source, ++$relId);
+        $this->writeDrawingRelations($oSlideLayout, $source);
 
         // Write background relationships?
         $oBackground = $oSlideLayout->getBackground();
         if ($oBackground instanceof Image) {
-            $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oSlideLayout->getRelsIndex()));
-            $oBackground->relationId = 'rId' . $relId;
-
-            ++$relId;
+            $oBackground->relationId = $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oSlideLayout->getRelsIndex()));
         }
     }
 

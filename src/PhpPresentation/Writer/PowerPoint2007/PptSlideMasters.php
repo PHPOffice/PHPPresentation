@@ -59,31 +59,25 @@ class PptSlideMasters extends AbstractSlide
      */
     public function writeSlideMasterRelationships(string $source, SlideMaster $oMasterSlide): void
     {
-        // Starting relation id
-        $relId = 0;
         // Write all the relations to the Layout Slides
         foreach ($oMasterSlide->getAllSlideLayouts() as $slideLayout) {
-            $this->writeRelationship($source, ++$relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $slideLayout->layoutNr . '.xml');
             // Save the used relationId
-            $slideLayout->relationId = 'rId' . $relId;
+            $slideLayout->relationId = $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $slideLayout->layoutNr . '.xml');
         }
 
         // Write drawing relationships?
-        $relId = $this->writeDrawingRelations($oMasterSlide, $source, ++$relId);
+        $this->writeDrawingRelations($oMasterSlide, $source);
 
         // Write background relationships?
         $oBackground = $oMasterSlide->getBackground();
         if ($oBackground instanceof Image) {
-            $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oMasterSlide->getRelsIndex()));
-            $oBackground->relationId = 'rId' . $relId;
-
-            ++$relId;
+            $oBackground->relationId = $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oMasterSlide->getRelsIndex()));
         }
 
         // TODO: Write hyperlink relationships?
         // TODO: Write comment relationships
         // Relationship theme/theme1.xml
-        $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $oMasterSlide->getRelsIndex() . '.xml');
+        $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $oMasterSlide->getRelsIndex() . '.xml');
     }
 
     /**

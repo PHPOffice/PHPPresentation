@@ -78,8 +78,6 @@ class PptSlides extends AbstractSlide
     {
         //@todo Group all getShapeCollection()->getIterator
 
-        // Starting relation id
-        $relId = 1;
         $idxSlide = $pSlide->getParent()->getIndex($pSlide);
 
         // Write slideLayout relationship
@@ -87,8 +85,7 @@ class PptSlides extends AbstractSlide
         if ($pSlide->getSlideLayout()) {
             $layoutId = $pSlide->getSlideLayout()->layoutNr;
         }
-        $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
-        ++$relId;
+        $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
 
         // Write drawing relationships?
         if (count($pSlide->getShapeCollection()) > 0) {
@@ -101,21 +98,14 @@ class PptSlides extends AbstractSlide
                 foreach ($collection as $currentShape) {
                     if ($currentShape instanceof Media) {
                         // Write relationship for image drawing
-                        $currentShape->relationId = 'rId' . $relId;
-                        $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/video', '../media/' . $this->writtenPart($currentShape)->getIndexedFilename());
-                        ++$relId;
-                        $this->writeRelationship($source, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $this->writtenPart($currentShape)->getIndexedFilename());
-                        ++$relId;
+                        $currentShape->relationId = $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/video', '../media/' . $this->writtenPart($currentShape)->getIndexedFilename());
+                        $this->writeRelationship($source, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $this->writtenPart($currentShape)->getIndexedFilename());
                     } elseif ($currentShape instanceof ShapeDrawing\AbstractDrawingAdapter) {
                         // Write relationship for image drawing
-                        $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $this->writtenPart($currentShape)->getIndexedFilename());
-                        $currentShape->relationId = 'rId' . $relId;
-                        ++$relId;
+                        $currentShape->relationId = $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $this->writtenPart($currentShape)->getIndexedFilename());
                     } elseif ($currentShape instanceof ShapeChart) {
                         // Write relationship for chart drawing
-                        $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $this->writtenPart($currentShape)->getIndexedFilename());
-                        $currentShape->relationId = 'rId' . $relId;
-                        ++$relId;
+                        $currentShape->relationId = $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $this->writtenPart($currentShape)->getIndexedFilename());
                     } elseif ($currentShape instanceof ShapeContainerInterface) {
                         $collections[] = $currentShape->getShapeCollection();
                     }
@@ -126,9 +116,7 @@ class PptSlides extends AbstractSlide
         // Write background relationships?
         $oBackground = $pSlide->getBackground();
         if ($oBackground instanceof Image) {
-            $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename((string) $idxSlide));
-            $oBackground->relationId = 'rId' . $relId;
-            ++$relId;
+            $oBackground->relationId = $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename((string) $idxSlide));
         }
 
         // Write hyperlink relationships?
@@ -137,7 +125,7 @@ class PptSlides extends AbstractSlide
             foreach ($this->flattenShapes($pSlide->getShapeCollection()) as $shape) {
                 // Hyperlink on shape
                 if ($shape->hasHyperlink()) {
-                    $this->writeHyperlinkRelationship($source, $shape->getHyperlink(), $relId);
+                    $this->writeHyperlinkRelationship($source, $shape->getHyperlink());
                 }
 
                 // Hyperlink on rich text run
@@ -146,7 +134,7 @@ class PptSlides extends AbstractSlide
                         foreach ($paragraph->getRichTextElements() as $element) {
                             if ($element instanceof Run || $element instanceof TextElement) {
                                 if ($element->hasHyperlink()) {
-                                    $this->writeHyperlinkRelationship($source, $element->getHyperlink(), $relId);
+                                    $this->writeHyperlinkRelationship($source, $element->getHyperlink());
                                 }
                             }
                         }
@@ -169,7 +157,7 @@ class PptSlides extends AbstractSlide
                                     // Run or Text in RichText
                                     if ($element instanceof Run || $element instanceof TextElement) {
                                         if ($element->hasHyperlink()) {
-                                            $this->writeHyperlinkRelationship($source, $element->getHyperlink(), $relId);
+                                            $this->writeHyperlinkRelationship($source, $element->getHyperlink());
                                         }
                                     }
                                 }
@@ -194,13 +182,12 @@ class PptSlides extends AbstractSlide
             }
 
             if ($hasSlideComment) {
-                $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments', '../comments/comment' . ($idxSlide + 1) . '.xml');
-                ++$relId;
+                $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments', '../comments/comment' . ($idxSlide + 1) . '.xml');
             }
         }
 
         if (count($pSlide->getNote()->getShapeCollection()) > 0) {
-            $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide', '../notesSlides/notesSlide' . ($idxSlide + 1) . '.xml');
+            $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide', '../notesSlides/notesSlide' . ($idxSlide + 1) . '.xml');
         }
     }
 
@@ -608,12 +595,10 @@ class PptSlides extends AbstractSlide
      * written as says to colour the text as a link, and there is no relationship to make. Writing
      * one anyway leaves the package with an external target that is the empty string.
      */
-    protected function writeHyperlinkRelationship(string $source, Hyperlink $hyperlink, int &$relId): void
+    protected function writeHyperlinkRelationship(string $source, Hyperlink $hyperlink): void
     {
         if ($hyperlink->isInternal()) {
-            $hyperlink->relationId = 'rId' . $relId;
-            $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
-            ++$relId;
+            $hyperlink->relationId = $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
 
             return;
         }
@@ -624,8 +609,6 @@ class PptSlides extends AbstractSlide
             return;
         }
 
-        $hyperlink->relationId = 'rId' . $relId;
-        $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
-        ++$relId;
+        $hyperlink->relationId = $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
     }
 }

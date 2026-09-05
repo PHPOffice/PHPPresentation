@@ -2363,7 +2363,7 @@ class PptCharts extends AbstractDecoratorWriter
     {
         // Write spreadsheet relationship?
         if ($pChart->hasIncludedSpreadsheet()) {
-            $this->writeRelationship($source, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
+            $this->writeRelationship($source, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
         }
     }
 
