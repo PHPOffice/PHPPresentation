@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Style\Border;
@@ -30,27 +31,74 @@ use PhpOffice\PhpPresentation\Style\Outline;
 abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer\AbstractDecoratorWriter
 {
     /**
-     * Write relationship.
+     * What a media part holds, by the extension it is written under.
      *
-     * @param XMLWriter $objWriter XML Writer
+     * These are the types the Writer produces itself and the ones a package declares once for the
+     * extension rather than once for each part; anything else a drawing carries is written with
+     * the type the drawing reports.
+     *
+     * @var array<string, string>
+     */
+    public const MEDIA_CONTENT_TYPES = [
+        'gif' => 'image/gif',
+        'jpeg' => 'image/jpeg',
+        'jpg' => 'image/jpeg',
+        'png' => 'image/png',
+        'svg' => 'image/svg+xml',
+        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    ];
+
+    abstract public function render(): OpenXmlPackage;
+
+    /**
+     * The type to write a media part with.
+     *
+     * The map is preferred over what the drawing reports, because an environment can report
+     * `image/svg` for an SVG, which is not the registered type.
+     */
+    protected function mediaContentType(string $extension, ?string $reported = null): string
+    {
+        return self::MEDIA_CONTENT_TYPES[strtolower($extension)]
+            ?? ($reported ?? 'application/octet-stream');
+    }
+
+    /**
+     * @var OpenXmlPackage
+     */
+    protected $oPackage;
+
+    /**
+     * @return $this
+     */
+    public function setPackage(OpenXmlPackage $oPackage)
+    {
+        $this->oPackage = $oPackage;
+
+        return $this;
+    }
+
+    public function getPackage(): OpenXmlPackage
+    {
+        return $this->oPackage;
+    }
+
+    /**
+     * Say that one part points at another.
+     *
+     * The package writes the `.rels` parts itself, so a relationship is declared rather than
+     * spelled out. The identifier stays the caller's to choose: the parts that hold a reference
+     * name it -- `r:embed="rId2"` -- and are written by their own decorator, which counts the
+     * relationships in the same order this is called in.
+     *
+     * @param null|string $source Part the relationship belongs to, null for the package itself
      * @param int $pId Relationship ID. rId will be prepended!
      * @param string $pType Relationship type
      * @param string $pTarget Relationship target
      * @param string $pTargetMode Relationship target mode
      */
-    protected function writeRelationship(XMLWriter $objWriter, int $pId, string $pType, string $pTarget, string $pTargetMode = ''): void
+    protected function writeRelationship(?string $source, int $pId, string $pType, string $pTarget, string $pTargetMode = ''): void
     {
-        // Write relationship
-        $objWriter->startElement('Relationship');
-        $objWriter->writeAttribute('Id', 'rId' . (string) $pId);
-        $objWriter->writeAttribute('Type', $pType);
-        $objWriter->writeAttribute('Target', $pTarget);
-
-        if ('' != $pTargetMode) {
-            $objWriter->writeAttribute('TargetMode', $pTargetMode);
-        }
-
-        $objWriter->endElement();
+        $this->oPackage->addRelationship($pType, $pTarget, 'External' === $pTargetMode, 'rId' . $pId, $source);
     }
 
     /**

@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\XMLWriter;
 
 class PptTableProps extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -39,8 +39,8 @@ class PptTableProps extends AbstractDecoratorWriter
         $objWriter->writeAttribute('def', '{5C22544A-7EE6-4342-B048-85BDC9FD1C3A}');
         $objWriter->endElement();
 
-        $this->getZip()->addFromString('ppt/tableStyles.xml', $objWriter->getData());
+        $this->oPackage->addPart('/ppt/tableStyles.xml', 'application/vnd.openxmlformats-officedocument.presentationml.tableStyles+xml', $objWriter->getData());
 
-        return $this->getZip();
+        return $this->oPackage;
     }
 }

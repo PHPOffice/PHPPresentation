@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Exception\FileRemoveException;
@@ -49,17 +49,18 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class PptCharts extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
             $shape = $this->getDrawingHashTable()->getByIndex($i);
             if ($shape instanceof Chart) {
-                $this->getZip()->addFromString('ppt/charts/' . $shape->getIndexedFilename(), $this->writeChart($shape));
+                $name = '/ppt/charts/' . $shape->getIndexedFilename();
+                $this->oPackage->addPart($name, 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml', $this->writeChart($shape));
 
                 if ($shape->hasIncludedSpreadsheet()) {
-                    $this->getZip()->addFromString('ppt/charts/_rels/' . $shape->getIndexedFilename() . '.rels', $this->writeChartRelationships($shape));
+                    $this->writeChartRelationships($name, $shape);
                     $pFilename = tempnam(sys_get_temp_dir(), 'PhpSpreadsheet');
-                    $this->getZip()->addFromString('ppt/embeddings/' . $shape->getIndexedFilename() . '.xlsx', $this->writeSpreadsheet($this->getPresentation(), $shape, $pFilename . '.xlsx'));
+                    $this->oPackage->addPart('/ppt/embeddings/' . $shape->getIndexedFilename() . '.xlsx', self::MEDIA_CONTENT_TYPES['xlsx'], $this->writeSpreadsheet($this->getPresentation(), $shape, $pFilename . '.xlsx'));
 
                     // remove temp file
                     if (false === @unlink($pFilename)) {
@@ -69,7 +70,7 @@ class PptCharts extends AbstractDecoratorWriter
             }
         }
 
-        return $this->getZip();
+        return $this->oPackage;
     }
 
     /**
@@ -2357,30 +2358,13 @@ class PptCharts extends AbstractDecoratorWriter
 
     /**
      * Write chart relationships to XML format.
-     *
-     * @return string XML Output
      */
-    protected function writeChartRelationships(Chart $pChart): string
+    protected function writeChartRelationships(string $source, Chart $pChart): void
     {
-        // Create XML writer
-        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-
-        // XML header
-        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
-
-        // Relationships
-        $objWriter->startElement('Relationships');
-        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
-
         // Write spreadsheet relationship?
         if ($pChart->hasIncludedSpreadsheet()) {
-            $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
+            $this->writeRelationship($source, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
         }
-
-        $objWriter->endElement();
-
-        // Return
-        return $objWriter->getData();
     }
 
     protected function writeSeriesMarker(XMLWriter $objWriter, Chart\Marker $marker): void

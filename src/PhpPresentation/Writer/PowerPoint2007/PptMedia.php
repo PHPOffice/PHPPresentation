@@ -20,21 +20,25 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 
 class PptMedia extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
             $shape = $this->getDrawingHashTable()->getByIndex($i);
             if (!$shape instanceof AbstractDrawingAdapter) {
                 continue;
             }
-            $this->getZip()->addFromString('ppt/media/' . $shape->getIndexedFilename(), $shape->getContents());
+            $this->oPackage->addPart(
+                '/ppt/media/' . $shape->getIndexedFilename(),
+                $this->mediaContentType($shape->getExtension(), $shape->getMimeType()),
+                $shape->getContents()
+            );
         }
 
-        return $this->getZip();
+        return $this->oPackage;
     }
 }

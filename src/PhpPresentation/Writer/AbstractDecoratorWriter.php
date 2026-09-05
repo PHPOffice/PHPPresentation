@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Writer;
 
 use ArrayObject;
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
@@ -51,8 +50,6 @@ abstract class AbstractDecoratorWriter
         return $flattened;
     }
 
-    abstract public function render(): ZipInterface;
-
     /**
      * @var HashTable
      */
@@ -62,11 +59,6 @@ abstract class AbstractDecoratorWriter
      * @var PhpPresentation
      */
     protected $oPresentation;
-
-    /**
-     * @var ZipInterface
-     */
-    protected $oZip;
 
     /**
      * @return $this
@@ -138,23 +130,5 @@ abstract class AbstractDecoratorWriter
     public function getPresentation()
     {
         return $this->oPresentation;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setZip(ZipInterface $oZip)
-    {
-        $this->oZip = $oZip;
-
-        return $this;
-    }
-
-    /**
-     * @return ZipInterface
-     */
-    public function getZip()
-    {
-        return $this->oZip;
     }
 }

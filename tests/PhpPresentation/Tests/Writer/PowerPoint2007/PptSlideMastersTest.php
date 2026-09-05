@@ -20,9 +20,7 @@ declare(strict_types=1);
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use DOMDocument;
-use DOMElement;
-use DOMXPath;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
@@ -63,30 +61,30 @@ class PptSlideMastersTest extends TestCase
 
         /** @var array<int, ShapeDrawingFile> $collection */
         $collection = [];
-        $collection[] = new ShapeDrawingFile();
-        $collection[] = new ShapeDrawingFile();
-        $collection[] = new ShapeDrawingFile();
+        // a drawing with no file of its own has no extension either, and the part it would be
+        // written to could not be named
+        foreach (range(1, 3) as $ignored) {
+            $drawing = new ShapeDrawingFile();
+            $drawing->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+            $collection[] = $drawing;
+        }
 
         $slideMaster->expects(self::exactly(2))
             ->method('getShapeCollection')
             ->willReturn($collection);
 
-        $data = $writer->writeSlideMasterRelationships($slideMaster);
+        $source = '/ppt/slideMasters/slideMaster1.xml';
+        $writer->setPackage(OpenXmlPackage::create());
+        $writer->writeSlideMasterRelationships($source, $slideMaster);
 
-        $dom = new DOMDocument();
-        $dom->loadXml($data);
+        $relationships = $writer->getPackage()->getRelationships($source);
 
-        $xpath = new DOMXPath($dom);
-        $xpath->registerNamespace('r', 'http://schemas.openxmlformats.org/package/2006/relationships');
-        $list = $xpath->query('//r:Relationship');
+        self::assertCount(5, $relationships);
 
-        self::assertEquals(5, $list->length);
-
-        foreach (range(0, 4) as $id) {
-            /** @var DOMElement $domItem */
-            $domItem = $list->item($id);
-            self::assertInstanceOf(DOMElement::class, $domItem);
-            self::assertEquals('rId' . (string) ($id + 1), $domItem->getAttribute('Id'));
+        $ids = [];
+        foreach ($relationships as $relationship) {
+            $ids[] = $relationship->getId();
         }
+        self::assertSame(['rId1', 'rId2', 'rId3', 'rId4', 'rId5'], $ids);
     }
 }

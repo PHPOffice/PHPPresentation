@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -30,56 +30,51 @@ use PhpOffice\PhpPresentation\Style\SchemeColor;
 
 class PptSlideMasters extends AbstractSlide
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oMasterSlide) {
-            // Add the relations from the masterSlide to the ZIP file
-            $this->oZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $oMasterSlide->getRelsIndex() . '.xml.rels', $this->writeSlideMasterRelationships($oMasterSlide));
-            // Add the information from the masterSlide to the ZIP file
-            $this->oZip->addFromString('ppt/slideMasters/slideMaster' . $oMasterSlide->getRelsIndex() . '.xml', $this->writeSlideMaster($oMasterSlide));
+            $name = '/ppt/slideMasters/slideMaster' . $oMasterSlide->getRelsIndex() . '.xml';
+            // what the masterSlide points at, which the masterSlide itself names
+            $this->writeSlideMasterRelationships($name, $oMasterSlide);
+            $this->oPackage->addPart($name, 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml', $this->writeSlideMaster($oMasterSlide));
 
             // Add background image slide
             $oBkgImage = $oMasterSlide->getBackground();
             if ($oBkgImage instanceof Image) {
-                $this->oZip->addFromString('ppt/media/' . $oBkgImage->getIndexedFilename($oMasterSlide->getRelsIndex()), file_get_contents($oBkgImage->getPath()));
+                $this->oPackage->addPartFromPath(
+                    '/ppt/media/' . $oBkgImage->getIndexedFilename($oMasterSlide->getRelsIndex()),
+                    $this->mediaContentType($oBkgImage->getExtension()),
+                    (string) $oBkgImage->getPath()
+                );
             }
         }
 
-        return $this->oZip;
+        return $this->oPackage;
     }
 
     /**
-     * Write slide master relationships to XML format.
+     * Say what a slide master points at.
      *
      * @todo Set method in protected
-     *
-     * @return string XML Output
      */
-    public function writeSlideMasterRelationships(SlideMaster $oMasterSlide): string
+    public function writeSlideMasterRelationships(string $source, SlideMaster $oMasterSlide): void
     {
-        // Create XML writer
-        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        // XML header
-        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
-        // Relationships
-        $objWriter->startElement('Relationships');
-        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
         // Starting relation id
         $relId = 0;
         // Write all the relations to the Layout Slides
         foreach ($oMasterSlide->getAllSlideLayouts() as $slideLayout) {
-            $this->writeRelationship($objWriter, ++$relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $slideLayout->layoutNr . '.xml');
+            $this->writeRelationship($source, ++$relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $slideLayout->layoutNr . '.xml');
             // Save the used relationId
             $slideLayout->relationId = 'rId' . $relId;
         }
 
         // Write drawing relationships?
-        $relId = $this->writeDrawingRelations($oMasterSlide, $objWriter, ++$relId);
+        $relId = $this->writeDrawingRelations($oMasterSlide, $source, ++$relId);
 
         // Write background relationships?
         $oBackground = $oMasterSlide->getBackground();
         if ($oBackground instanceof Image) {
-            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oMasterSlide->getRelsIndex()));
+            $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oMasterSlide->getRelsIndex()));
             $oBackground->relationId = 'rId' . $relId;
 
             ++$relId;
@@ -88,10 +83,7 @@ class PptSlideMasters extends AbstractSlide
         // TODO: Write hyperlink relationships?
         // TODO: Write comment relationships
         // Relationship theme/theme1.xml
-        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $oMasterSlide->getRelsIndex() . '.xml');
-        $objWriter->endElement();
-
-        return $objWriter->getData();
+        $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $oMasterSlide->getRelsIndex() . '.xml');
     }
 
     /**

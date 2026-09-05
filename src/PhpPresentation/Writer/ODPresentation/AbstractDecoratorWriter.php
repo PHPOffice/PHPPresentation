@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Slide\AbstractBackground;
@@ -28,6 +29,31 @@ use PhpOffice\PhpPresentation\Style\Font;
 
 abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer\AbstractDecoratorWriter
 {
+    abstract public function render(): ZipInterface;
+
+    /**
+     * @var ZipInterface
+     */
+    protected $oZip;
+
+    /**
+     * @return $this
+     */
+    public function setZip(ZipInterface $oZip)
+    {
+        $this->oZip = $oZip;
+
+        return $this;
+    }
+
+    /**
+     * @return ZipInterface
+     */
+    public function getZip()
+    {
+        return $this->oZip;
+    }
+
     /**
      * OOXML names an underline with a single token; ODF spells the same thing over a style, a type
      * and a width, and has no name of its own for a few of the eighteen.

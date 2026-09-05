@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Slide;
@@ -30,62 +30,50 @@ use PhpOffice\PhpPresentation\Style\ColorMap;
 
 class PptSlideLayouts extends AbstractSlide
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oSlideMaster) {
             foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
-                $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideLayout));
-                $this->oZip->addFromString('ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', $this->writeSlideLayout($oSlideLayout));
+                $name = '/ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml';
+                $this->writeSlideLayoutRelationships($name, $oSlideLayout);
+                $this->oPackage->addPart($name, 'application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml', $this->writeSlideLayout($oSlideLayout));
 
                 // Add background image slide
                 $oBkgImage = $oSlideLayout->getBackground();
                 if ($oBkgImage instanceof Image) {
-                    $this->oZip->addFromString('ppt/media/' . $oBkgImage->getIndexedFilename($oSlideLayout->getRelsIndex()), file_get_contents($oBkgImage->getPath()));
+                    $this->oPackage->addPartFromPath(
+                        '/ppt/media/' . $oBkgImage->getIndexedFilename($oSlideLayout->getRelsIndex()),
+                        $this->mediaContentType($oBkgImage->getExtension()),
+                        (string) $oBkgImage->getPath()
+                    );
                 }
             }
         }
 
-        return $this->oZip;
+        return $this->oPackage;
     }
 
     /**
-     * Write slide layout relationships to XML format.
-     *
-     * @return string XML Output
+     * Say what a slide layout points at.
      */
-    protected function writeSlideLayoutRelationships(SlideLayout $oSlideLayout): string
+    protected function writeSlideLayoutRelationships(string $source, SlideLayout $oSlideLayout): void
     {
-        // Create XML writer
-        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-
-        // XML header
-        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
-
-        // Relationships
-        $objWriter->startElement('Relationships');
-        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
-
         $relId = 0;
 
         // Write slideMaster relationship
-        $this->writeRelationship($objWriter, ++$relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $oSlideLayout->getSlideMaster()->getRelsIndex() . '.xml');
+        $this->writeRelationship($source, ++$relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $oSlideLayout->getSlideMaster()->getRelsIndex() . '.xml');
 
         // Write drawing relationships?
-        $relId = $this->writeDrawingRelations($oSlideLayout, $objWriter, ++$relId);
+        $relId = $this->writeDrawingRelations($oSlideLayout, $source, ++$relId);
 
         // Write background relationships?
         $oBackground = $oSlideLayout->getBackground();
         if ($oBackground instanceof Image) {
-            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oSlideLayout->getRelsIndex()));
+            $this->writeRelationship($source, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oSlideLayout->getRelsIndex()));
             $oBackground->relationId = 'rId' . $relId;
 
             ++$relId;
         }
-
-        $objWriter->endElement();
-
-        // Return
-        return $objWriter->getData();
     }
 
     /**

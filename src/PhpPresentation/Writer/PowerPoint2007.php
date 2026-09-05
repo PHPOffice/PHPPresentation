@@ -23,6 +23,7 @@ namespace PhpOffice\PhpPresentation\Writer;
 use DirectoryIterator;
 use DK\OpenXml\Encryption\AgileEncryptionOptions;
 use DK\OpenXml\Encryption\EncryptedOfficeFile;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
 use PhpOffice\PhpPresentation\Exception\FileCopyException;
 use PhpOffice\PhpPresentation\Exception\FileRemoveException;
@@ -64,8 +65,6 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
 
         // Set HashTable variables
         $this->oDrawingHashTable = new HashTable();
-
-        $this->setZipAdapter(new OpenXmlPackageAdapter());
     }
 
     /**
@@ -104,8 +103,14 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         // Create drawing dictionary
         $this->getDrawingHashTable()->addFromSource($this->allDrawings());
 
-        $oZip = $this->getZipAdapter();
-        $oZip->open($pFilename);
+        $this->numberMasterSlides();
+
+        $package = OpenXmlPackage::create();
+        // an extension that carries one type throughout is said once for the package rather than
+        // once for every part written under it, which is what Office writes
+        foreach (AbstractDecoratorWriter::MEDIA_CONTENT_TYPES as $extension => $contentType) {
+            $package->setDefaultContentType($extension, $contentType);
+        }
 
         $oDir = new DirectoryIterator(__DIR__ . DIRECTORY_SEPARATOR . 'PowerPoint2007');
         $arrayFiles = [];
@@ -127,15 +132,14 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
 
         foreach ($arrayFiles as $o) {
             $oService = $o->newInstance();
-            $oService->setZip($oZip);
+            $oService->setPackage($package);
             $oService->setPresentation($oPresentation);
             $oService->setDrawingHashTable($this->getDrawingHashTable());
-            $oZip = $oService->render();
+            $package = $oService->render();
             unset($oService);
         }
 
-        // Close file
-        $oZip->close();
+        $package->saveAs($pFilename);
 
         $this->encrypt($pFilename);
 
@@ -146,6 +150,29 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
             }
             if (false === @unlink($pFilename)) {
                 throw new FileRemoveException($pFilename);
+            }
+        }
+    }
+
+    /**
+     * Number the masters and the layouts before anything is written.
+     *
+     * A part names another by the number in its filename -- `slideLayout3.xml` -- so every
+     * decorator has to agree on which layout is the third, and a layout carries an identifier of
+     * its own that the presentation part lists. Nothing derives these from the model, so they are
+     * settled once, here, rather than by whichever decorator happens to run first.
+     */
+    private function numberMasterSlides(): void
+    {
+        $layoutNr = 0;
+        $layoutId = time() + 689016272; // requires minimum value of 2 147 483 648
+
+        foreach ($this->getPhpPresentation()->getAllMasterSlides() as $idx => $oSlideMaster) {
+            $oSlideMaster->setRelsIndex((string) ($idx + 1));
+            foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
+                $oSlideLayout->layoutNr = ++$layoutNr;
+                $oSlideLayout->setRelsIndex((string) $oSlideLayout->layoutNr);
+                $oSlideLayout->layoutId = ++$layoutId;
             }
         }
     }
