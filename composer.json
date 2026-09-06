@@ -78,11 +78,5 @@
             "php samples/Sample_22_ExternalSlide.php",
             "php samples/Sample_23_Field.php"
         ]
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/dkulyk/openxml-package"
-        }
-    ]
+    }
 }
