@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
+use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 class PptMedia extends AbstractDecoratorWriter
 {
@@ -32,11 +33,17 @@ class PptMedia extends AbstractDecoratorWriter
             if (!$shape instanceof AbstractDrawingAdapter) {
                 continue;
             }
-            $this->oPackage->addPart(
-                '/ppt/media/' . $shape->getIndexedFilename(),
-                $this->mediaContentType($shape->getExtension(), $shape->getMimeType()),
-                $shape->getContents()
-            );
+            $name = '/ppt/media/' . $shape->getIndexedFilename();
+            $type = $this->mediaContentType($shape->getExtension(), $shape->getMimeType());
+            // A shape that already is a file on disk is handed over as one: the package reads it
+            // when it saves, so the bytes never pass through a PHP string. Everything else -- a
+            // base64 payload, a GD resource, an image inside another archive -- has no file to
+            // point at and is handed over as contents.
+            if ($shape instanceof File && is_file($shape->getPath())) {
+                $this->oPackage->addPartFromPath($name, $type, $shape->getPath());
+            } else {
+                $this->oPackage->addPart($name, $type, $shape->getContents());
+            }
         }
 
         return $this->oPackage;
