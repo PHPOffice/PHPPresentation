@@ -158,12 +158,12 @@ echo $alignment->isRTL();
 ### Baseline
 
 The baseline set the position relative to the line.
-The value is a percentage.
+The value is a percentage in thousandths, so `30000` is 30% of the font size.
 
 You can use some predefined values :
 
-* `Font::BASELINE_SUPERSCRIPT` (= 300000 = 300%)
-* `Font::BASELINE_SUBSCRIPT` (= -250000 = -250%)
+* `Font::BASELINE_SUPERSCRIPT` (= 30000 = 30%)
+* `Font::BASELINE_SUBSCRIPT` (= -25000 = -25%)
 
 
 ### Capitalization
