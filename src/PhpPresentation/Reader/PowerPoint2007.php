@@ -329,7 +329,7 @@ class PowerPoint2007 implements ReaderInterface
         // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             foreach ($xmlReader->getElements('/Properties/property[@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"]') as $element) {
-                if (!$element->hasAttribute('name')) {
+                if (!$element instanceof DOMElement || !$element->hasAttribute('name')) {
                     continue;
                 }
                 $propertyName = $element->getAttribute('name');
@@ -1084,6 +1084,9 @@ class PowerPoint2007 implements ReaderInterface
     {
         $aNodes = $document->getElements('*', $node);
         foreach ($aNodes as $nodeShadow) {
+            if (!$nodeShadow instanceof DOMElement) {
+                continue;
+            }
             $type = explode(':', $nodeShadow->tagName);
             $type = array_pop($type);
             if ($type == Shadow::TYPE_SHADOW_INNER || $type == Shadow::TYPE_SHADOW_OUTER || $type == Shadow::TYPE_REFLECTION) {
