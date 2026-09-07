@@ -131,6 +131,20 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
             $objWriter->writeAttribute('style:text-line-through-style', 'solid');
             $objWriter->writeAttribute('style:text-line-through-type', self::STRIKETHROUGH_ODF[$font->getStrikethrough()]);
         }
+        if (0 !== $font->getBaseline()) {
+            $objWriter->writeAttribute('style:text-position', self::textPosition($font->getBaseline()));
+        }
+    }
+
+    /**
+     * `style:text-position` takes the raise as a percentage of the font size, where a baseline is
+     * held in thousandths of one. The size the raised character is drawn at is a second, optional
+     * percentage, left out here so that the reader applies its own default -- 58% in LibreOffice,
+     * which is what PowerPoint draws too.
+     */
+    protected static function textPosition(int $baseline): string
+    {
+        return rtrim(rtrim(number_format($baseline / 1000, 3, '.', ''), '0'), '.') . '%';
     }
 
     /**

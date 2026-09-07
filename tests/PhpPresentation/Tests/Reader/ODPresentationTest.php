@@ -1125,6 +1125,86 @@ class ODPresentationTest extends TestCase
         self::assertEquals($underline, $oFont->getUnderline());
     }
 
+    public static function dataProviderBaselines(): array
+    {
+        return [
+            [30000],
+            [-25000],
+            [30500],
+            [0],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderBaselines
+     */
+    #[DataProvider('dataProviderBaselines')]
+    public function testFontBaselineSurvivesTheRoundTrip(int $baseline): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oRun = $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Sample');
+        $oRun->getFont()->setBaseline($baseline);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $oFont = $arrayShape[0]->getParagraph()->getRichTextElements()[0]->getFont();
+        self::assertInstanceOf(Font::class, $oFont);
+        self::assertEquals($baseline, $oFont->getBaseline());
+    }
+
+    public static function dataProviderTextPositionKeywords(): array
+    {
+        return [
+            ['super 58%', Font::BASELINE_SUPERSCRIPT],
+            ['sub 58%', Font::BASELINE_SUBSCRIPT],
+            ['super', Font::BASELINE_SUPERSCRIPT],
+            ['sub', Font::BASELINE_SUBSCRIPT],
+            ['30% 58%', 30000],
+        ];
+    }
+
+    /**
+     * A writer other than this one names the raise with a keyword and gives the size beside it --
+     * `super 58%` is what LibreOffice writes -- so the keyword answers with the raise PowerPoint
+     * would have written, and the size is not part of what the model holds.
+     *
+     * @dataProvider dataProviderTextPositionKeywords
+     */
+    #[DataProvider('dataProviderTextPositionKeywords')]
+    public function testFontBaselineFromTextPositionWrittenElsewhere(string $textPosition, int $expected): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oRun = $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Sample');
+        $oRun->getFont()->setBaseline(30000);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $content = (string) $oZip->getFromName('content.xml');
+        $oZip->addFromString('content.xml', str_replace(
+            'style:text-position="30%"',
+            'style:text-position="' . $textPosition . '"',
+            $content
+        ));
+        $oZip->close();
+
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $oFont = $arrayShape[0]->getParagraph()->getRichTextElements()[0]->getFont();
+        self::assertInstanceOf(Font::class, $oFont);
+        self::assertEquals($expected, $oFont->getBaseline());
+    }
+
     public function testFontStateSurvivesTheRoundTrip(): void
     {
         $oPhpPresentation = new PhpPresentation();

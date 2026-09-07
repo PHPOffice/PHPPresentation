@@ -581,6 +581,10 @@ class ODPresentation implements ReaderInterface
                         : Font::STRIKE_SINGLE
                 );
             }
+            $textPosition = $nodeTextProperties->getAttribute('style:text-position');
+            if ('' !== $textPosition) {
+                $oFont->setBaseline(self::baselineFromTextPosition($textPosition));
+            }
             if ($nodeTextProperties->hasAttribute('style:script-type')) {
                 switch ($nodeTextProperties->getAttribute('style:script-type')) {
                     case 'latin':
@@ -1249,6 +1253,27 @@ class ODPresentation implements ReaderInterface
                 ];
             }
         }
+    }
+
+    /**
+     * The raise `style:text-position` names, as the thousandths of a percent a baseline is held in.
+     *
+     * The attribute is a raise followed by an optional font size, and the raise is either a
+     * percentage or one of the two keywords that stand for "whatever the reader thinks a
+     * superscript is". Those two answer with the values PowerPoint writes.
+     */
+    protected static function baselineFromTextPosition(string $value): int
+    {
+        $position = strtok(trim($value), " \t") ?: '';
+
+        if ('super' === $position) {
+            return Font::BASELINE_SUPERSCRIPT;
+        }
+        if ('sub' === $position) {
+            return Font::BASELINE_SUBSCRIPT;
+        }
+
+        return (int) round(((float) rtrim($position, '%')) * 1000);
     }
 
     private function getExpressionUnit(string $expr): string

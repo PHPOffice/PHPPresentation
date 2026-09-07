@@ -1594,6 +1594,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
             $oFont->setItalic(true);
             $oFont->setUnderline(Font::UNDERLINE_DOUBLE);
             $oFont->setStrikethrough(Font::STRIKE_DOUBLE);
+            $oFont->setBaseline(-25000);
         }
 
         // the axis has a font per half: the tick labels and the title it carries
@@ -1612,6 +1613,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
             $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-underline-type', 'double');
             $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-line-through-style', 'solid');
             $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-line-through-type', 'double');
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:text-position', '-25%');
         }
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
@@ -1629,6 +1631,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'fo:font-weight');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'style:text-underline-style');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'style:text-line-through-style');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'style:text-position');
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }

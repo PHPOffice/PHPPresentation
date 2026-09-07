@@ -165,6 +165,10 @@ You can use some predefined values :
 * `Font::BASELINE_SUPERSCRIPT` (= 30000 = 30%)
 * `Font::BASELINE_SUBSCRIPT` (= -25000 = -25%)
 
+Both writers carry it: PowerPoint2007 writes it as the `baseline` attribute of a run, and
+ODPresentation as `style:text-position`, whose raise is the same percentage. Both readers read it
+back.
+
 
 ### Capitalization
 
