@@ -1497,13 +1497,9 @@ class Content extends AbstractDecoratorWriter
             }, $shapeRow);
 
             foreach ($shapeRow->getCells() as $shapeCell) {
-                // The body a cell writes is read out of two objects, which is why it is a closure
-                // and not a string: the cell, and the row it sits in, because a cell that named no
-                // fill of its own is painted with the row's
                 $this->shareAutomaticStyle('table-cell', function (XMLWriter $objWriter) use ($shapeCell, $shapeRow): void {
-                    // A cell that was given no fill of its own is painted with the fill of its row.
-                    // A cell set to `FILL_NONE` asked for no fill and stays transparent, even where
-                    // its row is painted.
+                    // A cell given no fill of its own is painted with its row's, while one set to
+                    // `FILL_NONE` asked for none and stays transparent even where its row is painted.
                     $cellFill = $shapeCell->getFill();
                     if (Fill::FILL_UNSET == $cellFill->getFillType()) {
                         $cellFill = $shapeRow->getFill();
