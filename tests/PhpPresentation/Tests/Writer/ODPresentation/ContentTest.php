@@ -1834,8 +1834,7 @@ class ContentTest extends PhpPresentationTestCase
 
     /**
      * A row style was the one generated style nothing held to its reference: breaking every
-     * `table:table-row/@table:style-name` failed no test at all, where breaking the cell reference
-     * failed sixteen. This is that net.
+     * `table:table-row/@table:style-name` failed no test at all. This is that net.
      */
     public function testTableRowStyleIsAddressedByItsReference(): void
     {
