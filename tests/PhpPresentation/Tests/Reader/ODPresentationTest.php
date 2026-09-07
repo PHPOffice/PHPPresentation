@@ -1125,6 +1125,9 @@ class ODPresentationTest extends TestCase
         self::assertEquals($underline, $oFont->getUnderline());
     }
 
+    /**
+     * @return array<array{0: int}>
+     */
     public static function dataProviderBaselines(): array
     {
         return [
@@ -1157,6 +1160,9 @@ class ODPresentationTest extends TestCase
         self::assertEquals($baseline, $oFont->getBaseline());
     }
 
+    /**
+     * @return array<array{0: string, 1: int}>
+     */
     public static function dataProviderTextPositionKeywords(): array
     {
         return [
@@ -1169,9 +1175,7 @@ class ODPresentationTest extends TestCase
     }
 
     /**
-     * A writer other than this one names the raise with a keyword and gives the size beside it --
-     * `super 58%` is what LibreOffice writes -- so the keyword answers with the raise PowerPoint
-     * would have written, and the size is not part of what the model holds.
+     * LibreOffice names the raise with a keyword and the size beside it, `super 58%`.
      *
      * @dataProvider dataProviderTextPositionKeywords
      */

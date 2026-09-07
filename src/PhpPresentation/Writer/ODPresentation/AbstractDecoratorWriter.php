@@ -137,10 +137,9 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * `style:text-position` takes the raise as a percentage of the font size, where a baseline is
-     * held in thousandths of one. The size the raised character is drawn at is a second, optional
-     * percentage, left out here so that the reader applies its own default -- 58% in LibreOffice,
-     * which is what PowerPoint draws too.
+     * The raise as a percentage of the font size, where a baseline is held in thousandths of one.
+     * The size it is drawn at is a second, optional percentage, left to the reader -- 58% in
+     * LibreOffice, which is what PowerPoint draws.
      */
     protected static function textPosition(int $baseline): string
     {

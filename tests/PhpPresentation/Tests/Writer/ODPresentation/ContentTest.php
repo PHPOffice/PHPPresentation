@@ -914,7 +914,6 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-position', '-25%');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
-        // a raise ODF can name but the model holds in thousandths keeps its fraction
         $oRun->getFont()->setBaseline(30500);
         $this->resetPresentationFile();
 

@@ -1256,11 +1256,8 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * The raise `style:text-position` names, as the thousandths of a percent a baseline is held in.
-     *
-     * The attribute is a raise followed by an optional font size, and the raise is either a
-     * percentage or one of the two keywords that stand for "whatever the reader thinks a
-     * superscript is". Those two answer with the values PowerPoint writes.
+     * The raise `style:text-position` names, in the thousandths of a percent a baseline is held in.
+     * Its `super` and `sub` answer with the values PowerPoint writes.
      */
     protected static function baselineFromTextPosition(string $value): int
     {
