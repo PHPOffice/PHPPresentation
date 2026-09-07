@@ -982,10 +982,9 @@ class ODPresentation implements ReaderInterface
     /**
      * Read where a shape sits, and the rotation a `draw:transform` gives it.
      *
-     * A frame that is turned carries no `svg:x`/`svg:y`. It names a rotation about the origin
-     * followed by a translation instead, so the point written is where the top left corner lands
-     * once the shape has been turned, not where it started, and the offset has to be turned back
-     * out of it. The rotation is negated because ODF counts it the other way round.
+     * A turned frame carries no `svg:x`/`svg:y`. It names a rotation about the origin and then a
+     * translation, so the point written is where the top left corner lands once the shape has been
+     * turned, and the offset has to be turned back out of it. ODF counts the angle the other way.
      */
     protected function loadShapeOffset(AbstractShape $shape, DOMElement $oNodeFrame): void
     {

@@ -1193,9 +1193,8 @@ class ContentTest extends PhpPresentationTestCase
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->setOffsetX(400)->setOffsetY(100)->setWidth(200)->setHeight(100)->setRotation(30);
 
-        // `translate` moves the frame after `rotate` has turned it about the origin, so the point
-        // written is where the top left corner lands, not where it started. These are the values
-        // LibreOffice itself writes for a shape of this size, at this offset, turned this far.
+        // The values LibreOffice itself writes for a shape of this size, at this offset, turned
+        // this far.
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:transform', 'rotate (-' . deg2rad(30) . ') translate (11.599cm 1.500cm)');
         $this->assertIsSchemaOpenDocumentValid('1.2');

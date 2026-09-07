@@ -567,10 +567,9 @@ class Content extends AbstractDecoratorWriter
         if ($shape->getRotation() != 0) {
             $rotRad = deg2rad($shape->getRotation());
 
-            // `translate` moves the frame after `rotate` has already turned it about the
-            // origin, while the rotation a shape carries is about its own centre. The point
-            // to write is therefore where the top left corner ends up once the shape has been
-            // turned, not where it started.
+            // `translate` moves the frame after `rotate` has turned it about the origin, while the
+            // rotation a shape carries is about its own centre, so the point to write is where the
+            // top left corner ends up once the shape has been turned.
             $halfWidth = CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()) / 2;
             $halfHeight = CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()) / 2;
             $translateX = CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX())
