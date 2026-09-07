@@ -1338,11 +1338,9 @@ class Content extends AbstractDecoratorWriter
                 'draw:textarea-vertical-align',
                 RichText::VALIGN_CENTER === $shape->getVerticalAlignCenter() ? 'middle' : 'top'
             );
-            // The insets of a text box are the padding of its frame. `pixelsToCentimeters()` takes
-            // an int, and an inset is a float -- the default two are 9.6 and 4.8 -- so the same
-            // conversion is spelled out here rather than rounding them to whole pixels first.
-            // Six decimals rather than the three the lengths beside it carry: a pixel is
-            // 127/4800 cm, and three decimals lose about a sixtieth of a pixel of it.
+            // The insets of a text box are the padding of its frame. The conversion is spelled out
+            // rather than run through `pixelsToCentimeters()`, which rounds an inset to a whole
+            // pixel, and carries six decimals: a pixel is 127/4800 cm, and three lose a sixtieth.
             foreach ([
                 'fo:padding-bottom' => $shape->getInsetBottom(),
                 'fo:padding-left' => $shape->getInsetLeft(),

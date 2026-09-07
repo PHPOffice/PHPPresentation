@@ -450,11 +450,9 @@ class ODPresentation implements ReaderInterface
                     $border->setColor(new Color('FF' . substr($nodeGraphicProps->getAttribute('svg:stroke-color'), 1)));
                 }
             }
-            // Read the insets, which a text box says as the padding of its frame
-            // `centimetersToPixels()` gives back an int and an inset is a float, so the conversion
-            // is spelled out to keep the two defaults, 9.6 and 4.8, as they were written. Rounded
-            // to the six decimals the Writer puts in the file, so that 0.254cm comes back as 9.6
-            // rather than as 9.600000000000001.
+            // Read the insets, which a text box says as the padding of its frame. The conversion is
+            // spelled out rather than run through `centimetersToPixels()`, which rounds an inset to
+            // a whole pixel, and kept to the six decimals the Writer writes.
             if ($nodeGraphicProps->hasAttribute('fo:padding-bottom')) {
                 $insetBottom = round((float) substr($nodeGraphicProps->getAttribute('fo:padding-bottom'), 0, -2) / 2.54 * CommonDrawing::DPI_96, 6);
             }
