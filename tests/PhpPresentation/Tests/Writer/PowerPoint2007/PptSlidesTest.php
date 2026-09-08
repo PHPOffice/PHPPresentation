@@ -1695,7 +1695,7 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '-250000');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '-25000');
         $this->assertIsSchemaECMA376Valid();
     }
 
@@ -1708,7 +1708,7 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '300000');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '30000');
         $this->assertIsSchemaECMA376Valid();
     }
 

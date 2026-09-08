@@ -68,8 +68,8 @@ class Font implements ComparableInterface
     public const UNDERLINE_WORDS = 'words';
 
     // Script sub and super values
-    public const BASELINE_SUPERSCRIPT = 300000;
-    public const BASELINE_SUBSCRIPT = -250000;
+    public const BASELINE_SUPERSCRIPT = 30000;
+    public const BASELINE_SUBSCRIPT = -25000;
 
     /**
      * Name.
