@@ -132,7 +132,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
             $objWriter->writeAttribute('style:text-line-through-type', self::STRIKETHROUGH_ODF[$font->getStrikethrough()]);
         }
         if (0 !== $font->getBaseline()) {
-            $objWriter->writeAttribute('style:text-position', self::textPosition($font->getBaseline()));
+            $objWriter->writeAttribute('style:text-position', $this->textPosition($font->getBaseline()));
         }
     }
 
@@ -141,7 +141,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * The size it is drawn at is a second, optional percentage, left to the reader -- 58% in
      * LibreOffice, which is what PowerPoint draws.
      */
-    protected static function textPosition(int $baseline): string
+    protected function textPosition(int $baseline): string
     {
         return rtrim(rtrim(number_format($baseline / 1000, 3, '.', ''), '0'), '.') . '%';
     }

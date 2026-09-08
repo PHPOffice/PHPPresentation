@@ -583,7 +583,7 @@ class ODPresentation implements ReaderInterface
             }
             $textPosition = $nodeTextProperties->getAttribute('style:text-position');
             if ('' !== $textPosition) {
-                $oFont->setBaseline(self::baselineFromTextPosition($textPosition));
+                $oFont->setBaseline($this->baselineFromTextPosition($textPosition));
             }
             if ($nodeTextProperties->hasAttribute('style:script-type')) {
                 switch ($nodeTextProperties->getAttribute('style:script-type')) {
@@ -1259,7 +1259,7 @@ class ODPresentation implements ReaderInterface
      * The raise `style:text-position` names, in the thousandths of a percent a baseline is held in.
      * Its `super` and `sub` answer with the values PowerPoint writes.
      */
-    protected static function baselineFromTextPosition(string $value): int
+    protected function baselineFromTextPosition(string $value): int
     {
         $position = strtok(trim($value), " \t") ?: '';
 
