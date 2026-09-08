@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation;
 
 use ArrayObject;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Slide\Iterator;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
@@ -188,6 +189,28 @@ class PhpPresentation
             throw new OutOfBoundsException(0, count($this->slideCollection) - 1, $index);
         }
         array_splice($this->slideCollection, $index, 1);
+
+        return $this;
+    }
+
+    /**
+     * Move a slide already in the presentation to another position.
+     *
+     * The slide is taken out before it is put back, so `$index` counts in the collection without
+     * it: in a presentation of A B C D, moving A to 2 gives B C A D.
+     *
+     * @param int $index Position to move the slide to
+     */
+    public function moveSlide(Slide $slide, int $index): self
+    {
+        $from = $this->getIndex($slide);
+        if (null === $from) {
+            throw new InvalidParameterException('slide', $slide->getHashCode(), 'The slide is not in this presentation');
+        }
+        if ($index > count($this->slideCollection) - 1) {
+            throw new OutOfBoundsException(0, count($this->slideCollection) - 1, $index);
+        }
+        array_splice($this->slideCollection, $index, 0, array_splice($this->slideCollection, $from, 1));
 
         return $this;
     }
