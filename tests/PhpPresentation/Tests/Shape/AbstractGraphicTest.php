@@ -89,4 +89,31 @@ class AbstractGraphicTest extends TestCase
         self::assertEquals($min, $stub->getWidth());
         self::assertEquals($min * ($min / ($max * ($min / ($max * ($min / $max))))), $stub->getHeight());
     }
+
+    public function testWidthAndHeightOnAShapeThatHasNeitherYet(): void
+    {
+        $stub = new class() extends AbstractGraphic {
+        };
+
+        // both divisions were run before anything was checked, so a shape with no dimensions to
+        // keep in proportion threw instead of taking the two it was given
+        self::assertInstanceOf(AbstractGraphic::class, $stub->setWidthAndHeight(100, 50));
+        self::assertEquals(100, $stub->getWidth());
+        self::assertEquals(50, $stub->getHeight());
+    }
+
+    public function testWidthAndHeightWithoutProportionSetsBoth(): void
+    {
+        $stub = new class() extends AbstractGraphic {
+        };
+        $stub->setResizeProportional(false);
+        $stub->setWidth(200);
+        $stub->setHeight(100);
+
+        // there is no proportion to keep, so both are taken as they are asked for, the way
+        // `AbstractShape::setWidthAndHeight()` takes them; this used to do nothing at all
+        $stub->setWidthAndHeight(50, 50);
+        self::assertEquals(50, $stub->getWidth());
+        self::assertEquals(50, $stub->getHeight());
+    }
 }
