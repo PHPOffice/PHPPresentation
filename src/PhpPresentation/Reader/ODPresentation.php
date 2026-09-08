@@ -116,18 +116,6 @@ class ODPresentation implements ReaderInterface
      *
      * @var array<int, string>
      */
-    /**
-     * The dash patterns the ODPresentation Writer names a stroke dash after, so that a name it
-     * did not write is not handed to a border as a pattern.
-     *
-     * @var array<int, string>
-     */
-    protected const DASH_STYLES = [
-        Border::DASH_DASH, Border::DASH_DASHDOT, Border::DASH_DOT, Border::DASH_LARGEDASH,
-        Border::DASH_LARGEDASHDOT, Border::DASH_LARGEDASHDOTDOT, Border::DASH_SYSDASH,
-        Border::DASH_SYSDASHDOT, Border::DASH_SYSDASHDOTDOT, Border::DASH_SYSDOT,
-    ];
-
     protected const STYLE_KEYS = [
         'alignment', 'background', 'columns', 'columnSpacing', 'columnsRTL', 'fill', 'font',
         'shadow', 'listStyle', 'spacingAfter', 'spacingBefore', 'lineSpacingMode', 'lineSpacing',
@@ -439,25 +427,25 @@ class ODPresentation implements ReaderInterface
             // has three strokes and no compound line, so a border comes back single or none; the
             // dash it names carries the pattern, which is finer than the stroke itself.
             if ($nodeGraphicProps->hasAttribute('draw:stroke')) {
-                $oBorder = new Border();
+                $border = new Border();
                 if ('none' === $nodeGraphicProps->getAttribute('draw:stroke')) {
-                    $oBorder->setLineStyle(Border::LINE_NONE);
+                    $border->setLineStyle(Border::LINE_NONE);
                 } else {
-                    $oBorder->setLineStyle(Border::LINE_SINGLE)->setDashStyle(Border::DASH_SOLID);
+                    $border->setLineStyle(Border::LINE_SINGLE)->setDashStyle(Border::DASH_SOLID);
                 }
                 if ('dash' === $nodeGraphicProps->getAttribute('draw:stroke')) {
                     $dashStyle = substr($nodeGraphicProps->getAttribute('draw:stroke-dash'), strlen('strokeDash_'));
-                    $oBorder->setDashStyle(in_array($dashStyle, self::DASH_STYLES, true) ? $dashStyle : Border::DASH_DASH);
+                    $border->setDashStyle(in_array($dashStyle, Border::DASH_STYLES, true) ? $dashStyle : Border::DASH_DASH);
                 }
                 if ($nodeGraphicProps->hasAttribute('svg:stroke-width')) {
                     // rounded because a width goes into the file as centimetres, and a whole
                     // number of points is not a whole number of them
-                    $oBorder->setLineWidth(round(CommonDrawing::centimetersToPoints(
+                    $border->setLineWidth(round(CommonDrawing::centimetersToPoints(
                         (float) substr($nodeGraphicProps->getAttribute('svg:stroke-width'), 0, -2)
                     ), 4));
                 }
                 if ($nodeGraphicProps->hasAttribute('svg:stroke-color')) {
-                    $oBorder->setColor(new Color('FF' . substr($nodeGraphicProps->getAttribute('svg:stroke-color'), 1)));
+                    $border->setColor(new Color('FF' . substr($nodeGraphicProps->getAttribute('svg:stroke-color'), 1)));
                 }
             }
             // Read Fill
@@ -743,7 +731,7 @@ class ODPresentation implements ReaderInterface
             'lineSpacing' => $lineSpacing ?? null,
             'rowHeight' => $rowHeight ?? null,
             'borders' => $borders ?? null,
-            'border' => $oBorder ?? null,
+            'border' => $border ?? null,
         ];
 
         return true;
@@ -956,22 +944,15 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Put the border a graphic style names on a shape.
-     *
-     * A shape is born holding its own `Border` and hands it out rather than taking one, so what
-     * the style says is copied onto it.
+     * Put the border a graphic style names on a shape, where the style named one.
      */
-    protected function applyShapeBorder(AbstractShape $shape, ?Border $oBorder): void
+    protected function applyShapeBorder(AbstractShape $shape, ?Border $border): void
     {
-        if (null === $oBorder) {
+        if (null === $border) {
             return;
         }
 
-        $shape->getBorder()
-            ->setLineStyle($oBorder->getLineStyle())
-            ->setDashStyle($oBorder->getDashStyle())
-            ->setLineWidth($oBorder->getLineWidth())
-            ->setColor($oBorder->getColor());
+        $shape->setBorder($border);
     }
 
     /**

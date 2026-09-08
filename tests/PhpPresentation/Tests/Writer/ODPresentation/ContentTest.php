@@ -710,6 +710,25 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    /**
+     * A stroke width is written at the precision it comes back at: one point is 0.035278cm, and
+     * the three decimals the lengths beside it carry would put 0.035cm in the file.
+     */
+    public function testBorderWidth(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->getBorder()
+            ->setLineStyle(Border::LINE_SINGLE)->setLineWidth(1);
+        $oSlide->createLineShape(10, 10, 100, 100)->getBorder()
+            ->setLineStyle(Border::LINE_SINGLE)->setLineWidth(1);
+
+        $element = $this->getShapeStyleXPath() . '/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'svg:stroke-width', '0.035278cm');
+        $element = $this->getLineStyleXPath() . '/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'svg:stroke-width', '0.035278cm');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testLineShadow(): void
     {
         $this->oPresentation->getActiveSlide()->createLineShape(10, 10, 100, 100)

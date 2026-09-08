@@ -54,6 +54,15 @@ class AbstractShapeTest extends TestCase
         self::assertInstanceOf(Shadow::class, $object->getShadow());
     }
 
+    public function testBorder(): void
+    {
+        $object = new RichText();
+        $border = (new Border())->setLineStyle(Border::LINE_SINGLE);
+
+        self::assertInstanceOf(AbstractShape::class, $object->setBorder($border));
+        self::assertSame($border, $object->getBorder());
+    }
+
     public function testDecorative(): void
     {
         $object = new RichText();
