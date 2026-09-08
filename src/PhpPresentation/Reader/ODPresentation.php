@@ -582,6 +582,10 @@ class ODPresentation implements ReaderInterface
                         : Font::STRIKE_SINGLE
                 );
             }
+            $textPosition = $nodeTextProperties->getAttribute('style:text-position');
+            if ('' !== $textPosition) {
+                $oFont->setBaseline($this->baselineFromTextPosition($textPosition));
+            }
             if ($nodeTextProperties->hasAttribute('style:script-type')) {
                 switch ($nodeTextProperties->getAttribute('style:script-type')) {
                     case 'latin':
@@ -1274,6 +1278,24 @@ class ODPresentation implements ReaderInterface
                 ];
             }
         }
+    }
+
+    /**
+     * The raise `style:text-position` names, in the thousandths of a percent a baseline is held in.
+     * Its `super` and `sub` answer with the values PowerPoint writes.
+     */
+    protected function baselineFromTextPosition(string $value): int
+    {
+        $position = strtok(trim($value), " \t") ?: '';
+
+        if ('super' === $position) {
+            return Font::BASELINE_SUPERSCRIPT;
+        }
+        if ('sub' === $position) {
+            return Font::BASELINE_SUBSCRIPT;
+        }
+
+        return (int) round(((float) rtrim($position, '%')) * 1000);
     }
 
     private function getExpressionUnit(string $expr): string

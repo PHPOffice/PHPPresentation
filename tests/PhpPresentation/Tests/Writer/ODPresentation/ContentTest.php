@@ -891,6 +891,37 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testRichTextRunBaseline(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+
+        $element = $this->getRunStyleXPath() . '/style:text-properties';
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:text-position');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setBaseline(30000);
+        $this->resetPresentationFile();
+
+        $element = $this->getRunStyleXPath() . '/style:text-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-position', '30%');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setBaseline(-25000);
+        $this->resetPresentationFile();
+
+        $element = $this->getRunStyleXPath() . '/style:text-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-position', '-25%');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setBaseline(30500);
+        $this->resetPresentationFile();
+
+        $element = $this->getRunStyleXPath() . '/style:text-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:text-position', '30.5%');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testRichTextRunFontState(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
