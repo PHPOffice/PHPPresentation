@@ -37,6 +37,7 @@ use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\Table\Cell;
 use PhpOffice\PhpPresentation\Shape\Table\Row;
+use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -852,8 +853,28 @@ class ODPresentation implements ReaderInterface
                 }
             }
         }
+        $this->loadSlideNote($nodeSlide);
 
         return true;
+    }
+
+    /**
+     * Read the speaker notes of a slide, the text a producer puts in presentation:notes.
+     */
+    protected function loadSlideNote(DOMElement $nodeSlide): void
+    {
+        $note = $this->oPhpPresentation->getActiveSlide()->getNote();
+
+        foreach ($this->oXMLReader->getElements('presentation:notes/draw:frame', $nodeSlide) as $oNodeFrame) {
+            if ($oNodeFrame instanceof DOMElement) {
+                // An empty text box is the placeholder every slide carries whether it has notes
+                // or not, so only a box with something in it becomes a shape
+                $oNodeTextBox = $this->oXMLReader->getElement('draw:text-box', $oNodeFrame);
+                if ($oNodeTextBox instanceof DOMElement && $oNodeTextBox->hasChildNodes()) {
+                    $this->loadShapeRichText($oNodeFrame, $note);
+                }
+            }
+        }
     }
 
     /**
@@ -957,11 +978,15 @@ class ODPresentation implements ReaderInterface
 
     /**
      * Read Shape RichText.
+     *
+     * @param null|ShapeContainerInterface $container where the shape goes, the slide itself unless
+     *                                                the frame was read out of the slide note
      */
-    protected function loadShapeRichText(DOMElement $oNodeFrame): void
+    protected function loadShapeRichText(DOMElement $oNodeFrame, ?ShapeContainerInterface $container = null): void
     {
         // Core
-        $oShape = $this->oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape = new RichText();
+        ($container ?? $this->oPhpPresentation->getActiveSlide())->addShape($oShape);
         $oShape->setParagraphs([]);
 
         $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
