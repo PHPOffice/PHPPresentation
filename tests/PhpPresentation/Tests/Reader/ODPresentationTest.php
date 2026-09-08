@@ -1683,4 +1683,33 @@ class ODPresentationTest extends TestCase
         self::assertInstanceOf(RichText::class, $arrayShape[0]);
         self::assertEquals(Border::LINE_NONE, $arrayShape[0]->getBorder()->getLineStyle());
     }
+
+    public function testSlideNoteSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->getNote()->createRichTextShape()
+            ->createTextRun('Speaker note');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        self::assertCount(0, $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getNote()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertEquals('Speaker note', $arrayShape[0]->getPlainText());
+    }
+
+    public function testEmptySlideNoteWrittenByLibreOffice(): void
+    {
+        // LibreOffice gives every slide a notes placeholder whether it holds anything or not
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Issue_00141.odp';
+        $oPhpPresentation = (new ODPresentation())->load($file);
+
+        foreach ($oPhpPresentation->getAllSlides() as $oSlide) {
+            self::assertCount(0, $oSlide->getNote()->getShapeCollection());
+        }
+    }
 }
