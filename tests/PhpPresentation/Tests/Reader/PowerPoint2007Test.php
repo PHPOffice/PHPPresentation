@@ -48,6 +48,7 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
@@ -2036,5 +2037,59 @@ class PowerPoint2007Test extends TestCase
 
         // `wrap` is written on `a:bodyPr` beside the insets, and nothing read it back
         self::assertEquals(RichText::WRAP_NONE, $arrayShape[0]->getWrap());
+    }
+
+    public function testShapeBorderSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->createTextRun('Sample');
+        $oShape->getBorder()
+            ->setLineWidth(4)
+            ->setLineStyle(Border::LINE_DOUBLE)
+            ->setDashStyle(Border::DASH_DASH)
+            ->setColor(new Color('FF4472C4'));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+
+        // a:ln is what the Writer writes a Border as, so it is what the Reader has to read back
+        $oBorder = $arrayShape[0]->getBorder();
+        self::assertEquals(4, $oBorder->getLineWidth());
+        self::assertEquals(Border::LINE_DOUBLE, $oBorder->getLineStyle());
+        self::assertEquals(Border::DASH_DASH, $oBorder->getDashStyle());
+        self::assertInstanceOf(Color::class, $oBorder->getColor());
+        self::assertEquals('FF4472C4', $oBorder->getColor()->getARGB());
+    }
+
+    public function testDrawingBorderSurvivesTheRoundTrip(): void
+    {
+        // the Reader reads a shape's p:spPr in two places, and a drawing goes through the other one
+        $gdImage = imagecreatetruecolor(140, 20);
+        $oShape = new Gd();
+        $oShape->setImageResource($gdImage);
+        $oShape->getBorder()
+            ->setLineWidth(2)
+            ->setLineStyle(Border::LINE_SINGLE)
+            ->setColor(new Color('FFFF0000'));
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->addShape($oShape);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        $oBorder = $arrayShape[0]->getBorder();
+        self::assertEquals(2, $oBorder->getLineWidth());
+        self::assertEquals(Border::LINE_SINGLE, $oBorder->getLineStyle());
+        self::assertInstanceOf(Color::class, $oBorder->getColor());
+        self::assertEquals('FFFF0000', $oBorder->getColor()->getARGB());
     }
 }
