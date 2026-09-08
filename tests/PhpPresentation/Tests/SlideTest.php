@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests;
 
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
@@ -161,6 +163,52 @@ class SlideTest extends TestCase
 
         self::assertCount(1, $slide->getShapeCollection());
         self::assertEquals([$shape], $slide->getShapeCollection());
+    }
+
+    public function testMoveShape(): void
+    {
+        $slide = new Slide();
+        $first = $slide->createRichTextShape();
+        $second = $slide->createRichTextShape();
+        $third = $slide->createRichTextShape();
+
+        self::assertInstanceOf(Slide::class, $slide->moveShape($first, 2));
+        self::assertSame([$second, $third, $first], $slide->getShapeCollection());
+
+        $slide->moveShape($first, 0);
+        self::assertSame([$first, $second, $third], $slide->getShapeCollection());
+    }
+
+    public function testMoveShapeAfterAHoleInTheKeys(): void
+    {
+        $slide = new Slide();
+        $slide->createRichTextShape();
+        $second = $slide->createRichTextShape();
+        $third = $slide->createRichTextShape();
+
+        // the key of a shape is no longer the place it sits in
+        $slide->unsetShape(0);
+        $slide->moveShape($second, 1);
+
+        self::assertSame([$third, $second], $slide->getShapeCollection());
+    }
+
+    public function testMoveShapeNotInTheContainer(): void
+    {
+        $slide = new Slide();
+        $slide->createRichTextShape();
+
+        $this->expectException(InvalidParameterException::class);
+        $slide->moveShape((new Slide())->createRichTextShape(), 0);
+    }
+
+    public function testMoveShapeOutOfBounds(): void
+    {
+        $slide = new Slide();
+        $shape = $slide->createRichTextShape();
+
+        $this->expectException(OutOfBoundsException::class);
+        $slide->moveShape($shape, 1);
     }
 
     public function testCreateDrawingShape(): void
