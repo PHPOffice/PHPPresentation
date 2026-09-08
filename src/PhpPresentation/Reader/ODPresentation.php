@@ -24,6 +24,7 @@ use DateTime;
 use DOMElement;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
@@ -118,11 +119,11 @@ class ODPresentation implements ReaderInterface
     protected const STYLE_KEYS = [
         'alignment', 'background', 'columns', 'columnSpacing', 'columnsRTL', 'fill', 'font',
         'shadow', 'listStyle', 'spacingAfter', 'spacingBefore', 'lineSpacingMode', 'lineSpacing',
-        'rowHeight', 'borders',
+        'rowHeight', 'borders', 'border',
     ];
 
     /**
-     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders}>
+     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, border: null|Border}>
      */
     protected $arrayStyles = [];
 
@@ -422,6 +423,31 @@ class ODPresentation implements ReaderInterface
                         break;
                 }
             }
+            // Read the border, which a shape says as the stroke of its graphic style. OpenDocument
+            // has three strokes and no compound line, so a border comes back single or none; the
+            // dash it names carries the pattern, which is finer than the stroke itself.
+            if ($nodeGraphicProps->hasAttribute('draw:stroke')) {
+                $border = new Border();
+                if ('none' === $nodeGraphicProps->getAttribute('draw:stroke')) {
+                    $border->setLineStyle(Border::LINE_NONE);
+                } else {
+                    $border->setLineStyle(Border::LINE_SINGLE)->setDashStyle(Border::DASH_SOLID);
+                }
+                if ('dash' === $nodeGraphicProps->getAttribute('draw:stroke')) {
+                    $dashStyle = substr($nodeGraphicProps->getAttribute('draw:stroke-dash'), strlen('strokeDash_'));
+                    $border->setDashStyle(in_array($dashStyle, Border::DASH_STYLES, true) ? $dashStyle : Border::DASH_DASH);
+                }
+                if ($nodeGraphicProps->hasAttribute('svg:stroke-width')) {
+                    // rounded because a width goes into the file as centimetres, and a whole
+                    // number of points is not a whole number of them
+                    $border->setLineWidth(round(CommonDrawing::centimetersToPoints(
+                        (float) substr($nodeGraphicProps->getAttribute('svg:stroke-width'), 0, -2)
+                    ), 4));
+                }
+                if ($nodeGraphicProps->hasAttribute('svg:stroke-color')) {
+                    $border->setColor(new Color('FF' . substr($nodeGraphicProps->getAttribute('svg:stroke-color'), 1)));
+                }
+            }
             // Read Fill
             if ($nodeGraphicProps->hasAttribute('draw:fill')) {
                 $value = $nodeGraphicProps->getAttribute('draw:fill');
@@ -705,6 +731,7 @@ class ODPresentation implements ReaderInterface
             'lineSpacing' => $lineSpacing ?? null,
             'rowHeight' => $rowHeight ?? null,
             'borders' => $borders ?? null,
+            'border' => $border ?? null,
         ];
 
         return true;
@@ -909,10 +936,23 @@ class ODPresentation implements ReaderInterface
             if (isset($this->arrayStyles[$keyStyle])) {
                 $shape->setShadow($this->arrayStyles[$keyStyle]['shadow']);
                 $shape->setFill($this->arrayStyles[$keyStyle]['fill']);
+                $this->applyShapeBorder($shape, $this->arrayStyles[$keyStyle]['border']);
             }
         }
 
         $this->oPhpPresentation->getActiveSlide()->addShape($shape);
+    }
+
+    /**
+     * Put the border a graphic style names on a shape, where the style named one.
+     */
+    protected function applyShapeBorder(AbstractShape $shape, ?Border $border): void
+    {
+        if (null === $border) {
+            return;
+        }
+
+        $shape->setBorder($border);
     }
 
     /**
@@ -943,6 +983,7 @@ class ODPresentation implements ReaderInterface
                 if (null !== $this->arrayStyles[$keyStyle]['columnsRTL']) {
                     $oShape->setColumnsRTL($this->arrayStyles[$keyStyle]['columnsRTL']);
                 }
+                $this->applyShapeBorder($oShape, $this->arrayStyles[$keyStyle]['border']);
             }
         }
 

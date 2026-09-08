@@ -46,6 +46,17 @@ class Border implements ComparableInterface
     public const DASH_SYSDOT = 'sysDot';
 
     /**
+     * Every dash style a border can be given.
+     *
+     * @var array<int, string>
+     */
+    public const DASH_STYLES = [
+        self::DASH_DASH, self::DASH_DASHDOT, self::DASH_DOT, self::DASH_LARGEDASH,
+        self::DASH_LARGEDASHDOT, self::DASH_LARGEDASHDOTDOT, self::DASH_SOLID,
+        self::DASH_SYSDASH, self::DASH_SYSDASHDOT, self::DASH_SYSDASHDOTDOT, self::DASH_SYSDOT,
+    ];
+
+    /**
      * Line width.
      *
      * @var float
