@@ -1013,6 +1013,14 @@ class ODPresentation implements ReaderInterface
                     $oShape->setColumnsRTL($this->arrayStyles[$keyStyle]['columnsRTL']);
                 }
                 $this->applyShapeBorder($oShape, $this->arrayStyles[$keyStyle]['border']);
+                // the graphic style of a text box carries its fill and its shadow just as the one
+                // of a drawing does, and both were read out of it and then only handed to a drawing
+                if (null !== $this->arrayStyles[$keyStyle]['fill']) {
+                    $oShape->setFill($this->arrayStyles[$keyStyle]['fill']);
+                }
+                if (null !== $this->arrayStyles[$keyStyle]['shadow']) {
+                    $oShape->setShadow($this->arrayStyles[$keyStyle]['shadow']);
+                }
             }
         }
 
