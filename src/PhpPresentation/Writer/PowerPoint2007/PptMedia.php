@@ -20,21 +20,32 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
+use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 class PptMedia extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
             $shape = $this->getDrawingHashTable()->getByIndex($i);
             if (!$shape instanceof AbstractDrawingAdapter) {
                 continue;
             }
-            $this->getZip()->addFromString('ppt/media/' . $shape->getIndexedFilename(), $shape->getContents());
+            $name = '/ppt/media/' . $shape->getIndexedFilename();
+            $type = $this->mediaContentType($shape->getExtension(), $shape->getMimeType());
+            // A shape that already is a file on disk is handed over as one: the package reads it
+            // when it saves, so the bytes never pass through a PHP string. Everything else -- a
+            // base64 payload, a GD resource, an image inside another archive -- has no file to
+            // point at and is handed over as contents.
+            if ($shape instanceof File && is_file($shape->getPath())) {
+                $this->oPackage->addPartFromPath($name, $type, $shape->getPath());
+            } else {
+                $this->oPackage->addPart($name, $type, $shape->getContents());
+            }
         }
 
-        return $this->getZip();
+        return $this->oPackage;
     }
 }
