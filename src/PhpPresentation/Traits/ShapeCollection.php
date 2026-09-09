@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Traits;
 
 use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
 
 trait ShapeCollection
@@ -86,6 +88,28 @@ trait ShapeCollection
         } else {
             $this->shapeCollection[] = $shape;
         }
+
+        return $this;
+    }
+
+    /**
+     * Move a shape already in this container to another place in the stack.
+     *
+     * @param int $index Position to move the shape to
+     */
+    public function moveShape(AbstractShape $shape, int $index): self
+    {
+        // unsetShape() leaves a hole in the keys, and array_splice() counts places, not keys
+        $this->shapeCollection = array_values($this->shapeCollection);
+
+        $from = array_search($shape, $this->shapeCollection, true);
+        if (false === $from) {
+            throw new InvalidParameterException('shape', $shape->getHashCode(), 'The shape is not in this container');
+        }
+        if ($index > count($this->shapeCollection) - 1) {
+            throw new OutOfBoundsException(0, count($this->shapeCollection) - 1, $index);
+        }
+        array_splice($this->shapeCollection, $index, 0, array_splice($this->shapeCollection, $from, 1));
 
         return $this;
     }

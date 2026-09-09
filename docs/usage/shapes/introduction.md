@@ -28,6 +28,27 @@ $richtext = $slide->createRichTextShape()
 		->setOffsetY(180);
 ```
 
+## Stacking order
+
+Shapes are written in the order the slide holds them, and that is the order they stack in: the
+first shape is at the back, the last is in front. `moveShape()` puts a shape somewhere else in
+that order without the caller having to rebuild the collection.
+
+``` php
+<?php
+$image = $slide->createDrawingShape();
+$text = $slide->createRichTextShape();
+
+$slide->moveShape($image, 1);   // the image is now in front of the text
+```
+
+The shape is taken out before it is put back, so the index counts in the collection without it:
+in a slide of A B C D, moving A to 2 gives B C A D. Passing a shape the container does not hold
+throws `InvalidParameterException`, and an index past the end throws `OutOfBoundsException`.
+
+It works the same on anything that holds shapes: a slide, a slide layout, a slide master, a group
+and the note of a slide.
+
 ## Alternative text
 
 The description of a shape is the alternative text that assistive technologies announce in
