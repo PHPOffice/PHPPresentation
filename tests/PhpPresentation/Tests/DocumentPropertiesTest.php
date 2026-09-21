@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\DocumentProperties;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,6 +38,7 @@ class DocumentPropertiesTest extends TestCase
     public function testGetSet(): void
     {
         $object = new DocumentProperties();
+        self::assertEquals('en-US', $object->getLanguage());
         $properties = [
             'creator' => '',
             'lastModifiedBy' => '',
@@ -56,6 +59,38 @@ class DocumentPropertiesTest extends TestCase
             $object->$set($val);
             self::assertEquals($val, $object->$get());
         }
+    }
+
+    /**
+     * @dataProvider dataProviderLanguage
+     */
+    #[DataProvider('dataProviderLanguage')]
+    public function testSetLanguage(string $value, bool $isValid): void
+    {
+        $object = new DocumentProperties();
+        if (!$isValid) {
+            $this->expectException(InvalidParameterException::class);
+            $this->expectExceptionMessage('The parameter pValue can\'t have the value "' . $value . '" (Validation: The value is not a language tag)');
+        }
+
+        self::assertEquals($value, $object->setLanguage($value)->getLanguage());
+    }
+
+    /**
+     * @return array<array{string, bool}>
+     */
+    public static function dataProviderLanguage(): array
+    {
+        return [
+            ['uk', true],
+            ['uk-UA', true],
+            ['fil', true],
+            ['zh-Hant-TW', true],
+            ['x-klingon', true],
+            ['', false],
+            ['uk_UA', false],
+            ['toolongtag', false],
+        ];
     }
 
     /**

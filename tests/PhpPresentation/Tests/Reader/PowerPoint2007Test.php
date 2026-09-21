@@ -1759,6 +1759,19 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('', $arrayShape[1]->getDescription());
     }
 
+    public function testDocumentLanguageSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getDocumentProperties()->setLanguage('uk-UA');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        self::assertEquals('uk-UA', $oPhpPresentationRead->getDocumentProperties()->getLanguage());
+    }
+
     /**
      * @dataProvider dataProviderCharsets
      */

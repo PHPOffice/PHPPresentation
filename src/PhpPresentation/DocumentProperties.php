@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation;
 
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
+
 class DocumentProperties
 {
     public const PROPERTY_TYPE_BOOLEAN = 'b';
@@ -77,6 +79,13 @@ class DocumentProperties
      * @var string
      */
     private $subject = '';
+
+    /**
+     * Language.
+     *
+     * @var string
+     */
+    private $language = 'en-US';
 
     /**
      * Keywords.
@@ -264,6 +273,31 @@ class DocumentProperties
     public function setSubject(string $pValue = ''): self
     {
         $this->subject = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get Language.
+     */
+    public function getLanguage(): string
+    {
+        return $this->language;
+    }
+
+    /**
+     * Set Language.
+     *
+     * The tag is written verbatim to `dc:language` in both formats, and ODF types that element as
+     * `xsd:language`, which is the narrowest of the three places the value reaches.
+     */
+    public function setLanguage(string $pValue = 'en-US'): self
+    {
+        if (!preg_match('/^[A-Za-z]{1,8}(-[A-Za-z0-9]{1,8})*$/', $pValue)) {
+            throw new InvalidParameterException('pValue', $pValue, 'The value is not a language tag');
+        }
+
+        $this->language = $pValue;
 
         return $this;
     }
