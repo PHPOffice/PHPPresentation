@@ -56,6 +56,8 @@ class Meta extends AbstractDecoratorWriter
         $objWriter->writeElement('dc:date', gmdate('Y-m-d\TH:i:s.000', $this->getPresentation()->getDocumentProperties()->getModified()));
         // dc:description
         $objWriter->writeElement('dc:description', $this->getPresentation()->getDocumentProperties()->getDescription());
+        // dc:language
+        $objWriter->writeElement('dc:language', $this->getPresentation()->getDocumentProperties()->getLanguage());
         // dc:subject
         $objWriter->writeElement('dc:subject', $this->getPresentation()->getDocumentProperties()->getSubject());
         // dc:title

@@ -244,6 +244,7 @@ class ODPresentation implements ReaderInterface
             '/office:document-meta/office:meta/dc:creator' => 'setLastModifiedBy',
             '/office:document-meta/office:meta/dc:title' => 'setTitle',
             '/office:document-meta/office:meta/dc:description' => 'setDescription',
+            '/office:document-meta/office:meta/dc:language' => 'setLanguage',
             '/office:document-meta/office:meta/dc:subject' => 'setSubject',
             '/office:document-meta/office:meta/meta:keyword' => 'setKeywords',
             '/office:document-meta/office:meta/meta:creation-date' => 'setCreated',

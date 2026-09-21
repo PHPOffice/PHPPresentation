@@ -33,6 +33,19 @@ class MetaTest extends PhpPresentationTestCase
 {
     protected $writerName = 'ODPresentation';
 
+    public function testDocumentPropertyLanguage(): void
+    {
+        $element = '/office:document-meta/office:meta/dc:language';
+        $this->assertZipXmlElementExists('meta.xml', $element);
+        $this->assertZipXmlElementEquals('meta.xml', $element, 'en-US');
+
+        $this->oPresentation->getDocumentProperties()->setLanguage('uk-UA');
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementEquals('meta.xml', $element, 'uk-UA');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testDocumentProperties(): void
     {
         $element = '/office:document-meta/office:meta';
