@@ -26,6 +26,18 @@ class DocPropsCoreTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
+    public function testDocumentPropertyLanguage(): void
+    {
+        $this->assertZipXmlElementExists('docProps/core.xml', '/cp:coreProperties/dc:language');
+        $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/dc:language', 'en-US');
+
+        $this->oPresentation->getDocumentProperties()->setLanguage('uk-UA');
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/dc:language', 'uk-UA');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testDocumentProperties(): void
     {
         $expected = 'aAbBcDeE';

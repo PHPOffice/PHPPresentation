@@ -445,6 +445,7 @@ class PowerPoint2007 implements ReaderInterface
                 '/cp:coreProperties/dc:title' => 'setTitle',
                 '/cp:coreProperties/dc:description' => 'setDescription',
                 '/cp:coreProperties/dc:subject' => 'setSubject',
+                '/cp:coreProperties/dc:language' => 'setLanguage',
                 '/cp:coreProperties/cp:keywords' => 'setKeywords',
                 '/cp:coreProperties/cp:category' => 'setCategory',
                 '/cp:coreProperties/cp:revision' => 'setRevision',

@@ -68,6 +68,9 @@ class DocPropsCore extends AbstractDecoratorWriter
         // dc:subject
         $objWriter->writeElement('dc:subject', $this->oPresentation->getDocumentProperties()->getSubject());
 
+        // dc:language
+        $objWriter->writeElement('dc:language', $this->oPresentation->getDocumentProperties()->getLanguage());
+
         // cp:keywords
         $objWriter->writeElement('cp:keywords', $this->oPresentation->getDocumentProperties()->getKeywords());
 

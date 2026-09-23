@@ -1408,6 +1408,23 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testRichTextRunLanguageFromDocument(): void
+    {
+        $this->oPresentation->getDocumentProperties()->setLanguage('uk-UA');
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+
+        $expectedElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement, 'lang', 'uk-UA');
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->setLanguage('de-DE');
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement, 'lang', 'de-DE');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testLineShadow(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

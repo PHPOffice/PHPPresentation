@@ -717,7 +717,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('a:rPr');
 
         // Lang
-        $objWriter->writeAttribute('lang', ($element->getLanguage() ? $element->getLanguage() : 'en-US'));
+        $objWriter->writeAttribute('lang', $element->getLanguage() ?: $this->getPresentation()->getDocumentProperties()->getLanguage());
 
         $objWriter->writeAttributeIf($element->getFont()->isBold(), 'b', '1');
         $objWriter->writeAttributeIf($element->getFont()->isItalic(), 'i', '1');
