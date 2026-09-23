@@ -781,7 +781,15 @@ class PptSlidesTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:spPr/a:xfrm/a:off[@x="' . $valEmu10 . '"][@y="' . $valEmu10 . '"]';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
 
-        $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:spPr/a:xfrm[@flipV="1"]/a:off[@x="' . $valEmu10 . '"][@y="' . $valEmu10 . '"]';
+        // an extent cannot be negative, so a line that runs the other way is written from the
+        // other end and says which axis it is mirrored on
+        $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:spPr/a:xfrm[@flipV="1"][not(@flipH)]/a:off[@x="' . $valEmu10 . '"][@y="' . $valEmu10 . '"]';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:spPr/a:xfrm[@flipH="1"][not(@flipV)]/a:off[@x="' . $valEmu10 . '"][@y="' . $valEmu10 . '"]';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:spPr/a:xfrm[@flipH="1"][@flipV="1"]/a:off[@x="' . $valEmu10 . '"][@y="' . $valEmu10 . '"]';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
 
         $this->assertIsSchemaECMA376Valid();
