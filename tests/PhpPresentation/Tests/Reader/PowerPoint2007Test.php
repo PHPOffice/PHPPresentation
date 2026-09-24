@@ -2295,4 +2295,29 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('Growth', $arrayShape[1]->getName());
         self::assertEquals('Growth by year', $arrayShape[1]->getDescription());
     }
+
+    public function testHyperlinkOnMasterAndLayoutSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->createSlide();
+        $oMaster = $oPhpPresentation->getAllMasterSlides()[0];
+        $oMaster->createRichTextShape()->getHyperlink()->setUrl('https://example.com/master')->setTooltip('Master');
+        $oMaster->getAllSlideLayouts()[0]->createRichTextShape()->getHyperlink()->setSlideNumber(2);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $oMasterRead = $oPhpPresentationRead->getAllMasterSlides()[0];
+        $arrayShape = array_values(array_filter($oMasterRead->getShapeCollection(), fn ($oShape) => $oShape->hasHyperlink()));
+        self::assertCount(1, $arrayShape);
+        self::assertEquals('https://example.com/master', $arrayShape[0]->getHyperlink()->getUrl());
+        self::assertEquals('Master', $arrayShape[0]->getHyperlink()->getTooltip());
+
+        $arrayShape = array_values(array_filter($oMasterRead->getAllSlideLayouts()[0]->getShapeCollection(), fn ($oShape) => $oShape->hasHyperlink()));
+        self::assertCount(1, $arrayShape);
+        self::assertTrue($arrayShape[0]->getHyperlink()->isInternal());
+        self::assertEquals(2, $arrayShape[0]->getHyperlink()->getSlideNumber());
+    }
 }
