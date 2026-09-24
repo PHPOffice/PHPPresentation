@@ -2587,4 +2587,21 @@ class ContentTest extends PhpPresentationTestCase
         // Invalid because `draw:image` has attribute `loext:mime-type`
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
+
+    public function testHyperlinkTooltipIsTheTitleOfTheLink(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('With')->getHyperlink()->setUrl('https://example.com/with')->setTooltip('A tooltip');
+        $oRichText->createTextRun('Without')->getHyperlink()->setUrl('https://example.com/without');
+        $oCell = $this->oPresentation->getActiveSlide()->createTableShape(1)->createRow()->getCell();
+        $oCell->createTextRun('In a cell')->getHyperlink()->setUrl('https://example.com/cell')->setTooltip('A cell tooltip');
+
+        // `text:a` takes `office:title`, and the tooltip was not written at all
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:a';
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '[@xlink:href="https://example.com/with"]', 'office:title', 'A tooltip');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '[@xlink:href="https://example.com/without"]', 'office:title');
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:a';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'office:title', 'A cell tooltip');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
 }

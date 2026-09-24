@@ -633,12 +633,7 @@ class Content extends AbstractDecoratorWriter
                             $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($richtext));
                         }
                         if (true === $richtext->hasHyperlink() && '' != $richtext->getHyperlink()->getUrl()) {
-                            // text:a
-                            $objWriter->startElement('text:a');
-                            $objWriter->writeAttribute('xlink:type', 'simple');
-                            $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($richtext->getHyperlink()));
-                            $objWriter->text($richtext->getText());
-                            $objWriter->endElement();
+                            $this->writeTextHyperlink($objWriter, $richtext->getHyperlink(), $richtext->getText());
                         } elseif (null !== ($field = $this->getFieldElement($richtext, $fieldName))) {
                             $objWriter->writeElement($field, $richtext->getText());
                         } else {
@@ -698,12 +693,7 @@ class Content extends AbstractDecoratorWriter
                             $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($richtext));
                         }
                         if (true === $richtext->hasHyperlink() && '' != $richtext->getHyperlink()->getUrl()) {
-                            // text:a
-                            $objWriter->startElement('text:a');
-                            $objWriter->writeAttribute('xlink:type', 'simple');
-                            $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($richtext->getHyperlink()));
-                            $objWriter->text($richtext->getText());
-                            $objWriter->endElement();
+                            $this->writeTextHyperlink($objWriter, $richtext->getHyperlink(), $richtext->getText());
                         } elseif (null !== ($field = $this->getFieldElement($richtext, $fieldName))) {
                             $objWriter->writeElement($field, $richtext->getText());
                         } else {
@@ -847,6 +837,27 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * Write a run of text that is a hyperlink, with its tooltip as the title of the link.
+     *
+     * The title is `office:title`, the short accessible description ODF 1.3 Part 3 §19.387 gives a
+     * link and the attribute its Appendix D.2 maps the alternative text of a link to. It is not
+     * `office:name`, where LibreOffice writes it: §19.380.9 keeps that for the name of a link from
+     * an HTML document. The Reader reads both.
+     */
+    protected function writeTextHyperlink(XMLWriter $objWriter, Hyperlink $hyperlink, string $text): void
+    {
+        // text:a
+        $objWriter->startElement('text:a');
+        $objWriter->writeAttribute('xlink:type', 'simple');
+        $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($hyperlink));
+        if ('' !== $hyperlink->getTooltip()) {
+            $objWriter->writeAttribute('office:title', $hyperlink->getTooltip());
+        }
+        $objWriter->text($text);
+        $objWriter->endElement();
+    }
+
+    /**
      * The target of a hyperlink, in the terms ODF addresses it.
      *
      * A link to another slide is stored as the PowerPoint action string `ppaction://hlinksldjump`,
@@ -926,12 +937,7 @@ class Content extends AbstractDecoratorWriter
                                         $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($shapeRichText));
                                     }
                                     if (true === $shapeRichText->hasHyperlink() && '' !== $shapeRichText->getHyperlink()->getUrl()) {
-                                        // text:a
-                                        $objWriter->startElement('text:a');
-                                        $objWriter->writeAttribute('xlink:type', 'simple');
-                                        $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($shapeRichText->getHyperlink()));
-                                        $objWriter->text($shapeRichText->getText());
-                                        $objWriter->endElement();
+                                        $this->writeTextHyperlink($objWriter, $shapeRichText->getHyperlink(), $shapeRichText->getText());
                                     } else {
                                         $objWriter->text($shapeRichText->getText());
                                     }
