@@ -2587,4 +2587,49 @@ class ContentTest extends PhpPresentationTestCase
         // Invalid because `draw:image` has attribute `loext:mime-type`
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
+
+    public function testHyperlinkTooltipIsTheTitleOfTheLink(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('With')->getHyperlink()->setUrl('https://example.com/with')->setTooltip('A tooltip');
+        $oRichText->createTextRun('Without')->getHyperlink()->setUrl('https://example.com/without');
+        $oCell = $this->oPresentation->getActiveSlide()->createTableShape(1)->createRow()->getCell();
+        $oCell->createTextRun('In a cell')->getHyperlink()->setUrl('https://example.com/cell')->setTooltip('A cell tooltip');
+
+        // `text:a` takes `office:title`, and the tooltip was not written at all
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:a';
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '[@xlink:href="https://example.com/with"]', 'office:title', 'A tooltip');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '[@xlink:href="https://example.com/without"]', 'office:title');
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:a';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'office:title', 'A cell tooltip');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testShapeName(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->setName('Text');
+        $oSlide->createTableShape(1)->setName('Table')->createRow()->getCell()->createTextRun('Cell');
+        $oSlide->createLineShape(0, 0, 10, 10)->setName('Line');
+        $oGroup = $oSlide->createGroup();
+        $oGroup->setName('Group');
+        $oGroup->createRichTextShape();
+        $oChart = $oSlide->createChartShape()->setName('Chart');
+        $oChart->getTitle()->setText('Title');
+        $oChart->getPlotArea()->setType((new ChartTypeLine())->addSeries(new Series('Serie', ['A' => '1'])));
+        $oUntitled = $oSlide->createChartShape();
+        $oUntitled->getTitle()->setText('Untitled');
+        $oUntitled->getPlotArea()->setType((new ChartTypeLine())->addSeries(new Series('Serie', ['A' => '1'])));
+
+        // only a picture and a media shape were named, and a chart by the text of its title
+        $element = '/office:document-content/office:body/office:presentation/draw:page';
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:text-box]', 'draw:name', 'Text');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[table:table]', 'draw:name', 'Table');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:line', 'draw:name', 'Line');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:g', 'draw:name', 'Group');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '/draw:g/draw:frame', 'draw:name');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:object][1]', 'draw:name', 'Chart');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:object][2]', 'draw:name', 'Untitled');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
 }
