@@ -2237,4 +2237,78 @@ class PptChartsTest extends PhpPresentationTestCase
         );
         $this->assertIsSchemaECMA376Valid();
     }
+
+    /**
+     * @return array<string, array{AbstractType}>
+     */
+    public static function dataProviderChartLanguage(): array
+    {
+        return [
+            'bar' => [new Bar()],
+            'bar 3D' => [new Bar3D()],
+            'doughnut' => [new Doughnut()],
+            'line' => [new Line()],
+            'pie' => [new Pie()],
+            'pie 3D' => [new Pie3D()],
+            'radar' => [new Radar()],
+            'scatter' => [new Scatter()],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderChartLanguage
+     */
+    #[DataProvider('dataProviderChartLanguage')]
+    public function testChartLanguage(AbstractType $type): void
+    {
+        $this->oPresentation->getDocumentProperties()->setLanguage('uk-UA');
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getTitle()->setText('Продажі');
+        $oShape->getLegend()->setVisible(true);
+        $oSeries = new Series('Ряд', $this->seriesData);
+        $oSeries->setShowValue(true);
+        $type->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($type);
+        $oShape->getPlotArea()->getAxisX()->setTitle('Місяць');
+        $oShape->getPlotArea()->getAxisY()->setTitle('Кількість');
+
+        // a chart names no language of its own, so its title, legend, labels and axes are in the
+        // document's, as is the language the chart is edited in
+        $file = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $this->assertZipXmlElementExists($file, '//*[@lang="uk-UA"]');
+        $this->assertZipXmlElementNotExists($file, '//*[@lang!="uk-UA"]');
+        $this->assertZipXmlAttributeEquals($file, '/c:chartSpace/c:lang', 'val', 'uk-UA');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testChartLanguageByDefault(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getTitle()->setText('Sales');
+        $oShape->getPlotArea()->setType(new Bar());
+
+        $file = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $this->assertZipXmlAttributeEquals($file, '/c:chartSpace/c:lang', 'val', 'en-US');
+        $this->assertZipXmlAttributeEquals($file, '/c:chartSpace/c:chart/c:title/c:tx/c:rich/a:p/a:r/a:rPr', 'lang', 'en-US');
+    }
+
+    public function testChartLanguageOfItsOwn(): void
+    {
+        $this->oPresentation->getDocumentProperties()->setLanguage('uk-UA');
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->setLanguage('de-DE');
+        $oShape->getTitle()->setText('Umsatz');
+        $oSeries = new Series('Reihe', $this->seriesData);
+        $oSeries->setShowValue(true);
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->getAxisX()->setTitle('Monat');
+
+        $file = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $this->assertZipXmlElementExists($file, '//*[@lang="de-DE"]');
+        $this->assertZipXmlElementNotExists($file, '//*[@lang!="de-DE"]');
+        $this->assertZipXmlAttributeEquals($file, '/c:chartSpace/c:lang', 'val', 'de-DE');
+        $this->assertIsSchemaECMA376Valid();
+    }
 }
