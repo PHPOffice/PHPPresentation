@@ -65,6 +65,10 @@ $richtext = $slide->createRichTextShape()
 It is written as the `descr` attribute of `p:cNvPr` in PowerPoint2007 files and as the
 `svg:desc` element of the shape in ODPresentation files.
 
+The name set with `setName()` is not alternative text: it is the label an application lists the
+shape by, written as the `name` attribute of `p:cNvPr` and as the `draw:name` attribute of the
+shape. Neither reader takes a name for a description.
+
 ## Decorative shapes
 
 A shape that carries no information — a coloured band, a rule, a background image — can be

@@ -551,6 +551,16 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * Write the name of a shape, the label an application lists it by, when it has one.
+     */
+    protected function writeShapeName(XMLWriter $objWriter, AbstractShape $shape): void
+    {
+        if ('' !== $shape->getName()) {
+            $objWriter->writeAttribute('draw:name', $shape->getName());
+        }
+    }
+
+    /**
      * Write the hyperlink a shape as a whole carries, which ODF states as a listener for the
      * click on it rather than as a property of the shape.
      *
@@ -694,6 +704,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
+        $this->writeShapeName($objWriter, $shape);
         $placeholderClass = $this->getPlaceholderClass($shape);
         if (null === $placeholderClass) {
             $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
@@ -937,6 +948,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:line
         $objWriter->startElement('draw:line');
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
         $objWriter->writeAttribute('svg:x1', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y1', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
@@ -1077,6 +1089,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
@@ -1182,7 +1195,7 @@ class Content extends AbstractDecoratorWriter
 
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:name', $shape->getTitle()->getText());
+        $objWriter->writeAttribute('draw:name', '' !== $shape->getName() ? $shape->getName() : $shape->getTitle()->getText());
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
@@ -1213,6 +1226,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:g
         $objWriter->startElement('draw:g');
+        $this->writeShapeName($objWriter, $group);
 
         $this->writeShapeDecorative($objWriter, $group);
         $this->writeShapeDescription($objWriter, $group);
