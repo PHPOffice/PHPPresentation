@@ -674,8 +674,9 @@ class Content extends AbstractDecoratorWriter
         $sCstShpOpenList = '';
         $iCstShpLastBulletLvl = 0;
         $fieldName = $this->getPlaceholderField($shape);
+        $resumedStartAts = Paragraph::getResumedNumericStartAts($paragraphs);
 
-        foreach ($paragraphs as $paragraph) {
+        foreach ($paragraphs as $key => $paragraph) {
             $sCstShpListStyle = $this->getListStyleName($paragraph);
             // Close the open list, when this paragraph is not part of it. It is the paragraph
             // being written that says so, not the one before it: asking the one before left a
@@ -741,6 +742,11 @@ class Content extends AbstractDecoratorWriter
                     // text:list
                     $objWriter->startElement('text:list');
                     $objWriter->writeAttribute('text:style-name', $sCstShpListStyle);
+                    // A list begins a numbering of its own unless it says otherwise; saying so
+                    // is what makes LibreOffice Impress begin one, as it numbers on otherwise
+                    if ('' === $sCstShpOpenList && Bullet::TYPE_NUMERIC == $paragraph->getBulletStyle()->getBulletType()) {
+                        $objWriter->writeAttribute('text:continue-numbering', isset($resumedStartAts[$key]) && $paragraph->getBulletStyle()->isBulletNumericContinue() && null === $paragraph->getBulletStyle()->getBulletNumericStartAt() ? 'true' : 'false');
+                    }
                 }
                 if ('' !== $sCstShpOpenList) {
                     if ($iCstShpLastBulletLvl == $paragraph->getAlignment()->getLevel()) {

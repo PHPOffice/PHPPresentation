@@ -509,6 +509,26 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testListSaysWhetherItContinuesTheNumberingBeforeIt(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        foreach ([[true, false], [true, false], [false, false], [true, true], [true, false], [false, false], [true, false]] as $i => [$numbered, $continue]) {
+            $oParagraph = $i ? $oRichText->createParagraph() : $oRichText->getActiveParagraph();
+            $oParagraph->getBulletStyle()
+                ->setBulletType($numbered ? Bullet::TYPE_NUMERIC : Bullet::TYPE_NONE)
+                ->setBulletNumericContinue($continue);
+            $oParagraph->createTextRun('Alpha');
+        }
+
+        // a numbered list says it begins a numbering of its own, which LibreOffice Impress
+        // needs to begin one, and the one asked to continue says so
+        $list = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list[%d]';
+        $this->assertZipXmlAttributeEquals('content.xml', sprintf($list, 1), 'text:continue-numbering', 'false');
+        $this->assertZipXmlAttributeEquals('content.xml', sprintf($list, 2), 'text:continue-numbering', 'true');
+        $this->assertZipXmlAttributeEquals('content.xml', sprintf($list, 3), 'text:continue-numbering', 'false');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testNumericBulletStartAtOmittedWhenFirst(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
