@@ -125,7 +125,7 @@ class ODPresentation implements ReaderInterface
     ];
 
     /**
-     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, border: null|Border}>
+     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, language: null|string, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, border: null|Border}>
      */
     protected $arrayStyles = [];
 
@@ -604,6 +604,7 @@ class ODPresentation implements ReaderInterface
                         break;
                 }
             }
+            $language = $this->loadLanguage($nodeTextProperties, $oFont->getFormat());
         }
 
         $nodeParagraphProps = $this->oXMLReader->getElement('style:paragraph-properties', $nodeStyle);
@@ -730,6 +731,7 @@ class ODPresentation implements ReaderInterface
             'columnsRTL' => $columnsRTL ?? null,
             'fill' => $oFill ?? null,
             'font' => $oFont ?? null,
+            'language' => $language ?? null,
             'shadow' => $oShadow ?? null,
             'listStyle' => $arrayListStyle ?? null,
             'spacingAfter' => $spacingAfter ?? null,
@@ -887,6 +889,32 @@ class ODPresentation implements ReaderInterface
                 }
             }
         }
+    }
+
+    /**
+     * Put back together the language a text style splits: the whole tag where
+     * `style:rfc-language-tag` holds it, else the language and the country. The family the style
+     * is spelled for is asked first, and the other two after it.
+     */
+    protected function loadLanguage(DOMElement $nodeTextProperties, string $format): ?string
+    {
+        $families = [Font::FORMAT_LATIN => '', Font::FORMAT_EAST_ASIAN => '-asian', Font::FORMAT_COMPLEX_SCRIPT => '-complex'];
+        $families = [$format => $families[$format] ?? ''] + $families;
+        foreach ($families as $suffix) {
+            $tag = $nodeTextProperties->getAttribute('style:rfc-language-tag' . $suffix);
+            if ('' !== $tag) {
+                return $tag;
+            }
+            $prefix = '' === $suffix ? 'fo:' : 'style:';
+            $language = $nodeTextProperties->getAttribute($prefix . 'language' . $suffix);
+            if ('' !== $language && 'none' !== $language) {
+                $country = $nodeTextProperties->getAttribute($prefix . 'country' . $suffix);
+
+                return $language . ('' !== $country && 'none' !== $country ? '-' . $country : '');
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -1129,6 +1157,9 @@ class ODPresentation implements ReaderInterface
                 $keyStyle = $oNodeParent->getAttribute('text:style-name');
                 if (isset($this->arrayStyles[$keyStyle])) {
                     $oTextRun->setFont($this->arrayStyles[$keyStyle]['font']);
+                    if (null !== $this->arrayStyles[$keyStyle]['language']) {
+                        $oTextRun->setLanguage($this->arrayStyles[$keyStyle]['language']);
+                    }
                 }
             }
             $oTextRunLink = $this->oXMLReader->getElement('text:a', $oNodeParent);

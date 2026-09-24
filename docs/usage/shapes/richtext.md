@@ -244,6 +244,10 @@ use PhpOffice\PhpPresentation\Shape\RichText\Run;
 $run = new Run();
 $run->setLanguage('fr-FR');
 ```
+
+A run that names no language is written in the language of the document, set with
+`DocumentProperties::setLanguage()`.
+
 ## Field
 
 A field is a run whose text the application recomputes: the number of the slide it ended up on,

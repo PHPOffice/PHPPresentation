@@ -979,6 +979,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:language');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'en');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:country', 'US');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
@@ -990,6 +991,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-asian');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-asian', 'en');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:country-asian', 'US');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
@@ -1001,6 +1003,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-complex');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-complex', 'en');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:country-complex', 'US');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oRun->setLanguage('de');
@@ -1035,6 +1038,68 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-complex');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-complex', 'de');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * A tag that is a language and a country is written as the two; one that says more keeps the
+     * whole of itself in `style:rfc-language-tag`, beside whichever ISO parts it breaks into.
+     *
+     * @return array<string, array{string, string, array<string, null|string>}>
+     */
+    public static function dataProviderRichTextRunLanguageTag(): array
+    {
+        return [
+            'language and country' => ['uk-UA', Font::FORMAT_LATIN, [
+                'fo:language' => 'uk', 'fo:country' => 'UA', 'fo:script' => null, 'style:rfc-language-tag' => null,
+            ]],
+            'three-letter language' => ['fil', Font::FORMAT_LATIN, [
+                'fo:language' => 'fil', 'fo:country' => null, 'fo:script' => null, 'style:rfc-language-tag' => null,
+            ]],
+            'numeric region' => ['es-419', Font::FORMAT_LATIN, [
+                'fo:language' => 'es', 'fo:country' => null, 'fo:script' => null, 'style:rfc-language-tag' => 'es-419',
+            ]],
+            'script' => ['zh-Hant-TW', Font::FORMAT_EAST_ASIAN, [
+                'style:language-asian' => 'zh', 'style:script-asian' => 'Hant', 'style:country-asian' => 'TW', 'style:rfc-language-tag-asian' => 'zh-Hant-TW',
+            ]],
+            'private use' => ['x-klingon', Font::FORMAT_COMPLEX_SCRIPT, [
+                'style:language-complex' => null, 'style:country-complex' => null, 'style:rfc-language-tag-complex' => 'x-klingon',
+            ]],
+        ];
+    }
+
+    /**
+     * @param array<string, null|string> $expected
+     *
+     * @dataProvider dataProviderRichTextRunLanguageTag
+     */
+    #[DataProvider('dataProviderRichTextRunLanguageTag')]
+    public function testRichTextRunLanguageTag(string $tag, string $format, array $expected): void
+    {
+        $oRun = $this->oPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Run1');
+        $oRun->getFont()->setFormat($format);
+        $oRun->setLanguage($tag);
+
+        $element = $this->getRunStyleXPath() . '/style:text-properties';
+        foreach ($expected as $attribute => $value) {
+            if (null === $value) {
+                $this->assertZipXmlAttributeNotExists('content.xml', $element, $attribute);
+            } else {
+                $this->assertZipXmlAttributeEquals('content.xml', $element, $attribute, $value);
+            }
+        }
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testRichTextRunLanguageFromTheDocument(): void
+    {
+        $this->oPresentation->getDocumentProperties()->setLanguage('uk-UA');
+        $this->oPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Run1');
+
+        // a run that names no language of its own is written in the document's
+        $element = $this->getRunStyleXPath() . '/style:text-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'uk');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:country', 'UA');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 

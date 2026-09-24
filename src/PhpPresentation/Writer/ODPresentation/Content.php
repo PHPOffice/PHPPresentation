@@ -1196,6 +1196,7 @@ class Content extends AbstractDecoratorWriter
         // style:style > style:text-properties
         $objWriter->startElement('style:text-properties');
         $objWriter->writeAttribute('fo:color', '#' . $item->getFont()->getColor()->getRGB());
+        $language = $item->getLanguage() ?: $this->getPresentation()->getDocumentProperties()->getLanguage();
         switch ($item->getFont()->getCapitalization()) {
             case Font::CAPITALIZATION_NONE:
                 $objWriter->writeAttribute('fo:text-transform', 'none');
@@ -1216,7 +1217,7 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
                 $objWriter->writeAttributeIf($item->getFont()->isBold(), 'fo:font-weight', 'bold');
                 $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'fo:font-style', 'italic');
-                $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? substr($item->getLanguage(), 0, 2) : 'en'));
+                $this->writeLanguage($objWriter, $language, '');
                 $objWriter->writeAttribute('style:script-type', 'latin');
 
                 break;
@@ -1225,7 +1226,7 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('style:font-size-asian', $item->getFont()->getSize() . 'pt');
                 $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-asian', 'bold');
                 $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'style:font-style-asian', 'italic');
-                $objWriter->writeAttribute('style:language-asian', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                $this->writeLanguage($objWriter, $language, '-asian');
                 $objWriter->writeAttribute('style:script-type', 'asian');
 
                 break;
@@ -1234,7 +1235,7 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('style:font-size-complex', $item->getFont()->getSize() . 'pt');
                 $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-complex', 'bold');
                 $objWriter->writeAttributeIf($item->getFont()->isItalic(), 'style:font-style-complex', 'italic');
-                $objWriter->writeAttribute('style:language-complex', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                $this->writeLanguage($objWriter, $language, '-complex');
                 $objWriter->writeAttribute('style:script-type', 'complex');
 
                 break;
@@ -1245,6 +1246,30 @@ class Content extends AbstractDecoratorWriter
 
         // > style:style > style:text-properties
         $objWriter->endElement();
+    }
+
+    /**
+     * Write a language the way LibreOffice splits one: a language and a country when that is all
+     * the tag says, and the whole BCP 47 tag in `style:rfc-language-tag` when it says more, beside
+     * whichever ISO parts it still breaks into.
+     *
+     * @param string $suffix `''` for the Latin family, `-asian` or `-complex` for the other two
+     */
+    protected function writeLanguage(XMLWriter $objWriter, string $tag, string $suffix): void
+    {
+        $prefix = '' === $suffix ? 'fo:' : 'style:';
+        // a language, then a script and a country if the tag has them, then whatever it says past those
+        $matched = preg_match('/^([A-Za-z]{2,3})(?:-([A-Za-z]{4}))?(?:-([A-Za-z]{2}))?(-.+)?$/', $tag, $matches);
+        $script = $matches[2] ?? '';
+        $country = $matches[3] ?? '';
+        $rest = $matches[4] ?? '';
+        if ($matched) {
+            $objWriter->writeAttribute($prefix . 'language' . $suffix, strtolower($matches[1]));
+            $objWriter->writeAttributeIf('' !== $script, $prefix . 'script' . $suffix, ucfirst(strtolower($script)));
+            $objWriter->writeAttributeIf('' !== $country, $prefix . 'country' . $suffix, strtoupper($country));
+        }
+        // LibreOffice keeps the whole tag only where a language and a country do not say all of it
+        $objWriter->writeAttributeIf(!$matched || '' !== $script || '' !== $rest, 'style:rfc-language-tag' . $suffix, $tag);
     }
 
     /**
