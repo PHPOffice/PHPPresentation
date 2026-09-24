@@ -551,6 +551,74 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testListStylesAreNamedInTheOrderTheyAreMet(): void
+    {
+        $oBullet = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oBullet->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+        $oBullet->createTextRun('Alpha');
+        $oNumber = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oNumber->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC);
+        $oNumber->createTextRun('Beta');
+        // a bullet equal to the first one shares its style
+        $oAgain = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oAgain->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+        $oAgain->createTextRun('Gamma');
+
+        $styles = '/office:document-content/office:automatic-styles/text:list-style';
+        $this->assertZipXmlElementCount('content.xml', $styles, 2);
+        $this->assertZipXmlElementExists('content.xml', $styles . '[@style:name = "L1"]/text:list-level-style-bullet');
+        $this->assertZipXmlElementExists('content.xml', $styles . '[@style:name = "L2"]/text:list-level-style-number');
+
+        $page = '/office:document-content/office:body/office:presentation/draw:page';
+        $this->assertZipXmlAttributeEquals('content.xml', $page . '/draw:frame[1]/draw:text-box/text:list', 'text:style-name', 'L1');
+        $this->assertZipXmlAttributeEquals('content.xml', $page . '/draw:frame[2]/draw:text-box/text:list', 'text:style-name', 'L2');
+        $this->assertZipXmlAttributeEquals('content.xml', $page . '/draw:frame[3]/draw:text-box/text:list', 'text:style-name', 'L1');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testListsThatDifferOnlyInIndentDoNotShareAStyle(): void
+    {
+        foreach ([20, 80] as $marginLeft) {
+            $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
+            $oParagraph = $oShape->getActiveParagraph();
+            $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+            $oParagraph->getAlignment()->setMarginLeft($marginLeft)->setIndent(-20);
+            $oShape->createTextRun('Item');
+        }
+
+        $styles = '/office:document-content/office:automatic-styles/text:list-style';
+        $this->assertZipXmlElementCount('content.xml', $styles, 2);
+        $this->assertZipXmlAttributeEquals('content.xml', $styles . '[@style:name = "L1"]/text:list-level-style-bullet/style:list-level-properties', 'text:space-before', '0cm');
+        $this->assertZipXmlAttributeEquals('content.xml', $styles . '[@style:name = "L2"]/text:list-level-style-bullet/style:list-level-properties', 'text:space-before', '1.5875cm');
+        $page = '/office:document-content/office:body/office:presentation/draw:page';
+        $this->assertZipXmlAttributeEquals('content.xml', $page . '/draw:frame[2]/draw:text-box/text:list', 'text:style-name', 'L2');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testListWithADifferentBulletOnEachLevelIsOneList(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        foreach ([[0, '•'], [1, '–'], [0, '•']] as $i => [$level, $char]) {
+            $oParagraph = 0 === $i ? $oShape->getActiveParagraph() : $oShape->createParagraph();
+            $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET)->setBulletChar($char);
+            $oParagraph->getAlignment()->setLevel($level);
+            $oParagraph->createTextRun('Item ' . $i);
+        }
+
+        // one style holds both levels
+        $styles = '/office:document-content/office:automatic-styles/text:list-style';
+        $this->assertZipXmlElementCount('content.xml', $styles, 1);
+        $this->assertZipXmlAttributeEquals('content.xml', $styles . '/text:list-level-style-bullet[@text:level = "1"]', 'text:bullet-char', '•');
+        $this->assertZipXmlAttributeEquals('content.xml', $styles . '/text:list-level-style-bullet[@text:level = "2"]', 'text:bullet-char', '–');
+
+        // and one list holds all three items, the second nested in the first
+        $textBox = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
+        $this->assertZipXmlElementCount('content.xml', $textBox . '/text:list', 1);
+        $this->assertZipXmlElementEquals('content.xml', $textBox . '/text:list/text:list-item[1]/text:list/text:list-item/text:p/text:span', 'Item 1');
+        $this->assertZipXmlElementEquals('content.xml', $textBox . '/text:list/text:list-item[2]/text:p/text:span', 'Item 2');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testStyleIsSharedByEverythingThatWritesIt(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
