@@ -1189,6 +1189,13 @@ class PowerPoint2007 implements ReaderInterface
         if ($oElement instanceof DOMElement) {
             $oFill = $this->loadStyleFill($document, $oElement);
             $oShape->setFill($oFill);
+
+            // a:ln is what the Writer writes a shape's Border as, and nothing read it back, so
+            // every shape loaded from a file wore the default border rather than its own
+            $oElementBorder = $document->getElement('a:ln', $oElement);
+            if ($oElementBorder instanceof DOMElement) {
+                $this->loadStyleBorder($document, $oElementBorder, $oShape->getBorder());
+            }
         }
 
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
@@ -1428,6 +1435,13 @@ class PowerPoint2007 implements ReaderInterface
             $oShape->setFill(
                 $this->loadStyleFill($document, $oElement)
             );
+
+            // a:ln is what the Writer writes a shape's Border as, and nothing read it back, so
+            // every shape loaded from a file wore the default border rather than its own
+            $oElementBorder = $document->getElement('a:ln', $oElement);
+            if ($oElementBorder instanceof DOMElement) {
+                $this->loadStyleBorder($document, $oElementBorder, $oShape->getBorder());
+            }
         }
 
         if (count($oShape->getParagraphs()) > 0) {
