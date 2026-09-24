@@ -31,4 +31,16 @@ class PptPresentationTest extends PhpPresentationTestCase
         $this->assertZipFileExists('ppt/presentation.xml');
         $this->assertIsSchemaECMA376Valid();
     }
+
+    public function testDefaultTextLanguage(): void
+    {
+        $element = '/p:presentation/p:defaultTextStyle/a:defPPr/a:defRPr';
+        $this->assertZipXmlAttributeEquals('ppt/presentation.xml', $element, 'lang', 'en-US');
+
+        // text that names no language of its own is in the document's, not in French
+        $this->oPresentation->getDocumentProperties()->setLanguage('uk-UA');
+        $this->resetPresentationFile();
+        $this->assertZipXmlAttributeEquals('ppt/presentation.xml', $element, 'lang', 'uk-UA');
+        $this->assertIsSchemaECMA376Valid();
+    }
 }

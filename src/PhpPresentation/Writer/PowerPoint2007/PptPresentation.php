@@ -91,9 +91,10 @@ class PptPresentation extends AbstractDecoratorWriter
         $objWriter->writeAttribute('cy', '9144000');
         $objWriter->endElement();
 
+        // the language of text that names none, and setLanguage() lets through nothing that needs escaping
         $objWriter->writeRaw('<p:defaultTextStyle>
   <a:defPPr>
-   <a:defRPr lang="fr-FR"/>
+   <a:defRPr lang="' . $this->oPresentation->getDocumentProperties()->getLanguage() . '"/>
   </a:defPPr>
   <a:lvl1pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="0" rtl="0">
    <a:defRPr kern="1200" sz="1800">
