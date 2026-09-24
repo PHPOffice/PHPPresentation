@@ -1536,6 +1536,20 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testLineAndGroupName(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createLineShape(0, 0, 10, 10)->setName('Rule');
+        $oGroup = $oSlide->createGroup();
+        $oGroup->setName('Legend');
+        $oGroup->createRichTextShape();
+
+        // a line was named `""` and a group `Group N`, whatever `setName()` said
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:cxnSp/p:nvCxnSpPr/p:cNvPr', 'name', 'Rule');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr', 'name', 'Legend');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testGroupRotation(): void
     {
         $oGroup = new Group();
