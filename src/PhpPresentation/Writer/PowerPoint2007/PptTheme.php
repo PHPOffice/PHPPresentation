@@ -20,19 +20,19 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Slide;
 
 class PptTheme extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oMasterSlide) {
-            $this->getZip()->addFromString('ppt/theme/theme' . $oMasterSlide->getRelsIndex() . '.xml', $this->writeTheme($oMasterSlide));
+            $this->oPackage->addPart('/ppt/theme/theme' . $oMasterSlide->getRelsIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.theme+xml', $this->writeTheme($oMasterSlide));
         }
 
-        return $this->getZip();
+        return $this->oPackage;
     }
 
     /**

@@ -30,8 +30,10 @@
              the container it is put in, and the table it can hold are three more classes -->
         <!-- Reader/PowerPoint2007 reads the nine kinds of chart, and each kind is a class -->
         <!-- Reader/PowerPoint2007 reads a line, which is a shape class of its own -->
+        <!-- Reader/PowerPoint2007 opens a package, a detector, a format and an encrypted file
+             where it opened one ZipArchive -->
 		<properties>
-            <property name="maximum" value="48" />
+            <property name="maximum" value="53" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">

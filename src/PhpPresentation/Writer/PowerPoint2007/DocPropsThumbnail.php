@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 
 class DocPropsThumbnail extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         $thumnbail = $this->getPresentation()->getPresentationProperties()->getThumbnail();
         if ($thumnbail) {
@@ -34,14 +34,11 @@ class DocPropsThumbnail extends AbstractDecoratorWriter
                 imagejpeg($gdImage);
                 $imageContents = ob_get_contents();
                 ob_end_clean();
-                if (PHP_VERSION_ID < 80000) {
-                    imagedestroy($gdImage);
-                }
-                $this->getZip()->addFromString('docProps/thumbnail.jpeg', $imageContents);
+                $this->oPackage->addPart('/docProps/thumbnail.jpeg', 'image/jpeg', $imageContents);
             }
         }
 
         // Return
-        return $this->getZip();
+        return $this->oPackage;
     }
 }
