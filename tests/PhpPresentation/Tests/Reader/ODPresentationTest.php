@@ -26,6 +26,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
@@ -2029,5 +2030,169 @@ class ODPresentationTest extends TestCase
         self::assertEquals($rotation, $arrayShape[0]->getRotation());
         self::assertEquals(400, $arrayShape[0]->getOffsetX());
         self::assertEquals(100, $arrayShape[0]->getOffsetY());
+    }
+
+    public function testGroupSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oGroup = $oPhpPresentation->getActiveSlide()->createGroup();
+        $oGroup->setDescription('Two shapes and a group')->setDecorative(true);
+        $oGroup->createRichTextShape()->setOffsetX(10)->setOffsetY(20)->createTextRun('Inside');
+        $oGroup->createLineShape(30, 40, 50, 60);
+        $oDeeper = new Group();
+        $oDeeper->createRichTextShape()->createTextRun('Deeper');
+        $oGroup->addShape($oDeeper);
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Outside');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        // A group was dropped on reading, and everything in it with it
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(2, $arrayShape);
+        self::assertInstanceOf(Group::class, $arrayShape[0]);
+        self::assertEquals('Two shapes and a group', $arrayShape[0]->getDescription());
+        self::assertTrue($arrayShape[0]->isDecorative());
+        self::assertInstanceOf(RichText::class, $arrayShape[1]);
+        self::assertEquals('Outside', $arrayShape[1]->getPlainText());
+
+        $arrayInside = array_values((array) $arrayShape[0]->getShapeCollection());
+        self::assertCount(3, $arrayInside);
+        self::assertInstanceOf(RichText::class, $arrayInside[0]);
+        self::assertEquals('Inside', $arrayInside[0]->getPlainText());
+        self::assertEquals(10, $arrayInside[0]->getOffsetX());
+        self::assertEquals(20, $arrayInside[0]->getOffsetY());
+        self::assertInstanceOf(Line::class, $arrayInside[1]);
+        self::assertEquals(30, $arrayInside[1]->getOffsetX());
+        self::assertEquals(40, $arrayInside[1]->getOffsetY());
+        self::assertInstanceOf(Group::class, $arrayInside[2]);
+        $arrayDeeper = array_values((array) $arrayInside[2]->getShapeCollection());
+        self::assertCount(1, $arrayDeeper);
+        self::assertInstanceOf(RichText::class, $arrayDeeper[0]);
+        self::assertEquals('Deeper', $arrayDeeper[0]->getPlainText());
+    }
+
+    public function testShapesKeepTheirOrder(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->createLineShape(0, 0, 10, 10);
+        $oSlide->createRichTextShape()->createTextRun('Above the line');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        // Every line was read after every frame, so a line under a text box came back over it
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(2, $arrayShape);
+        self::assertInstanceOf(Line::class, $arrayShape[0]);
+        self::assertInstanceOf(RichText::class, $arrayShape[1]);
+    }
+
+    public function testShapeHyperlinkSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oTable = $oSlide->createTableShape(1);
+        $oTable->createRow()->getCell()->createTextRun('Cell');
+        $oDrawing = $oSlide->createDrawingShape();
+        $oDrawing->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        $oRichText = $oSlide->createRichTextShape();
+        $oLine = $oSlide->createLineShape(0, 0, 10, 10);
+        $oGroup = $oSlide->createGroup();
+        $oGroup->createRichTextShape()->createTextRun('Inside');
+        $oShapes = [$oTable, $oDrawing, $oRichText, $oLine, $oGroup];
+        foreach ($oShapes as $key => $oShape) {
+            $oShape->getHyperlink()->setUrl('https://example.com/' . $key);
+        }
+        $oPhpPresentation->createSlide();
+        $oSlide->createRichTextShape()->getHyperlink()->setSlideNumber(2);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        // The Writer writes a shape's link as an event listener, and the Reader read none
+        $arrayShape = array_values((array) $oPhpPresentationRead->getSlide(0)->getShapeCollection());
+        self::assertCount(6, $arrayShape);
+        foreach (array_keys($oShapes) as $key) {
+            self::assertEquals('https://example.com/' . $key, $arrayShape[$key]->getHyperlink()->getUrl());
+        }
+        self::assertInstanceOf(Group::class, $arrayShape[4]);
+        self::assertFalse($arrayShape[4]->getShapeCollection()[0]->hasHyperlink());
+        self::assertTrue($arrayShape[5]->getHyperlink()->isInternal());
+        self::assertEquals(2, $arrayShape[5]->getHyperlink()->getSlideNumber());
+    }
+
+    public function testHyperlinkTooltipSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->createTextRun('Run')->getHyperlink()->setUrl('https://example.com/run')->setTooltip('A tooltip');
+        $oCell = $oSlide->createTableShape(1)->createRow()->getCell();
+        $oCell->createTextRun('Cell')->getHyperlink()->setUrl('https://example.com/cell')->setTooltip('A cell tooltip');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $oElement = $arrayShape[0]->getParagraph()->getRichTextElements()[0];
+        self::assertInstanceOf(TextElement::class, $oElement);
+        $oHyperlink = $oElement->getHyperlink();
+        self::assertEquals('https://example.com/run', $oHyperlink->getUrl());
+        self::assertEquals('A tooltip', $oHyperlink->getTooltip());
+        self::assertInstanceOf(Table::class, $arrayShape[1]);
+        $oElement = $arrayShape[1]->getRow(0)->getCell(0)->getParagraph(0)->getRichTextElements()[0];
+        self::assertInstanceOf(TextElement::class, $oElement);
+        $oHyperlink = $oElement->getHyperlink();
+        self::assertEquals('https://example.com/cell', $oHyperlink->getUrl());
+        self::assertEquals('A cell tooltip', $oHyperlink->getTooltip());
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function dataProviderHyperlinkTitleAndName(): array
+    {
+        return [
+            'name only, as LibreOffice writes it' => ['office:name="A name"', 'A name'],
+            'title over name' => ['office:title="A tooltip" office:name="A name"', 'A tooltip'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderHyperlinkTitleAndName
+     */
+    #[DataProvider('dataProviderHyperlinkTitleAndName')]
+    public function testHyperlinkTooltipFromTitleOrName(string $attributes, string $expected): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Run')->getHyperlink()->setUrl('https://example.com/run')->setTooltip('A tooltip');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $content = (string) $oZip->getFromName('content.xml');
+        $oZip->addFromString('content.xml', str_replace('office:title="A tooltip"', $attributes, $content));
+        $oZip->close();
+
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        $oElement = $arrayShape[0]->getParagraph()->getRichTextElements()[0];
+        self::assertInstanceOf(TextElement::class, $oElement);
+        self::assertEquals($expected, $oElement->getHyperlink()->getTooltip());
     }
 }
