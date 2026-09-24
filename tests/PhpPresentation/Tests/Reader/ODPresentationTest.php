@@ -1571,6 +1571,65 @@ class ODPresentationTest extends TestCase
         self::assertEquals(0, $arrayShape[1]->getColumnSpacing());
     }
 
+    public function testListStylesSurviveTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        foreach (['•', '–', '•'] as $char) {
+            $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+            $oShape->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET)->setBulletChar($char);
+            $oShape->createTextRun('Item');
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $chars = [];
+        foreach ($oPhpPresentationRead->getActiveSlide()->getShapeCollection() as $oShape) {
+            self::assertInstanceOf(RichText::class, $oShape);
+            $oBullet = $oShape->getParagraph(0)->getBulletStyle();
+            self::assertEquals(Bullet::TYPE_BULLET, $oBullet->getBulletType());
+            $chars[] = $oBullet->getBulletChar();
+        }
+        self::assertEquals(['•', '–', '•'], $chars);
+    }
+
+    public function testListLevelsSurviveTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oOutline = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        foreach ([[0, '•', 20], [1, '–', 60], [0, '•', 20]] as $i => [$level, $char, $marginLeft]) {
+            $oParagraph = 0 === $i ? $oOutline->getActiveParagraph() : $oOutline->createParagraph();
+            $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET)->setBulletChar($char);
+            $oParagraph->getAlignment()->setLevel($level)->setMarginLeft($marginLeft);
+            $oParagraph->createTextRun('Item');
+        }
+        // the same bullet as the first level of the outline, further in
+        $oIndented = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oIndented->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET)->setBulletChar('•');
+        $oIndented->getActiveParagraph()->getAlignment()->setMarginLeft(80);
+        $oIndented->createTextRun('Item');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $read = [];
+        foreach ($oPhpPresentationRead->getActiveSlide()->getShapeCollection() as $oShape) {
+            self::assertInstanceOf(RichText::class, $oShape);
+            foreach ($oShape->getParagraphs() as $oParagraph) {
+                $read[] = [
+                    $oParagraph->getAlignment()->getLevel(),
+                    $oParagraph->getBulletStyle()->getBulletChar(),
+                    $oParagraph->getAlignment()->getMarginLeft(),
+                ];
+            }
+        }
+        self::assertEquals([[0, '•', 20], [1, '–', 60], [0, '•', 20], [0, '•', 80]], $read);
+    }
+
     public function testTableSurvivesTheRoundTrip(): void
     {
         $oPhpPresentation = new PhpPresentation();

@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,7 +42,7 @@ class BulletTest extends TestCase
         self::assertEquals('Calibri', $object->getBulletFont());
         self::assertEquals('-', $object->getBulletChar());
         self::assertEquals(Bullet::NUMERIC_DEFAULT, $object->getBulletNumericStyle());
-        self::assertEquals(1, $object->getBulletNumericStartAt());
+        self::assertNull($object->getBulletNumericStartAt());
     }
 
     /**
@@ -99,6 +100,7 @@ class BulletTest extends TestCase
         $value = mt_rand(1, 100);
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt($value));
         self::assertEquals($value, $object->getBulletNumericStartAt());
+        self::assertNull($object->setBulletNumericStartAt(null)->getBulletNumericStartAt());
     }
 
     /**
@@ -134,5 +136,45 @@ class BulletTest extends TestCase
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         self::assertEquals($value, $object->getHashIndex());
+    }
+
+    /**
+     * @dataProvider dataProviderNumericStartAt
+     *
+     * @param int|string $value
+     */
+    #[DataProvider('dataProviderNumericStartAt')]
+    public function testBulletNumericStartAtIsAWholeNumberOOXMLAllows($value, int $expected): void
+    {
+        $object = new Bullet();
+        $object->setBulletNumericStartAt($value);
+        self::assertSame($expected, $object->getBulletNumericStartAt());
+    }
+
+    /**
+     * @return array<string, array{int|string, int}>
+     */
+    public static function dataProviderNumericStartAt(): array
+    {
+        return [
+            'a number' => [3, 3],
+            'a number read from a file' => ['3', 3],
+            'the highest' => [32767, 32767],
+            'above the highest' => [40000, 32767],
+            'zero' => [0, 1],
+            'below zero' => [-5, 1],
+            // the start is a number whatever the scheme, not the letter it shows as
+            'a letter' => ['C', 1],
+        ];
+    }
+
+    public function testSetGetBulletNumericContinue(): void
+    {
+        $object = new Bullet();
+        self::assertFalse($object->isBulletNumericContinue());
+        $hashCode = $object->getHashCode();
+        self::assertTrue($object->setBulletNumericContinue()->isBulletNumericContinue());
+        self::assertNotSame($hashCode, $object->getHashCode());
+        self::assertFalse($object->setBulletNumericContinue(false)->isBulletNumericContinue());
     }
 }

@@ -393,4 +393,84 @@ class Paragraph implements ComparableInterface
 
         return $this;
     }
+
+    /**
+     * The start each numbered paragraph of a text continues the numbering of, or null for one
+     * that begins a numbering: the start a paragraph given none takes.
+     *
+     * A numbering goes on over the paragraphs of its level that share its scheme, and over any
+     * deeper paragraph between them. A shallower paragraph, one with no marker, or one at its
+     * level with a bullet or another scheme ends it -- what PowerPoint shows. A paragraph asked
+     * to continue the numbering before it (Bullet::setBulletNumericContinue()) takes, when it
+     * begins one, the number after the last one of its level and scheme.
+     *
+     * @param array<int, Paragraph> $paragraphs the paragraphs of one text, in order
+     *
+     * @return array<int, null|int> keyed as the numbered paragraphs are
+     */
+    public static function getContinuedNumericStartAts(array $paragraphs): array
+    {
+        return self::numberParagraphs($paragraphs)[0];
+    }
+
+    /**
+     * The number each numbered paragraph that begins a numbering would take if it continued the
+     * last numbering of its level and scheme, or null when there is none.
+     *
+     * @param array<int, Paragraph> $paragraphs the paragraphs of one text, in order
+     *
+     * @return array<int, null|int> keyed as the numbered paragraphs that begin a numbering are
+     */
+    public static function getResumedNumericStartAts(array $paragraphs): array
+    {
+        return self::numberParagraphs($paragraphs)[1];
+    }
+
+    /**
+     * @param array<int, Paragraph> $paragraphs
+     *
+     * @return array{0: array<int, null|int>, 1: array<int, null|int>}
+     */
+    private static function numberParagraphs(array $paragraphs): array
+    {
+        $continued = [];
+        $resumed = [];
+        // the scheme, the start and the last number of the numbering open at each level
+        $open = [];
+        // the last number of the last numbering ended at each level, by scheme
+        $ended = [];
+        foreach ($paragraphs as $key => $paragraph) {
+            $bullet = $paragraph->getBulletStyle();
+            $type = null === $bullet ? Bullet::TYPE_NONE : $bullet->getBulletType();
+            $level = $paragraph->getAlignment()->getLevel();
+            $scheme = null === $bullet ? '' : $bullet->getBulletNumericStyle();
+            foreach ($open as $openLevel => [$openScheme, , $openNumber]) {
+                if (Bullet::TYPE_NONE == $type || $openLevel > $level
+                    || ($openLevel === $level && (Bullet::TYPE_NUMERIC != $type || $openScheme !== $scheme))) {
+                    $ended[$openLevel][$openScheme] = $openNumber;
+                    unset($open[$openLevel]);
+                }
+            }
+            if (null === $bullet || Bullet::TYPE_NUMERIC != $type) {
+                continue;
+            }
+            if (isset($open[$level])) {
+                $continued[$key] = $open[$level][1];
+            } else {
+                $resumed[$key] = isset($ended[$level][$scheme]) ? $ended[$level][$scheme] + 1 : null;
+                $continued[$key] = $bullet->isBulletNumericContinue() ? $resumed[$key] : null;
+            }
+            $start = $bullet->getBulletNumericStartAt() ?? $continued[$key] ?? 1;
+            if (isset($open[$level]) && $open[$level][1] === $start) {
+                ++$open[$level][2];
+            } else {
+                if (isset($open[$level])) {
+                    $ended[$level][$scheme] = $open[$level][2];
+                }
+                $open[$level] = [$scheme, $start, $start];
+            }
+        }
+
+        return [$continued, $resumed];
+    }
 }

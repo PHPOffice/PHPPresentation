@@ -26,6 +26,7 @@ use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PhpOffice\PhpPresentation\Style\Bullet;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -326,5 +327,20 @@ class RichTextTest extends TestCase
         $hash .= md5('00000' . $object->getFill()->getHashCode() . $object->getShadow()->getHashCode() . '' . get_parent_class($object));
         $hash .= get_class($object);
         self::assertEquals(md5($hash), $object->getHashCode());
+    }
+
+    public function testCreatedParagraphContinuesTheNumberingOfTheOneBefore(): void
+    {
+        $object = new RichText();
+        $object->getActiveParagraph()->getBulletStyle()
+            ->setBulletType(Bullet::TYPE_NUMERIC)
+            ->setBulletNumericStyle(Bullet::NUMERIC_ROMANUCPERIOD)
+            ->setBulletNumericStartAt(2);
+
+        $bullet = $object->createParagraph()->getBulletStyle();
+        self::assertSame(Bullet::TYPE_NUMERIC, $bullet->getBulletType());
+        self::assertSame(Bullet::NUMERIC_ROMANUCPERIOD, $bullet->getBulletNumericStyle());
+        self::assertNull($bullet->getBulletNumericStartAt());
+        self::assertSame(2, $object->getParagraph(0)->getBulletStyle()->getBulletNumericStartAt());
     }
 }
