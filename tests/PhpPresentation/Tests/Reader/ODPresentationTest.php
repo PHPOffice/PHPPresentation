@@ -1223,6 +1223,47 @@ class ODPresentationTest extends TestCase
         self::assertEquals('uk-UA', $oPhpPresentationRead->getDocumentProperties()->getLanguage());
     }
 
+    /**
+     * @return array<string, array{null|string, string, string}>
+     */
+    public static function dataProviderRunLanguage(): array
+    {
+        return [
+            'language and country' => ['uk-UA', Font::FORMAT_LATIN, 'uk-UA'],
+            'three-letter language' => ['fil', Font::FORMAT_LATIN, 'fil'],
+            'numeric region' => ['es-419', Font::FORMAT_LATIN, 'es-419'],
+            'script' => ['zh-Hant-TW', Font::FORMAT_EAST_ASIAN, 'zh-Hant-TW'],
+            'private use' => ['x-klingon', Font::FORMAT_COMPLEX_SCRIPT, 'x-klingon'],
+            'none of its own' => [null, Font::FORMAT_LATIN, 'de-CH'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderRunLanguage
+     */
+    #[DataProvider('dataProviderRunLanguage')]
+    public function testRunLanguageSurvivesTheRoundTrip(?string $language, string $format, string $expected): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getDocumentProperties()->setLanguage('de-CH');
+        $oRun = $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Run1');
+        $oRun->getFont()->setFormat($format);
+        if (null !== $language) {
+            $oRun->setLanguage($language);
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        // the Writer splits the tag across a language, a script, a country and the whole tag,
+        // and the Reader has to put it back together
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertEquals($expected, $arrayShape[0]->getParagraph()->getRichTextElements()[0]->getLanguage());
+    }
+
     public function testFontStateSurvivesTheRoundTrip(): void
     {
         $oPhpPresentation = new PhpPresentation();
