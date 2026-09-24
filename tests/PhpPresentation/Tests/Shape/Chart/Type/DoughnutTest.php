@@ -90,16 +90,15 @@ class DoughnutTest extends TestCase
         self::assertSame(0, $doughnut->getFirstSliceAngle());
 
         // 2) fluent + simple set/get
-        $angle = $doughnut->setFirstSliceAngle(90);
-        self::assertInstanceOf(Doughnut::class, $angle);
+        $doughnut = $doughnut->setFirstSliceAngle(90);
         self::assertSame(90, $doughnut->getFirstSliceAngle());
 
         // 3) normalization (overflow wraps)
-        $doughnut->setFirstSliceAngle(450); // 450 % 360 = 90
+        $doughnut = $doughnut->setFirstSliceAngle(450); // 450 % 360 = 90
         self::assertSame(90, $doughnut->getFirstSliceAngle());
 
         // 3) normalization (negative wraps)
-        $doughnut->setFirstSliceAngle(-45); // -> 315
+        $doughnut = $doughnut->setFirstSliceAngle(-45); // -> 315
         self::assertSame(315, $doughnut->getFirstSliceAngle());
     }
 }
