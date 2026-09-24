@@ -1210,6 +1210,19 @@ class ODPresentationTest extends TestCase
         self::assertEquals($expected, $oFont->getBaseline());
     }
 
+    public function testDocumentLanguageSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getDocumentProperties()->setLanguage('uk-UA');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        self::assertEquals('uk-UA', $oPhpPresentationRead->getDocumentProperties()->getLanguage());
+    }
+
     public function testFontStateSurvivesTheRoundTrip(): void
     {
         $oPhpPresentation = new PhpPresentation();
