@@ -66,6 +66,7 @@ class Content extends AbstractDecoratorWriter
         'drawing-page' => 'dp',
         'table-row' => 'ro',
         'table-cell' => 'ce',
+        'list' => 'L',
     ];
 
     /**
@@ -85,11 +86,21 @@ class Content extends AbstractDecoratorWriter
     ];
 
     /**
-     * Stores bullet styles for text shapes that include lists.
+     * The name of the list style each paragraph with a marker is written under, by paragraph.
      *
-     * @var array<string, array<string, mixed>>
+     * A paragraph wears a paragraph style of its own already, so this name cannot be kept with the
+     * rest by object.
+     *
+     * @var array<int, string>
      */
-    protected $arrStyleBullet = [];
+    protected $listStyleNameByParagraph = [];
+
+    /**
+     * The start of the numbering each numbered paragraph given no start continues, by paragraph.
+     *
+     * @var array<int, null|int>
+     */
+    protected $continuedStartAtByParagraph = [];
 
     /**
      * The automatic styles to write, by the name each was given.
@@ -205,63 +216,19 @@ class Content extends AbstractDecoratorWriter
 
             ++$incSlide;
         }
-        // Style : Bullet
-        if (!empty($this->arrStyleBullet)) {
-            foreach ($this->arrStyleBullet as $key => $item) {
-                $oStyle = $item['oStyle'];
-                $arrLevel = explode(';', $item['level']);
-                // style:style
-                $objWriter->startElement('text:list-style');
-                $objWriter->writeAttribute('style:name', 'L_' . $key);
-                foreach ($arrLevel as $level) {
-                    if ('' != $level) {
-                        $oAlign = $item['oAlign_' . $level];
-                        if (Bullet::TYPE_NUMERIC == $oStyle->getBulletType()) {
-                            [$numFormat, $numPrefix, $numSuffix] = $this->getNumericBulletFormat($oStyle->getBulletNumericStyle());
-                            // text:list-level-style-number
-                            $objWriter->startElement('text:list-level-style-number');
-                            $objWriter->writeAttribute('text:level', (int) $level + 1);
-                            $objWriter->writeAttribute('style:num-format', $numFormat);
-                            $objWriter->writeAttributeIf('' !== $numPrefix, 'style:num-prefix', $numPrefix);
-                            $objWriter->writeAttributeIf('' !== $numSuffix, 'style:num-suffix', $numSuffix);
-                            $objWriter->writeAttributeIf(1 != $oStyle->getBulletNumericStartAt(), 'text:start-value', $oStyle->getBulletNumericStartAt());
-                        } else {
-                            // text:list-level-style-bullet
-                            $objWriter->startElement('text:list-level-style-bullet');
-                            $objWriter->writeAttribute('text:level', (int) $level + 1);
-                            $objWriter->writeAttribute('text:bullet-char', $oStyle->getBulletChar());
-                        }
-                        // style:list-level-properties
-                        $objWriter->startElement('style:list-level-properties');
-                        if ($oAlign->getIndent() < 0) {
-                            $objWriter->writeAttribute('text:space-before', CommonDrawing::pixelsToCentimeters((int) ($oAlign->getMarginLeft() - (-1 * $oAlign->getIndent()))) . 'cm');
-                            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters((int) (-1 * $oAlign->getIndent())) . 'cm');
-                        } else {
-                            $objWriter->writeAttribute('text:space-before', (CommonDrawing::pixelsToCentimeters((int) ($oAlign->getMarginLeft() - $oAlign->getIndent()))) . 'cm');
-                            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters((int) $oAlign->getIndent()) . 'cm');
-                        }
-
-                        $objWriter->endElement();
-                        // style:text-properties
-                        $objWriter->startElement('style:text-properties');
-                        $objWriter->writeAttribute('fo:font-family', $oStyle->getBulletFont());
-                        $objWriter->writeAttribute('style:font-family-generic', 'swiss');
-                        $objWriter->writeAttribute('style:use-window-font-color', 'true');
-                        $objWriter->writeAttribute('fo:font-size', '100%');
-                        $objWriter->endElement();
-                        $objWriter->endElement();
-                    }
-                }
-                $objWriter->endElement();
-            }
-        }
         // Emitted from the pool, in the order the styles were first needed -- which is the order
         // `office:automatic-styles` wants, since it precedes the content that references it.
         foreach ($this->automaticStyles as $styleName => $automaticStyle) {
-            // style:style
-            $objWriter->startElement('style:style');
-            $objWriter->writeAttribute('style:name', $styleName);
-            $objWriter->writeAttribute('style:family', $automaticStyle['family']);
+            if ('list' === $automaticStyle['family']) {
+                // a list style is the one automatic style that is not a `style:style`
+                $objWriter->startElement('text:list-style');
+                $objWriter->writeAttribute('style:name', $styleName);
+            } else {
+                // style:style
+                $objWriter->startElement('style:style');
+                $objWriter->writeAttribute('style:name', $styleName);
+                $objWriter->writeAttribute('style:family', $automaticStyle['family']);
+            }
             ($automaticStyle['write'])($objWriter);
             $objWriter->endElement();
         }
@@ -411,12 +378,122 @@ class Content extends AbstractDecoratorWriter
      */
     protected function getListStyleName(Paragraph $paragraph): string
     {
-        $bulletType = $paragraph->getBulletStyle()->getBulletType();
-        if (Bullet::TYPE_BULLET != $bulletType && Bullet::TYPE_NUMERIC != $bulletType) {
-            return '';
-        }
+        return $this->listStyleNameByParagraph[spl_object_id($paragraph)] ?? '';
+    }
 
-        return 'L_' . $paragraph->getBulletStyle()->getHashCode();
+    /**
+     * Name the list style each run of paragraphs with a marker wears, sharing one with every run
+     * that writes the same levels.
+     *
+     * A list style holds one definition per level, and a `text:list` names one style for all the
+     * levels nested in it, as LibreOffice writes a list. So a run of paragraphs with a marker shares
+     * one style. The run ends at a paragraph with no marker, or at one whose level the run has
+     * already defined otherwise -- a bullet list followed by a numbered one, say.
+     *
+     * @param array<Paragraph> $paragraphs
+     */
+    protected function addListStyles(array $paragraphs): void
+    {
+        foreach (Paragraph::getContinuedNumericStartAts($paragraphs) as $key => $continuedStartAt) {
+            $this->continuedStartAtByParagraph[spl_object_id($paragraphs[$key])] = $continuedStartAt;
+        }
+        $run = [];
+        $levels = [];
+        foreach ($paragraphs as $paragraph) {
+            $bulletType = $paragraph->getBulletStyle()->getBulletType();
+            if (Bullet::TYPE_BULLET != $bulletType && Bullet::TYPE_NUMERIC != $bulletType) {
+                $this->shareListStyle($run, $levels);
+                $run = [];
+                $levels = [];
+
+                continue;
+            }
+            $level = $paragraph->getAlignment()->getLevel();
+            if (isset($levels[$level]) && $this->getListLevelStyle($levels[$level]) !== $this->getListLevelStyle($paragraph)) {
+                $this->shareListStyle($run, $levels);
+                $run = [];
+                $levels = [];
+            }
+            $levels[$level] = $levels[$level] ?? $paragraph;
+            $run[] = $paragraph;
+        }
+        $this->shareListStyle($run, $levels);
+    }
+
+    /**
+     * @param array<Paragraph>      $run    the paragraphs that wear the style
+     * @param array<int, Paragraph> $levels the paragraph that defines each level of it
+     */
+    private function shareListStyle(array $run, array $levels): void
+    {
+        if (empty($run)) {
+            return;
+        }
+        ksort($levels);
+        $styleName = $this->shareAutomaticStyle('list', function (XMLWriter $objWriter) use ($levels): void {
+            foreach ($levels as $paragraph) {
+                $this->writeListLevelStyle($objWriter, $paragraph);
+            }
+        });
+        foreach ($run as $paragraph) {
+            $this->listStyleNameByParagraph[spl_object_id($paragraph)] = $styleName;
+        }
+    }
+
+    /**
+     * What the list style writes for the level of a paragraph, which is what makes two of them the same.
+     */
+    private function getListLevelStyle(Paragraph $paragraph): string
+    {
+        $objWriter = new XMLWriter();
+        $this->writeListLevelStyle($objWriter, $paragraph);
+
+        return $objWriter->getData();
+    }
+
+    /**
+     * Write the definition of the level of a paragraph: its marker and where the marker stands.
+     */
+    protected function writeListLevelStyle(XMLWriter $objWriter, Paragraph $paragraph): void
+    {
+        $oStyle = $paragraph->getBulletStyle();
+        $oAlign = $paragraph->getAlignment();
+        if (Bullet::TYPE_NUMERIC == $oStyle->getBulletType()) {
+            [$numFormat, $numPrefix, $numSuffix] = $this->getNumericBulletFormat($oStyle->getBulletNumericStyle());
+            // text:list-level-style-number
+            $objWriter->startElement('text:list-level-style-number');
+            $objWriter->writeAttribute('text:level', $oAlign->getLevel() + 1);
+            $objWriter->writeAttribute('style:num-format', $numFormat);
+            $objWriter->writeAttributeIf('' !== $numPrefix, 'style:num-prefix', $numPrefix);
+            $objWriter->writeAttributeIf('' !== $numSuffix, 'style:num-suffix', $numSuffix);
+            // a paragraph given no start takes the one of the numbering it continues, and so
+            // writes the level the same way and stays in its list
+            $startAt = $oStyle->getBulletNumericStartAt() ?? $this->continuedStartAtByParagraph[spl_object_id($paragraph)] ?? 1;
+            $objWriter->writeAttributeIf(1 != $startAt, 'text:start-value', $startAt);
+        } else {
+            // text:list-level-style-bullet
+            $objWriter->startElement('text:list-level-style-bullet');
+            $objWriter->writeAttribute('text:level', $oAlign->getLevel() + 1);
+            $objWriter->writeAttribute('text:bullet-char', $oStyle->getBulletChar());
+        }
+        // style:list-level-properties
+        $objWriter->startElement('style:list-level-properties');
+        if ($oAlign->getIndent() < 0) {
+            $objWriter->writeAttribute('text:space-before', CommonDrawing::pixelsToCentimeters((int) ($oAlign->getMarginLeft() - (-1 * $oAlign->getIndent()))) . 'cm');
+            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters((int) (-1 * $oAlign->getIndent())) . 'cm');
+        } else {
+            $objWriter->writeAttribute('text:space-before', (CommonDrawing::pixelsToCentimeters((int) ($oAlign->getMarginLeft() - $oAlign->getIndent()))) . 'cm');
+            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters((int) $oAlign->getIndent()) . 'cm');
+        }
+        $objWriter->endElement();
+        // style:text-properties
+        $objWriter->startElement('style:text-properties');
+        $objWriter->writeAttribute('fo:font-family', $oStyle->getBulletFont());
+        $objWriter->writeAttribute('style:font-family-generic', 'swiss');
+        $objWriter->writeAttribute('style:use-window-font-color', 'true');
+        $objWriter->writeAttribute('fo:font-size', '100%');
+        $objWriter->endElement();
+        $objWriter->endElement();
     }
 
     /**
@@ -597,8 +674,9 @@ class Content extends AbstractDecoratorWriter
         $sCstShpOpenList = '';
         $iCstShpLastBulletLvl = 0;
         $fieldName = $this->getPlaceholderField($shape);
+        $resumedStartAts = Paragraph::getResumedNumericStartAts($paragraphs);
 
-        foreach ($paragraphs as $paragraph) {
+        foreach ($paragraphs as $key => $paragraph) {
             $sCstShpListStyle = $this->getListStyleName($paragraph);
             // Close the open list, when this paragraph is not part of it. It is the paragraph
             // being written that says so, not the one before it: asking the one before left a
@@ -664,6 +742,11 @@ class Content extends AbstractDecoratorWriter
                     // text:list
                     $objWriter->startElement('text:list');
                     $objWriter->writeAttribute('text:style-name', $sCstShpListStyle);
+                    // A list begins a numbering of its own unless it says otherwise; saying so
+                    // is what makes LibreOffice Impress begin one, as it numbers on otherwise
+                    if ('' === $sCstShpOpenList && Bullet::TYPE_NUMERIC == $paragraph->getBulletStyle()->getBulletType()) {
+                        $objWriter->writeAttribute('text:continue-numbering', isset($resumedStartAts[$key]) && $paragraph->getBulletStyle()->isBulletNumericContinue() && null === $paragraph->getBulletStyle()->getBulletNumericStartAt() ? 'true' : 'false');
+                    }
                 }
                 if ('' !== $sCstShpOpenList) {
                     if ($iCstShpLastBulletLvl == $paragraph->getAlignment()->getLevel()) {
@@ -1108,10 +1191,11 @@ class Content extends AbstractDecoratorWriter
      * @param callable(XMLWriter): void $writeBody writes everything inside `style:style` -- which is
      *                                            what makes two styles the same, and what the pass
      *                                            that writes the definitions replays
-     * @param object                   $owner     the object wearing the style, which the second pass
-     *                                            looks the name up by
+     * @param null|object              $owner     the object wearing the style, which the second pass
+     *                                            looks the name up by, or null when the caller keeps
+     *                                            the name itself
      */
-    private function shareAutomaticStyle(string $family, callable $writeBody, object $owner): string
+    private function shareAutomaticStyle(string $family, callable $writeBody, ?object $owner = null): string
     {
         $bodyWriter = new XMLWriter();
         $writeBody($bodyWriter);
@@ -1128,7 +1212,11 @@ class Content extends AbstractDecoratorWriter
             ];
         }
 
-        return $this->automaticStyleNameByObject[spl_object_id($owner)] = $this->automaticStyleNames[$key];
+        if (null !== $owner) {
+            $this->automaticStyleNameByObject[spl_object_id($owner)] = $this->automaticStyleNames[$key];
+        }
+
+        return $this->automaticStyleNames[$key];
     }
 
     /**
@@ -1404,29 +1492,15 @@ class Content extends AbstractDecoratorWriter
         }, $shape);
 
         $paragraphs = $shape->getParagraphs();
+        // Only a paragraph that asks for a marker is written inside a `text:list`, and only that
+        // list names the style, so no other paragraph collects one
+        $this->addListStyles($paragraphs);
         $paragraphId = 0;
         foreach ($paragraphs as $paragraph) {
             ++$paragraphId;
 
             // Style des paragraphes
             $this->addParagraphStyle($paragraph);
-
-            // Style des listes
-            // Only a paragraph that asks for a marker is written inside a `text:list`, and only
-            // that list names the style, so collecting one for any other paragraph puts a
-            // `text:list-style` in the file that nothing points at. The condition is the one
-            // writeShapeTxt() opens the list on.
-            if ('' !== $this->getListStyleName($paragraph)) {
-                $bulletStyleHashCode = $paragraph->getBulletStyle()->getHashCode();
-                if (!isset($this->arrStyleBullet[$bulletStyleHashCode])) {
-                    $this->arrStyleBullet[$bulletStyleHashCode]['oStyle'] = $paragraph->getBulletStyle();
-                    $this->arrStyleBullet[$bulletStyleHashCode]['level'] = '';
-                }
-                if (false === strpos($this->arrStyleBullet[$bulletStyleHashCode]['level'], ';' . $paragraph->getAlignment()->getLevel())) {
-                    $this->arrStyleBullet[$bulletStyleHashCode]['level'] .= ';' . $paragraph->getAlignment()->getLevel();
-                    $this->arrStyleBullet[$bulletStyleHashCode]['oAlign_' . $paragraph->getAlignment()->getLevel()] = $paragraph->getAlignment();
-                }
-            }
 
             $richtexts = $paragraph->getRichTextElements();
             $richtextId = 0;
