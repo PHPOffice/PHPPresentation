@@ -1211,6 +1211,7 @@ class ODPresentation implements ReaderInterface
     protected function loadShapeGroup(DOMElement $oNodeGroup, ShapeContainerInterface $container): void
     {
         $oShape = new Group();
+        $oShape->setName($oNodeGroup->getAttribute('draw:name'));
         $oShape->setDescription($this->loadShapeDescription($oNodeGroup));
         $oShape->setDecorative($this->loadShapeDecorative($oNodeGroup));
         $this->loadShapeHyperlink($oNodeGroup, $oShape);
@@ -1258,7 +1259,8 @@ class ODPresentation implements ReaderInterface
 
     /**
      * Read the description of a shape, the alternative text exposed to assistive
-     * technologies. Falls back to the shape name, as written by older versions.
+     * technologies. A shape with no `svg:desc` has none: its `draw:name` is a label for the
+     * author, and is read as its name.
      */
     protected function loadShapeDescription(DOMElement $oNodeFrame): string
     {
@@ -1267,7 +1269,7 @@ class ODPresentation implements ReaderInterface
             return $oNodeDesc->nodeValue ?? '';
         }
 
-        return $oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '';
+        return '';
     }
 
     /**
@@ -1392,6 +1394,7 @@ class ODPresentation implements ReaderInterface
         };
 
         $shape = new Line($point('svg:x1'), $point('svg:y1'), $point('svg:x2'), $point('svg:y2'));
+        $shape->setName($oNodeLine->getAttribute('draw:name'));
         $shape->setDescription($this->loadShapeDescription($oNodeLine));
         $shape->setDecorative($this->loadShapeDecorative($oNodeLine));
         $this->loadShapeHyperlink($oNodeLine, $shape);
@@ -1931,6 +1934,7 @@ class ODPresentation implements ReaderInterface
         ($container ?? $this->oPhpPresentation->getActiveSlide())->addShape($oShape);
         $oShape->setParagraphs([]);
 
+        $oShape->setName($oNodeFrame->getAttribute('draw:name'));
         $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
         $oShape->setDecorative($this->loadShapeDecorative($oNodeFrame));
         $this->loadShapeHyperlink($oNodeFrame, $oShape);
@@ -2146,6 +2150,7 @@ class ODPresentation implements ReaderInterface
 
         $oShape = new Table(max($columns, 1));
         $container->addShape($oShape);
+        $oShape->setName($oNodeFrame->getAttribute('draw:name'));
         $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
         $oShape->setDecorative($this->loadShapeDecorative($oNodeFrame));
         $this->loadShapeHyperlink($oNodeFrame, $oShape);
