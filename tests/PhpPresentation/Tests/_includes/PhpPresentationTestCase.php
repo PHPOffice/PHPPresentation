@@ -187,7 +187,7 @@ class PhpPresentationTestCase extends TestCase
     /**
      * @return DOMNodeList<DOMNode>
      */
-    private function getXmlNodeList(string $file, string $xpath): DOMNodeList
+    protected function getXmlNodeList(string $file, string $xpath): DOMNodeList
     {
         if (null === $this->xmlDom || $file !== $this->xmlFile) {
             $this->getXmlDom($file);

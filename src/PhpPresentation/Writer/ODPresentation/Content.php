@@ -41,6 +41,7 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Shape\Table\Row;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Slide\Transition;
@@ -900,6 +901,8 @@ class Content extends AbstractDecoratorWriter
                 // table:table-row
                 $objWriter->startElement('table:table-row');
                 $objWriter->writeAttribute('table:style-name', $this->getAutomaticStyleName($shapeRow));
+                $defaultCellStyleName = $this->getDefaultCellStyleName($shapeRow);
+                $objWriter->writeAttributeIf(null !== $defaultCellStyleName, 'table:default-cell-style-name', (string) $defaultCellStyleName);
                 //@todo getFill
 
                 $numColspan = 0;
@@ -907,7 +910,8 @@ class Content extends AbstractDecoratorWriter
                     if (0 == $numColspan) {
                         // table:table-cell
                         $objWriter->startElement('table:table-cell');
-                        $objWriter->writeAttribute('table:style-name', $this->getAutomaticStyleName($shapeCell));
+                        $cellStyleName = $this->getAutomaticStyleName($shapeCell);
+                        $objWriter->writeAttributeIf($cellStyleName !== $defaultCellStyleName, 'table:style-name', $cellStyleName);
                         if ($shapeCell->getColspan() > 1) {
                             $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColspan());
                             $numColspan = $shapeCell->getColspan() - 1;
@@ -1129,6 +1133,39 @@ class Content extends AbstractDecoratorWriter
         }
 
         return $this->automaticStyleNameByObject[spl_object_id($owner)] = $this->automaticStyleNames[$key];
+    }
+
+    /**
+     * The cell style most of the written cells of a row share, which the row names once so that
+     * those cells need not name it each, as LibreOffice does. A style no two cells share is left
+     * on its cell; on a tie the first one met wins.
+     */
+    private function getDefaultCellStyleName(Row $row): ?string
+    {
+        $counts = [];
+        $numColspan = 0;
+        foreach ($row->getCells() as $cell) {
+            // a cell covered by the span of the one before it is not written
+            if ($numColspan > 0) {
+                --$numColspan;
+
+                continue;
+            }
+            $name = $this->getAutomaticStyleName($cell);
+            $counts[$name] = ($counts[$name] ?? 0) + 1;
+            $numColspan = max($cell->getColspan() - 1, 0);
+        }
+
+        $defaultName = null;
+        $defaultCount = 1;
+        foreach ($counts as $name => $count) {
+            if ($count > $defaultCount) {
+                $defaultName = (string) $name;
+                $defaultCount = $count;
+            }
+        }
+
+        return $defaultName;
     }
 
     /**
