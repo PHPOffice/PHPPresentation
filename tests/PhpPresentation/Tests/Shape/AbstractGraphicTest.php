@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -88,5 +89,68 @@ class AbstractGraphicTest extends TestCase
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
         self::assertEquals($min, $stub->getWidth());
         self::assertEquals($min * ($min / ($max * ($min / ($max * ($min / $max))))), $stub->getHeight());
+    }
+
+    public function testWidthAndHeightOnAShapeThatHasNeitherYet(): void
+    {
+        $stub = new class() extends AbstractGraphic {
+        };
+
+        // both divisions were run before anything was checked, so a shape with no dimensions to
+        // keep in proportion threw instead of taking the two it was given
+        self::assertInstanceOf(AbstractGraphic::class, $stub->setWidthAndHeight(100, 50));
+        self::assertEquals(100, $stub->getWidth());
+        self::assertEquals(50, $stub->getHeight());
+    }
+
+    public function testWidthAndHeightWithoutProportionSetsBoth(): void
+    {
+        $stub = new class() extends AbstractGraphic {
+        };
+        $stub->setResizeProportional(false);
+        $stub->setWidth(200);
+        $stub->setHeight(100);
+
+        // there is no proportion to keep, so both are taken as they are asked for, the way
+        // `AbstractShape::setWidthAndHeight()` takes them; this used to do nothing at all
+        $stub->setWidthAndHeight(50, 50);
+        self::assertEquals(50, $stub->getWidth());
+        self::assertEquals(50, $stub->getHeight());
+    }
+
+    /**
+     * A zero on either side of the call: the shape's own width or height, or the one asked for.
+     *
+     * @return array<string, array{int, int, int, int}>
+     */
+    public static function dataProviderWidthAndHeightWithZero(): array
+    {
+        return [
+            'asked for no width' => [200, 100, 0, 50],
+            'asked for no height' => [200, 100, 100, 0],
+            'asked for neither' => [200, 100, 0, 0],
+            'has no width' => [0, 100, 100, 50],
+            'has no height' => [200, 0, 100, 50],
+            'has neither, asked for neither' => [0, 0, 0, 0],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderWidthAndHeightWithZero
+     */
+    #[DataProvider('dataProviderWidthAndHeightWithZero')]
+    public function testWidthAndHeightWithZero(int $fromWidth, int $fromHeight, int $width, int $height): void
+    {
+        $stub = new class() extends AbstractGraphic {
+        };
+        $stub->setResizeProportional(false);
+        $stub->setWidth($fromWidth);
+        $stub->setHeight($fromHeight);
+        $stub->setResizeProportional(true);
+
+        // a zero leaves no proportion to keep, so both are taken as they are asked for
+        $stub->setWidthAndHeight($width, $height);
+        self::assertEquals($width, $stub->getWidth());
+        self::assertEquals($height, $stub->getHeight());
     }
 }
