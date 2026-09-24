@@ -803,6 +803,67 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testListNumericStartOutsideTheRangeIsWrittenWithinIt(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        foreach ([40000, 'C'] as $startAt) {
+            $oRichText = $oSlide->createRichTextShape();
+            $oRichText->getActiveParagraph()->getBulletStyle()
+                ->setBulletType(Bullet::TYPE_NUMERIC)
+                ->setBulletNumericStartAt($startAt);
+            $oRichText->createTextRun('Alpha');
+        }
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp[%d]/p:txBody/a:p/a:pPr/a:buAutoNum';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', sprintf($element, 1), 'startAt', 32767);
+        // a start of 1 is not written
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', sprintf($element, 2), 'startAt');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testListNumericStartIsWrittenOnEveryParagraphOfTheNumbering(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        foreach ([[0, 2], [0, null], [1, null], [0, 3], [0, null], [0, false], [0, null]] as $i => [$level, $startAt]) {
+            $oParagraph = $i ? $oRichText->createParagraph() : $oRichText->getActiveParagraph();
+            $oParagraph->getAlignment()->setLevel($level);
+            $oParagraph->getBulletStyle()
+                ->setBulletType(false === $startAt ? Bullet::TYPE_NONE : Bullet::TYPE_NUMERIC)
+                ->setBulletNumericStartAt(false === $startAt ? null : $startAt);
+            $oParagraph->createTextRun('Alpha');
+        }
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p[%d]/a:pPr/a:buAutoNum';
+        // PowerPoint numbers on while the start stays the same: 2, 3, then a, then 3, 4, and 1
+        // after the paragraph with no marker
+        foreach ([1 => 2, 2 => 2, 4 => 3, 5 => 3] as $p => $startAt) {
+            $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', sprintf($element, $p), 'startAt', $startAt);
+        }
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', sprintf($element, 3), 'startAt');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', sprintf($element, 6));
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', sprintf($element, 7), 'startAt');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testListNumericContinuedPastAParagraphWithNoMarkerIsWrittenWithItsNumber(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        foreach ([[true, false], [true, false], [false, false], [true, true], [true, false], [false, false], [true, false]] as $i => [$numbered, $continue]) {
+            $oParagraph = $i ? $oRichText->createParagraph() : $oRichText->getActiveParagraph();
+            $oParagraph->getBulletStyle()
+                ->setBulletType($numbered ? Bullet::TYPE_NUMERIC : Bullet::TYPE_NONE)
+                ->setBulletNumericContinue($continue);
+            $oParagraph->createTextRun('Alpha');
+        }
+
+        // PowerPoint ends a numbering at a paragraph with no marker: 3 is written as a start
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p[%d]/a:pPr/a:buAutoNum';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', sprintf($element, 4), 'startAt', 3);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', sprintf($element, 5), 'startAt', 3);
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', sprintf($element, 7), 'startAt');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testLine(): void
     {
         $valEmu10 = Drawing::pixelsToEmu(10);

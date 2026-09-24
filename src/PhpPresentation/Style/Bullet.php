@@ -112,11 +112,18 @@ class Bullet implements ComparableInterface
     private $bulletNumericStyle = self::NUMERIC_DEFAULT;
 
     /**
-     * Bullet numeric start at.
+     * Bullet numeric start at, or null when none is given.
      *
-     * @var int|string
+     * @var null|int
      */
     private $bulletNumericStartAt;
+
+    /**
+     * Whether a numbering given no start continues the one before it past a paragraph that ends it.
+     *
+     * @var bool
+     */
+    private $bulletNumericContinue = false;
 
     /**
      * Hash index.
@@ -132,7 +139,7 @@ class Bullet implements ComparableInterface
         $this->bulletChar = '-';
         $this->bulletColor = new Color();
         $this->bulletNumericStyle = self::NUMERIC_DEFAULT;
-        $this->bulletNumericStartAt = 1;
+        $this->bulletNumericStartAt = null;
     }
 
     /**
@@ -235,9 +242,9 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Get bullet numeric start at.
+     * Get bullet numeric start at, or null when none is given.
      *
-     * @return int|string
+     * @return null|int
      */
     public function getBulletNumericStartAt()
     {
@@ -247,13 +254,38 @@ class Bullet implements ComparableInterface
     /**
      * Set bullet numeric start at.
      *
-     * @param int|string $pValue
+     * The start is a number whatever the scheme: 3 starts an `alphaUcPeriod` list at "C." and a
+     * `romanUcPeriod` one at "III.". It is kept within 1 to 32767, the range OOXML allows
+     * (`ST_TextBulletStartAtNum`), the way LibreOffice reads one that falls outside it.
+     *
+     * A paragraph given no start (null) continues the numbering of the paragraph before it at
+     * its level and with its scheme, or starts at 1 when there is none; one given a start
+     * begins a new numbering there. A start equal to the one the numbering before it began at
+     * continues it all the same: OOXML has no other way to write it.
+     *
+     * @param null|int|string $pValue
      *
      * @return Bullet
      */
     public function setBulletNumericStartAt($pValue = 1)
     {
-        $this->bulletNumericStartAt = $pValue;
+        $this->bulletNumericStartAt = null === $pValue ? null : max(1, min(32767, (int) $pValue));
+
+        return $this;
+    }
+
+    /**
+     * Whether the paragraph, when it is given no start and begins a numbering, continues the last
+     * numbering of its level and scheme instead: 1, 2, a paragraph with no marker, then 3.
+     */
+    public function isBulletNumericContinue(): bool
+    {
+        return $this->bulletNumericContinue;
+    }
+
+    public function setBulletNumericContinue(bool $value = true): self
+    {
+        $this->bulletNumericContinue = $value;
 
         return $this;
     }
@@ -271,6 +303,7 @@ class Bullet implements ComparableInterface
             . $this->bulletChar
             . $this->bulletNumericStyle
             . $this->bulletNumericStartAt
+            . ($this->bulletNumericContinue ? 'continue' : '')
             . __CLASS__
         );
     }

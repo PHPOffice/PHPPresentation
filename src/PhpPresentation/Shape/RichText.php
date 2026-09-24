@@ -280,7 +280,8 @@ class RichText extends AbstractShape implements ComparableInterface
             $this->getActiveParagraph()->setFont($font);
         }
         if (isset($bulletStyle)) {
-            $this->getActiveParagraph()->setBulletStyle($bulletStyle);
+            // the new paragraph continues the numbering rather than beginning its own at the same start
+            $this->getActiveParagraph()->setBulletStyle($bulletStyle->setBulletNumericStartAt(null));
         }
 
         return $this->getActiveParagraph();

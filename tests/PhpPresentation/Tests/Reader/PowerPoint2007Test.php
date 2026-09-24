@@ -2268,4 +2268,90 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('Growth', $arrayShape[1]->getName());
         self::assertEquals('Growth by year', $arrayShape[1]->getDescription());
     }
+
+    public function testNumericStartSurvivesTheRoundTripAsANumber(): void
+    {
+        $schemes = [Bullet::NUMERIC_ARABICPERIOD, Bullet::NUMERIC_ALPHAUCPERIOD, Bullet::NUMERIC_ROMANLCPARENR];
+        $oPhpPresentation = new PhpPresentation();
+        foreach ($schemes as $scheme) {
+            $oRichText = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+            $oRichText->getActiveParagraph()->getBulletStyle()
+                ->setBulletType(Bullet::TYPE_NUMERIC)
+                ->setBulletNumericStyle($scheme)
+                ->setBulletNumericStartAt(3);
+            $oRichText->createTextRun('Alpha');
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        foreach ($oPhpPresentationRead->getActiveSlide()->getShapeCollection() as $i => $oShape) {
+            self::assertInstanceOf(RichText::class, $oShape);
+            $oBullet = $oShape->getActiveParagraph()->getBulletStyle();
+            self::assertSame($schemes[$i], $oBullet->getBulletNumericStyle());
+            self::assertSame(3, $oBullet->getBulletNumericStartAt());
+        }
+    }
+
+    public function testNumericStartIsReadWhereANumberingBegins(): void
+    {
+        // what PowerPoint writes: the start of a numbering on every paragraph of it, and none
+        // at all for a start of 1
+        $oPhpPresentation = new PhpPresentation();
+        $oRichText = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        foreach ([[0, 2], [0, null], [1, null], [0, 3], [0, null], [0, false], [0, null], [0, 2], [0, 1]] as $i => [$level, $startAt]) {
+            $oParagraph = $i ? $oRichText->createParagraph() : $oRichText->getActiveParagraph();
+            $oParagraph->getAlignment()->setLevel($level);
+            $oParagraph->getBulletStyle()
+                ->setBulletType(false === $startAt ? Bullet::TYPE_NONE : Bullet::TYPE_NUMERIC)
+                ->setBulletNumericStartAt(false === $startAt ? null : $startAt);
+            $oParagraph->createTextRun('Alpha');
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $oShape = $oPhpPresentationRead->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(RichText::class, $oShape);
+        $startAts = [];
+        foreach ($oShape->getParagraphs() as $oParagraph) {
+            $startAts[] = $oParagraph->getBulletStyle()->getBulletNumericStartAt();
+        }
+        // a numbering begins with its start, 1 included, and goes on with none
+        self::assertSame([2, null, 1, 3, null, null, 1, 2, 1], $startAts);
+    }
+
+    public function testNumberingThatContinuesPastAParagraphWithNoMarkerIsReadSo(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oRichText = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        foreach ([[true, false], [true, false], [false, false], [true, true], [true, false], [false, false], [true, false]] as $i => [$numbered, $continue]) {
+            $oParagraph = $i ? $oRichText->createParagraph() : $oRichText->getActiveParagraph();
+            $oParagraph->getBulletStyle()
+                ->setBulletType($numbered ? Bullet::TYPE_NUMERIC : Bullet::TYPE_NONE)
+                ->setBulletNumericContinue($continue);
+            $oParagraph->createTextRun('Alpha');
+        }
+
+        // a start that happens to be the number after the last one reads the same way
+        $oRichText->createParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
+        $oRichText->createParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC)->setBulletNumericStartAt(2);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $oShape = $oPhpPresentationRead->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(RichText::class, $oShape);
+        $read = [];
+        foreach ($oShape->getParagraphs() as $oParagraph) {
+            $read[] = [$oParagraph->getBulletStyle()->getBulletNumericStartAt(), $oParagraph->getBulletStyle()->isBulletNumericContinue()];
+        }
+        self::assertSame([[1, false], [null, false], [null, false], [null, true], [null, false], [null, false], [1, false], [null, false], [null, true]], $read);
+    }
 }

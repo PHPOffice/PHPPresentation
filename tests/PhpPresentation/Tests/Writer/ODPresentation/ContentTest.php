@@ -456,6 +456,59 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testNumericBulletStartAtThatIsNoNumberIsNotWritten(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->getActiveParagraph()->getBulletStyle()
+            ->setBulletType(Bullet::TYPE_NUMERIC)
+            ->setBulletNumericStyle(Bullet::NUMERIC_ALPHAUCPERIOD)
+            ->setBulletNumericStartAt('C');
+        $oRichText->createTextRun('Alpha');
+
+        $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-number';
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'text:start-value');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testParagraphGivenNoStartStaysInTheNumberingItContinues(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        foreach ([[0, 2], [1, null], [0, null], [0, 3]] as $i => [$level, $startAt]) {
+            $oParagraph = $i ? $oRichText->createParagraph() : $oRichText->getActiveParagraph();
+            $oParagraph->getAlignment()->setLevel($level);
+            $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC)->setBulletNumericStartAt($startAt);
+            $oParagraph->createTextRun('Alpha');
+        }
+
+        // 2, a nested 1, 3 in one list; the start of 3 begins a list of its own
+        $list = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list';
+        $this->assertZipXmlElementCount('content.xml', $list, 2);
+        $this->assertZipXmlElementCount('content.xml', $list . '[1]/text:list-item', 2);
+        $this->assertZipXmlElementExists('content.xml', $list . '[1]/text:list-item[1]/text:list');
+        $style = '/office:document-content/office:automatic-styles/text:list-style[@style:name="%s"]/text:list-level-style-number[@text:level="%d"]';
+        $this->assertZipXmlAttributeEquals('content.xml', sprintf($style, 'L1', 1), 'text:start-value', '2');
+        $this->assertZipXmlAttributeNotExists('content.xml', sprintf($style, 'L1', 2), 'text:start-value');
+        $this->assertZipXmlAttributeEquals('content.xml', sprintf($style, 'L2', 1), 'text:start-value', '3');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testListAskedToContinueStartsAtTheNumberItTakes(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        foreach ([[true, false], [true, false], [false, false], [true, true], [true, false], [false, false], [true, false]] as $i => [$numbered, $continue]) {
+            $oParagraph = $i ? $oRichText->createParagraph() : $oRichText->getActiveParagraph();
+            $oParagraph->getBulletStyle()
+                ->setBulletType($numbered ? Bullet::TYPE_NUMERIC : Bullet::TYPE_NONE)
+                ->setBulletNumericContinue($continue);
+            $oParagraph->createTextRun('Alpha');
+        }
+
+        // the list asked to continue starts at 3
+        $style = '/office:document-content/office:automatic-styles/text:list-style[@style:name="L2"]/text:list-level-style-number';
+        $this->assertZipXmlAttributeEquals('content.xml', $style, 'text:start-value', '3');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testNumericBulletStartAtOmittedWhenFirst(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();

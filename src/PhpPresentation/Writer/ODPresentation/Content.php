@@ -96,6 +96,13 @@ class Content extends AbstractDecoratorWriter
     protected $listStyleNameByParagraph = [];
 
     /**
+     * The start of the numbering each numbered paragraph given no start continues, by paragraph.
+     *
+     * @var array<int, null|int>
+     */
+    protected $continuedStartAtByParagraph = [];
+
+    /**
      * The automatic styles to write, by the name each was given.
      *
      * @var array<string, array{family: string, write: callable(XMLWriter): void}>
@@ -387,6 +394,9 @@ class Content extends AbstractDecoratorWriter
      */
     protected function addListStyles(array $paragraphs): void
     {
+        foreach (Paragraph::getContinuedNumericStartAts($paragraphs) as $key => $continuedStartAt) {
+            $this->continuedStartAtByParagraph[spl_object_id($paragraphs[$key])] = $continuedStartAt;
+        }
         $run = [];
         $levels = [];
         foreach ($paragraphs as $paragraph) {
@@ -456,7 +466,10 @@ class Content extends AbstractDecoratorWriter
             $objWriter->writeAttribute('style:num-format', $numFormat);
             $objWriter->writeAttributeIf('' !== $numPrefix, 'style:num-prefix', $numPrefix);
             $objWriter->writeAttributeIf('' !== $numSuffix, 'style:num-suffix', $numSuffix);
-            $objWriter->writeAttributeIf(1 != $oStyle->getBulletNumericStartAt(), 'text:start-value', $oStyle->getBulletNumericStartAt());
+            // a paragraph given no start takes the one of the numbering it continues, and so
+            // writes the level the same way and stays in its list
+            $startAt = $oStyle->getBulletNumericStartAt() ?? $this->continuedStartAtByParagraph[spl_object_id($paragraph)] ?? 1;
+            $objWriter->writeAttributeIf(1 != $startAt, 'text:start-value', $startAt);
         } else {
             // text:list-level-style-bullet
             $objWriter->startElement('text:list-level-style-bullet');
