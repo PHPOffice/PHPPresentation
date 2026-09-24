@@ -1026,6 +1026,20 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
+     * Read the hyperlink a shape carries as a whole, as opposed to one on a run of its text.
+     *
+     * @param DOMElement $node the `p:cNvPr` element of the shape
+     *
+     * @return null|Hyperlink null when the shape carries none
+     */
+    protected function loadShapeHyperlink(XMLReader $document, DOMElement $node): ?Hyperlink
+    {
+        $oElement = $document->getElement('a:hlinkClick', $node);
+
+        return $oElement instanceof DOMElement ? $this->loadHyperlink($document, $oElement, new Hyperlink()) : null;
+    }
+
+    /**
      * Load a group of shapes.
      *
      * @param AbstractSlide|Note $oSlide
@@ -1040,6 +1054,7 @@ class PowerPoint2007 implements ReaderInterface
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
             $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
+            $oShape->setHyperlink($this->loadShapeHyperlink($document, $oElement));
         }
 
         $oElement = $document->getElement('p:grpSpPr/a:xfrm', $node);
@@ -1150,14 +1165,7 @@ class PowerPoint2007 implements ReaderInterface
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
             $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
-
-            // Hyperlink
-            $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElement);
-            if (is_object($oElementHlinkClick)) {
-                $oShape->setHyperlink(
-                    $this->loadHyperlink($document, $oElementHlinkClick, $oShape->getHyperlink())
-                );
-            }
+            $oShape->setHyperlink($this->loadShapeHyperlink($document, $oElement));
         }
 
         $oElement = $document->getElement('p:blipFill/a:blip', $node);
@@ -1331,6 +1339,7 @@ class PowerPoint2007 implements ReaderInterface
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
             $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
+            $oShape->setHyperlink($this->loadShapeHyperlink($document, $oElement));
         }
     }
 
@@ -1353,6 +1362,7 @@ class PowerPoint2007 implements ReaderInterface
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
             $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
+            $oShape->setHyperlink($this->loadShapeHyperlink($document, $oElement));
         }
 
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
@@ -1458,7 +1468,7 @@ class PowerPoint2007 implements ReaderInterface
         $oShape = new Table();
         ($oContainer ?? $oSlide)->addShape($oShape);
 
-        $oElement = $document->getElement('p:cNvPr', $node);
+        $oElement = $document->getElement('p:nvGraphicFramePr/p:cNvPr', $node);
         if ($oElement instanceof DOMElement) {
             if ($oElement->hasAttribute('name')) {
                 $oShape->setName($oElement->getAttribute('name'));
@@ -1467,6 +1477,7 @@ class PowerPoint2007 implements ReaderInterface
                 $oShape->setDescription($oElement->getAttribute('descr'));
             }
             $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
+            $oShape->setHyperlink($this->loadShapeHyperlink($document, $oElement));
         }
 
         $oElement = $document->getElement('p:xfrm/a:off', $node);
@@ -1603,7 +1614,7 @@ class PowerPoint2007 implements ReaderInterface
 
         $oShape = new Chart();
 
-        $oElement = $document->getElement('p:cNvPr', $node);
+        $oElement = $document->getElement('p:nvGraphicFramePr/p:cNvPr', $node);
         if ($oElement instanceof DOMElement) {
             if ($oElement->hasAttribute('name')) {
                 $oShape->setName($oElement->getAttribute('name'));
@@ -1612,6 +1623,7 @@ class PowerPoint2007 implements ReaderInterface
                 $oShape->setDescription($oElement->getAttribute('descr'));
             }
             $oShape->setDecorative($this->loadShapeDecorative($document, $oElement));
+            $oShape->setHyperlink($this->loadShapeHyperlink($document, $oElement));
         }
 
         $oElement = $document->getElement('p:xfrm/a:off', $node);
@@ -2421,6 +2433,9 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadSlideShapes(XMLReader $document, $oSlide, DOMNodeList $oElements, XMLReader $xmlReader, ?ShapeContainerInterface $oContainer = null): void
     {
         $oContainer = $oContainer ?? $oSlide;
+        if ($oSlide instanceof AbstractSlide) {
+            $this->fileRels = $oSlide->getRelsIndex();
+        }
         foreach ($oElements as $oNode) {
             if (!($oNode instanceof DOMElement)) {
                 continue;
