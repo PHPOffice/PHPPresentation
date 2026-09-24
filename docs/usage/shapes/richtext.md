@@ -179,6 +179,22 @@ $paragraph->getBulletStyle()->setBulletColor(new Color(Color::COLOR_RED));
 
 A numbered list is the `Bullet::TYPE_NUMERIC` type. The scheme it is numbered with is one of the
 `Bullet::NUMERIC_*` constants, and the number it starts at is `setBulletNumericStartAt()`.
+The start is a number whatever the scheme, from 1 to 32767: the example below starts at "(c)",
+and 3 would start a `Bullet::NUMERIC_ROMANUCPERIOD` list at "III.".
+
+A paragraph given no start (`null`, the default) continues the numbering of the paragraph before
+it at its level and with its scheme, and starts at 1 when there is none; `createParagraph()` gives
+the paragraph it creates no start, so a list numbered from 2 is set on its first paragraph only.
+A paragraph given a start begins a new numbering there. A deeper paragraph between two paragraphs
+does not end their numbering; a shallower one, or one with no marker, does. A start equal to the
+one the numbering before it began at continues that numbering: PowerPoint numbers on for as long
+as the start stays the same, and a PPTX file has no other way to write it.
+
+A numbering ends at a paragraph with no marker. A paragraph given no start that should go on from
+the numbering before it all the same -- 1, 2, a paragraph with no marker, then 3 -- says so with
+`setBulletNumericContinue()`. A PPTX file has no way to say it, so it gets the number the paragraph
+takes as its start, and a numbering read from one that starts at the number after the last one of
+its level and scheme is read as going on from it.
 
 ``` php
 <?php

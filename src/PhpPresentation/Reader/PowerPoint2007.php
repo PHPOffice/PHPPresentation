@@ -1609,6 +1609,7 @@ class PowerPoint2007 implements ReaderInterface
                 $this->loadParagraph($document, $oElement, $oShape);
             }
         }
+        $this->loadNumericStartAts($oShape->getParagraphs());
 
         $oElement = $document->getElement('p:spPr', $node);
         if ($oElement instanceof DOMElement) {
@@ -1714,6 +1715,7 @@ class PowerPoint2007 implements ReaderInterface
                         $this->loadParagraph($document, $oElementPara, $oCell);
                     }
                 }
+                $this->loadNumericStartAts($oCell->getParagraphs());
 
                 $oElementTcPr = $document->getElement('a:tcPr', $oElementCell);
                 if ($oElementTcPr instanceof DOMElement) {
@@ -2115,6 +2117,31 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
+     * PowerPoint writes the start of a numbering on every paragraph of it, so a paragraph whose
+     * start is the one of the numbering it continues is given none, and continues it the same.
+     * A numbering that begins at the number after the last one of its level and scheme -- 1, 2,
+     * a paragraph with no marker, then 3 -- is read as continuing that one.
+     *
+     * @param array<int, Paragraph> $paragraphs
+     */
+    protected function loadNumericStartAts(array $paragraphs): void
+    {
+        $continuedStartAts = Paragraph::getContinuedNumericStartAts($paragraphs);
+        foreach (Paragraph::getResumedNumericStartAts($paragraphs) as $key => $resumedStartAt) {
+            $bullet = $paragraphs[$key]->getBulletStyle();
+            if (null !== $bullet && null !== $resumedStartAt && $resumedStartAt === $bullet->getBulletNumericStartAt()) {
+                $bullet->setBulletNumericStartAt(null)->setBulletNumericContinue();
+            }
+        }
+        foreach ($continuedStartAts as $key => $continuedStartAt) {
+            $bullet = $paragraphs[$key]->getBulletStyle();
+            if (null !== $bullet && $continuedStartAt === $bullet->getBulletNumericStartAt()) {
+                $bullet->setBulletNumericStartAt(null);
+            }
+        }
+    }
+
+    /**
      * @param Cell|RichText $oShape
      */
     protected function loadParagraph(XMLReader $document, DOMElement $oElement, $oShape): void
@@ -2188,9 +2215,8 @@ class PowerPoint2007 implements ReaderInterface
                 if ($oElementBuAutoNum->hasAttribute('type')) {
                     $oParagraph->getBulletStyle()->setBulletNumericStyle($oElementBuAutoNum->getAttribute('type'));
                 }
-                if ($oElementBuAutoNum->hasAttribute('startAt') && 1 != $oElementBuAutoNum->getAttribute('startAt')) {
-                    $oParagraph->getBulletStyle()->setBulletNumericStartAt($oElementBuAutoNum->getAttribute('startAt'));
-                }
+                // no start is a start of 1; loadNumericStartAts() drops the ones that only continue a numbering
+                $oParagraph->getBulletStyle()->setBulletNumericStartAt($oElementBuAutoNum->hasAttribute('startAt') ? $oElementBuAutoNum->getAttribute('startAt') : 1);
             }
             $oElementBuClr = $document->getElement('a:buClr', $oSubElement);
             if ($oElementBuClr instanceof DOMElement) {
