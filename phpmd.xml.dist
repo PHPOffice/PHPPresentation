@@ -33,8 +33,10 @@
         <!-- Reader/PowerPoint2007 reads an AutoShape, which is a shape class of its own -->
         <!-- Reader/ODPresentation reads the nine kinds of chart, and each kind is a class -->
         <!-- Reader/ODPresentation reads an AutoShape, and checks its type against the constants of the class -->
+        <!-- Reader/ODPresentation reads a group, which is a shape holding shapes: the group
+             and the container it is put in are two more classes -->
 		<properties>
-            <property name="maximum" value="52" />
+            <property name="maximum" value="54" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">
