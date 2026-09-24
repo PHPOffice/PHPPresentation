@@ -1631,6 +1631,27 @@ class ODPresentationTest extends TestCase
         self::assertEquals('FF0000', $oBorder->getColor()->getRGB());
     }
 
+    public function testCellStyleTheRowNamesSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oRow = $oPhpPresentation->getActiveSlide()->createTableShape(3)->createRow();
+        // cells 0 and 2 share a style, which the writer names once on the row
+        $oRow->getCell(0)->getBorders()->getBottom()->setColor(new Color('FFFF0000'));
+        $oRow->getCell(2)->getBorders()->getBottom()->setColor(new Color('FFFF0000'));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $oTableRead = $oPhpPresentationRead->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(Table::class, $oTableRead);
+        $oRowRead = $oTableRead->getRow(0);
+        self::assertEquals('FF0000', $oRowRead->getCell(0)->getBorders()->getBottom()->getColor()->getRGB());
+        self::assertEquals('000000', $oRowRead->getCell(1)->getBorders()->getBottom()->getColor()->getRGB());
+        self::assertEquals('FF0000', $oRowRead->getCell(2)->getBorders()->getBottom()->getColor()->getRGB());
+    }
+
     /**
      * @dataProvider dataProviderFirstRow
      */

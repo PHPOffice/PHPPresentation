@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
+use DOMElement;
 use PhpOffice\Common\Drawing;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
@@ -1912,16 +1913,59 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlElementCount('content.xml', $definitions . '[@style:family=\'table-row\']', 1);
         $this->assertZipXmlElementCount('content.xml', $definitions . '[@style:family=\'table-cell\']', 1);
 
-        // and every reference in the document names the one definition of its family
+        // and every reference in the document names the one definition of its family: the cells
+        // through their row, which names the style all of them share
         $rowStyle = $this->getZipXmlAttributeValue('content.xml', '//table:table-row[1]', 'table:style-name');
-        $cellStyle = $this->getZipXmlAttributeValue('content.xml', '//table:table-row[1]/table:table-cell[1]', 'table:style-name');
+        $cellStyle = $this->getZipXmlAttributeValue('content.xml', '//table:table-row[1]', 'table:default-cell-style-name');
         for ($row = 1; $row <= 4; ++$row) {
             self::assertEquals($rowStyle, $this->getZipXmlAttributeValue('content.xml', sprintf('//table:table-row[%d]', $row), 'table:style-name'));
+            self::assertEquals($cellStyle, $this->getZipXmlAttributeValue('content.xml', sprintf('//table:table-row[%d]', $row), 'table:default-cell-style-name'));
             for ($cell = 1; $cell <= 3; ++$cell) {
-                self::assertEquals($cellStyle, $this->getZipXmlAttributeValue('content.xml', sprintf('//table:table-row[%d]/table:table-cell[%d]', $row, $cell), 'table:style-name'));
+                $this->assertZipXmlAttributeNotExists('content.xml', sprintf('//table:table-row[%d]/table:table-cell[%d]', $row, $cell), 'table:style-name');
             }
         }
 
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * The style most cells of a row share is named once, on the row, as LibreOffice writes it; a
+     * cell that differs names its own.
+     */
+    public function testRowNamesTheCellStyleMostOfItsCellsShare(): void
+    {
+        $oRow = $this->oPresentation->getActiveSlide()->createTableShape(3)->createRow();
+        $oRow->getCell(1)->getBorders()->getBottom()->setLineStyle(Border::LINE_DOUBLE);
+
+        $element = '//table:table-row[1]';
+        $defaultStyle = $this->getZipXmlAttributeValue('content.xml', $element, 'table:default-cell-style-name');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '/table:table-cell[1]', 'table:style-name');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '/table:table-cell[3]', 'table:style-name');
+        self::assertNotEquals($defaultStyle, $this->getZipXmlAttributeValue('content.xml', $element . '/table:table-cell[2]', 'table:style-name'));
+        $this->assertZipXmlAttributeEndsWith('content.xml', $this->getTableCellStyleXPath(1, 2) . '/style:paragraph-properties', 'fo:border-bottom', 'double #000000');
+        $this->assertZipXmlAttributeEquals('content.xml', $this->getTableCellStyleXPath(1, 1) . '/style:paragraph-properties', 'fo:border', '0.57pt solid #000000');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * A style no two cells of a row share stays on its cell, and a cell covered by the span of the
+     * one before it is not written, so it does not count.
+     */
+    public function testRowNamesNoCellStyleNoTwoCellsShare(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRow = $oSlide->createTableShape(2)->createRow();
+        $oRow->getCell(0)->getBorders()->getBottom()->setLineStyle(Border::LINE_DOUBLE);
+        // the covered cell is styled like the last one, and would make two of a kind if it counted
+        $oSpanned = $oSlide->createTableShape(3)->createRow();
+        $oSpanned->getCell(0)->setColspan(2)->getBorders()->getBottom()->setLineStyle(Border::LINE_DOUBLE);
+
+        foreach ([1, 2] as $table) {
+            $element = sprintf('(//table:table)[%d]/table:table-row[1]', $table);
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'table:default-cell-style-name');
+            $this->assertZipXmlAttributeExists('content.xml', $element . '/table:table-cell[1]', 'table:style-name');
+            $this->assertZipXmlAttributeExists('content.xml', $element . '/table:table-cell[2]', 'table:style-name');
+        }
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
@@ -2536,14 +2580,19 @@ class ContentTest extends PhpPresentationTestCase
     }
 
     /**
-     * The `style:style` of a table cell, addressed by the name its `table:table-cell` carries.
+     * The `style:style` of a table cell, addressed by the name its `table:table-cell` carries, or,
+     * when it carries none, by the `table:default-cell-style-name` of its row.
      */
     private function getTableCellStyleXPath(int $row = 1, int $cell = 1): string
     {
-        return $this->getAutomaticStyleXPath(
-            sprintf('//table:table-row[%d]/table:table-cell[%d]', $row, $cell),
-            'table:style-name'
-        );
+        $cellXPath = sprintf('//table:table-row[%d]/table:table-cell[%d]', $row, $cell);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+        $oNodeCell = $this->getXmlNodeList('content.xml', $cellXPath)->item(0);
+        if ($oNodeCell instanceof DOMElement && !$oNodeCell->hasAttribute('table:style-name')) {
+            return $this->getAutomaticStyleXPath(sprintf('//table:table-row[%d]', $row), 'table:default-cell-style-name');
+        }
+
+        return $this->getAutomaticStyleXPath($cellXPath, 'table:style-name');
     }
 
     /**
