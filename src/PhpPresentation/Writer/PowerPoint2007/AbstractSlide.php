@@ -34,6 +34,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
 use PhpOffice\PhpPresentation\Shape\Group;
+use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
@@ -57,6 +58,93 @@ use PhpOffice\PhpPresentation\Style\Shadow;
 
 abstract class AbstractSlide extends AbstractDecoratorWriter
 {
+    /**
+     * Write the relationships of every hyperlink in a slide, a layout or a master: on a shape, on a
+     * run of its text and on a run in a table cell.
+     *
+     * @param string $slidesPath where the slides are from the part being written, empty from a slide
+     */
+    protected function writeHyperlinkRelations(AbstractSlideAlias $pSlide, XMLWriter $objWriter, int $relId, string $slidesPath = ''): int
+    {
+        // Loop trough hyperlinks and write relationships
+        foreach ($this->flattenShapes($pSlide->getShapeCollection()) as $shape) {
+            // Hyperlink on shape
+            if ($shape->hasHyperlink()) {
+                $this->writeHyperlinkRelationship($objWriter, $shape->getHyperlink(), $relId, $slidesPath);
+            }
+
+            // Hyperlink on rich text run
+            if ($shape instanceof RichText) {
+                foreach ($shape->getParagraphs() as $paragraph) {
+                    foreach ($paragraph->getRichTextElements() as $element) {
+                        if ($element instanceof Run || $element instanceof TextElement) {
+                            if ($element->hasHyperlink()) {
+                                $this->writeHyperlinkRelationship($objWriter, $element->getHyperlink(), $relId, $slidesPath);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Hyperlink in table
+            if ($shape instanceof ShapeTable) {
+                // Rows
+                $countRows = count($shape->getRows());
+                for ($row = 0; $row < $countRows; ++$row) {
+                    // Cells in rows
+                    $countCells = count($shape->getRow($row)->getCells());
+                    for ($cell = 0; $cell < $countCells; ++$cell) {
+                        $currentCell = $shape->getRow($row)->getCell($cell);
+                        // Paragraphs in cell
+                        foreach ($currentCell->getParagraphs() as $paragraph) {
+                            // RichText in paragraph
+                            foreach ($paragraph->getRichTextElements() as $element) {
+                                // Run or Text in RichText
+                                if ($element instanceof Run || $element instanceof TextElement) {
+                                    if ($element->hasHyperlink()) {
+                                        $this->writeHyperlinkRelationship($objWriter, $element->getHyperlink(), $relId, $slidesPath);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $relId;
+    }
+
+    /**
+     * Write the relationship a hyperlink needs, and remember the id it was given.
+     *
+     * A hyperlink that was never given a url has nothing to point at: the `a:hlinkClick` it is
+     * written as says to colour the text as a link, and there is no relationship to make. Writing
+     * one anyway leaves the package with an external target that is the empty string.
+     *
+     * @param string $slidesPath where the slides are from the part being written, empty from a slide
+     */
+    protected function writeHyperlinkRelationship(XMLWriter $objWriter, Hyperlink $hyperlink, int &$relId, string $slidesPath = ''): void
+    {
+        if ($hyperlink->isInternal()) {
+            $hyperlink->relationId = 'rId' . $relId;
+            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', $slidesPath . 'slide' . $hyperlink->getSlideNumber() . '.xml');
+            ++$relId;
+
+            return;
+        }
+
+        if ('' === $hyperlink->getUrl()) {
+            $hyperlink->relationId = '';
+
+            return;
+        }
+
+        $hyperlink->relationId = 'rId' . $relId;
+        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+        ++$relId;
+    }
+
     /**
      * @return mixed
      */
