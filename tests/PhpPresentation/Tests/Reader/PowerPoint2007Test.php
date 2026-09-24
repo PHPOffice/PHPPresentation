@@ -26,6 +26,7 @@ use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\PowerPoint2007;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
@@ -2188,5 +2189,83 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals(4.8, $arrayShape[0]->getInsetTop());
         self::assertEquals(9.6, $arrayShape[0]->getInsetRight());
         self::assertEquals(4.8, $arrayShape[0]->getInsetBottom());
+    }
+
+    public function testShapeHyperlinkSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oTable = $oSlide->createTableShape(1);
+        $oTable->createRow()->nextCell()->createTextRun('Cell');
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType(new Bar());
+        $oRichText = $oSlide->createRichTextShape();
+        $oLine = $oSlide->createLineShape(0, 0, 10, 10);
+        $oAutoShape = new AutoShape();
+        $oSlide->addShape($oAutoShape);
+        $oGroup = $oSlide->createGroup();
+        $oGroup->createRichTextShape();
+        $oShapes = [$oTable, $oChart, $oRichText, $oLine, $oAutoShape, $oGroup];
+        foreach ($oShapes as $key => $oShape) {
+            $oShape->getHyperlink()->setUrl('https://example.com/' . $key)->setTooltip('Shape ' . $key);
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = $oPhpPresentationRead->getActiveSlide()->getShapeCollection();
+        self::assertCount(count($oShapes), $arrayShape);
+        foreach ($arrayShape as $key => $oShape) {
+            self::assertEquals('https://example.com/' . $key, $oShape->getHyperlink()->getUrl());
+            self::assertEquals('Shape ' . $key, $oShape->getHyperlink()->getTooltip());
+        }
+    }
+
+    public function testPictureFirstOnItsSlideKeepsItsHyperlink(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->getHyperlink()->setUrl('https://example.com/text');
+        $oDrawing = $oPhpPresentation->createSlide()->createDrawingShape();
+        $oDrawing->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        $oDrawing->getHyperlink()->setUrl('https://example.com/picture');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        // The picture is read before any other shape of its slide, so the relationships it
+        // is looked up in have to be those of its own slide and not of the one read before
+        $oShape = $oPhpPresentationRead->getSlide(1)->getShapeCollection()[0];
+        self::assertInstanceOf(Gd::class, $oShape);
+        self::assertEquals('https://example.com/picture', $oShape->getHyperlink()->getUrl());
+    }
+
+    public function testTableAndChartNameAndDescriptionAreRead(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oTable = $oSlide->createTableShape(1);
+        $oTable->createRow()->nextCell()->createTextRun('Cell');
+        $oTable->setName('Sales')->setDescription('Sales by quarter')->setDecorative(true);
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType(new Bar());
+        $oChart->setName('Growth')->setDescription('Growth by year');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = $oPhpPresentationRead->getActiveSlide()->getShapeCollection();
+        self::assertInstanceOf(Table::class, $arrayShape[0]);
+        self::assertEquals('Sales', $arrayShape[0]->getName());
+        self::assertEquals('Sales by quarter', $arrayShape[0]->getDescription());
+        self::assertTrue($arrayShape[0]->isDecorative());
+        self::assertInstanceOf(Chart::class, $arrayShape[1]);
+        self::assertEquals('Growth', $arrayShape[1]->getName());
+        self::assertEquals('Growth by year', $arrayShape[1]->getDescription());
     }
 }
