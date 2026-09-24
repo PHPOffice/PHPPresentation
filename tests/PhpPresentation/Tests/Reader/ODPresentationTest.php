@@ -26,6 +26,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
@@ -2029,5 +2030,66 @@ class ODPresentationTest extends TestCase
         self::assertEquals($rotation, $arrayShape[0]->getRotation());
         self::assertEquals(400, $arrayShape[0]->getOffsetX());
         self::assertEquals(100, $arrayShape[0]->getOffsetY());
+    }
+
+    public function testGroupSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oGroup = $oPhpPresentation->getActiveSlide()->createGroup();
+        $oGroup->setDescription('Two shapes and a group')->setDecorative(true);
+        $oGroup->createRichTextShape()->setOffsetX(10)->setOffsetY(20)->createTextRun('Inside');
+        $oGroup->createLineShape(30, 40, 50, 60);
+        $oDeeper = new Group();
+        $oDeeper->createRichTextShape()->createTextRun('Deeper');
+        $oGroup->addShape($oDeeper);
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Outside');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        // A group was dropped on reading, and everything in it with it
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(2, $arrayShape);
+        self::assertInstanceOf(Group::class, $arrayShape[0]);
+        self::assertEquals('Two shapes and a group', $arrayShape[0]->getDescription());
+        self::assertTrue($arrayShape[0]->isDecorative());
+        self::assertInstanceOf(RichText::class, $arrayShape[1]);
+        self::assertEquals('Outside', $arrayShape[1]->getPlainText());
+
+        $arrayInside = array_values((array) $arrayShape[0]->getShapeCollection());
+        self::assertCount(3, $arrayInside);
+        self::assertInstanceOf(RichText::class, $arrayInside[0]);
+        self::assertEquals('Inside', $arrayInside[0]->getPlainText());
+        self::assertEquals(10, $arrayInside[0]->getOffsetX());
+        self::assertEquals(20, $arrayInside[0]->getOffsetY());
+        self::assertInstanceOf(Line::class, $arrayInside[1]);
+        self::assertEquals(30, $arrayInside[1]->getOffsetX());
+        self::assertEquals(40, $arrayInside[1]->getOffsetY());
+        self::assertInstanceOf(Group::class, $arrayInside[2]);
+        $arrayDeeper = array_values((array) $arrayInside[2]->getShapeCollection());
+        self::assertCount(1, $arrayDeeper);
+        self::assertInstanceOf(RichText::class, $arrayDeeper[0]);
+        self::assertEquals('Deeper', $arrayDeeper[0]->getPlainText());
+    }
+
+    public function testShapesKeepTheirOrder(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->createLineShape(0, 0, 10, 10);
+        $oSlide->createRichTextShape()->createTextRun('Above the line');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        // Every line was read after every frame, so a line under a text box came back over it
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(2, $arrayShape);
+        self::assertInstanceOf(Line::class, $arrayShape[0]);
+        self::assertInstanceOf(RichText::class, $arrayShape[1]);
     }
 }

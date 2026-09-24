@@ -32,10 +32,12 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Shape\Table\Cell;
 use PhpOffice\PhpPresentation\Shape\Table\Row;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
@@ -874,33 +876,7 @@ class ODPresentation implements ReaderInterface
                 $this->oPhpPresentation->getActiveSlide()->setBackground($this->arrayStyles[$keyStyle]['background']);
             }
         }
-        foreach ($this->oXMLReader->getElements('draw:frame', $nodeSlide) as $oNodeFrame) {
-            if ($oNodeFrame instanceof DOMElement) {
-                // A table is looked for first: a producer may put a replacement image of the
-                // table in the same frame, and the table is what the frame holds
-                if ($this->oXMLReader->getElement('table:table', $oNodeFrame)) {
-                    $this->loadShapeTable($oNodeFrame);
-
-                    continue;
-                }
-                if ($this->loadImages && $this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
-                    $this->loadShapeDrawing($oNodeFrame);
-
-                    continue;
-                }
-                if ($this->oXMLReader->getElement('draw:text-box', $oNodeFrame)) {
-                    $this->loadShapeRichText($oNodeFrame);
-
-                    continue;
-                }
-            }
-        }
-        // a line is a shape of the page in its own right, not the content of a frame
-        foreach ($this->oXMLReader->getElements('draw:line', $nodeSlide) as $oNodeLine) {
-            if ($oNodeLine instanceof DOMElement) {
-                $this->loadShapeLine($oNodeLine);
-            }
-        }
+        $this->loadShapes($nodeSlide, $this->oPhpPresentation->getActiveSlide());
         $this->loadSlideNote($nodeSlide);
 
         return true;
@@ -952,6 +928,56 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
+     * Read the shapes of a page or a group, in the order they are drawn.
+     *
+     * @param DOMElement $nodeParent the `draw:page` or the `draw:g`
+     */
+    protected function loadShapes(DOMElement $nodeParent, ShapeContainerInterface $container): void
+    {
+        foreach ($nodeParent->childNodes as $oNode) {
+            if (!$oNode instanceof DOMElement) {
+                continue;
+            }
+            switch ($oNode->nodeName) {
+                case 'draw:frame':
+                    // A table is looked for first: a producer may put a replacement image of the
+                    // table in the same frame, and the table is what the frame holds
+                    if ($this->oXMLReader->getElement('table:table', $oNode)) {
+                        $this->loadShapeTable($oNode, $container);
+                    } elseif ($this->loadImages && $this->oXMLReader->getElement('draw:image', $oNode)) {
+                        $this->loadShapeDrawing($oNode, $container);
+                    } elseif ($this->oXMLReader->getElement('draw:text-box', $oNode)) {
+                        $this->loadShapeRichText($oNode, $container);
+                    }
+
+                    break;
+                case 'draw:line':
+                    // a line is a shape of the page in its own right, not the content of a frame
+                    $this->loadShapeLine($oNode, $container);
+
+                    break;
+                case 'draw:g':
+                    $this->loadShapeGroup($oNode, $container);
+
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Read a group, and the shapes in it, which ODF places on the page as they are.
+     */
+    protected function loadShapeGroup(DOMElement $oNodeGroup, ShapeContainerInterface $container): void
+    {
+        $oShape = new Group();
+        $oShape->setDescription($this->loadShapeDescription($oNodeGroup));
+        $oShape->setDecorative($this->loadShapeDecorative($oNodeGroup));
+        $container->addShape($oShape);
+
+        $this->loadShapes($oNodeGroup, $oShape);
+    }
+
+    /**
      * Read the description of a shape, the alternative text exposed to assistive
      * technologies. Falls back to the shape name, as written by older versions.
      */
@@ -982,7 +1008,7 @@ class ODPresentation implements ReaderInterface
     /**
      * Read Shape Drawing.
      */
-    protected function loadShapeDrawing(DOMElement $oNodeFrame): void
+    protected function loadShapeDrawing(DOMElement $oNodeFrame, ShapeContainerInterface $container): void
     {
         // Core
         $mimetype = '';
@@ -1034,7 +1060,7 @@ class ODPresentation implements ReaderInterface
             }
         }
 
-        $this->oPhpPresentation->getActiveSlide()->addShape($shape);
+        $container->addShape($shape);
     }
 
     /**
@@ -1056,7 +1082,7 @@ class ODPresentation implements ReaderInterface
      * runs right to left simply has an `svg:x2` smaller than its `svg:x1`, which is the negative
      * width the model carries.
      */
-    protected function loadShapeLine(DOMElement $oNodeLine): void
+    protected function loadShapeLine(DOMElement $oNodeLine, ShapeContainerInterface $container): void
     {
         $point = function (string $attribute) use ($oNodeLine): int {
             return $oNodeLine->hasAttribute($attribute)
@@ -1068,7 +1094,7 @@ class ODPresentation implements ReaderInterface
         $shape->setDescription($this->loadShapeDescription($oNodeLine));
         $shape->setDecorative($this->loadShapeDecorative($oNodeLine));
 
-        $this->oPhpPresentation->getActiveSlide()->addShape($shape);
+        $container->addShape($shape);
     }
 
     /**
@@ -1317,7 +1343,7 @@ class ODPresentation implements ReaderInterface
      * An ODF table lives inside a `draw:frame` like any other shape, and says which of its rows
      * are styled apart on the table itself rather than by where they sit.
      */
-    protected function loadShapeTable(DOMElement $oNodeFrame): void
+    protected function loadShapeTable(DOMElement $oNodeFrame, ShapeContainerInterface $container): void
     {
         $columns = 0;
         foreach ($this->oXMLReader->getElements('table:table/table:table-column', $oNodeFrame) as $oNodeColumn) {
@@ -1326,7 +1352,8 @@ class ODPresentation implements ReaderInterface
                 : 1;
         }
 
-        $oShape = $this->oPhpPresentation->getActiveSlide()->createTableShape(max($columns, 1));
+        $oShape = new Table(max($columns, 1));
+        $container->addShape($oShape);
         $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
         $oShape->setDecorative($this->loadShapeDecorative($oNodeFrame));
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
