@@ -133,7 +133,7 @@ class ODPresentationTest extends TestCase
         $oShape = $arrayShape[0];
         self::assertInstanceOf(Gd::class, $oShape);
         self::assertEquals('PHPPresentation logo', $oShape->getName());
-        self::assertEquals('PHPPresentation logo', $oShape->getDescription());
+        self::assertEquals('', $oShape->getDescription());
         self::assertEquals(36, $oShape->getHeight());
         self::assertEquals(10, $oShape->getOffsetX());
         self::assertEquals(10, $oShape->getOffsetY());
@@ -194,7 +194,7 @@ class ODPresentationTest extends TestCase
         $oShape = $arrayShape[0];
         self::assertInstanceOf(Gd::class, $oShape);
         self::assertEquals('PHPPresentation logo', $oShape->getName());
-        self::assertEquals('PHPPresentation logo', $oShape->getDescription());
+        self::assertEquals('', $oShape->getDescription());
         self::assertEquals(36, $oShape->getHeight());
         self::assertEquals(10, $oShape->getOffsetX());
         self::assertEquals(10, $oShape->getOffsetY());
@@ -312,7 +312,7 @@ class ODPresentationTest extends TestCase
         $oShape = $arrayShape[0];
         self::assertInstanceOf(Gd::class, $oShape);
         self::assertEquals('PHPPresentation logo', $oShape->getName());
-        self::assertEquals('PHPPresentation logo', $oShape->getDescription());
+        self::assertEquals('', $oShape->getDescription());
         self::assertEquals(36, $oShape->getHeight());
         self::assertEquals(10, $oShape->getOffsetX());
         self::assertEquals(10, $oShape->getOffsetY());
@@ -513,7 +513,7 @@ class ODPresentationTest extends TestCase
         $oShape = $arrayShape[0];
         self::assertInstanceOf(Gd::class, $oShape);
         self::assertEquals('PHPPresentation logo', $oShape->getName());
-        self::assertEquals('PHPPresentation logo', $oShape->getDescription());
+        self::assertEquals('', $oShape->getDescription());
         self::assertEquals(36, $oShape->getHeight());
         self::assertEquals(10, $oShape->getOffsetX());
         self::assertEquals(10, $oShape->getOffsetY());
@@ -1334,10 +1334,10 @@ class ODPresentationTest extends TestCase
         $oDrawing->setName('Logo');
         $oDrawing->setDescription('The logo of the company');
         $oDrawing->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
-        // Written by an earlier version: no `svg:desc`, the name is all the shape says.
-        $oLegacy = $oSlide->createDrawingShape();
-        $oLegacy->setName('Legacy');
-        $oLegacy->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        // A name and no alternative text: the name is a label, not what a screen reader says
+        $oNamed = $oSlide->createDrawingShape();
+        $oNamed->setName('pic-none');
+        $oNamed->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
 
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
         (new ODPresentationWriter($oPhpPresentation))->save($file);
@@ -1348,7 +1348,8 @@ class ODPresentationTest extends TestCase
         self::assertCount(3, $arrayShape);
         self::assertEquals('Budget spent to date: 45% of 1.2M EUR', $arrayShape[0]->getDescription());
         self::assertEquals('The logo of the company', $arrayShape[1]->getDescription());
-        self::assertEquals('Legacy', $arrayShape[2]->getDescription());
+        self::assertEquals('', $arrayShape[2]->getDescription());
+        self::assertEquals('pic-none', $arrayShape[2]->getName());
     }
 
     public function testHyperlinkToSlide(): void
@@ -2194,5 +2195,33 @@ class ODPresentationTest extends TestCase
         $oElement = $arrayShape[0]->getParagraph()->getRichTextElements()[0];
         self::assertInstanceOf(TextElement::class, $oElement);
         self::assertEquals($expected, $oElement->getHyperlink()->getTooltip());
+    }
+
+    public function testShapeNameSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->setName('Text');
+        $oSlide->createTableShape(1)->setName('Table')->createRow()->getCell()->createTextRun('Cell');
+        $oSlide->createLineShape(0, 0, 10, 10)->setName('Line');
+        $oGroup = $oSlide->createGroup();
+        $oGroup->setName('Group');
+        $oGroup->createRichTextShape()->setName('Inside');
+        $oSlide->createDrawingShape()->setName('Picture')->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        // only a picture kept its name, and no shape but a picture was given one
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(5, $arrayShape);
+        self::assertEquals(['Text', 'Table', 'Line', 'Group', 'Picture'], array_map(fn ($oShape) => $oShape->getName(), $arrayShape));
+        self::assertInstanceOf(Group::class, $arrayShape[3]);
+        self::assertEquals('Inside', $arrayShape[3]->getShapeCollection()[0]->getName());
+        foreach ($arrayShape as $oShape) {
+            self::assertEquals('', $oShape->getDescription());
+        }
     }
 }

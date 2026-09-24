@@ -2604,4 +2604,32 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'office:title', 'A cell tooltip');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
+
+    public function testShapeName(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->setName('Text');
+        $oSlide->createTableShape(1)->setName('Table')->createRow()->getCell()->createTextRun('Cell');
+        $oSlide->createLineShape(0, 0, 10, 10)->setName('Line');
+        $oGroup = $oSlide->createGroup();
+        $oGroup->setName('Group');
+        $oGroup->createRichTextShape();
+        $oChart = $oSlide->createChartShape()->setName('Chart');
+        $oChart->getTitle()->setText('Title');
+        $oChart->getPlotArea()->setType((new ChartTypeLine())->addSeries(new Series('Serie', ['A' => '1'])));
+        $oUntitled = $oSlide->createChartShape();
+        $oUntitled->getTitle()->setText('Untitled');
+        $oUntitled->getPlotArea()->setType((new ChartTypeLine())->addSeries(new Series('Serie', ['A' => '1'])));
+
+        // only a picture and a media shape were named, and a chart by the text of its title
+        $element = '/office:document-content/office:body/office:presentation/draw:page';
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:text-box]', 'draw:name', 'Text');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[table:table]', 'draw:name', 'Table');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:line', 'draw:name', 'Line');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:g', 'draw:name', 'Group');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '/draw:g/draw:frame', 'draw:name');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:object][1]', 'draw:name', 'Chart');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:object][2]', 'draw:name', 'Untitled');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
 }
