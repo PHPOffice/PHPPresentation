@@ -1658,6 +1658,14 @@ class PowerPoint2007 implements ReaderInterface
                         $oShape->getTitle()->setVisible(false);
                     }
 
+                    // `c:lang` is no guide: LibreOffice writes en-US there whatever the chart is in.
+                    // The text says it, a run first and then the end of a paragraph, and a chart in
+                    // the language of the document is left to take it from the document.
+                    $oElement = $xmlReader->getElement('//a:rPr[@lang]') ?? $xmlReader->getElement('//a:endParaRPr[@lang]');
+                    if ($oElement instanceof DOMElement && $oElement->getAttribute('lang') !== $this->oPhpPresentation->getDocumentProperties()->getLanguage()) {
+                        $oShape->setLanguage($oElement->getAttribute('lang'));
+                    }
+
                     $shapeType = $this->loadTypeChart($xmlReader);
                     if ($shapeType instanceof Chart\Type\AbstractType) {
                         $oShape->getPlotArea()->setType($shapeType);

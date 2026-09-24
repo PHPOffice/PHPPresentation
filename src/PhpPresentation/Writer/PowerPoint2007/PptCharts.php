@@ -49,6 +49,13 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class PptCharts extends AbstractDecoratorWriter
 {
+    /**
+     * The language of every text of the chart being written.
+     *
+     * @var string
+     */
+    protected $language = 'en-US';
+
     public function render(): ZipInterface
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
@@ -79,6 +86,9 @@ class PptCharts extends AbstractDecoratorWriter
      */
     protected function writeChart(Chart $chart): string
     {
+        // a chart that names no language of its own is in the one of the document
+        $this->language = $chart->getLanguage() ?? $this->getPresentation()->getDocumentProperties()->getLanguage();
+
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
 
@@ -98,7 +108,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:lang
         $objWriter->startElement('c:lang');
-        $objWriter->writeAttribute('val', 'en-US');
+        $objWriter->writeAttribute('val', $this->language);
         $objWriter->endElement();
 
         // c:chart
@@ -477,7 +487,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // a:rPr
         $objWriter->startElement('a:rPr');
-        $objWriter->writeAttribute('lang', 'en-US');
+        $objWriter->writeAttribute('lang', $this->language);
         $objWriter->writeAttribute('dirty', '0');
         $objWriter->writeAttribute('b', ($subject->getFont()->isBold() ? 'true' : 'false'));
         $objWriter->writeAttribute('i', ($subject->getFont()->isItalic() ? 'true' : 'false'));
@@ -508,7 +518,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // a:endParaRPr
         $objWriter->startElement('a:endParaRPr');
-        $objWriter->writeAttribute('lang', 'en-US');
+        $objWriter->writeAttribute('lang', $this->language);
         $objWriter->writeAttribute('dirty', '0');
         $objWriter->endElement();
 
@@ -659,7 +669,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // a:endParaRPr
         $objWriter->startElement('a:endParaRPr');
-        $objWriter->writeAttribute('lang', 'en-US');
+        $objWriter->writeAttribute('lang', $this->language);
         $objWriter->writeAttribute('dirty', '0');
         $objWriter->endElement();
 
@@ -974,7 +984,7 @@ class PptCharts extends AbstractDecoratorWriter
 
                 // a:endParaRPr
                 $objWriter->startElement('a:endParaRPr');
-                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('lang', $this->language);
                 $objWriter->writeAttribute('dirty', '0');
                 $objWriter->endElement();
 
@@ -1203,7 +1213,7 @@ class PptCharts extends AbstractDecoratorWriter
 
                 // a:endParaRPr
                 $objWriter->startElement('a:endParaRPr');
-                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('lang', $this->language);
                 $objWriter->writeAttribute('dirty', '0');
                 $objWriter->endElement();
 
@@ -1420,7 +1430,7 @@ class PptCharts extends AbstractDecoratorWriter
 
                 // c:dLbls\c:txPr\a:p\a:endParaRPr
                 $objWriter->startElement('a:endParaRPr');
-                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('lang', $this->language);
                 $objWriter->writeAttribute('dirty', '0');
                 $objWriter->endElement();
 
@@ -1571,7 +1581,7 @@ class PptCharts extends AbstractDecoratorWriter
 
                 // a:endParaRPr
                 $objWriter->startElement('a:endParaRPr');
-                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('lang', $this->language);
                 $objWriter->writeAttribute('dirty', '0');
                 $objWriter->endElement();
 
@@ -1748,7 +1758,7 @@ class PptCharts extends AbstractDecoratorWriter
 
                 // a:endParaRPr
                 $objWriter->startElement('a:endParaRPr');
-                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('lang', $this->language);
                 $objWriter->writeAttribute('dirty', '0');
                 $objWriter->endElement();
 
@@ -1912,7 +1922,7 @@ class PptCharts extends AbstractDecoratorWriter
 
                 // a:endParaRPr
                 $objWriter->startElement('a:endParaRPr');
-                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('lang', $this->language);
                 $objWriter->writeAttribute('dirty', '0');
                 $objWriter->endElement();
 
@@ -2102,7 +2112,7 @@ class PptCharts extends AbstractDecoratorWriter
 
                 // a:endParaRPr
                 $objWriter->startElement('a:endParaRPr');
-                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('lang', $this->language);
                 $objWriter->writeAttribute('dirty', '0');
                 $objWriter->endElement();
 
@@ -2279,7 +2289,7 @@ class PptCharts extends AbstractDecoratorWriter
 
                 // a:endParaRPr
                 $objWriter->startElement('a:endParaRPr');
-                $objWriter->writeAttribute('lang', 'en-US');
+                $objWriter->writeAttribute('lang', $this->language);
                 $objWriter->writeAttribute('dirty', '0');
                 $objWriter->endElement();
 
@@ -2560,7 +2570,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             // a:rPr
             $objWriter->startElement('a:rPr');
-            $objWriter->writeAttribute('lang', 'en-US');
+            $objWriter->writeAttribute('lang', $this->language);
             $objWriter->writeAttribute('dirty', '0');
             $objWriter->endElement();
 
@@ -2572,7 +2582,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             // a:endParaRPr
             $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
+            $objWriter->writeAttribute('lang', $this->language);
             $objWriter->writeAttribute('dirty', '0');
             $objWriter->endElement();
 
@@ -2665,7 +2675,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // a:endParaRPr
         $objWriter->startElement('a:endParaRPr');
-        $objWriter->writeAttribute('lang', 'en-US');
+        $objWriter->writeAttribute('lang', $this->language);
         $objWriter->writeAttribute('dirty', '0');
         $objWriter->endElement();
 

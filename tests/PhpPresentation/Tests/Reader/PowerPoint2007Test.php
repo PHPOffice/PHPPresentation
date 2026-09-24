@@ -2268,4 +2268,67 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('Growth', $arrayShape[1]->getName());
         self::assertEquals('Growth by year', $arrayShape[1]->getDescription());
     }
+
+    /**
+     * @return array<string, array{string, null|string}>
+     */
+    public static function dataProviderChartLanguage(): array
+    {
+        return [
+            'the language of the document' => ['uk-UA', null],
+            'a language of its own' => ['uk-UA', 'de-DE'],
+            'the default language of the document' => ['en-US', null],
+            'a language of its own in a document left in the default' => ['en-US', 'uk-UA'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderChartLanguage
+     */
+    #[DataProvider('dataProviderChartLanguage')]
+    public function testChartLanguageSurvivesTheRoundTrip(string $documentLanguage, ?string $chartLanguage): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getDocumentProperties()->setLanguage($documentLanguage);
+        $oChart = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oChart->setLanguage($chartLanguage);
+        $oChart->getTitle()->setText('Title');
+        $oChart->getPlotArea()->setType(new Bar());
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        self::assertSame($chartLanguage, $arrayShape[0]->getLanguage());
+    }
+
+    public function testChartLanguageIsReadFromItsTextAndNotFromCLang(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oChart = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oChart->setLanguage('uk-UA');
+        $oChart->getTitle()->setText('Title');
+        $oChart->getPlotArea()->setType(new Bar());
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        // LibreOffice writes c:lang as en-US whatever the chart is in, and keeps the language of
+        // its text where it belongs
+        $zip = new ZipArchive();
+        $zip->open($file);
+        $name = 'ppt/charts/' . $oChart->getIndexedFilename();
+        $zip->addFromString($name, str_replace('<c:lang val="uk-UA"/>', '<c:lang val="en-US"/>', (string) $zip->getFromName($name)));
+        $zip->close();
+
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        self::assertSame('uk-UA', $arrayShape[0]->getLanguage());
+    }
 }
