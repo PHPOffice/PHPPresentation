@@ -1177,8 +1177,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        // no outline, no colour: the application picks one for each serie
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->setOutline($oOutline);
@@ -1351,8 +1351,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        // no outline, no colour: the application picks one for each serie
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $series->setOutline($outline);
@@ -1468,8 +1468,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        // no outline, no colour: the application picks one for each serie
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->setOutline($oOutline);
