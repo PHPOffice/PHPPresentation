@@ -25,6 +25,7 @@ use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -39,6 +40,7 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Writer\ODPresentation as ODPresentationWriter;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -2029,5 +2031,301 @@ class ODPresentationTest extends TestCase
         self::assertEquals($rotation, $arrayShape[0]->getRotation());
         self::assertEquals(400, $arrayShape[0]->getOffsetX());
         self::assertEquals(100, $arrayShape[0]->getOffsetY());
+    }
+
+    /**
+     * Write a presentation and read it back, the content of its chart object edited in between.
+     *
+     * @param callable(string): string $editChart
+     * @param callable(string): string $editContent
+     */
+    private function roundTripChart(PhpPresentation $oPhpPresentation, ?callable $editChart = null, ?callable $editContent = null): PhpPresentation
+    {
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        if (null !== $editChart || null !== $editContent) {
+            $oZip = new ZipArchive();
+            $oZip->open($file);
+            if (null !== $editChart) {
+                $oZip->addFromString('Object 1/content.xml', $editChart((string) $oZip->getFromName('Object 1/content.xml')));
+            }
+            if (null !== $editContent) {
+                $oZip->addFromString('content.xml', $editContent((string) $oZip->getFromName('content.xml')));
+            }
+            $oZip->close();
+        }
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        return $oPhpPresentationRead;
+    }
+
+    /**
+     * @return array<string, array{Chart\Type\AbstractType}>
+     */
+    public static function dataProviderChartTypes(): array
+    {
+        return [
+            'area' => [new Chart\Type\Area()],
+            'bar' => [new Chart\Type\Bar()],
+            'bar3D' => [new Chart\Type\Bar3D()],
+            'doughnut' => [new Chart\Type\Doughnut()],
+            'line' => [new Chart\Type\Line()],
+            'pie' => [new Chart\Type\Pie()],
+            'pie3D' => [new Chart\Type\Pie3D()],
+            'radar' => [new Chart\Type\Radar()],
+            'scatter' => [new Chart\Type\Scatter()],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderChartTypes
+     */
+    #[DataProvider('dataProviderChartTypes')]
+    public function testChartSurvivesTheRoundTrip(Chart\Type\AbstractType $chartType): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $chartType->addSeries(new Chart\Series('Sales', ['Jan' => '5', 'Feb' => '3.5', 'Mar' => null, 'Apr' => '6']));
+        $chartType->addSeries(new Chart\Series('Costs', ['Jan' => '2', 'Feb' => '4', 'Mar' => '1', 'Apr' => '7']));
+        $oChart = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oChart->setName('Chart 1')->setDescription('Sales and costs')->setOffsetX(40)->setOffsetY(50)->setWidth(600)->setHeight(400);
+        $oChart->getPlotArea()->setType($chartType);
+
+        $arrayShape = array_values((array) $this->roundTripChart($oPhpPresentation)->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        self::assertEquals('Sales and costs', $arrayShape[0]->getDescription());
+        self::assertEquals(40, $arrayShape[0]->getOffsetX());
+        self::assertEquals(50, $arrayShape[0]->getOffsetY());
+        self::assertEquals(600, $arrayShape[0]->getWidth());
+        self::assertEquals(400, $arrayShape[0]->getHeight());
+
+        $readType = $arrayShape[0]->getPlotArea()->getType();
+        self::assertInstanceOf(get_class($chartType), $readType);
+        $series = $readType->getSeries();
+        self::assertCount(2, $series);
+        self::assertEquals('Sales', $series[0]->getTitle());
+        // an empty cell is written as NaN, and read back as the empty cell it is
+        self::assertSame(['Jan' => '5', 'Feb' => '3.5', 'Mar' => null, 'Apr' => '6'], $series[0]->getValues());
+        self::assertEquals('Costs', $series[1]->getTitle());
+        self::assertSame(['Jan' => '2', 'Feb' => '4', 'Mar' => '1', 'Apr' => '7'], $series[1]->getValues());
+    }
+
+    public function testChartTitleLegendAndFillSurviveTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $chartType = new Chart\Type\Bar();
+        $chartType->addSeries(new Chart\Series('Sales', ['Jan' => '5']));
+        $oChart = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($chartType);
+        $oChart->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFEEEEEE'));
+        $oChart->setDisplayBlankAs(Chart::BLANKAS_GAP);
+        $oChart->getTitle()->setText('Sales')->setOffsetX(20)->setOffsetY(10);
+        $oChart->getTitle()->getFont()->setName('Arial')->setSize(20)->setBold(true)->getColor()->setRGB('336699');
+        $oChart->getLegend()->setPosition(Chart\Legend::POSITION_TOP)->setOffsetX(30)->setOffsetY(40);
+        $oChart->getLegend()->getFont()->setItalic(true);
+
+        $oChartRead = $this->roundTripChart($oPhpPresentation)->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(Chart::class, $oChartRead);
+        self::assertEquals(Fill::FILL_SOLID, $oChartRead->getFill()->getFillType());
+        self::assertEquals('EEEEEE', $oChartRead->getFill()->getStartColor()->getRGB());
+        self::assertEquals(Chart::BLANKAS_GAP, $oChartRead->getDisplayBlankAs());
+        self::assertTrue($oChartRead->getTitle()->isVisible());
+        self::assertEquals('Sales', $oChartRead->getTitle()->getText());
+        self::assertEquals(20, $oChartRead->getTitle()->getOffsetX());
+        self::assertEquals(10, $oChartRead->getTitle()->getOffsetY());
+        self::assertEquals('Arial', $oChartRead->getTitle()->getFont()->getName());
+        self::assertEquals(20, $oChartRead->getTitle()->getFont()->getSize());
+        self::assertTrue($oChartRead->getTitle()->getFont()->isBold());
+        self::assertEquals('336699', $oChartRead->getTitle()->getFont()->getColor()->getRGB());
+        self::assertTrue($oChartRead->getLegend()->isVisible());
+        self::assertEquals(Chart\Legend::POSITION_TOP, $oChartRead->getLegend()->getPosition());
+        self::assertEquals(30, $oChartRead->getLegend()->getOffsetX());
+        self::assertEquals(40, $oChartRead->getLegend()->getOffsetY());
+        self::assertTrue($oChartRead->getLegend()->getFont()->isItalic());
+    }
+
+    public function testChartWithoutTitleNorLegendSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $chartType = new Chart\Type\Line();
+        $chartType->addSeries(new Chart\Series('Sales', ['Jan' => '5']));
+        $oChart = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($chartType);
+        $oChart->getTitle()->setVisible(false);
+        $oChart->getLegend()->setVisible(false);
+
+        $oChartRead = $this->roundTripChart($oPhpPresentation)->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(Chart::class, $oChartRead);
+        self::assertFalse($oChartRead->getTitle()->isVisible());
+        self::assertFalse($oChartRead->getLegend()->isVisible());
+    }
+
+    public function testChartTypePropertiesSurviveTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $bar = new Chart\Type\Bar();
+        $bar->setBarDirection(Chart\Type\AbstractTypeBar::DIRECTION_HORIZONTAL)->setBarGrouping(Chart\Type\AbstractTypeBar::GROUPING_PERCENTSTACKED);
+        $bar->addSeries(new Chart\Series('Sales', ['Jan' => '5']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($bar);
+        $line = new Chart\Type\Line();
+        $line->setIsSmooth(true);
+        $line->addSeries(new Chart\Series('Sales', ['Jan' => '5']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($line);
+        $pie = new Chart\Type\Pie();
+        $pie->setExplosion(15);
+        $pie->addSeries(new Chart\Series('Sales', ['Jan' => '5']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($pie);
+
+        $arrayShape = array_values((array) $this->roundTripChart($oPhpPresentation)->getActiveSlide()->getShapeCollection());
+        self::assertCount(3, $arrayShape);
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $barRead = $arrayShape[0]->getPlotArea()->getType();
+        self::assertInstanceOf(Chart\Type\Bar::class, $barRead);
+        self::assertEquals(Chart\Type\AbstractTypeBar::DIRECTION_HORIZONTAL, $barRead->getBarDirection());
+        self::assertEquals(Chart\Type\AbstractTypeBar::GROUPING_PERCENTSTACKED, $barRead->getBarGrouping());
+        self::assertInstanceOf(Chart::class, $arrayShape[1]);
+        $lineRead = $arrayShape[1]->getPlotArea()->getType();
+        self::assertInstanceOf(Chart\Type\Line::class, $lineRead);
+        self::assertTrue($lineRead->isSmooth());
+        self::assertInstanceOf(Chart::class, $arrayShape[2]);
+        $pieRead = $arrayShape[2]->getPlotArea()->getType();
+        self::assertInstanceOf(Chart\Type\Pie::class, $pieRead);
+        self::assertEquals(15, $pieRead->getExplosion());
+    }
+
+    public function testChartAxisSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $chartType = new Chart\Type\Line();
+        $chartType->addSeries(new Chart\Series('Sales', ['Jan' => '5']));
+        $oChart = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($chartType);
+        $axis = $oChart->getPlotArea()->getAxisY();
+        $axis->setTitle('Amount')->setTitleRotation(90)->setMinBounds(-10)->setMaxBounds(90)->setMajorUnit(10)->setMinorUnit(2);
+        $axis->setTickLabelPosition(Chart\Axis::TICK_LABEL_POSITION_LOW);
+        $axis->getFont()->setSize(14);
+        $axis->getTickLabelFont()->setSize(8);
+        $axis->getOutline()->setWidth(2)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF112233'));
+        $gridlines = new Chart\Gridlines();
+        $gridlines->getOutline()->setWidth(1)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAABBCC'));
+        $axis->setMajorGridlines($gridlines);
+        $oChart->getPlotArea()->getAxisX()->setTitle('Month')->setMinorGridlines(new Chart\Gridlines());
+
+        $oChartRead = $this->roundTripChart($oPhpPresentation)->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(Chart::class, $oChartRead);
+        $axisRead = $oChartRead->getPlotArea()->getAxisY();
+        self::assertEquals('Amount', $axisRead->getTitle());
+        self::assertEquals(90, $axisRead->getTitleRotation());
+        self::assertEquals(-10, $axisRead->getMinBounds());
+        self::assertEquals(90, $axisRead->getMaxBounds());
+        self::assertEquals(10, $axisRead->getMajorUnit());
+        self::assertEquals(2, $axisRead->getMinorUnit());
+        self::assertEquals(Chart\Axis::TICK_LABEL_POSITION_LOW, $axisRead->getTickLabelPosition());
+        self::assertEquals(14, $axisRead->getFont()->getSize());
+        self::assertEquals(8, $axisRead->getTickLabelFont()->getSize());
+        self::assertEquals(Fill::FILL_SOLID, $axisRead->getOutline()->getFill()->getFillType());
+        self::assertEquals('112233', $axisRead->getOutline()->getFill()->getStartColor()->getRGB());
+        self::assertEquals(2, $axisRead->getOutline()->getWidth());
+        self::assertInstanceOf(Chart\Gridlines::class, $axisRead->getMajorGridlines());
+        self::assertEquals('AABBCC', $axisRead->getMajorGridlines()->getOutline()->getFill()->getStartColor()->getRGB());
+        self::assertEquals(1, $axisRead->getMajorGridlines()->getOutline()->getWidth());
+        self::assertNull($axisRead->getMinorGridlines());
+        self::assertEquals('Month', $oChartRead->getPlotArea()->getAxisX()->getTitle());
+        self::assertNull($oChartRead->getPlotArea()->getAxisX()->getMajorGridlines());
+        self::assertInstanceOf(Chart\Gridlines::class, $oChartRead->getPlotArea()->getAxisX()->getMinorGridlines());
+    }
+
+    public function testChartSeriesStyleSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $series = new Chart\Series('Sales', ['Jan' => '5', 'Feb' => '3', 'Mar' => '8']);
+        $series->setShowValue(false)->setShowPercentage(true)->setShowCategoryName(true)->setSeparator(PHP_EOL);
+        $series->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4472C4'));
+        $series->setOutline((new Outline())->setWidth(3));
+        $series->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFED7D31'));
+        $series->getMarker()->setSymbol(Chart\Marker::SYMBOL_DIAMOND)->setSize(7);
+        $series->getFont()->setName('Arial')->setSize(11);
+        $series->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFFF0000'));
+        $series->getDataPointOutline(2)->setWidth(2)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF00FF00'));
+        $chartType = new Chart\Type\Line();
+        $chartType->addSeries($series);
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($chartType);
+
+        $oChartRead = $this->roundTripChart($oPhpPresentation)->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(Chart::class, $oChartRead);
+        $seriesRead = $oChartRead->getPlotArea()->getType()->getSeries()[0];
+        self::assertFalse($seriesRead->hasShowValue());
+        self::assertTrue($seriesRead->hasShowPercentage());
+        self::assertTrue($seriesRead->hasShowCategoryName());
+        self::assertEquals(PHP_EOL, $seriesRead->getSeparator());
+        self::assertEquals('4472C4', $seriesRead->getFill()->getStartColor()->getRGB());
+        self::assertInstanceOf(Outline::class, $seriesRead->getOutline());
+        self::assertEquals('ED7D31', $seriesRead->getOutline()->getFill()->getStartColor()->getRGB());
+        self::assertEquals(3, $seriesRead->getOutline()->getWidth());
+        self::assertEquals(Chart\Marker::SYMBOL_DIAMOND, $seriesRead->getMarker()->getSymbol());
+        self::assertEquals(7, $seriesRead->getMarker()->getSize());
+        self::assertEquals('Arial', $seriesRead->getFont()->getName());
+        self::assertEquals(11, $seriesRead->getFont()->getSize());
+        self::assertEquals([1, 2], $seriesRead->getDataPointIndexes());
+        self::assertEquals('FF0000', $seriesRead->getDataPointFill(1)->getStartColor()->getRGB());
+        self::assertEquals('00FF00', $seriesRead->getDataPointOutline(2)->getFill()->getStartColor()->getRGB());
+        self::assertEquals(2, $seriesRead->getDataPointOutline(2)->getWidth());
+    }
+
+    public function testChartSeriesWithoutOutlineIsReadWithoutOne(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $chartType = new Chart\Type\Line();
+        $chartType->addSeries(new Chart\Series('Sales', ['Jan' => '5']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($chartType);
+
+        $oChartRead = $this->roundTripChart($oPhpPresentation)->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(Chart::class, $oChartRead);
+        self::assertNull($oChartRead->getPlotArea()->getType()->getSeries()[0]->getOutline());
+    }
+
+    public function testChartWrittenByLibreOffice(): void
+    {
+        // LibreOffice puts the picture of the chart it last drew in the frame next to the object,
+        // and says the X values of a scatter chart with `chart:domain` rather than categories
+        $oPhpPresentation = new PhpPresentation();
+        $chartType = new Chart\Type\Scatter();
+        $chartType->addSeries(new Chart\Series('Sales', ['Jan' => '5', 'Feb' => '3']));
+        $chartType->addSeries(new Chart\Series('X', ['Jan' => '1.5', 'Feb' => '2.5']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($chartType);
+
+        $oPhpPresentationRead = $this->roundTripChart(
+            $oPhpPresentation,
+            function (string $content): string {
+                return (string) preg_replace_callback('#<chart:series[^>]*\$B\$2[^>]*>#', function (array $matches): string {
+                    return $matches[0] . '<chart:domain table:cell-range-address="local-table.$C$2:.$C$3"/>';
+                }, $content, 1);
+            },
+            function (string $content): string {
+                return str_replace('</draw:object>', '</draw:object><draw:image xlink:href="./ObjectReplacements/Object 1" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>', $content);
+            }
+        );
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        $series = $arrayShape[0]->getPlotArea()->getType()->getSeries();
+        self::assertSame(['1.5' => '5', '2.5' => '3'], $series[0]->getValues());
+        self::assertSame(['Jan' => '1.5', 'Feb' => '2.5'], $series[1]->getValues());
+    }
+
+    public function testObjectThatIsNotAChartIsNotReadAsOne(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $chartType = new Chart\Type\Bar();
+        $chartType->addSeries(new Chart\Series('Sales', ['Jan' => '5']));
+        $oPhpPresentation->getActiveSlide()->createChartShape()->getPlotArea()->setType($chartType);
+
+        $oPhpPresentationRead = $this->roundTripChart($oPhpPresentation, function (string $content): string {
+            return str_replace('office:chart>', 'office:drawing>', $content);
+        });
+
+        self::assertCount(0, $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
     }
 }
