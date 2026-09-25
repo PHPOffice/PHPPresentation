@@ -26,17 +26,19 @@ use DOMXPath;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptSlideMasters;
 use PHPUnit\Framework\MockObject\MockBuilder;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PowerPoint2007.
  *
  * @coversDefaultClass \PowerPoint2007
  */
-class PptSlideMastersTest extends TestCase
+class PptSlideMastersTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'PowerPoint2007';
+
     public function testWriteSlideMasterRelationships(): void
     {
         $writer = new PptSlideMasters();
@@ -67,7 +69,7 @@ class PptSlideMastersTest extends TestCase
         $collection[] = new ShapeDrawingFile();
         $collection[] = new ShapeDrawingFile();
 
-        $slideMaster->expects(self::exactly(2))
+        $slideMaster->expects(self::exactly(3))
             ->method('getShapeCollection')
             ->willReturn($collection);
 
@@ -88,5 +90,35 @@ class PptSlideMastersTest extends TestCase
             self::assertInstanceOf(DOMElement::class, $domItem);
             self::assertEquals('rId' . (string) ($id + 1), $domItem->getAttribute('Id'));
         }
+    }
+
+    public function testHyperlinkOnMasterHasARelationship(): void
+    {
+        $oRichText = $this->oPresentation->getAllMasterSlides()[0]->createRichTextShape();
+        $oRichText->getHyperlink()->setUrl('https://example.com/shape')->setTooltip('Master');
+        $oRichText->createTextRun('Run')->getHyperlink()->setUrl('https://example.com/run');
+
+        $relationship = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink"][@Target="%s"]';
+        $this->assertZipXmlElementExists('ppt/slideMasters/_rels/slideMaster1.xml.rels', sprintf($relationship, 'https://example.com/shape'));
+        $this->assertZipXmlElementExists('ppt/slideMasters/_rels/slideMaster1.xml.rels', sprintf($relationship, 'https://example.com/run'));
+        // `r:id=""` was written for both, naming no relationship at all
+        $this->assertZipXmlAttributeStartsWith('ppt/slideMasters/slideMaster1.xml', '/p:sldMaster/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr/a:hlinkClick', 'r:id', 'rId');
+        $this->assertZipXmlAttributeStartsWith('ppt/slideMasters/slideMaster1.xml', '/p:sldMaster/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick', 'r:id', 'rId');
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testHyperlinkOnLayoutHasARelationship(): void
+    {
+        $this->oPresentation->createSlide();
+        $oLayout = $this->oPresentation->getAllMasterSlides()[0]->getAllSlideLayouts()[0];
+        $oLayout->createRichTextShape()->getHyperlink()->setSlideNumber(2);
+
+        // A layout is not in the folder of the slides, so the slide it jumps to is one folder over
+        $relationship = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide"][@Target="../slides/slide2.xml"]';
+        $this->assertZipXmlElementExists('ppt/slideLayouts/_rels/slideLayout1.xml.rels', $relationship);
+        $this->assertZipXmlAttributeStartsWith('ppt/slideLayouts/slideLayout1.xml', '/p:sldLayout/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr/a:hlinkClick', 'r:id', 'rId');
+
+        $this->assertIsSchemaECMA376Valid();
     }
 }

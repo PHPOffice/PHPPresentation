@@ -85,7 +85,9 @@ class PptSlideMasters extends AbstractSlide
             ++$relId;
         }
 
-        // TODO: Write hyperlink relationships?
+        // Write hyperlink relationships
+        $relId = $this->writeHyperlinkRelations($oMasterSlide, $objWriter, $relId, '../slides/');
+
         // TODO: Write comment relationships
         // Relationship theme/theme1.xml
         $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $oMasterSlide->getRelsIndex() . '.xml');
