@@ -710,6 +710,33 @@ class PowerPoint2007Test extends TestCase
         }
     }
 
+    public function testLineAndGroupNameSurviveTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->createLineShape(0, 0, 10, 10)->setName('Rule');
+        $oGroup = $oSlide->createGroup();
+        $oGroup->setName('Legend');
+        $oGroup->createRichTextShape();
+        $oSlide->createGroup()->createRichTextShape();
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        // the Reader read both names, and the Writer wrote neither
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(3, $arrayShape);
+        self::assertInstanceOf(LineShape::class, $arrayShape[0]);
+        self::assertEquals('Rule', $arrayShape[0]->getName());
+        self::assertInstanceOf(Group::class, $arrayShape[1]);
+        self::assertEquals('Legend', $arrayShape[1]->getName());
+        // a group given no name comes back with none, as every other shape does
+        self::assertInstanceOf(Group::class, $arrayShape[2]);
+        self::assertEquals('', $arrayShape[2]->getName());
+    }
+
     public function testLoadFileChartBar(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_ChartBar.pptx';
