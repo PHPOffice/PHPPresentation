@@ -731,9 +731,9 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('Rule', $arrayShape[0]->getName());
         self::assertInstanceOf(Group::class, $arrayShape[1]);
         self::assertEquals('Legend', $arrayShape[1]->getName());
-        // a group given no name is still named the way it was
+        // a group given no name comes back with none, as every other shape does
         self::assertInstanceOf(Group::class, $arrayShape[2]);
-        self::assertStringStartsWith('Group ', $arrayShape[2]->getName());
+        self::assertEquals('', $arrayShape[2]->getName());
     }
 
     public function testLoadFileChartBar(): void

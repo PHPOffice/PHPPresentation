@@ -1530,7 +1530,7 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->oPresentation->getActiveSlide()->createRichTextShape()->createTextRun('BBB');
 
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr', 'id', 2);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr', 'name', 'Group 2');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:nvGrpSpPr/p:cNvPr', 'name', '');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:grpSp/p:sp/p:nvSpPr/p:cNvPr', 'id', 3);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr', 'id', 4);
         $this->assertIsSchemaECMA376Valid();

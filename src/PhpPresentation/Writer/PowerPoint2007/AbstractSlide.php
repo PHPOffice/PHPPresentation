@@ -1567,7 +1567,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:cNvPr
         $objWriter->startElement('p:cNvPr');
         $objWriter->writeAttribute('id', $shapeId);
-        $objWriter->writeAttribute('name', '' !== $group->getName() ? $group->getName() : 'Group ' . $shapeId);
+        $objWriter->writeAttribute('name', $group->getName());
         $objWriter->writeAttribute('descr', $group->getDescription());
         $this->writeHyperlink($objWriter, $group);
         $this->writeShapeDecorative($objWriter, $group);
