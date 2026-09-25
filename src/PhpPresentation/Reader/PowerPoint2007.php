@@ -33,6 +33,7 @@ use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
@@ -1344,19 +1345,71 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
+     * A `p:sp` is an AutoShape when it draws a preset other than a rectangle and is neither a text
+     * box nor a placeholder. The text of an AutoShape is a plain string, so a rectangle -- where
+     * PowerPoint keeps most of its formatted text -- stays a RichText, which keeps the formatting.
+     */
+    protected function isAutoShape(XMLReader $document, DOMElement $node): bool
+    {
+        $prst = $document->getAttribute('prst', $node, 'p:spPr/a:prstGeom');
+
+        return null !== $prst && AutoShape::TYPE_RECTANGLE !== $prst
+            && '1' !== $document->getAttribute('txBox', $node, 'p:nvSpPr/p:cNvSpPr')
+            && !$document->elementExists('p:nvSpPr/p:nvPr/p:ph', $node);
+    }
+
+    /**
      * @param AbstractSlide|Note $oSlide
      */
-    protected function loadShapeRichText(XMLReader $document, DOMElement $node, $oSlide, ?ShapeContainerInterface $oContainer = null): void
+    protected function loadShapeAutoShape(XMLReader $document, DOMElement $node, $oSlide, ?ShapeContainerInterface $oContainer = null): void
     {
-        // Core
-        $oShape = new RichText();
+        $oShape = new AutoShape();
         ($oContainer ?? $oSlide)->addShape($oShape);
-        $oShape->setParagraphs([]);
-        // Variables
-        if ($oSlide instanceof AbstractSlide) {
-            $this->fileRels = $oSlide->getRelsIndex();
+        $this->loadShapeFrame($document, $node, $oShape);
+        $oShape->setType((string) $document->getAttribute('prst', $node, 'p:spPr/a:prstGeom'));
+
+        // the corner of a rounded rectangle is its `adj`, in 50000ths of half its shorter side
+        $adj = $document->getAttribute('fmla', $node, 'p:spPr/a:prstGeom/a:avLst/a:gd[@name="adj"]');
+        if (AutoShape::TYPE_ROUNDED_RECTANGLE === $oShape->getType() && null !== $adj && 1 === preg_match('/^val (\d+)$/', $adj, $matches)) {
+            $oShape->setRoundRectCorner((int) round((int) $matches[1] / 50000 * floor(min($oShape->getWidth(), $oShape->getHeight()) / 2)));
         }
 
+        $oElement = $document->getElement('p:spPr', $node);
+        if ($oElement instanceof DOMElement) {
+            $oShape->setFill($this->loadStyleFill($document, $oElement));
+            $outline = $this->loadStyleOutline($document, $oElement);
+            if ($outline) {
+                $oShape->setOutline($outline);
+            }
+        }
+
+        $oElement = $document->getElement('p:spPr/a:effectLst', $node);
+        if ($oElement instanceof DOMElement) {
+            $oShape->setShadow($this->loadShadow($document, $oElement));
+        }
+
+        // a paragraph a line of the text, a break a line within one
+        $paragraphs = [];
+        foreach ($document->getElements('p:txBody/a:p', $node) as $oParagraph) {
+            if (!$oParagraph instanceof DOMElement) {
+                continue;
+            }
+            $text = '';
+            foreach ($document->getElements('a:r/a:t|a:fld/a:t|a:br', $oParagraph) as $oElement) {
+                $text .= 'a:br' === $oElement->nodeName ? "\n" : $oElement->textContent;
+            }
+            $paragraphs[] = $text;
+        }
+        $oShape->setText(implode("\n", $paragraphs));
+    }
+
+    /**
+     * The name, the alternative text, the link and the place of a `p:sp`.
+     *
+     * @param AutoShape|RichText $oShape
+     */
+    protected function loadShapeFrame(XMLReader $document, DOMElement $node, $oShape): void
+    {
         $oElement = $document->getElement('p:nvSpPr/p:cNvPr', $node);
         if ($oElement instanceof DOMElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
@@ -1389,6 +1442,23 @@ class PowerPoint2007 implements ReaderInterface
                 $oShape->setHeight((int) CommonDrawing::emuToPixels((int) $oElement->getAttribute('cy')));
             }
         }
+    }
+
+    /**
+     * @param AbstractSlide|Note $oSlide
+     */
+    protected function loadShapeRichText(XMLReader $document, DOMElement $node, $oSlide, ?ShapeContainerInterface $oContainer = null): void
+    {
+        // Core
+        $oShape = new RichText();
+        ($oContainer ?? $oSlide)->addShape($oShape);
+        $oShape->setParagraphs([]);
+        // Variables
+        if ($oSlide instanceof AbstractSlide) {
+            $this->fileRels = $oSlide->getRelsIndex();
+        }
+
+        $this->loadShapeFrame($document, $node, $oShape);
 
         $oElement = $document->getElement('p:nvSpPr/p:nvPr/p:ph', $node);
         if ($oElement instanceof DOMElement) {
@@ -2459,7 +2529,11 @@ class PowerPoint2007 implements ReaderInterface
 
                     break;
                 case 'p:sp':
-                    $this->loadShapeRichText($xmlReader, $oNode, $oSlide, $oContainer);
+                    if ($this->isAutoShape($xmlReader, $oNode)) {
+                        $this->loadShapeAutoShape($xmlReader, $oNode, $oSlide, $oContainer);
+                    } else {
+                        $this->loadShapeRichText($xmlReader, $oNode, $oSlide, $oContainer);
+                    }
 
                     break;
                 case 'p:cxnSp':

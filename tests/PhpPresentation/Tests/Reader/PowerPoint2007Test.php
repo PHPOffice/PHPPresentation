@@ -692,17 +692,18 @@ class PowerPoint2007Test extends TestCase
 
         // Written at 252,55 in a group that declares the space it is already in.
         $oTriangle = $oOuter->getShapeCollection()[1];
-        self::assertInstanceOf(RichText::class, $oTriangle);
+        self::assertInstanceOf(AutoShape::class, $oTriangle);
+        self::assertEquals(AutoShape::TYPE_ISOSCELES_TRIANGLE, $oTriangle->getType());
         self::assertEquals(252, $oTriangle->getOffsetX());
         self::assertEquals(54, $oTriangle->getOffsetY());
 
-        // Written at 523,199 and 549,334, sized 96x61 and 81x69.
+        // Written at 523,199 and 549,334, sized 96x61 and 81x69: a rectangle and an ellipse.
         $oInner = $oOuter->getShapeCollection()[0];
         self::assertInstanceOf(Group::class, $oInner);
         self::assertCount(2, $oInner->getShapeCollection());
-        foreach ([[240, 198, 762, 111], [446, 443, 643, 125]] as $index => [$offsetX, $offsetY, $width, $height]) {
+        foreach ([[RichText::class, 240, 198, 762, 111], [AutoShape::class, 446, 443, 643, 125]] as $index => [$class, $offsetX, $offsetY, $width, $height]) {
             $oShape = $oInner->getShapeCollection()[$index];
-            self::assertInstanceOf(RichText::class, $oShape);
+            self::assertInstanceOf($class, $oShape);
             self::assertEquals($offsetX, $oShape->getOffsetX());
             self::assertEquals($offsetY, $oShape->getOffsetY());
             self::assertEquals($width, $oShape->getWidth());
@@ -2294,5 +2295,122 @@ class PowerPoint2007Test extends TestCase
         self::assertInstanceOf(Chart::class, $arrayShape[1]);
         self::assertEquals('Growth', $arrayShape[1]->getName());
         self::assertEquals('Growth by year', $arrayShape[1]->getDescription());
+    }
+
+    public function testAutoShapeSurvivesTheRoundTrip(): void
+    {
+        $oAutoShape = new AutoShape();
+        $oAutoShape->setType(AutoShape::TYPE_OVAL)->setText("First line\nSecond line");
+        $oAutoShape->setName('Badge')->setDescription('A badge')->setOffsetX(40)->setOffsetY(50)->setWidth(200)->setHeight(100)->setRotation(30);
+        $oAutoShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF00FF00'));
+        $oAutoShape->getOutline()->setWidth(3)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFFF0000'));
+        $oAutoShape->getShadow()->setVisible(true);
+
+        $arrayShape = $this->roundTripAutoShape($oAutoShape);
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(AutoShape::class, $arrayShape[0]);
+        self::assertEquals(AutoShape::TYPE_OVAL, $arrayShape[0]->getType());
+        self::assertEquals("First line\nSecond line", $arrayShape[0]->getText());
+        self::assertEquals('Badge', $arrayShape[0]->getName());
+        self::assertEquals('A badge', $arrayShape[0]->getDescription());
+        self::assertEquals(40, $arrayShape[0]->getOffsetX());
+        self::assertEquals(50, $arrayShape[0]->getOffsetY());
+        self::assertEquals(200, $arrayShape[0]->getWidth());
+        self::assertEquals(100, $arrayShape[0]->getHeight());
+        self::assertEquals(30, $arrayShape[0]->getRotation());
+        self::assertInstanceOf(Fill::class, $arrayShape[0]->getFill());
+        self::assertEquals(Fill::FILL_SOLID, $arrayShape[0]->getFill()->getFillType());
+        self::assertEquals('FF00FF00', $arrayShape[0]->getFill()->getStartColor()->getARGB());
+        self::assertEquals(3, $arrayShape[0]->getOutline()->getWidth());
+        self::assertEquals('FFFF0000', $arrayShape[0]->getOutline()->getFill()->getStartColor()->getARGB());
+        self::assertTrue($arrayShape[0]->getShadow()->isVisible());
+        self::assertNull($arrayShape[0]->getRoundRectCorner());
+    }
+
+    public function testAutoShapeRoundRectCornerSurvivesTheRoundTrip(): void
+    {
+        $oAutoShape = new AutoShape();
+        $oAutoShape->setType(AutoShape::TYPE_ROUNDED_RECTANGLE)->setWidth(200)->setHeight(100)->setRoundRectCorner(20);
+
+        $arrayShape = $this->roundTripAutoShape($oAutoShape);
+        self::assertInstanceOf(AutoShape::class, $arrayShape[0]);
+        self::assertEquals(AutoShape::TYPE_ROUNDED_RECTANGLE, $arrayShape[0]->getType());
+        self::assertEquals(20, $arrayShape[0]->getRoundRectCorner());
+    }
+
+    public function testAutoShapeParagraphsAndBreaksAreLinesOfItsText(): void
+    {
+        // PowerPoint writes the lines of a shape as paragraphs, and a soft return as a:br
+        $arrayShape = $this->roundTripAutoShape((new AutoShape())->setText('Unused'), static function (string $xml): string {
+            return (string) preg_replace(
+                '#<a:p>.*</a:p>#s',
+                '<a:p><a:r><a:t>One</a:t></a:r><a:br/><a:r><a:t>Two</a:t></a:r></a:p><a:p><a:r><a:t>Thr</a:t></a:r><a:r><a:t>ee</a:t></a:r></a:p>',
+                $xml
+            );
+        });
+        self::assertInstanceOf(AutoShape::class, $arrayShape[0]);
+        self::assertEquals("One\nTwo\nThree", $arrayShape[0]->getText());
+    }
+
+    /**
+     * @return array<string, array{callable(string): string}>
+     */
+    public static function dataProviderShapeReadAsRichText(): array
+    {
+        return [
+            // a rectangle is where PowerPoint keeps formatted text, which an AutoShape cannot hold
+            'rectangle' => [static function (string $xml): string {
+                return str_replace('prst="heart"', 'prst="rect"', $xml);
+            }],
+            'text box' => [static function (string $xml): string {
+                return str_replace('<p:cNvSpPr/>', '<p:cNvSpPr txBox="1"/>', $xml);
+            }],
+            'placeholder' => [static function (string $xml): string {
+                return str_replace('<p:nvPr/>', '<p:nvPr><p:ph type="body"/></p:nvPr>', $xml);
+            }],
+            'custom geometry' => [static function (string $xml): string {
+                return (string) preg_replace('#<a:prstGeom .*?</a:prstGeom>#s', '<a:custGeom><a:pathLst/></a:custGeom>', $xml);
+            }],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderShapeReadAsRichText
+     *
+     * @param callable(string): string $editSlide
+     */
+    #[DataProvider('dataProviderShapeReadAsRichText')]
+    public function testShapeReadAsRichText(callable $editSlide): void
+    {
+        $arrayShape = $this->roundTripAutoShape((new AutoShape())->setText('Kept'), $editSlide);
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertEquals('Kept', $arrayShape[0]->getPlainText());
+    }
+
+    /**
+     * Write a slide holding the AutoShape, edit its XML if asked, and read it back.
+     *
+     * @param null|callable(string): string $editSlide
+     *
+     * @return array<int, \PhpOffice\PhpPresentation\AbstractShape>
+     */
+    private function roundTripAutoShape(AutoShape $oAutoShape, ?callable $editSlide = null): array
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->addShape($oAutoShape);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        if (null !== $editSlide) {
+            $zip = new ZipArchive();
+            $zip->open($file);
+            $zip->addFromString('ppt/slides/slide1.xml', $editSlide((string) $zip->getFromName('ppt/slides/slide1.xml')));
+            $zip->close();
+        }
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        return array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
     }
 }

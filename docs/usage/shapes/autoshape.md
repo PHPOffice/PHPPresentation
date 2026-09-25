@@ -1,7 +1,11 @@
 # AutoShape
 
 !!! warning
-    Available only on the PowerPoint2007 Writer
+    Available only on the PowerPoint2007 Writer and Reader
+
+The PowerPoint2007 Reader reads a shape as an `AutoShape` when it draws a preset other than a
+rectangle and is neither a text box nor a placeholder. The text of an `AutoShape` is a plain string,
+so a rectangle, where PowerPoint keeps most of its formatted text, is read as a `RichText`.
 
 To create a geometric form, create an object `AutoShape` and add it to slide.
 
