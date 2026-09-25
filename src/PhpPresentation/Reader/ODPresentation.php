@@ -30,6 +30,7 @@ use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Line;
@@ -48,6 +49,7 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use ZipArchive;
 
@@ -96,6 +98,47 @@ class ODPresentation implements ReaderInterface
         'wave|single|' => Font::UNDERLINE_WAVY,
         'wave|double|' => Font::UNDERLINE_WAVYDOUBLE,
         'wave|single|bold' => Font::UNDERLINE_WAVYHEAVY,
+    ];
+
+    /**
+     * The position of a chart legend, by the `chart:legend-position` ODF says it with.
+     *
+     * @var array<string, string>
+     */
+    protected const CHART_LEGEND_POSITIONS = [
+        'bottom' => Chart\Legend::POSITION_BOTTOM,
+        'start' => Chart\Legend::POSITION_LEFT,
+        'top' => Chart\Legend::POSITION_TOP,
+        'top-end' => Chart\Legend::POSITION_TOPRIGHT,
+        'end' => Chart\Legend::POSITION_RIGHT,
+    ];
+
+    /**
+     * What a chart does with an empty cell, by the `chart:treat-empty-cells` ODF says it with.
+     *
+     * @var array<string, string>
+     */
+    protected const CHART_BLANKS = [
+        'use-zero' => Chart::BLANKAS_ZERO,
+        'leave-gap' => Chart::BLANKAS_GAP,
+        'ignore' => Chart::BLANKAS_SPAN,
+    ];
+
+    /**
+     * The marker of a serie, by the `chart:symbol-name` ODF says it with. The Writer says a dot as
+     * a circle too, so a circle is all that comes back of either.
+     *
+     * @var array<string, string>
+     */
+    protected const CHART_SYMBOLS = [
+        'circle' => Chart\Marker::SYMBOL_CIRCLE,
+        'horizontal-bar' => Chart\Marker::SYMBOL_DASH,
+        'diamond' => Chart\Marker::SYMBOL_DIAMOND,
+        'plus' => Chart\Marker::SYMBOL_PLUS,
+        'square' => Chart\Marker::SYMBOL_SQUARE,
+        'star' => Chart\Marker::SYMBOL_STAR,
+        'arrow-up' => Chart\Marker::SYMBOL_TRIANGLE,
+        'x' => Chart\Marker::SYMBOL_X,
     ];
 
     /**
@@ -505,133 +548,7 @@ class ODPresentation implements ReaderInterface
 
         $nodeTextProperties = $this->oXMLReader->getElement('style:text-properties', $nodeStyle);
         if ($nodeTextProperties instanceof DOMElement) {
-            $oFont = new Font();
-            if ($nodeTextProperties->hasAttribute('fo:color')) {
-                $oFont->getColor()->setRGB(substr($nodeTextProperties->getAttribute('fo:color'), -6));
-            }
-            if ($nodeTextProperties->hasAttribute('fo:text-transform')) {
-                switch ($nodeTextProperties->getAttribute('fo:text-transform')) {
-                    case 'none':
-                        $oFont->setCapitalization(Font::CAPITALIZATION_NONE);
-
-                        break;
-                    case 'lowercase':
-                        $oFont->setCapitalization(Font::CAPITALIZATION_SMALL);
-
-                        break;
-                    case 'uppercase':
-                        $oFont->setCapitalization(Font::CAPITALIZATION_ALL);
-
-                        break;
-                }
-            }
-            // Font Latin
-            if ($nodeTextProperties->hasAttribute('fo:font-family')) {
-                $oFont
-                    ->setName($nodeTextProperties->getAttribute('fo:font-family'))
-                    ->setFormat(Font::FORMAT_LATIN);
-            }
-            if ($nodeTextProperties->hasAttribute('fo:font-weight') && 'bold' == $nodeTextProperties->getAttribute('fo:font-weight')) {
-                $oFont
-                    ->setBold(true)
-                    ->setFormat(Font::FORMAT_LATIN);
-            }
-            if ($nodeTextProperties->hasAttribute('fo:font-size')) {
-                $oFont
-                    ->setSize((int) substr($nodeTextProperties->getAttribute('fo:font-size'), 0, -2))
-                    ->setFormat(Font::FORMAT_LATIN);
-            }
-            // Font East Asian
-            if ($nodeTextProperties->hasAttribute('style:font-family-asian')) {
-                $oFont
-                    ->setName($nodeTextProperties->getAttribute('style:font-family-asian'))
-                    ->setFormat(Font::FORMAT_EAST_ASIAN);
-            }
-            if ($nodeTextProperties->hasAttribute('style:font-weight-asian') && 'bold' == $nodeTextProperties->getAttribute('style:font-weight-asian')) {
-                $oFont
-                    ->setBold(true)
-                    ->setFormat(Font::FORMAT_EAST_ASIAN);
-            }
-            if ($nodeTextProperties->hasAttribute('style:font-size-asian')) {
-                $oFont
-                    ->setSize((int) substr($nodeTextProperties->getAttribute('style:font-size-asian'), 0, -2))
-                    ->setFormat(Font::FORMAT_EAST_ASIAN);
-            }
-            // Font Complex Script
-            if ($nodeTextProperties->hasAttribute('style:font-family-complex')) {
-                $oFont
-                    ->setName($nodeTextProperties->getAttribute('style:font-family-complex'))
-                    ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
-            }
-            if ($nodeTextProperties->hasAttribute('style:font-weight-complex') && 'bold' == $nodeTextProperties->getAttribute('style:font-weight-complex')) {
-                $oFont
-                    ->setBold(true)
-                    ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
-            }
-            if ($nodeTextProperties->hasAttribute('style:font-size-complex')) {
-                $oFont
-                    ->setSize((int) substr($nodeTextProperties->getAttribute('style:font-size-complex'), 0, -2))
-                    ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
-            }
-            // Italic, spelled once per script the way the family, the size and the weight are
-            if ('italic' == $nodeTextProperties->getAttribute('fo:font-style')) {
-                $oFont
-                    ->setItalic(true)
-                    ->setFormat(Font::FORMAT_LATIN);
-            }
-            if ('italic' == $nodeTextProperties->getAttribute('style:font-style-asian')) {
-                $oFont
-                    ->setItalic(true)
-                    ->setFormat(Font::FORMAT_EAST_ASIAN);
-            }
-            if ('italic' == $nodeTextProperties->getAttribute('style:font-style-complex')) {
-                $oFont
-                    ->setItalic(true)
-                    ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
-            }
-            // Underline and strikethrough, one family each for the whole run
-            $underlineStyle = $nodeTextProperties->getAttribute('style:text-underline-style');
-            if ('' !== $underlineStyle && 'none' !== $underlineStyle) {
-                if ('skip-white-space' == $nodeTextProperties->getAttribute('style:text-underline-mode')) {
-                    $oFont->setUnderline(Font::UNDERLINE_WORDS);
-                } else {
-                    $underlineType = $nodeTextProperties->getAttribute('style:text-underline-type');
-                    $underlineWidth = $nodeTextProperties->getAttribute('style:text-underline-width');
-                    $key = $underlineStyle
-                        . '|' . ('' === $underlineType ? 'single' : $underlineType)
-                        . '|' . ('bold' === $underlineWidth ? 'bold' : '');
-                    // a file written elsewhere can name a pair OOXML has no word for
-                    $oFont->setUnderline(self::UNDERLINE_OOXML[$key] ?? Font::UNDERLINE_SINGLE);
-                }
-            }
-            $lineThroughStyle = $nodeTextProperties->getAttribute('style:text-line-through-style');
-            if ('' !== $lineThroughStyle && 'none' !== $lineThroughStyle) {
-                $oFont->setStrikethrough(
-                    'double' == $nodeTextProperties->getAttribute('style:text-line-through-type')
-                        ? Font::STRIKE_DOUBLE
-                        : Font::STRIKE_SINGLE
-                );
-            }
-            $textPosition = $nodeTextProperties->getAttribute('style:text-position');
-            if ('' !== $textPosition) {
-                $oFont->setBaseline($this->baselineFromTextPosition($textPosition));
-            }
-            if ($nodeTextProperties->hasAttribute('style:script-type')) {
-                switch ($nodeTextProperties->getAttribute('style:script-type')) {
-                    case 'latin':
-                        $oFont->setFormat(Font::FORMAT_LATIN);
-
-                        break;
-                    case 'asian':
-                        $oFont->setFormat(Font::FORMAT_EAST_ASIAN);
-
-                        break;
-                    case 'complex':
-                        $oFont->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
-
-                        break;
-                }
-            }
+            $oFont = $this->loadFont($nodeTextProperties);
             $language = $this->loadLanguage($nodeTextProperties, $oFont->getFormat());
         }
 
@@ -883,6 +800,10 @@ class ODPresentation implements ReaderInterface
 
                     continue;
                 }
+                // So is a chart, next to which LibreOffice puts the picture of it it last drew
+                if ($this->oXMLReader->getElement('draw:object', $oNodeFrame) && $this->loadShapeChart($oNodeFrame)) {
+                    continue;
+                }
                 if ($this->loadImages && $this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
                     $this->loadShapeDrawing($oNodeFrame);
 
@@ -923,6 +844,143 @@ class ODPresentation implements ReaderInterface
                 }
             }
         }
+    }
+
+    /**
+     * Read the font a `style:text-properties` describes, out of its attributes alone -- which is
+     * what lets a chart, whose styles live in a document of their own, read its fonts the same way.
+     */
+    protected function loadFont(DOMElement $nodeTextProperties): Font
+    {
+        $oFont = new Font();
+        if ($nodeTextProperties->hasAttribute('fo:color')) {
+            $oFont->getColor()->setRGB(substr($nodeTextProperties->getAttribute('fo:color'), -6));
+        }
+        if ($nodeTextProperties->hasAttribute('fo:text-transform')) {
+            switch ($nodeTextProperties->getAttribute('fo:text-transform')) {
+                case 'none':
+                    $oFont->setCapitalization(Font::CAPITALIZATION_NONE);
+
+                    break;
+                case 'lowercase':
+                    $oFont->setCapitalization(Font::CAPITALIZATION_SMALL);
+
+                    break;
+                case 'uppercase':
+                    $oFont->setCapitalization(Font::CAPITALIZATION_ALL);
+
+                    break;
+            }
+        }
+        // Font Latin
+        if ($nodeTextProperties->hasAttribute('fo:font-family')) {
+            $oFont
+                ->setName($nodeTextProperties->getAttribute('fo:font-family'))
+                ->setFormat(Font::FORMAT_LATIN);
+        }
+        if ($nodeTextProperties->hasAttribute('fo:font-weight') && 'bold' == $nodeTextProperties->getAttribute('fo:font-weight')) {
+            $oFont
+                ->setBold(true)
+                ->setFormat(Font::FORMAT_LATIN);
+        }
+        if ($nodeTextProperties->hasAttribute('fo:font-size')) {
+            $oFont
+                ->setSize((int) substr($nodeTextProperties->getAttribute('fo:font-size'), 0, -2))
+                ->setFormat(Font::FORMAT_LATIN);
+        }
+        // Font East Asian
+        if ($nodeTextProperties->hasAttribute('style:font-family-asian')) {
+            $oFont
+                ->setName($nodeTextProperties->getAttribute('style:font-family-asian'))
+                ->setFormat(Font::FORMAT_EAST_ASIAN);
+        }
+        if ($nodeTextProperties->hasAttribute('style:font-weight-asian') && 'bold' == $nodeTextProperties->getAttribute('style:font-weight-asian')) {
+            $oFont
+                ->setBold(true)
+                ->setFormat(Font::FORMAT_EAST_ASIAN);
+        }
+        if ($nodeTextProperties->hasAttribute('style:font-size-asian')) {
+            $oFont
+                ->setSize((int) substr($nodeTextProperties->getAttribute('style:font-size-asian'), 0, -2))
+                ->setFormat(Font::FORMAT_EAST_ASIAN);
+        }
+        // Font Complex Script
+        if ($nodeTextProperties->hasAttribute('style:font-family-complex')) {
+            $oFont
+                ->setName($nodeTextProperties->getAttribute('style:font-family-complex'))
+                ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        }
+        if ($nodeTextProperties->hasAttribute('style:font-weight-complex') && 'bold' == $nodeTextProperties->getAttribute('style:font-weight-complex')) {
+            $oFont
+                ->setBold(true)
+                ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        }
+        if ($nodeTextProperties->hasAttribute('style:font-size-complex')) {
+            $oFont
+                ->setSize((int) substr($nodeTextProperties->getAttribute('style:font-size-complex'), 0, -2))
+                ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        }
+        // Italic, spelled once per script the way the family, the size and the weight are
+        if ('italic' == $nodeTextProperties->getAttribute('fo:font-style')) {
+            $oFont
+                ->setItalic(true)
+                ->setFormat(Font::FORMAT_LATIN);
+        }
+        if ('italic' == $nodeTextProperties->getAttribute('style:font-style-asian')) {
+            $oFont
+                ->setItalic(true)
+                ->setFormat(Font::FORMAT_EAST_ASIAN);
+        }
+        if ('italic' == $nodeTextProperties->getAttribute('style:font-style-complex')) {
+            $oFont
+                ->setItalic(true)
+                ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        }
+        // Underline and strikethrough, one family each for the whole run
+        $underlineStyle = $nodeTextProperties->getAttribute('style:text-underline-style');
+        if ('' !== $underlineStyle && 'none' !== $underlineStyle) {
+            if ('skip-white-space' == $nodeTextProperties->getAttribute('style:text-underline-mode')) {
+                $oFont->setUnderline(Font::UNDERLINE_WORDS);
+            } else {
+                $underlineType = $nodeTextProperties->getAttribute('style:text-underline-type');
+                $underlineWidth = $nodeTextProperties->getAttribute('style:text-underline-width');
+                $key = $underlineStyle
+                    . '|' . ('' === $underlineType ? 'single' : $underlineType)
+                    . '|' . ('bold' === $underlineWidth ? 'bold' : '');
+                // a file written elsewhere can name a pair OOXML has no word for
+                $oFont->setUnderline(self::UNDERLINE_OOXML[$key] ?? Font::UNDERLINE_SINGLE);
+            }
+        }
+        $lineThroughStyle = $nodeTextProperties->getAttribute('style:text-line-through-style');
+        if ('' !== $lineThroughStyle && 'none' !== $lineThroughStyle) {
+            $oFont->setStrikethrough(
+                'double' == $nodeTextProperties->getAttribute('style:text-line-through-type')
+                    ? Font::STRIKE_DOUBLE
+                    : Font::STRIKE_SINGLE
+            );
+        }
+        $textPosition = $nodeTextProperties->getAttribute('style:text-position');
+        if ('' !== $textPosition) {
+            $oFont->setBaseline($this->baselineFromTextPosition($textPosition));
+        }
+        if ($nodeTextProperties->hasAttribute('style:script-type')) {
+            switch ($nodeTextProperties->getAttribute('style:script-type')) {
+                case 'latin':
+                    $oFont->setFormat(Font::FORMAT_LATIN);
+
+                    break;
+                case 'asian':
+                    $oFont->setFormat(Font::FORMAT_EAST_ASIAN);
+
+                    break;
+                case 'complex':
+                    $oFont->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+
+                    break;
+            }
+        }
+
+        return $oFont;
     }
 
     /**
@@ -1069,6 +1127,443 @@ class ODPresentation implements ReaderInterface
         $shape->setDecorative($this->loadShapeDecorative($oNodeLine));
 
         $this->oPhpPresentation->getActiveSlide()->addShape($shape);
+    }
+
+    /**
+     * Read a chart, the frame of which embeds an object holding its own `content.xml`: the chart,
+     * its styles and the table its series take their values from. A frame embedding anything else
+     * is not a chart, and is left out.
+     */
+    protected function loadShapeChart(DOMElement $oNodeFrame): bool
+    {
+        $oNodeObject = $this->oXMLReader->getElement('draw:object', $oNodeFrame);
+        if (!$oNodeObject instanceof DOMElement) {
+            return false;
+        }
+        $path = preg_replace('#^\./#', '', $oNodeObject->getAttribute('xlink:href')) . '/content.xml';
+        $content = $this->oZip->getFromName($path);
+        $xmlReader = new XMLReader();
+        if (false === $content || false === $xmlReader->getDomFromString($content)) {
+            return false;
+        }
+        $nodeChart = $xmlReader->getElement('/office:document-content/office:body/office:chart/chart:chart');
+        if (!$nodeChart instanceof DOMElement) {
+            return false;
+        }
+        $nodePlotArea = $xmlReader->getElement('chart:plot-area', $nodeChart);
+        $chartType = $this->loadChartType($xmlReader, $nodeChart, $nodePlotArea);
+        if (null === $chartType) {
+            return false;
+        }
+
+        $shape = new Chart();
+        $shape->setName($oNodeFrame->getAttribute('draw:name'));
+        $shape->setDescription($this->loadShapeDescription($oNodeFrame));
+        $shape->setDecorative($this->loadShapeDecorative($oNodeFrame));
+        $shape->setResizeProportional(false);
+        $shape->setWidth(CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)));
+        $shape->setHeight(CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)));
+        $shape->setResizeProportional(true);
+        $this->loadShapeOffset($shape, $oNodeFrame);
+        $shape->getPlotArea()->setType($chartType);
+
+        $graphicProps = $this->getChartStyle($xmlReader, $nodeChart, 'graphic');
+        if ($graphicProps instanceof DOMElement && 'solid' === $graphicProps->getAttribute('draw:fill')) {
+            $shape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($this->loadChartColor($graphicProps, 'draw:fill-color'));
+        }
+
+        // A chart says its title and its legend by holding them: one that has none has none shown
+        $nodeTitle = $xmlReader->getElement('chart:title', $nodeChart);
+        $shape->getTitle()->setVisible($nodeTitle instanceof DOMElement);
+        if ($nodeTitle instanceof DOMElement) {
+            $shape->getTitle()->setText($this->loadChartText($xmlReader, $nodeTitle));
+            $shape->getTitle()->setOffsetX(CommonDrawing::centimetersToPixels((float) substr($nodeTitle->getAttribute('svg:x'), 0, -2)));
+            $shape->getTitle()->setOffsetY(CommonDrawing::centimetersToPixels((float) substr($nodeTitle->getAttribute('svg:y'), 0, -2)));
+            $shape->getTitle()->setFont($this->loadChartFont($xmlReader, $nodeTitle));
+        }
+        $nodeLegend = $xmlReader->getElement('chart:legend', $nodeChart);
+        $shape->getLegend()->setVisible($nodeLegend instanceof DOMElement);
+        if ($nodeLegend instanceof DOMElement) {
+            $shape->getLegend()->setPosition(self::CHART_LEGEND_POSITIONS[$nodeLegend->getAttribute('chart:legend-position')] ?? Chart\Legend::POSITION_RIGHT);
+            $shape->getLegend()->setOffsetX(CommonDrawing::centimetersToPixels((float) substr($nodeLegend->getAttribute('svg:x'), 0, -2)));
+            $shape->getLegend()->setOffsetY(CommonDrawing::centimetersToPixels((float) substr($nodeLegend->getAttribute('svg:y'), 0, -2)));
+            $shape->getLegend()->setFont($this->loadChartFont($xmlReader, $nodeLegend));
+        }
+
+        if ($nodePlotArea instanceof DOMElement) {
+            $chartProps = $this->getChartStyle($xmlReader, $nodePlotArea, 'chart');
+            if ($chartProps instanceof DOMElement && isset(self::CHART_BLANKS[$chartProps->getAttribute('chart:treat-empty-cells')])) {
+                $shape->setDisplayBlankAs(self::CHART_BLANKS[$chartProps->getAttribute('chart:treat-empty-cells')]);
+            }
+            $this->loadChartAxis($xmlReader, $nodePlotArea, 'x', $shape->getPlotArea()->getAxisX());
+            $this->loadChartAxis($xmlReader, $nodePlotArea, 'y', $shape->getPlotArea()->getAxisY());
+            $this->loadChartSeries($xmlReader, $nodeChart, $nodePlotArea, $chartType);
+        }
+
+        $this->oPhpPresentation->getActiveSlide()->addShape($shape);
+
+        return true;
+    }
+
+    /**
+     * The kind of chart, which `chart:class` names and the plot area says whether it is drawn in
+     * three dimensions. A class none of the types draws -- a stock chart, a bubble chart -- is none.
+     */
+    protected function loadChartType(XMLReader $xmlReader, DOMElement $nodeChart, ?DOMElement $nodePlotArea): ?Chart\Type\AbstractType
+    {
+        $chartProps = null === $nodePlotArea ? null : $this->getChartStyle($xmlReader, $nodePlotArea, 'chart');
+        $is3D = null !== $chartProps && 'true' === $chartProps->getAttribute('chart:three-dimensional');
+
+        switch ($nodeChart->getAttribute('chart:class')) {
+            case 'chart:area':
+                return new Chart\Type\Area();
+            case 'chart:bar':
+                $chartType = $is3D ? new Chart\Type\Bar3D() : new Chart\Type\Bar();
+                if (null !== $chartProps) {
+                    $chartType->setBarDirection('true' === $chartProps->getAttribute('chart:vertical') ? Chart\Type\AbstractTypeBar::DIRECTION_HORIZONTAL : Chart\Type\AbstractTypeBar::DIRECTION_VERTICAL);
+                    if ('true' === $chartProps->getAttribute('chart:percentage')) {
+                        $chartType->setBarGrouping(Chart\Type\AbstractTypeBar::GROUPING_PERCENTSTACKED);
+                    } elseif ('true' === $chartProps->getAttribute('chart:stacked')) {
+                        $chartType->setBarGrouping(Chart\Type\AbstractTypeBar::GROUPING_STACKED);
+                    }
+                }
+
+                return $chartType;
+            case 'chart:circle':
+                return $is3D ? new Chart\Type\Pie3D() : new Chart\Type\Pie();
+            case 'chart:ring':
+                return new Chart\Type\Doughnut();
+            case 'chart:line':
+                $chartType = new Chart\Type\Line();
+
+                break;
+            case 'chart:scatter':
+                $chartType = new Chart\Type\Scatter();
+
+                break;
+            case 'chart:radar':
+            case 'chart:filled-radar':
+                return new Chart\Type\Radar();
+            default:
+                return null;
+        }
+        $chartType->setIsSmooth(null !== $chartProps && in_array($chartProps->getAttribute('chart:interpolation'), ['cubic-spline', 'b-spline'], true));
+
+        return $chartType;
+    }
+
+    /**
+     * Read an axis: its title, its bounds, its units, where its labels go, its line, its gridlines,
+     * and the fonts of its labels and of its title.
+     */
+    protected function loadChartAxis(XMLReader $xmlReader, DOMElement $nodePlotArea, string $dimension, Chart\Axis $axis): void
+    {
+        $nodeAxis = $xmlReader->getElement('chart:axis[@chart:dimension="' . $dimension . '"]', $nodePlotArea);
+        if (!$nodeAxis instanceof DOMElement) {
+            return;
+        }
+
+        $nodeTitle = $xmlReader->getElement('chart:title', $nodeAxis);
+        if ($nodeTitle instanceof DOMElement) {
+            $axis->setTitle($this->loadChartText($xmlReader, $nodeTitle));
+            $axis->setFont($this->loadChartFont($xmlReader, $nodeTitle));
+            $titleProps = $this->getChartStyle($xmlReader, $nodeTitle, 'chart');
+            if ($titleProps instanceof DOMElement && $titleProps->hasAttribute('style:rotation-angle')) {
+                $axis->setTitleRotation(-(int) $titleProps->getAttribute('style:rotation-angle'));
+            }
+        }
+        $axis->setTickLabelFont($this->loadChartFont($xmlReader, $nodeAxis));
+
+        $chartProps = $this->getChartStyle($xmlReader, $nodeAxis, 'chart');
+        if ($chartProps instanceof DOMElement) {
+            if ($chartProps->hasAttribute('chart:minimum')) {
+                $axis->setMinBounds((int) $chartProps->getAttribute('chart:minimum'));
+            }
+            if ($chartProps->hasAttribute('chart:maximum')) {
+                $axis->setMaxBounds((int) $chartProps->getAttribute('chart:maximum'));
+            }
+            if ($chartProps->hasAttribute('chart:interval-major')) {
+                $axis->setMajorUnit((float) $chartProps->getAttribute('chart:interval-major'));
+                // ODF counts the minor intervals a major one is split in, OOXML the size of one
+                $divisor = (int) $chartProps->getAttribute('chart:interval-minor-divisor');
+                if ($divisor > 0) {
+                    $axis->setMinorUnit((float) $chartProps->getAttribute('chart:interval-major') / $divisor);
+                }
+            }
+            $labelPositions = [
+                'near-axis' => Chart\Axis::TICK_LABEL_POSITION_NEXT_TO,
+                'outside-end' => Chart\Axis::TICK_LABEL_POSITION_HIGH,
+                'outside-start' => Chart\Axis::TICK_LABEL_POSITION_LOW,
+            ];
+            if (isset($labelPositions[$chartProps->getAttribute('chart:axis-label-position')])) {
+                $axis->setTickLabelPosition($labelPositions[$chartProps->getAttribute('chart:axis-label-position')]);
+            }
+        }
+
+        $graphicProps = $this->getChartStyle($xmlReader, $nodeAxis, 'graphic');
+        if ($graphicProps instanceof DOMElement) {
+            $axis->setOutline($this->loadChartOutline($graphicProps, true));
+        }
+
+        foreach ($xmlReader->getElements('chart:grid', $nodeAxis) as $nodeGrid) {
+            if (!$nodeGrid instanceof DOMElement) {
+                continue;
+            }
+            $gridlines = new Chart\Gridlines();
+            $graphicProps = $this->getChartStyle($xmlReader, $nodeGrid, 'graphic');
+            if ($graphicProps instanceof DOMElement) {
+                $gridlines->setOutline($this->loadChartOutline($graphicProps, true));
+            }
+            if ('minor' === $nodeGrid->getAttribute('chart:class')) {
+                $axis->setMinorGridlines($gridlines);
+            } else {
+                $axis->setMajorGridlines($gridlines);
+            }
+        }
+    }
+
+    /**
+     * Read the series, which take their values, their title and their categories out of the table
+     * the chart holds, by the cells `chart:series` and `chart:categories` point at. A scatter chart
+     * LibreOffice writes points at its X values with `chart:domain` instead.
+     */
+    protected function loadChartSeries(XMLReader $xmlReader, DOMElement $nodeChart, DOMElement $nodePlotArea, Chart\Type\AbstractType $chartType): void
+    {
+        $table = $this->loadChartTable($xmlReader, $nodeChart);
+        $categories = $this->loadChartRange($table, $xmlReader->getAttribute('table:cell-range-address', $nodePlotArea, 'chart:axis[@chart:dimension="x"]/chart:categories') ?? '');
+
+        foreach ($xmlReader->getElements('chart:series', $nodePlotArea) as $nodeSeries) {
+            if (!$nodeSeries instanceof DOMElement) {
+                continue;
+            }
+            $keys = $this->loadChartRange($table, $xmlReader->getAttribute('table:cell-range-address', $nodeSeries, 'chart:domain') ?? '') ?: $categories;
+            $values = [];
+            foreach ($this->loadChartRange($table, $nodeSeries->getAttribute('chart:values-cell-range-address')) as $index => $value) {
+                $values[(string) ($keys[$index] ?? $index + 1)] = $value;
+            }
+            $title = $this->loadChartRange($table, $nodeSeries->getAttribute('chart:label-cell-address'));
+            $series = new Chart\Series((string) ($title[0] ?? ''), $values);
+
+            $chartProps = $this->getChartStyle($xmlReader, $nodeSeries, 'chart');
+            if ($chartProps instanceof DOMElement) {
+                $this->loadChartSeriesProperties($chartProps, $series, $chartType);
+            }
+            $graphicProps = $this->getChartStyle($xmlReader, $nodeSeries, 'graphic');
+            if ($graphicProps instanceof DOMElement) {
+                $fill = $this->loadChartFill($graphicProps);
+                if (null !== $fill) {
+                    $series->setFill($fill);
+                }
+                if ($graphicProps->hasAttribute('svg:stroke-color') && !$chartType instanceof Chart\Type\AbstractTypePie) {
+                    $series->setOutline($this->loadChartOutline($graphicProps, false));
+                }
+            }
+            $series->setFont($this->loadChartFont($xmlReader, $nodeSeries));
+
+            // A data point that differs from its serie has a style of its own; a run of those that
+            // do not is one element saying how many they are
+            $index = 0;
+            foreach ($xmlReader->getElements('chart:data-point', $nodeSeries) as $nodeDataPoint) {
+                if (!$nodeDataPoint instanceof DOMElement) {
+                    continue;
+                }
+                $graphicProps = $this->getChartStyle($xmlReader, $nodeDataPoint, 'graphic');
+                if ($graphicProps instanceof DOMElement) {
+                    $fill = $this->loadChartFill($graphicProps);
+                    if (null !== $fill) {
+                        $series->setDataPointFill($index, $fill);
+                    }
+                    if ($graphicProps->hasAttribute('draw:stroke')) {
+                        $series->setDataPointOutline($index, $this->loadChartOutline($graphicProps, false));
+                    }
+                }
+                $index += max(1, (int) $nodeDataPoint->getAttribute('chart:repeated'));
+            }
+
+            $chartType->addSeries($series);
+        }
+    }
+
+    /**
+     * Read what the style of a serie says of its labels, its marker and -- for a pie, which explodes
+     * as a whole -- its explosion.
+     */
+    protected function loadChartSeriesProperties(DOMElement $chartProps, Chart\Series $series, Chart\Type\AbstractType $chartType): void
+    {
+        $labelNumber = $chartProps->getAttribute('chart:data-label-number');
+        $series->setShowValue(in_array($labelNumber, ['value', 'value-and-percentage'], true));
+        $series->setShowPercentage(in_array($labelNumber, ['percentage', 'value-and-percentage'], true));
+        $series->setShowCategoryName('true' === $chartProps->getAttribute('chart:data-label-text'));
+        $nodeSeparator = $chartProps->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:chart:1.0', 'label-separator')->item(0);
+        if ($nodeSeparator instanceof DOMElement) {
+            $series->setSeparator($nodeSeparator->getElementsByTagNameNS('urn:oasis:names:tc:opendocument:xmlns:text:1.0', 'line-break')->length > 0 ? PHP_EOL : $nodeSeparator->textContent);
+        }
+
+        if ($chartType instanceof Chart\Type\AbstractTypePie && $chartProps->hasAttribute('chart:pie-offset') && [] === $chartType->getSeries()) {
+            $chartType->setExplosion((int) $chartProps->getAttribute('chart:pie-offset'));
+        }
+
+        if ('none' === $chartProps->getAttribute('chart:symbol-type')) {
+            $series->getMarker()->setSymbol(Chart\Marker::SYMBOL_NONE);
+        } elseif ('named-symbol' === $chartProps->getAttribute('chart:symbol-type')) {
+            $symbol = self::CHART_SYMBOLS[$chartProps->getAttribute('chart:symbol-name')] ?? null;
+            if (null !== $symbol) {
+                $series->getMarker()->setSymbol($symbol);
+            }
+            if ($chartProps->hasAttribute('chart:symbol-width')) {
+                $series->getMarker()->setSize((int) round(CommonDrawing::centimetersToPoints((float) substr($chartProps->getAttribute('chart:symbol-width'), 0, -2))));
+            }
+        }
+    }
+
+    /**
+     * The cells of the table a chart holds, by row and column from 1, the header row included: a
+     * number as the text of it, which is how a serie holds its values and how the PowerPoint2007
+     * Reader reads them -- `NaN` being the empty cell the Writer writes -- and anything else as
+     * its text.
+     *
+     * @return array<int, array<int, null|string>>
+     */
+    protected function loadChartTable(XMLReader $xmlReader, DOMElement $nodeChart): array
+    {
+        $table = [];
+        $row = 0;
+        foreach ($xmlReader->getElements('table:table//table:table-row', $nodeChart) as $nodeRow) {
+            if (!$nodeRow instanceof DOMElement) {
+                continue;
+            }
+            ++$row;
+            $column = 0;
+            foreach ($xmlReader->getElements('table:table-cell', $nodeRow) as $nodeCell) {
+                if (!$nodeCell instanceof DOMElement) {
+                    continue;
+                }
+                $value = $this->loadChartText($xmlReader, $nodeCell);
+                if ('float' === $nodeCell->getAttribute('office:value-type') || 'percentage' === $nodeCell->getAttribute('office:value-type')) {
+                    $value = $nodeCell->getAttribute('office:value');
+                    $value = is_numeric($value) ? $value : null;
+                }
+                for ($repeat = max(1, (int) $nodeCell->getAttribute('table:number-columns-repeated')); $repeat > 0; --$repeat) {
+                    $table[$row][++$column] = $value;
+                }
+            }
+        }
+
+        return $table;
+    }
+
+    /**
+     * The cells a range such as `local-table.$B$2:.$B$5` covers, row by row.
+     *
+     * @param array<int, array<int, null|string>> $table
+     *
+     * @return array<int, null|string>
+     */
+    protected function loadChartRange(array $table, string $address): array
+    {
+        if (1 !== preg_match('/\$?([A-Z]+)\$?(\d+)(?::[^$]*\$?([A-Z]+)\$?(\d+))?$/', $address, $matches)) {
+            return [];
+        }
+        $columnFrom = $this->getChartColumnIndex($matches[1]);
+        $columnTo = isset($matches[3]) ? $this->getChartColumnIndex($matches[3]) : $columnFrom;
+        $rowTo = isset($matches[4]) ? (int) $matches[4] : (int) $matches[2];
+
+        $cells = [];
+        for ($row = (int) $matches[2]; $row <= $rowTo; ++$row) {
+            for ($column = $columnFrom; $column <= $columnTo; ++$column) {
+                $cells[] = $table[$row][$column] ?? null;
+            }
+        }
+
+        return $cells;
+    }
+
+    /**
+     * The index, from 1, of a spreadsheet column name (A => 1, Z => 26, AA => 27).
+     */
+    private function getChartColumnIndex(string $name): int
+    {
+        $index = 0;
+        foreach (str_split($name) as $letter) {
+            $index = $index * 26 + ord($letter) - 64;
+        }
+
+        return $index;
+    }
+
+    /**
+     * The properties of one family the style of a chart element names, looked up in the automatic
+     * styles of the chart's own document.
+     */
+    protected function getChartStyle(XMLReader $xmlReader, DOMElement $node, string $family): ?DOMElement
+    {
+        $styleName = $node->getAttribute('chart:style-name');
+        if ('' === $styleName || false !== strpos($styleName, '"')) {
+            return null;
+        }
+
+        return $xmlReader->getElement('/office:document-content/office:automatic-styles/style:style[@style:name="' . $styleName . '"]/style:' . $family . '-properties');
+    }
+
+    /**
+     * The text of a title, its paragraphs one per line.
+     */
+    protected function loadChartText(XMLReader $xmlReader, DOMElement $nodeTitle): string
+    {
+        $text = [];
+        foreach ($xmlReader->getElements('text:p', $nodeTitle) as $nodeParagraph) {
+            $text[] = $nodeParagraph->textContent;
+        }
+
+        return implode("\n", $text);
+    }
+
+    /**
+     * The font the style of a chart element names, or the default font where it names none.
+     */
+    protected function loadChartFont(XMLReader $xmlReader, DOMElement $node): Font
+    {
+        $textProps = $this->getChartStyle($xmlReader, $node, 'text');
+
+        return $textProps instanceof DOMElement ? $this->loadFont($textProps) : new Font();
+    }
+
+    /**
+     * The fill a chart graphic style names, where it names a colour and does not refuse a fill.
+     */
+    protected function loadChartFill(DOMElement $graphicProps): ?Fill
+    {
+        if (!$graphicProps->hasAttribute('draw:fill-color') || 'none' === $graphicProps->getAttribute('draw:fill')) {
+            return null;
+        }
+
+        return (new Fill())->setFillType(Fill::FILL_SOLID)->setStartColor($this->loadChartColor($graphicProps, 'draw:fill-color'));
+    }
+
+    /**
+     * The line a chart graphic style draws. An axis and a gridline count its width in points, a
+     * serie and a data point in pixels, as the Writer writes them.
+     */
+    protected function loadChartOutline(DOMElement $graphicProps, bool $inPoints): Outline
+    {
+        $outline = new Outline();
+        if ('none' === $graphicProps->getAttribute('draw:stroke')) {
+            $outline->getFill()->setFillType(Fill::FILL_NONE);
+
+            return $outline;
+        }
+        $outline->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($this->loadChartColor($graphicProps, 'svg:stroke-color'));
+        if ($graphicProps->hasAttribute('svg:stroke-width')) {
+            $width = (float) substr($graphicProps->getAttribute('svg:stroke-width'), 0, -2);
+            $outline->setWidth((int) round($inPoints ? CommonDrawing::centimetersToPoints($width) : CommonDrawing::centimetersToPixels($width)));
+        }
+
+        return $outline;
+    }
+
+    protected function loadChartColor(DOMElement $graphicProps, string $attribute): Color
+    {
+        return new Color('FF' . strtoupper(substr($graphicProps->getAttribute($attribute), 1) ?: '000000'));
     }
 
     /**

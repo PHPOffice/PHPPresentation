@@ -345,7 +345,11 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttributeIf(null !== $axis->getMinBounds(), 'chart:minimum', $axis->getMinBounds());
         $this->xmlContent->writeAttributeIf(null !== $axis->getMaxBounds(), 'chart:maximum', $axis->getMaxBounds());
         $this->xmlContent->writeAttributeIf(null !== $axis->getMajorUnit(), 'chart:interval-major', $axis->getMajorUnit());
-        $this->xmlContent->writeAttributeIf(null !== $axis->getMinorUnit(), 'chart:interval-minor-divisor', $axis->getMinorUnit());
+        // ODF counts the minor intervals a major one is split in, where the model holds the size of
+        // one as OOXML does -- so there is no divisor to say without a major unit to divide
+        if (null !== $axis->getMajorUnit() && $axis->getMinorUnit() > 0) {
+            $this->xmlContent->writeAttribute('chart:interval-minor-divisor', (string) max(1, (int) round($axis->getMajorUnit() / $axis->getMinorUnit())));
+        }
         switch ($axis->getTickLabelPosition()) {
             case Axis::TICK_LABEL_POSITION_NEXT_TO:
                 $this->xmlContent->writeAttribute('chart:axis-label-position', 'near-axis');
@@ -565,7 +569,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->rangeCol = 'B';
         $this->numSeries = 0;
         foreach ($chartType->getSeries() as $series) {
-            $this->writeSeries($chart, $series);
+            $this->writeSeries($series);
             ++$this->numSeries;
             // The first series is written in column B, so the next column is
             // derived from its index. Incrementing the string is deprecated
@@ -664,66 +668,51 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    protected function writeSeries(Chart $chart, Chart\Series $series): void
+    protected function writeSeries(Chart\Series $series): void
     {
-        $chartType = $chart->getPlotArea()->getType();
-
         $numRange = count($series->getValues());
         // chart:series
         $this->xmlContent->startElement('chart:series');
         $this->xmlContent->writeAttribute('chart:values-cell-range-address', 'table-local.$' . $this->rangeCol . '$2:.$' . $this->rangeCol . '$' . ($numRange + 1));
         $this->xmlContent->writeAttribute('chart:label-cell-address', 'table-local.$' . $this->rangeCol . '$1');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries' . $this->numSeries);
-        if ($chartType instanceof Area
-            || $chartType instanceof AbstractTypeBar
-            || $chartType instanceof Line
-            || $chartType instanceof Radar
-            || $chartType instanceof Scatter
-        ) {
-            $dataPointOutlines = $series->getDataPointOutlines();
-            $newFill = new Fill();
-            $incRepeat = 0;
-            for ($inc = 0; $inc < $numRange; ++$inc) {
-                if ($series->getDataPointFill($inc)->getHashCode() === $newFill->getHashCode()
-                    && !isset($dataPointOutlines[$inc])
-                ) {
-                    // A data point taking the style of the serie : counted, written once the run ends
-                    ++$incRepeat;
+        // A data point is placed by its position in the serie, a pie's slice as much as a bar: a
+        // pie used to write one per data point with a style of its own, in a row from the first,
+        // so the style of the third slice was put on the first and the third kept the serie's
+        $dataPointOutlines = $series->getDataPointOutlines();
+        $newFill = new Fill();
+        $incRepeat = 0;
+        for ($inc = 0; $inc < $numRange; ++$inc) {
+            if ($series->getDataPointFill($inc)->getHashCode() === $newFill->getHashCode()
+                && !isset($dataPointOutlines[$inc])
+            ) {
+                // A data point taking the style of the serie : counted, written once the run ends
+                ++$incRepeat;
 
-                    continue;
-                }
-
-                if ($incRepeat > 0) {
-                    // chart:data-point
-                    $this->xmlContent->startElement('chart:data-point');
-                    $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
-                    // > chart:data-point
-                    $this->xmlContent->endElement();
-                    $incRepeat = 0;
-                }
-
-                // chart:data-point
-                $this->xmlContent->startElement('chart:data-point');
-                $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries' . $this->numSeries . '_' . $inc);
-                // > chart:data-point
-                $this->xmlContent->endElement();
+                continue;
             }
+
             if ($incRepeat > 0) {
                 // chart:data-point
                 $this->xmlContent->startElement('chart:data-point');
                 $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
                 // > chart:data-point
                 $this->xmlContent->endElement();
+                $incRepeat = 0;
             }
-        } elseif ($chartType instanceof AbstractTypePie) {
-            $count = count($series->getDataPointIndexes());
-            for ($inc = 0; $inc < $count; ++$inc) {
-                // chart:data-point
-                $this->xmlContent->startElement('chart:data-point');
-                $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries' . $this->numSeries . '_' . $inc);
-                // > chart:data-point
-                $this->xmlContent->endElement();
-            }
+
+            // chart:data-point
+            $this->xmlContent->startElement('chart:data-point');
+            $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries' . $this->numSeries . '_' . $inc);
+            // > chart:data-point
+            $this->xmlContent->endElement();
+        }
+        if ($incRepeat > 0) {
+            // chart:data-point
+            $this->xmlContent->startElement('chart:data-point');
+            $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
+            // > chart:data-point
+            $this->xmlContent->endElement();
         }
 
         // > chart:series
@@ -828,11 +817,11 @@ class ObjectsChart extends AbstractDecoratorWriter
             if (empty($outlineWidth)) {
                 $outlineWidth = '0.079';
             }
-            if (empty($outlineColor)) {
-                $outlineColor = '4a7ebb';
-            }
             $this->xmlContent->writeAttribute('svg:stroke-width', $outlineWidth . 'cm');
-            $this->xmlContent->writeAttribute('svg:stroke-color', '#' . $outlineColor);
+            // A serie given no outline says nothing about the colour of its line, and the application
+            // picks one per serie, as with the OOXML writer -- one colour for all of them left the
+            // series of a line chart impossible to tell apart
+            $this->xmlContent->writeAttributeIf('' !== $outlineColor, 'svg:stroke-color', '#' . $outlineColor);
         } else {
             $this->xmlContent->writeAttribute('draw:stroke', 'none');
             if (null !== $oSeriesFill && !($chartType instanceof Area)) {

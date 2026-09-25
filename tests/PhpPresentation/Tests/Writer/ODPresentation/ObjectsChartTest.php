@@ -695,8 +695,6 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeAxisUnit(): void
     {
-        $value = max(1, mt_rand(0, 100));
-
         $series = new Series('Downloads', $this->seriesData);
         $line = new Line();
         $line->addSeries($series);
@@ -710,33 +708,30 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
-        $shape->getPlotArea()->getAxisX()->setMinorUnit($value);
+        // ODF counts the minor intervals in a major one, so a minor unit alone says nothing
+        $shape->getPlotArea()->getAxisX()->setMinorUnit(2);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:interval-major');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interval-minor-divisor');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-minor-divisor', $value);
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:interval-minor-divisor');
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $shape->getPlotArea()->getAxisX()->setMinorUnit(null);
-        $shape->getPlotArea()->getAxisX()->setMajorUnit($value);
+        $shape->getPlotArea()->getAxisX()->setMajorUnit(10);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:interval-minor-divisor');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interval-major');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-major', $value);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-major', '10');
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
-        $shape->getPlotArea()->getAxisX()->setMinorUnit($value);
-        $shape->getPlotArea()->getAxisX()->setMajorUnit($value);
+        // a minor unit of 2 splits a major unit of 10 in five
+        $shape->getPlotArea()->getAxisX()->setMinorUnit(2);
         $this->resetPresentationFile();
 
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interval-minor-divisor');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-minor-divisor', $value);
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interval-major');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-major', $value);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-minor-divisor', '5');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-major', '10');
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
@@ -827,6 +822,25 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:repeated', 2);
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point[4]';
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $element);
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testTypePieDataPointIsPlacedByItsPosition(): void
+    {
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2', 'Apr' => '4']);
+        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
+        $oPie = new Pie();
+        $oPie->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oPie);
+
+        // the third slice wears the style of the third data point, which the first used to
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point[1]';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:repeated', 2);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $this->getDataPointStyleXPath(2) . '/style:graphic-properties', 'draw:fill-color', '#AB4744');
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point[3]';
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:repeated', 1);
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
@@ -1177,8 +1191,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        // no outline, no colour: the application picks one for each serie
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->setOutline($oOutline);
@@ -1351,8 +1365,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        // no outline, no colour: the application picks one for each serie
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $series->setOutline($outline);
@@ -1468,8 +1482,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        // no outline, no colour: the application picks one for each serie
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->setOutline($oOutline);
