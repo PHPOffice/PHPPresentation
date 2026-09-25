@@ -26,6 +26,7 @@ use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
@@ -181,6 +182,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xmlns:field', 'urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0');
         $objWriter->writeAttribute('xmlns:officeooo', 'http://openoffice.org/2009/office');
         $objWriter->writeAttribute('xmlns:loext', 'urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0');
+        $objWriter->writeAttribute('xmlns:drawooo', 'http://openoffice.org/2010/draw');
         $objWriter->writeAttribute('office:version', '1.2');
 
         // office:automatic-styles
@@ -307,6 +309,8 @@ class Content extends AbstractDecoratorWriter
                     $this->writeShapeGroup($objWriter, $shape);
                 } elseif ($shape instanceof Comment) {
                     $this->writeShapeComment($objWriter, $shape);
+                } elseif ($shape instanceof AutoShape) {
+                    $this->writeShapeAutoShape($objWriter, $shape);
                 }
             }
             // Slide Note
@@ -557,15 +561,11 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write text.
+     * Write where a shape sits on the slide: its top left corner, or -- for a shape turned about
+     * its centre -- the transform that puts it there.
      */
-    protected function writeShapeTxt(XMLWriter $objWriter, RichText $shape): void
+    protected function writeShapePlacement(XMLWriter $objWriter, AbstractShape $shape): void
     {
-        // draw:frame
-        $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
-        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         if ($shape->getRotation() != 0) {
             $rotRad = deg2rad($shape->getRotation());
 
@@ -588,6 +588,19 @@ class Content extends AbstractDecoratorWriter
             $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
             $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         }
+    }
+
+    /**
+     * Write text.
+     */
+    protected function writeShapeTxt(XMLWriter $objWriter, RichText $shape): void
+    {
+        // draw:frame
+        $objWriter->startElement('draw:frame');
+        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
+        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
+        $this->writeShapePlacement($objWriter, $shape);
         $this->writeShapeDecorative($objWriter, $shape);
         // draw:text-box
         $objWriter->startElement('draw:text-box');
@@ -835,6 +848,72 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * Write an AutoShape, as the custom shape LibreOffice writes for an OOXML preset: its type named
+     * `ooxml-<preset>`, and the geometry it is drawn from carried along, as ODF names no presets.
+     */
+    protected function writeShapeAutoShape(XMLWriter $objWriter, AutoShape $shape): void
+    {
+        // draw:custom-shape
+        $objWriter->startElement('draw:custom-shape');
+        $objWriter->writeAttribute('draw:name', $shape->getName());
+        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
+        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
+        $this->writeShapePlacement($objWriter, $shape);
+        $this->writeShapeDecorative($objWriter, $shape);
+        $this->writeShapeDescription($objWriter, $shape);
+        $this->writeShapeHyperlink($objWriter, $shape);
+
+        // text:p
+        $objWriter->startElement('text:p');
+        $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($this));
+        $objWriter->text($shape->getText());
+        $objWriter->endElement();
+
+        // draw:enhanced-geometry
+        $objWriter->startElement('draw:enhanced-geometry');
+        $objWriter->writeAttribute('draw:type', 'ooxml-' . $shape->getType());
+        $geometry = PresetGeometry::PRESETS[$shape->getType()] ?? null;
+        if (null !== $geometry) {
+            $modifiers = $this->getAutoShapeModifiers($shape) ?? $geometry['modifiers'];
+            if (null !== $modifiers) {
+                $objWriter->writeAttribute('draw:modifiers', $modifiers);
+            }
+            foreach ($geometry['attributes'] as $name => $value) {
+                $objWriter->writeAttribute($name, $value);
+            }
+            foreach ($geometry['equations'] as $index => $formula) {
+                // draw:enhanced-geometry > draw:equation
+                $objWriter->startElement('draw:equation');
+                $objWriter->writeAttribute('draw:name', 'f' . $index);
+                $objWriter->writeAttribute('draw:formula', $formula);
+                $objWriter->endElement();
+            }
+        }
+        // > draw:enhanced-geometry
+        $objWriter->endElement();
+
+        // > draw:custom-shape
+        $objWriter->endElement();
+    }
+
+    /**
+     * The adjustment of a rounded rectangle given a corner: its radius as a share of half the
+     * shorter side, in the thousandths of a percent OOXML counts it in -- as the PowerPoint2007
+     * writer computes it. Every other shape keeps the adjustment of its preset.
+     */
+    protected function getAutoShapeModifiers(AutoShape $shape): ?string
+    {
+        $cornerPx = $shape->getRoundRectCorner();
+        $minHalf = (int) floor(min($shape->getWidth(), $shape->getHeight()) / 2);
+        if (AutoShape::TYPE_ROUNDED_RECTANGLE !== $shape->getType() || null === $cornerPx || $minHalf <= 0) {
+            return null;
+        }
+
+        return (string) max(0, min(50000, (int) round($cornerPx / $minHalf * 50000)));
+    }
+
+    /**
      * The name ODF addresses a slide by, which every page carries so that a link can reach it.
      *
      * A slide with no name of its own is named after its position. Not as `page3`, though:
@@ -1037,6 +1116,8 @@ class Content extends AbstractDecoratorWriter
                 $this->writeShapeDrawing($objWriter, $shape);
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape);
+            } elseif ($shape instanceof AutoShape) {
+                $this->writeShapeAutoShape($objWriter, $shape);
             }
         }
 
@@ -1068,6 +1149,9 @@ class Content extends AbstractDecoratorWriter
             }
             if ($shape instanceof Table) {
                 $this->addTableStyle($shape);
+            }
+            if ($shape instanceof AutoShape) {
+                $this->addAutoShapeStyle($shape);
             }
             // A group inside a group is walked by writeShapeGroup(), so it has to be walked here too
             if ($shape instanceof Group) {
@@ -1457,6 +1541,41 @@ class Content extends AbstractDecoratorWriter
             $this->writeStylePartShadow($objWriter, $shape->getShadow());
             $objWriter->endElement();
         }, $shape);
+    }
+
+    /**
+     * Name the automatic styles an AutoShape wears: its graphic style, and the paragraph style that
+     * centres its text the way the PowerPoint2007 writer does -- one every AutoShape shares.
+     */
+    protected function addAutoShapeStyle(AutoShape $shape): void
+    {
+        $this->shareAutomaticStyle('graphic', function (XMLWriter $objWriter) use ($shape): void {
+            $objWriter->writeAttribute('style:parent-style-name', 'standard');
+
+            // style:graphic-properties
+            $objWriter->startElement('style:graphic-properties');
+            $this->writeStylePartFill($objWriter, $shape->getFill());
+            $outlineFill = $shape->getOutline()->getFill();
+            if (Fill::FILL_SOLID === $outlineFill->getFillType()) {
+                $objWriter->writeAttribute('draw:stroke', 'solid');
+                $objWriter->writeAttribute('svg:stroke-color', '#' . $outlineFill->getStartColor()->getRGB());
+                $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOutline()->getWidth()), 3) . 'cm');
+            } elseif (Fill::FILL_UNSET !== $outlineFill->getFillType()) {
+                $objWriter->writeAttribute('draw:stroke', 'none');
+            }
+            // The shape keeps its size, as a preset shape does: `standard` grows it to fit its text
+            $objWriter->writeAttribute('draw:auto-grow-height', 'false');
+            $objWriter->writeAttribute('draw:textarea-vertical-align', 'middle');
+            $this->writeStylePartShadow($objWriter, $shape->getShadow());
+            $objWriter->endElement();
+        }, $shape);
+
+        $this->shareAutomaticStyle('paragraph', function (XMLWriter $objWriter): void {
+            // style:paragraph-properties
+            $objWriter->startElement('style:paragraph-properties');
+            $objWriter->writeAttribute('fo:text-align', 'center');
+            $objWriter->endElement();
+        }, $this);
     }
 
     /**

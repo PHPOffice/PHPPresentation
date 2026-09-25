@@ -25,6 +25,7 @@ use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -2029,5 +2030,108 @@ class ODPresentationTest extends TestCase
         self::assertEquals($rotation, $arrayShape[0]->getRotation());
         self::assertEquals(400, $arrayShape[0]->getOffsetX());
         self::assertEquals(100, $arrayShape[0]->getOffsetY());
+    }
+
+    public function testAutoShapeSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = new AutoShape();
+        $oShape->setType(AutoShape::TYPE_5_POINT_STAR)->setText('Star')->setName('Five')->setDescription('Alt')
+            ->setOffsetX(10)->setOffsetY(20)->setWidth(100)->setHeight(80)->setRotation(30);
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFFFCC00'));
+        $oShape->getOutline()->setWidth(2)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF0000FF'));
+        $oPhpPresentation->getActiveSlide()->addShape($oShape);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(AutoShape::class, $arrayShape[0]);
+        self::assertEquals(AutoShape::TYPE_5_POINT_STAR, $arrayShape[0]->getType());
+        self::assertEquals('Star', $arrayShape[0]->getText());
+        self::assertEquals('Five', $arrayShape[0]->getName());
+        self::assertEquals('Alt', $arrayShape[0]->getDescription());
+        self::assertEquals(10, $arrayShape[0]->getOffsetX());
+        self::assertEquals(20, $arrayShape[0]->getOffsetY());
+        self::assertEquals(100, $arrayShape[0]->getWidth());
+        self::assertEquals(80, $arrayShape[0]->getHeight());
+        self::assertEquals(30, $arrayShape[0]->getRotation());
+        self::assertEquals(Fill::FILL_SOLID, $arrayShape[0]->getFill()->getFillType());
+        self::assertEquals('FFCC00', $arrayShape[0]->getFill()->getStartColor()->getRGB());
+        self::assertEquals(Fill::FILL_SOLID, $arrayShape[0]->getOutline()->getFill()->getFillType());
+        self::assertEquals('0000FF', $arrayShape[0]->getOutline()->getFill()->getStartColor()->getRGB());
+        self::assertEquals(2, $arrayShape[0]->getOutline()->getWidth());
+    }
+
+    public function testAutoShapeWithNoOutlineSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = new AutoShape();
+        $oShape->getOutline()->getFill()->setFillType(Fill::FILL_NONE);
+        $oPhpPresentation->getActiveSlide()->addShape($oShape);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(AutoShape::class, $arrayShape[0]);
+        self::assertEquals(AutoShape::TYPE_HEART, $arrayShape[0]->getType());
+        self::assertEquals(Fill::FILL_NONE, $arrayShape[0]->getOutline()->getFill()->getFillType());
+    }
+
+    /**
+     * @return array<array{string, null|string}>
+     */
+    public static function dataProviderCustomShapeTypes(): array
+    {
+        return [
+            // a shape LibreOffice took from OOXML
+            ['ooxml-cloud', AutoShape::TYPE_CLOUD],
+            // a shape of its own geometry, by the OOXML preset its export names
+            ['rectangle', AutoShape::TYPE_RECTANGLE],
+            ['round-rectangular-callout', AutoShape::TYPE_ROUNDED_RECTANGULAR_CALLOUT],
+            ['flowchart-decision', AutoShape::TYPE_FLOWCHART_DECISION],
+            // a shape no preset draws
+            ['ooxml-non-primitive', null],
+            ['non-primitive', null],
+            ['fontwork-wave', null],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderCustomShapeTypes
+     */
+    #[DataProvider('dataProviderCustomShapeTypes')]
+    public function testCustomShapeTypeWrittenElsewhere(string $customShapeType, ?string $expected): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->addShape((new AutoShape())->setType(AutoShape::TYPE_HEART));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $content = (string) $oZip->getFromName('content.xml');
+        $oZip->addFromString('content.xml', str_replace('draw:type="ooxml-heart"', 'draw:type="' . $customShapeType . '"', $content));
+        $oZip->close();
+
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        if (null === $expected) {
+            self::assertCount(0, $arrayShape);
+
+            return;
+        }
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(AutoShape::class, $arrayShape[0]);
+        self::assertEquals($expected, $arrayShape[0]->getType());
     }
 }
