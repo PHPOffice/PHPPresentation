@@ -88,15 +88,15 @@ Below are the supported features for each file formats.
 |                           | RichText             | :material-check: | :material-check: | :material-check: |
 |                           | Table                |       |       | :material-check: |
 |                           | Text                 | :material-check: | :material-check: | :material-check: |
-| **Charts**                | Area                 |       |       |       |
-|                           | Bar                  |       |       | :material-check: |
-|                           | Bar3D                |       |       |       |
-|                           | Doughnut             |       |       |       |
-|                           | Line                 |       |       |       |
-|                           | Pie                  |       |       |       |
-|                           | Pie3D                |       |       |       |
-|                           | Radar                |       |       |       |
-|                           | Scatter              |       |       |       |
+| **Charts**                | Area                 | :material-check: |       |       |
+|                           | Bar                  | :material-check: |       | :material-check: |
+|                           | Bar3D                | :material-check: |       |       |
+|                           | Doughnut             | :material-check: |       |       |
+|                           | Line                 | :material-check: |       |       |
+|                           | Pie                  | :material-check: |       |       |
+|                           | Pie3D                | :material-check: |       |       |
+|                           | Radar                | :material-check: |       |       |
+|                           | Scatter              | :material-check: |       |       |
 
 
 ## Contributing
