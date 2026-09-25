@@ -30,6 +30,7 @@ use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Line;
@@ -49,6 +50,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
+use ReflectionClass;
 use ZipArchive;
 
 /**
@@ -96,6 +98,155 @@ class ODPresentation implements ReaderInterface
         'wave|single|' => Font::UNDERLINE_WAVY,
         'wave|double|' => Font::UNDERLINE_WAVYDOUBLE,
         'wave|single|bold' => Font::UNDERLINE_WAVYHEAVY,
+    ];
+
+    /**
+     * The AutoShape type of a custom shape LibreOffice draws with a geometry of its own, as its
+     * export to OOXML names it. A shape it took from OOXML says so instead, as `ooxml-<preset>`.
+     *
+     * @var array<string, string>
+     */
+    protected const CUSTOM_SHAPE_TYPES = [
+        'frame' => AutoShape::TYPE_FRAME,
+        'rectangle' => AutoShape::TYPE_RECTANGLE,
+        'round-rectangle' => AutoShape::TYPE_ROUNDED_RECTANGLE,
+        'ellipse' => AutoShape::TYPE_OVAL,
+        'diamond' => AutoShape::TYPE_DIAMOND,
+        'isosceles-triangle' => AutoShape::TYPE_ISOSCELES_TRIANGLE,
+        'right-triangle' => AutoShape::TYPE_RIGHT_TRIANGLE,
+        'parallelogram' => AutoShape::TYPE_PARALLELOGRAM,
+        'trapezoid' => AutoShape::TYPE_TRAPEZOID,
+        'hexagon' => AutoShape::TYPE_HEXAGON,
+        'octagon' => AutoShape::TYPE_OCTAGON,
+        'cross' => AutoShape::TYPE_CROSS,
+        'star5' => AutoShape::TYPE_5_POINT_STAR,
+        'right-arrow' => AutoShape::TYPE_RIGHT_ARROW,
+        'pentagon-right' => AutoShape::TYPE_PENTAGON,
+        'cube' => AutoShape::TYPE_CUBE,
+        'mso-spt19' => AutoShape::TYPE_ARC,
+        'mso-spt21' => AutoShape::TYPE_PLAQUE,
+        'can' => AutoShape::TYPE_CAN,
+        'ring' => AutoShape::TYPE_DONUT,
+        'mso-spt41' => AutoShape::TYPE_LINE_CALLOUT_1_NO_BORDER,
+        'mso-spt42' => AutoShape::TYPE_LINE_CALLOUT_2_NO_BORDER,
+        'mso-spt43' => AutoShape::TYPE_LINE_CALLOUT_3_NO_BORDER,
+        'mso-spt44' => AutoShape::TYPE_LINE_CALLOUT_1_ACCENT_BAR,
+        'mso-spt45' => AutoShape::TYPE_LINE_CALLOUT_2_ACCENT_BAR,
+        'mso-spt46' => AutoShape::TYPE_LINE_CALLOUT_3_ACCENT_BAR,
+        'line-callout-1' => AutoShape::TYPE_LINE_CALLOUT_1,
+        'line-callout-2' => AutoShape::TYPE_LINE_CALLOUT_2,
+        'line-callout-3' => AutoShape::TYPE_LINE_CALLOUT_3,
+        'mso-spt49' => AutoShape::TYPE_LINE_CALLOUT_3,
+        'mso-spt50' => AutoShape::TYPE_LINE_CALLOUT_1_BORDER_AND_ACCENT_BAR,
+        'mso-spt51' => AutoShape::TYPE_LINE_CALLOUT_2_BORDER_AND_ACCENT_BAR,
+        'mso-spt52' => AutoShape::TYPE_LINE_CALLOUT_3_BORDER_AND_ACCENT_BAR,
+        'mso-spt53' => AutoShape::TYPE_DOWN_RIBBON,
+        'mso-spt54' => AutoShape::TYPE_UP_RIBBON,
+        'chevron' => AutoShape::TYPE_CHEVRON,
+        'pentagon' => AutoShape::TYPE_REGULARP_ENTAGON,
+        'forbidden' => AutoShape::TYPE_NO_SYMBOL,
+        'star8' => AutoShape::TYPE_8_POINT_STAR,
+        'mso-spt59' => AutoShape::TYPE_16_POINT_STAR,
+        'mso-spt60' => AutoShape::TYPE_32_POINT_STAR,
+        'rectangular-callout' => AutoShape::TYPE_RECTANGULAR_CALLOUT,
+        'round-rectangular-callout' => AutoShape::TYPE_ROUNDED_RECTANGULAR_CALLOUT,
+        'round-callout' => AutoShape::TYPE_OVAL_CALLOUT,
+        'mso-spt64' => AutoShape::TYPE_WAVE,
+        'paper' => AutoShape::TYPE_FOLDED_CORNER,
+        'left-arrow' => AutoShape::TYPE_LEFT_ARROW,
+        'down-arrow' => AutoShape::TYPE_DOWN_ARROW,
+        'up-arrow' => AutoShape::TYPE_UP_ARROW,
+        'left-right-arrow' => AutoShape::TYPE_LEFT_RIGHT_ARROW,
+        'up-down-arrow' => AutoShape::TYPE_UP_DOWN_ARROW,
+        'mso-spt71' => AutoShape::TYPE_EXPLOSIONEXPLOSION1,
+        'bang' => AutoShape::TYPE_EXPLOSIONEXPLOSION2,
+        'lightning' => AutoShape::TYPE_LIGHTNING_BOLT,
+        'heart' => AutoShape::TYPE_HEART,
+        'quad-arrow' => AutoShape::TYPE_QUAD_ARROW,
+        'left-arrow-callout' => AutoShape::TYPE_LEFT_ARROW_CALLOUT,
+        'right-arrow-callout' => AutoShape::TYPE_RIGHT_ARROW_CALLOUT,
+        'up-arrow-callout' => AutoShape::TYPE_UP_ARROW_CALLOUT,
+        'down-arrow-callout' => AutoShape::TYPE_DOWN_ARROWCALLOUT,
+        'left-right-arrow-callout' => AutoShape::TYPE_LEFT_RIGHT_ARROW_CALLOUT,
+        'up-down-arrow-callout' => AutoShape::TYPE_UP_DOWN_ARROW_CALLOUT,
+        'quad-arrow-callout' => AutoShape::TYPE_QUAD_ARROW_CALLOUT,
+        'quad-bevel' => AutoShape::TYPE_BEVEL,
+        'left-bracket' => AutoShape::TYPE_LEFT_BRACKET,
+        'right-bracket' => AutoShape::TYPE_RIGHT_BRACKET,
+        'left-brace' => AutoShape::TYPE_LEFT_BRACE,
+        'right-brace' => AutoShape::TYPE_RIGHT_BRACE,
+        'mso-spt89' => AutoShape::TYPE_LEFT_UP_ARROW,
+        'mso-spt90' => AutoShape::TYPE_BENT_UP_ARROW,
+        'mso-spt91' => AutoShape::TYPE_BENT_ARROW,
+        'star24' => AutoShape::TYPE_24_POINT_STAR,
+        'striped-right-arrow' => AutoShape::TYPE_STRIPED_RIGHT_ARROW,
+        'notched-right-arrow' => AutoShape::TYPE_NOTCHED_RIGHT_ARROW,
+        'block-arc' => AutoShape::TYPE_BLOCK_ARC,
+        'smiley' => AutoShape::TYPE_SMILEY_FACE,
+        'vertical-scroll' => AutoShape::TYPE_VERTICAL_SCROLL,
+        'horizontal-scroll' => AutoShape::TYPE_HORIZONTAL_SCROLL,
+        'circular-arrow' => AutoShape::TYPE_CIRCULAR_ARROW,
+        'mso-spt100' => AutoShape::TYPE_PIE,
+        'mso-spt101' => AutoShape::TYPE_U_TURN_ARROW,
+        'mso-spt102' => AutoShape::TYPE_CURVED_RIGHT_ARROW,
+        'mso-spt103' => AutoShape::TYPE_CURVED_LEFT_ARROW,
+        'mso-spt104' => AutoShape::TYPE_CURVED_UP_ARROW,
+        'mso-spt105' => AutoShape::TYPE_CURVED_DOWN_ARROW,
+        'cloud-callout' => AutoShape::TYPE_CLOUD_CALLOUT,
+        'mso-spt107' => AutoShape::TYPE_CURVED_DOWN_RIBBON,
+        'mso-spt108' => AutoShape::TYPE_CURVED_UP_RIBBON,
+        'flowchart-process' => AutoShape::TYPE_FLOWCHART_PROCESS,
+        'flowchart-decision' => AutoShape::TYPE_FLOWCHART_DECISION,
+        'flowchart-data' => AutoShape::TYPE_FLOWCHART_DATA,
+        'flowchart-predefined-process' => AutoShape::TYPE_FLOWCHART_PREDEFINED_PROCESS,
+        'flowchart-internal-storage' => AutoShape::TYPE_FLOWCHART_INTERNAL_STORAGE,
+        'flowchart-document' => AutoShape::TYPE_FLOWCHART_DOCUMENT,
+        'flowchart-multidocument' => AutoShape::TYPE_FLOWCHART_MULTIDOCUMENT,
+        'flowchart-terminator' => AutoShape::TYPE_FLOWCHART_TERMINATOR,
+        'flowchart-preparation' => AutoShape::TYPE_FLOWCHART_PREPARATION,
+        'flowchart-manual-input' => AutoShape::TYPE_FLOWCHART_MANUAL_INPUT,
+        'flowchart-manual-operation' => AutoShape::TYPE_FLOWCHART_MANUAL_OPERATION,
+        'flowchart-connector' => AutoShape::TYPE_FLOWCHART_CONNECTOR,
+        'flowchart-card' => AutoShape::TYPE_FLOWCHART_CARD,
+        'flowchart-punched-tape' => AutoShape::TYPE_FLOWCHART_PUNCHEDTAPE,
+        'flowchart-summing-junction' => AutoShape::TYPE_FLOWCHART_SUMMING_JUNCTION,
+        'flowchart-or' => AutoShape::TYPE_FLOWCHART_OR,
+        'flowchart-collate' => AutoShape::TYPE_FLOWCHART_COLLATE,
+        'flowchart-sort' => AutoShape::TYPE_FLOWCHART_SORT,
+        'flowchart-extract' => AutoShape::TYPE_FLOWCHART_EXTRACT,
+        'flowchart-merge' => AutoShape::TYPE_FLOWCHART_MERGE,
+        'mso-spt129' => AutoShape::TYPE_FLOWCHART_OFFLINE_STORAGE,
+        'flowchart-stored-data' => AutoShape::TYPE_FLOWCHART_STORED_DATA,
+        'flowchart-sequential-access' => AutoShape::TYPE_FLOWCHART_SEQUENTIAL_ACCESS_STORAGE,
+        'flowchart-magnetic-disk' => AutoShape::TYPE_FLOWCHART_MAGNETIC_DISK,
+        'flowchart-direct-access-storage' => AutoShape::TYPE_FLOWCHART_DIRECT_ACCESS_STORAGE,
+        'flowchart-display' => AutoShape::TYPE_FLOWCHART_DISPLAY,
+        'flowchart-delay' => AutoShape::TYPE_FLOWCHART_DELAY,
+        'flowchart-alternate-process' => AutoShape::TYPE_FLOWCHART_ALTERNATEPROCESS,
+        'flowchart-off-page-connector' => AutoShape::TYPE_FLOWCHART_OFFPAGE_CONNECTOR,
+        'mso-spt178' => AutoShape::TYPE_LINE_CALLOUT_1_NO_BORDER,
+        'mso-spt179' => AutoShape::TYPE_LINE_CALLOUT_1_ACCENT_BAR,
+        'mso-spt180' => AutoShape::TYPE_LINE_CALLOUT_1,
+        'mso-spt182' => AutoShape::TYPE_LEFT_RIGHT_UP_ARROW,
+        'sun' => AutoShape::TYPE_SUN,
+        'moon' => AutoShape::TYPE_MOON,
+        'bracket-pair' => AutoShape::TYPE_DOUBLE_BRACKET,
+        'brace-pair' => AutoShape::TYPE_DOUBLE_BRACE,
+        'star4' => AutoShape::TYPE_4_POINT_STAR,
+        'mso-spt188' => AutoShape::TYPE_DOUBLE_WAVE,
+        'mso-spt189' => AutoShape::TYPE_ACTION_BUTTON_CUSTOM,
+        'mso-spt190' => AutoShape::TYPE_ACTION_BUTTON_HOME,
+        'mso-spt191' => AutoShape::TYPE_ACTION_BUTTON_HELP,
+        'mso-spt192' => AutoShape::TYPE_ACTION_BUTTON_INFORMATION,
+        'mso-spt193' => AutoShape::TYPE_ACTION_BUTTON_FORWARD_OR_NEXT,
+        'mso-spt194' => AutoShape::TYPE_ACTION_BUTTON_BACK_OR_PREVIOUS,
+        'mso-spt195' => AutoShape::TYPE_ACTION_BUTTON_END,
+        'mso-spt196' => AutoShape::TYPE_ACTION_BUTTON_BEGINNING,
+        'mso-spt197' => AutoShape::TYPE_ACTION_BUTTON_RETURN,
+        'mso-spt198' => AutoShape::TYPE_ACTION_BUTTON_DOCUMENT,
+        'mso-spt199' => AutoShape::TYPE_ACTION_BUTTON_SOUND,
+        'mso-spt200' => AutoShape::TYPE_ACTION_BUTTON_MOVIE,
+        'mso-spt202' => AutoShape::TYPE_RECTANGLE,
     ];
 
     /**
@@ -895,6 +1046,11 @@ class ODPresentation implements ReaderInterface
                 }
             }
         }
+        foreach ($this->oXMLReader->getElements('draw:custom-shape', $nodeSlide) as $oNodeShape) {
+            if ($oNodeShape instanceof DOMElement) {
+                $this->loadShapeAutoShape($oNodeShape);
+            }
+        }
         // a line is a shape of the page in its own right, not the content of a frame
         foreach ($this->oXMLReader->getElements('draw:line', $nodeSlide) as $oNodeLine) {
             if ($oNodeLine instanceof DOMElement) {
@@ -1067,6 +1223,59 @@ class ODPresentation implements ReaderInterface
         $shape = new Line($point('svg:x1'), $point('svg:y1'), $point('svg:x2'), $point('svg:y2'));
         $shape->setDescription($this->loadShapeDescription($oNodeLine));
         $shape->setDecorative($this->loadShapeDecorative($oNodeLine));
+
+        $this->oPhpPresentation->getActiveSlide()->addShape($shape);
+    }
+
+    /**
+     * Read a custom shape drawn from a preset as an AutoShape. A custom shape of any other geometry
+     * -- a freeform, fontwork -- is not one, and is left out.
+     */
+    protected function loadShapeAutoShape(DOMElement $oNodeShape): void
+    {
+        $oNodeGeometry = $this->oXMLReader->getElement('draw:enhanced-geometry', $oNodeShape);
+        if (!$oNodeGeometry instanceof DOMElement) {
+            return;
+        }
+        $type = $oNodeGeometry->getAttribute('draw:type');
+        $type = 0 === strpos($type, 'ooxml-') ? substr($type, strlen('ooxml-')) : (self::CUSTOM_SHAPE_TYPES[$type] ?? '');
+        if (!in_array($type, (new ReflectionClass(AutoShape::class))->getConstants(), true)) {
+            return;
+        }
+
+        $shape = new AutoShape();
+        $shape->setType($type);
+        $shape->setName($oNodeShape->getAttribute('draw:name'));
+        $shape->setDescription($this->loadShapeDescription($oNodeShape));
+        $shape->setDecorative($this->loadShapeDecorative($oNodeShape));
+        $shape->setWidth(CommonDrawing::centimetersToPixels((float) substr($oNodeShape->getAttribute('svg:width'), 0, -2)));
+        $shape->setHeight(CommonDrawing::centimetersToPixels((float) substr($oNodeShape->getAttribute('svg:height'), 0, -2)));
+        $this->loadShapeOffset($shape, $oNodeShape);
+
+        $text = [];
+        foreach ($this->oXMLReader->getElements('text:p', $oNodeShape) as $oNodeParagraph) {
+            $text[] = $oNodeParagraph->nodeValue;
+        }
+        $shape->setText(implode("\n", $text));
+
+        $style = $this->arrayStyles[$oNodeShape->getAttribute('draw:style-name')] ?? null;
+        if (null !== $style) {
+            $shape->setShadow($style['shadow']);
+            if (null !== $style['fill']) {
+                $shape->setFill($style['fill']);
+            }
+            // The outline of an AutoShape is its stroke, which the style reads as a border
+            $border = $style['border'];
+            if (null !== $border) {
+                $outlineFill = $shape->getOutline()->getFill();
+                if (Border::LINE_NONE === $border->getLineStyle()) {
+                    $outlineFill->setFillType(Fill::FILL_NONE);
+                } else {
+                    $outlineFill->setFillType(Fill::FILL_SOLID)->setStartColor($border->getColor() ?? new Color());
+                    $shape->getOutline()->setWidth((int) round(CommonDrawing::pointsToPixels($border->getLineWidth())));
+                }
+            }
+        }
 
         $this->oPhpPresentation->getActiveSlide()->addShape($shape);
     }

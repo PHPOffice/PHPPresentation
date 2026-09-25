@@ -24,6 +24,7 @@ use PhpOffice\Common\Drawing;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line as ChartTypeLine;
 use PhpOffice\PhpPresentation\Shape\Comment;
@@ -42,6 +43,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use PhpOffice\PhpPresentation\Writer\ODPresentation\PresetGeometry;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 
@@ -739,6 +741,121 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow', 'visible');
         $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testAutoShape(): void
+    {
+        $oShape = new AutoShape();
+        $oShape->setType(AutoShape::TYPE_5_POINT_STAR)->setText('Star')->setName('Five')
+            ->setOffsetX(10)->setOffsetY(20)->setWidth(100)->setHeight(80);
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFFFCC00'));
+        $oShape->getOutline()->setWidth(2)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF0000FF'));
+        $this->oPresentation->getActiveSlide()->addShape($oShape);
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:name', 'Five');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters(10), 3) . 'cm');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters(100), 3) . 'cm');
+        $this->assertZipXmlElementEquals('content.xml', $element . '/text:p', 'Star');
+        $paragraphStyle = $this->getAutomaticStyleXPath($element . '/text:p', 'text:style-name');
+        $this->assertZipXmlAttributeEquals('content.xml', $paragraphStyle . '/style:paragraph-properties', 'fo:text-align', 'center');
+
+        // ODF names no preset shapes: the type alone draws nothing, so the geometry goes along
+        $geometry = $element . '/draw:enhanced-geometry';
+        $this->assertZipXmlAttributeEquals('content.xml', $geometry, 'draw:type', 'ooxml-star5');
+        $this->assertZipXmlAttributeEquals('content.xml', $geometry, 'draw:modifiers', '19098 105146 110557');
+        $this->assertZipXmlAttributeStartsWith('content.xml', $geometry, 'draw:enhanced-path', 'M ');
+        $this->assertZipXmlElementCount('content.xml', $geometry . '/draw:equation', count(PresetGeometry::PRESETS['star5']['equations']));
+        $this->assertZipXmlAttributeEquals('content.xml', $geometry . '/draw:equation[1]', 'draw:name', 'f0');
+
+        $style = $this->getAutomaticStyleXPath($element, 'draw:style-name') . '/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $style, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeEquals('content.xml', $style, 'draw:fill-color', '#FFCC00');
+        $this->assertZipXmlAttributeEquals('content.xml', $style, 'draw:stroke', 'solid');
+        $this->assertZipXmlAttributeEquals('content.xml', $style, 'svg:stroke-color', '#0000FF');
+        $this->assertZipXmlAttributeEquals('content.xml', $style, 'svg:stroke-width', Text::numberFormat(CommonDrawing::pixelsToCentimeters(2), 3) . 'cm');
+        $this->assertZipXmlAttributeEquals('content.xml', $style, 'draw:auto-grow-height', 'false');
+        $this->assertZipXmlAttributeEquals('content.xml', $style, 'draw:textarea-vertical-align', 'middle');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testAutoShapeOutlineOfNoFillIsNoStroke(): void
+    {
+        $oShape = new AutoShape();
+        $oShape->getOutline()->getFill()->setFillType(Fill::FILL_NONE);
+        $this->oPresentation->getActiveSlide()->addShape($oShape);
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape';
+        $style = $this->getAutomaticStyleXPath($element, 'draw:style-name') . '/style:graphic-properties';
+        $this->assertZipXmlAttributeEquals('content.xml', $style, 'draw:stroke', 'none');
+        $this->assertZipXmlAttributeNotExists('content.xml', $style, 'svg:stroke-width');
+    }
+
+    public function testAutoShapeRoundRectCornerIsItsModifier(): void
+    {
+        $oShape = new AutoShape();
+        $oShape->setType(AutoShape::TYPE_ROUNDED_RECTANGLE)->setWidth(200)->setHeight(100)->setRoundRectCorner(10);
+        $this->oPresentation->getActiveSlide()->addShape($oShape);
+
+        // the corner as a share of half the shorter side, as the PowerPoint2007 writer says it
+        $geometry = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/draw:enhanced-geometry';
+        $this->assertZipXmlAttributeEquals('content.xml', $geometry, 'draw:modifiers', '10000');
+    }
+
+    public function testAutoShapeRoundRectWithoutCornerKeepsThePresetModifier(): void
+    {
+        $oShape = new AutoShape();
+        $oShape->setType(AutoShape::TYPE_ROUNDED_RECTANGLE)->setWidth(200)->setHeight(100);
+        $this->oPresentation->getActiveSlide()->addShape($oShape);
+
+        $geometry = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/draw:enhanced-geometry';
+        $this->assertZipXmlAttributeEquals('content.xml', $geometry, 'draw:modifiers', '16667');
+    }
+
+    public function testAutoShapeOfNoPresetGeometryNamesItsTypeOnly(): void
+    {
+        $oShape = new AutoShape();
+        $oShape->setType(AutoShape::TYPE_LINE_CALLOUT_4);
+        $this->oPresentation->getActiveSlide()->addShape($oShape);
+
+        $geometry = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/draw:enhanced-geometry';
+        $this->assertZipXmlAttributeEquals('content.xml', $geometry, 'draw:type', 'ooxml-borderCallout4');
+        $this->assertZipXmlAttributeNotExists('content.xml', $geometry, 'draw:enhanced-path');
+        $this->assertZipXmlElementNotExists('content.xml', $geometry . '/draw:equation');
+    }
+
+    public function testAutoShapeInGroup(): void
+    {
+        $oGroup = $this->oPresentation->getActiveSlide()->createGroup();
+        $oGroup->addShape((new AutoShape())->setType(AutoShape::TYPE_HEART)->setText('In'));
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g/draw:custom-shape';
+        $this->assertZipXmlElementEquals('content.xml', $element . '/text:p', 'In');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:enhanced-geometry', 'draw:type', 'ooxml-heart');
+        $this->assertZipXmlElementExists('content.xml', $this->getAutomaticStyleXPath($element, 'draw:style-name'));
+    }
+
+    public function testAutoShapeRotated(): void
+    {
+        $oShape = new AutoShape();
+        $oShape->setRotation(90);
+        $this->oPresentation->getActiveSlide()->addShape($oShape);
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape';
+        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:transform', 'rotate (-');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'svg:x');
+    }
+
+    public function testAutoShapeDescriptionAndHyperlink(): void
+    {
+        $oShape = new AutoShape();
+        $oShape->setDescription('Alt')->setDecorative(true)->getHyperlink()->setUrl('https://example.com');
+        $this->oPresentation->getActiveSlide()->addShape($oShape);
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape';
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'loext:decorative', 'true');
+        $this->assertZipXmlElementEquals('content.xml', $element . '/*[1]', 'Alt');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/office:event-listeners/presentation:event-listener', 'xlink:href', 'https://example.com');
     }
 
     public function testShadowSetBackToNull(): void

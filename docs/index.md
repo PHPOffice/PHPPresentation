@@ -54,7 +54,7 @@ Below are the supported features for each file formats.
 |                           | Custom               |       | :material-check: |       | :material-check: |
 | **Slides**                |                      | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | Name                 |       | :material-check: |       |       |
-| **Element Shape**         | AutoShape            |       |       |       | :material-check: |
+| **Element Shape**         | AutoShape            |       | :material-check: |       | :material-check: |
 |                           | Image                | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | Hyperlink            | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | Line                 |       | :material-check: |       | :material-check: |
@@ -82,7 +82,7 @@ Below are the supported features for each file formats.
 |                           | Custom               | :material-check: |       | :material-check: |
 | **Slides**                |                      | :material-check: |       | :material-check: |
 |                           | Name                 |       |       |       |
-| **Element Shape**         | AutoShape            |       |       |       |
+| **Element Shape**         | AutoShape            | :material-check: |       |       |
 |                           | Image                | :material-check: | :material-check: | :material-check: |
 |                           | Hyperlink            | :material-check: | :material-check: | :material-check: |
 |                           | RichText             | :material-check: | :material-check: | :material-check: |
