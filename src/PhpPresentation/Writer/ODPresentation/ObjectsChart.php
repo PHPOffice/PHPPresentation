@@ -828,11 +828,11 @@ class ObjectsChart extends AbstractDecoratorWriter
             if (empty($outlineWidth)) {
                 $outlineWidth = '0.079';
             }
-            if (empty($outlineColor)) {
-                $outlineColor = '4a7ebb';
-            }
             $this->xmlContent->writeAttribute('svg:stroke-width', $outlineWidth . 'cm');
-            $this->xmlContent->writeAttribute('svg:stroke-color', '#' . $outlineColor);
+            // A serie given no outline says nothing about the colour of its line, and the application
+            // picks one per serie, as with the OOXML writer -- one colour for all of them left the
+            // series of a line chart impossible to tell apart
+            $this->xmlContent->writeAttributeIf('' !== $outlineColor, 'svg:stroke-color', '#' . $outlineColor);
         } else {
             $this->xmlContent->writeAttribute('draw:stroke', 'none');
             if (null !== $oSeriesFill && !($chartType instanceof Area)) {
