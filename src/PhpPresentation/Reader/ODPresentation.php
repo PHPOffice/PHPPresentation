@@ -989,9 +989,8 @@ class ODPresentation implements ReaderInterface
 
         $oNodeImage = $this->oXMLReader->getElement('draw:image', $oNodeFrame);
         if ($oNodeImage instanceof DOMElement) {
-            if ($oNodeImage->hasAttribute('loext:mime-type')) {
-                $mimetype = $oNodeImage->getAttribute('loext:mime-type');
-            }
+            // ODF 1.3 standardized the attribute LibreOffice wrote as loext:mime-type
+            $mimetype = $oNodeImage->getAttribute('draw:mime-type') ?: $oNodeImage->getAttribute('loext:mime-type');
             if ($oNodeImage->hasAttribute('xlink:href')) {
                 $sFilename = $oNodeImage->getAttribute('xlink:href');
                 // svm = StarView Metafile

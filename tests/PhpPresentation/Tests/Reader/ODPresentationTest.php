@@ -25,6 +25,7 @@ use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
+use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -1320,6 +1321,48 @@ class ODPresentationTest extends TestCase
         self::assertCount(2, $arrayShape);
         self::assertTrue($arrayShape[0]->isDecorative());
         self::assertFalse($arrayShape[1]->isDecorative());
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public static function dataProviderDrawingMimeType(): array
+    {
+        return [
+            ['loext:mime-type'],
+            ['draw:mime-type'],
+        ];
+    }
+
+    /**
+     * LibreOffice writes `loext:mime-type` in ODF 1.2 and `draw:mime-type`, which ODF 1.3 standardized, from 1.3 on.
+     *
+     * @dataProvider dataProviderDrawingMimeType
+     */
+    #[DataProvider('dataProviderDrawingMimeType')]
+    public function testDrawingMimeType(string $attribute): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oDrawing = new Base64();
+        $oDrawing->setData((string) file_get_contents(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/base64_svg.txt'));
+        $oPhpPresentation->getActiveSlide()->addShape($oDrawing);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $content = (string) $oZip->getFromName('content.xml');
+        $oZip->addFromString('content.xml', str_replace('loext:mime-type=', $attribute . '=', $content));
+        $oZip->close();
+
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(Base64::class, $arrayShape[0]);
+        self::assertEquals('image/svg+xml', $arrayShape[0]->getMimeType());
     }
 
     public function testShapeDescription(): void
