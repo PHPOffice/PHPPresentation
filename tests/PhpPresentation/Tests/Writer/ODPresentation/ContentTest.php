@@ -1278,6 +1278,72 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    /**
+     * @return array<array<string>>
+     */
+    public static function dataProviderPlaceholderClass(): array
+    {
+        return [
+            [Placeholder::PH_TYPE_TITLE, 'title'],
+            ['ctrTitle', 'title'],
+            [Placeholder::PH_TYPE_SUBTITLE, 'subtitle'],
+            [Placeholder::PH_TYPE_BODY, 'outline'],
+            [Placeholder::PH_TYPE_FOOTER, 'footer'],
+            [Placeholder::PH_TYPE_DATETIME, 'date-time'],
+            [Placeholder::PH_TYPE_SLIDENUM, 'page-number'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderPlaceholderClass
+     */
+    #[DataProvider('dataProviderPlaceholderClass')]
+    public function testRichTextPlaceholderClass(string $type, string $class): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('Text');
+        $oRichText->setPlaceHolder(new Placeholder($type));
+
+        $frame = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
+        $this->assertZipXmlAttributeEquals('content.xml', $frame, 'presentation:class', $class);
+        $this->assertZipXmlAttributeEquals('content.xml', $frame, 'presentation:user-transformed', 'true');
+        $this->assertZipXmlAttributeNotExists('content.xml', $frame, 'draw:style-name');
+        $styleName = $this->getZipXmlAttributeValue('content.xml', $frame, 'presentation:style-name');
+        $this->assertZipXmlAttributeEquals('content.xml', '/office:document-content/office:automatic-styles/style:style[@style:name="' . $styleName . '"]', 'style:family', 'presentation');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testRichTextPlaceholderWithoutClass(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('Text');
+        $oRichText->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_CHART));
+
+        $frame = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
+        $this->assertZipXmlAttributeNotExists('content.xml', $frame, 'presentation:class');
+        $this->assertZipXmlAttributeStartsWith('content.xml', $frame, 'draw:style-name', 'gr');
+    }
+
+    public function testRichTextPlaceholderDecorative(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('Text');
+        $oRichText->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_FOOTER));
+        $oRichText->setDecorative();
+
+        $styleName = $this->getZipXmlAttributeValue('content.xml', '/office:document-content/office:body/office:presentation/draw:page/draw:frame', 'presentation:style-name');
+        $this->assertZipXmlAttributeEquals('content.xml', '/office:document-content/office:automatic-styles/style:style[@style:name="' . $styleName . '"]/style:graphic-properties', 'loext:decorative', 'true');
+    }
+
+    public function testRichTextParagraphHasNoWhitespace(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('Text');
+
+        // LibreOffice would keep whitespace after the last run as a space in the paragraph's own font
+        $this->assertZipXmlElementCount('content.xml', '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text()', 0);
+    }
+
     public function testRichTextRotation(): void
     {
         $expectedValue = mt_rand(1, 360);

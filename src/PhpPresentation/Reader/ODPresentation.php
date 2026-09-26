@@ -33,6 +33,7 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -123,6 +124,19 @@ class ODPresentation implements ReaderInterface
         'shadow', 'listStyle', 'spacingAfter', 'spacingBefore', 'lineSpacingMode', 'lineSpacing',
         'rowHeight', 'borders', 'border', 'insetBottom', 'insetLeft', 'insetRight',
         'insetTop', 'verticalAlignCenter', 'wrap', 'decorative',
+    ];
+
+    /**
+     * The kind of placeholder each `presentation:class` a text frame can carry stands for; the
+     * other classes hold no text, or have no placeholder here.
+     */
+    protected const PLACEHOLDER_TYPE = [
+        'title' => Placeholder::PH_TYPE_TITLE,
+        'subtitle' => Placeholder::PH_TYPE_SUBTITLE,
+        'outline' => Placeholder::PH_TYPE_BODY,
+        'footer' => Placeholder::PH_TYPE_FOOTER,
+        'date-time' => Placeholder::PH_TYPE_DATETIME,
+        'page-number' => Placeholder::PH_TYPE_SLIDENUM,
     ];
 
     /**
@@ -978,7 +992,7 @@ class ODPresentation implements ReaderInterface
      */
     protected function loadShapeDecorative(DOMElement $oNodeFrame): bool
     {
-        $decorative = $this->getStyle($oNodeFrame, 'draw:style-name')['decorative'];
+        $decorative = $this->arrayStyles[$this->getShapeStyleName($oNodeFrame)]['decorative'] ?? null;
 
         return is_bool($decorative) ? $decorative : ($this->loadDecorative($oNodeFrame) ?? false);
     }
@@ -1045,8 +1059,8 @@ class ODPresentation implements ReaderInterface
         $shape->setResizeProportional(true);
         $this->loadShapeOffset($shape, $oNodeFrame);
 
-        if ($oNodeFrame->hasAttribute('draw:style-name')) {
-            $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
+        if ($oNodeFrame->hasAttribute('draw:style-name') || $oNodeFrame->hasAttribute('presentation:style-name')) {
+            $keyStyle = $this->getShapeStyleName($oNodeFrame);
             if (isset($this->arrayStyles[$keyStyle])) {
                 $shape->setShadow($this->arrayStyles[$keyStyle]['shadow']);
                 $shape->setFill($this->arrayStyles[$keyStyle]['fill']);
@@ -1138,9 +1152,13 @@ class ODPresentation implements ReaderInterface
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $this->loadShapeOffset($oShape, $oNodeFrame);
+        $placeholderType = self::PLACEHOLDER_TYPE[$oNodeFrame->getAttribute('presentation:class')] ?? null;
+        if (null !== $placeholderType) {
+            $oShape->setPlaceHolder(new Placeholder($placeholderType));
+        }
 
-        if ($oNodeFrame->hasAttribute('draw:style-name')) {
-            $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
+        if ($oNodeFrame->hasAttribute('draw:style-name') || $oNodeFrame->hasAttribute('presentation:style-name')) {
+            $keyStyle = $this->getShapeStyleName($oNodeFrame);
             if (isset($this->arrayStyles[$keyStyle])) {
                 if (null !== $this->arrayStyles[$keyStyle]['columns']) {
                     $oShape->setColumns($this->arrayStyles[$keyStyle]['columns']);
@@ -1421,6 +1439,17 @@ class ODPresentation implements ReaderInterface
         if (count($oCell->getParagraphs()) > 0) {
             $oCell->setActiveParagraph(0);
         }
+    }
+
+    /**
+     * The name of the style a shape wears: its graphic style, or the presentation style a
+     * placeholder wears in its place.
+     */
+    protected function getShapeStyleName(DOMElement $oNode): string
+    {
+        return $oNode->hasAttribute('draw:style-name')
+            ? $oNode->getAttribute('draw:style-name')
+            : $oNode->getAttribute('presentation:style-name');
     }
 
     /**

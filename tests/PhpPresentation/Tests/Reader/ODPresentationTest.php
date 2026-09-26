@@ -27,6 +27,7 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -1400,6 +1401,51 @@ class ODPresentationTest extends TestCase
         $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
         self::assertCount(1, $arrayShape);
         self::assertTrue($arrayShape[0]->isDecorative());
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public static function dataProviderPlaceholder(): array
+    {
+        return [
+            [Placeholder::PH_TYPE_TITLE, Placeholder::PH_TYPE_TITLE],
+            ['ctrTitle', Placeholder::PH_TYPE_TITLE],
+            [Placeholder::PH_TYPE_SUBTITLE, Placeholder::PH_TYPE_SUBTITLE],
+            [Placeholder::PH_TYPE_BODY, Placeholder::PH_TYPE_BODY],
+            [Placeholder::PH_TYPE_FOOTER, Placeholder::PH_TYPE_FOOTER],
+            [Placeholder::PH_TYPE_DATETIME, Placeholder::PH_TYPE_DATETIME],
+            [Placeholder::PH_TYPE_SLIDENUM, Placeholder::PH_TYPE_SLIDENUM],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderPlaceholder
+     */
+    #[DataProvider('dataProviderPlaceholder')]
+    public function testPlaceholderSurvivesTheRoundTrip(string $type, string $expected): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oRichText = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText->createTextRun('Text');
+        $oRichText->setPlaceHolder(new Placeholder($type));
+        $oRichText->setInsetTop(20);
+        $oRichText->setDecorative();
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(RichText::class, $arrayShape[0]);
+        self::assertTrue($arrayShape[0]->isPlaceholder());
+        self::assertEquals($expected, $arrayShape[0]->getPlaceholder()->getType());
+        // The style is named by presentation:style-name
+        self::assertEqualsWithDelta(20, $arrayShape[0]->getInsetTop(), 0.01);
+        self::assertTrue($arrayShape[0]->isDecorative());
+        self::assertEquals('Text', $arrayShape[0]->getPlainText());
     }
 
     public function testShapeDescription(): void

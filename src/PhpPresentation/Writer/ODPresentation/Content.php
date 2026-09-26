@@ -63,6 +63,7 @@ class Content extends AbstractDecoratorWriter
         'paragraph' => 'P',
         'text' => 'T',
         'graphic' => 'gr',
+        'presentation' => 'pr',
         'drawing-page' => 'dp',
         'table-row' => 'ro',
         'table-cell' => 'ce',
@@ -82,6 +83,21 @@ class Content extends AbstractDecoratorWriter
         'file1' => 'text:file-name',
         'file2' => 'text:file-name',
         'file3' => 'text:file-name',
+    ];
+
+    /**
+     * The `presentation:class` of each kind of placeholder a text shape can hold. OpenDocument
+     * spells three of them differently, and has no class for the others, which are then written as
+     * an ordinary frame.
+     */
+    private const PLACEHOLDER_CLASS = [
+        Placeholder::PH_TYPE_TITLE => 'title',
+        'ctrTitle' => 'title',
+        Placeholder::PH_TYPE_SUBTITLE => 'subtitle',
+        Placeholder::PH_TYPE_BODY => 'outline',
+        Placeholder::PH_TYPE_FOOTER => 'footer',
+        Placeholder::PH_TYPE_DATETIME => 'date-time',
+        Placeholder::PH_TYPE_SLIDENUM => 'page-number',
     ];
 
     /**
@@ -145,6 +161,9 @@ class Content extends AbstractDecoratorWriter
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
+        // Not indented, as LibreOffice writes it: LibreOffice keeps the indentation after the
+        // last run as a space, which ODF 1.3 (part 3, 6.1.2) says to drop
+        $objWriter->setIndent(false);
         $objWriter->startDocument('1.0', 'UTF-8');
 
         // office:document-content
@@ -563,7 +582,17 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
+        $placeholderClass = $this->getPlaceholderClass($shape);
+        if (null === $placeholderClass) {
+            $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
+        } else {
+            // A placeholder is one only with its class and a style of the presentation family
+            // together, and that style takes the place of the graphic one: a frame carries one or
+            // the other. The geometry is the shape's own, not the one of a layout.
+            $objWriter->writeAttribute('presentation:style-name', $this->getAutomaticStyleName($shape));
+            $objWriter->writeAttribute('presentation:class', $placeholderClass);
+            $objWriter->writeAttribute('presentation:user-transformed', 'true');
+        }
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         if ($shape->getRotation() != 0) {
@@ -767,6 +796,16 @@ class Content extends AbstractDecoratorWriter
         }
 
         return self::FIELD_ODF[$type] ?? null;
+    }
+
+    /**
+     * The `presentation:class` of the placeholder a text shape holds, if OpenDocument has one.
+     */
+    protected function getPlaceholderClass(RichText $shape): ?string
+    {
+        $placeholder = $shape->getPlaceholder();
+
+        return null === $placeholder ? null : (self::PLACEHOLDER_CLASS[$placeholder->getType()] ?? null);
     }
 
     /**
@@ -1289,8 +1328,10 @@ class Content extends AbstractDecoratorWriter
      */
     protected function addTxtStyle(RichText $shape): void
     {
-        $this->shareAutomaticStyle('graphic', function (XMLWriter $objWriter) use ($shape): void {
-            $objWriter->writeAttribute('style:parent-style-name', 'standard');
+        $family = null === $this->getPlaceholderClass($shape) ? 'graphic' : 'presentation';
+        $this->shareAutomaticStyle($family, function (XMLWriter $objWriter) use ($shape, $family): void {
+            // `standard` is a graphic style, and a style can only inherit from one of its family
+            $objWriter->writeAttributeIf('graphic' === $family, 'style:parent-style-name', 'standard');
             // style:graphic-properties
             $objWriter->startElement('style:graphic-properties');
             $objWriter->writeAttribute('style:mirror', 'none');
