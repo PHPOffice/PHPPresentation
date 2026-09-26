@@ -122,11 +122,11 @@ class ODPresentation implements ReaderInterface
         'alignment', 'background', 'columns', 'columnSpacing', 'columnsRTL', 'fill', 'font',
         'shadow', 'listStyle', 'spacingAfter', 'spacingBefore', 'lineSpacingMode', 'lineSpacing',
         'rowHeight', 'borders', 'border', 'insetBottom', 'insetLeft', 'insetRight',
-        'insetTop', 'verticalAlignCenter', 'wrap',
+        'insetTop', 'verticalAlignCenter', 'visible', 'wrap',
     ];
 
     /**
-     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, language: null|string, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, border: null|Border, insetBottom: null|float, insetLeft: null|float, insetRight: null|float, insetTop: null|float, verticalAlignCenter: null|int, wrap: null|string}>
+     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, language: null|string, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, border: null|Border, insetBottom: null|float, insetLeft: null|float, insetRight: null|float, insetTop: null|float, verticalAlignCenter: null|int, visible: null|bool, wrap: null|string}>
      */
     protected $arrayStyles = [];
 
@@ -348,6 +348,9 @@ class ODPresentation implements ReaderInterface
 
         $nodeDrawingPageProps = $this->oXMLReader->getElement('style:drawing-page-properties', $nodeStyle);
         if ($nodeDrawingPageProps instanceof DOMElement) {
+            if ($nodeDrawingPageProps->hasAttribute('presentation:visibility')) {
+                $visible = 'hidden' !== $nodeDrawingPageProps->getAttribute('presentation:visibility');
+            }
             // Read Background Color
             if ($nodeDrawingPageProps->hasAttribute('draw:fill-color') && 'solid' == $nodeDrawingPageProps->getAttribute('draw:fill')) {
                 $oBackground = new BackgroundColor();
@@ -774,6 +777,7 @@ class ODPresentation implements ReaderInterface
             'insetRight' => $insetRight ?? null,
             'insetTop' => $insetTop ?? null,
             'verticalAlignCenter' => $verticalAlignCenter ?? null,
+            'visible' => $visible ?? null,
             'wrap' => $wrap ?? null,
         ];
 
@@ -872,6 +876,9 @@ class ODPresentation implements ReaderInterface
             $keyStyle = $nodeSlide->getAttribute('draw:style-name');
             if (isset($this->arrayStyles[$keyStyle])) {
                 $this->oPhpPresentation->getActiveSlide()->setBackground($this->arrayStyles[$keyStyle]['background']);
+                if (null !== $this->arrayStyles[$keyStyle]['visible']) {
+                    $this->oPhpPresentation->getActiveSlide()->setIsVisible($this->arrayStyles[$keyStyle]['visible']);
+                }
             }
         }
         foreach ($this->oXMLReader->getElements('draw:frame', $nodeSlide) as $oNodeFrame) {
