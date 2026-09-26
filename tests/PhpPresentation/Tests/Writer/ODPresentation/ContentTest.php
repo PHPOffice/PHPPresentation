@@ -98,14 +98,50 @@ class ContentTest extends PhpPresentationTestCase
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->createTextRun('AAA');
 
+        $oTable = $oSlide->createTableShape();
+        $oTable->createRow();
+        $oTable->setDecorative();
+
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType((new ChartTypeLine())->addSeries(new Series('Serie', ['A' => '1'])));
+        $oChart->setDecorative();
+
         $oLine = $oSlide->createLineShape(10, 10, 100, 100);
         $oLine->setDecorative();
 
+        $oGroup = new Group();
+        $oGroup->createRichTextShape()->createTextRun('BBB');
+        $oGroup->setDecorative();
+        $oSlide->addShape($oGroup);
+
+        // Impress reads the flag from the graphic style of the shape, not from the shape
         $basePath = '/office:document-content/office:body/office:presentation/draw:page';
-        $this->assertZipXmlAttributeNotExists('content.xml', $basePath . '/draw:frame', 'loext:decorative');
-        $this->assertZipXmlAttributeEquals('content.xml', $basePath . '/draw:line', 'loext:decorative', 'true');
+        $stylePath = '/office:document-content/office:automatic-styles/style:style[@style:name="%s"]/style:graphic-properties';
+        $styleName = $this->getZipXmlAttributeValue('content.xml', $basePath . '/draw:frame[1]', 'draw:style-name');
+        $this->assertZipXmlAttributeNotExists('content.xml', sprintf($stylePath, $styleName), 'loext:decorative');
+        foreach (['/draw:frame[2]', '/draw:frame[3]', '/draw:line', '/draw:g'] as $shapePath) {
+            $this->assertZipXmlAttributeNotExists('content.xml', $basePath . $shapePath, 'loext:decorative');
+            $styleName = $this->getZipXmlAttributeValue('content.xml', $basePath . $shapePath, 'draw:style-name');
+            $this->assertZipXmlAttributeEquals('content.xml', sprintf($stylePath, $styleName), 'loext:decorative', 'true');
+        }
         // Invalid because `loext:decorative` is a LibreOffice extension, standardized in ODF 1.4
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testShapeDecorativeStyleIsNotShared(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createLineShape(10, 10, 100, 100)->setDecorative();
+        $oSlide->createLineShape(10, 10, 100, 100);
+        $oSlide->createTableShape()->createRow();
+
+        $basePath = '/office:document-content/office:body/office:presentation/draw:page';
+        self::assertNotEquals(
+            $this->getZipXmlAttributeValue('content.xml', $basePath . '/draw:line[1]', 'draw:style-name'),
+            $this->getZipXmlAttributeValue('content.xml', $basePath . '/draw:line[2]', 'draw:style-name')
+        );
+        // A table that is not decorative wears no graphic style, as before
+        $this->assertZipXmlAttributeNotExists('content.xml', $basePath . '/draw:frame', 'draw:style-name');
     }
 
     public function testShapeDescription(): void

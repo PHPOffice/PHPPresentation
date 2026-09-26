@@ -78,8 +78,10 @@ $slide->createLineShape(10, 10, 100, 10)
 
 A shape is not decorative by default, and nothing is then written to the document. The flag is
 written as the `{C183D7F6-B498-43B3-948B-1728B52AA6E4}` extension of `p:cNvPr` in PowerPoint2007
-files, and as the `loext:decorative` attribute of the shape in ODPresentation files. Both readers
-restore the flag when the document carries it.
+files, and as the `loext:decorative` property of the graphic style of the shape in ODPresentation
+files, where LibreOffice Impress reads it. Both readers restore the flag when the document carries
+it; the ODPresentation reader also takes `draw:decorative` (ODF 1.4) in the style, and either
+attribute on the shape itself.
 
 ## Line
 

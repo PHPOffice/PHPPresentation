@@ -1322,6 +1322,86 @@ class ODPresentationTest extends TestCase
         self::assertFalse($arrayShape[1]->isDecorative());
     }
 
+    /**
+     * @return array<array{0: string, 1: string, 2: bool}>
+     */
+    public static function dataProviderShapeDecorativeWrittenElsewhere(): array
+    {
+        return [
+            // ODF 1.4 names it in the graphic style
+            ['loext:decorative="true"', 'draw:decorative="true"', true],
+            ['loext:decorative="true"', 'loext:decorative="false"', false],
+            // A style that does not say it leaves the shape as it is
+            ['<style:graphic-properties style:mirror="none" loext:decorative="true"', '<style:graphic-properties style:mirror="none"', false],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderShapeDecorativeWrittenElsewhere
+     */
+    #[DataProvider('dataProviderShapeDecorativeWrittenElsewhere')]
+    public function testShapeDecorativeWrittenElsewhere(string $search, string $replace, bool $expected): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->setDecorative()->createTextRun('Decorative');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $content = (string) $oZip->getFromName('content.xml');
+        self::assertStringContainsString($search, $content);
+        $oZip->addFromString('content.xml', str_replace($search, $replace, $content));
+        $oZip->close();
+
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertSame($expected, $arrayShape[0]->isDecorative());
+    }
+
+    /**
+     * @return array<array{0: string}>
+     */
+    public static function dataProviderShapeDecorativeOnTheShape(): array
+    {
+        return [
+            ['loext:decorative'],
+            ['draw:decorative'],
+        ];
+    }
+
+    /**
+     * The ODPresentation Writer used to write the flag on the shape.
+     *
+     * @dataProvider dataProviderShapeDecorativeOnTheShape
+     */
+    #[DataProvider('dataProviderShapeDecorativeOnTheShape')]
+    public function testShapeDecorativeOnTheShape(string $attribute): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createRichTextShape()->createTextRun('Decorative');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $content = (string) $oZip->getFromName('content.xml');
+        $oZip->addFromString('content.xml', str_replace('<draw:frame ', '<draw:frame ' . $attribute . '="true" ', $content));
+        $oZip->close();
+
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertTrue($arrayShape[0]->isDecorative());
+    }
+
     public function testShapeDescription(): void
     {
         $oPhpPresentation = new PhpPresentation();
