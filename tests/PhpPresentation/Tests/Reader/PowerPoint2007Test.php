@@ -737,6 +737,48 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('', $arrayShape[2]->getName());
     }
 
+    /**
+     * @return array<array<bool|string>>
+     */
+    public static function dataProviderSlideShow(): array
+    {
+        return [
+            ['0', false],
+            ['false', false],
+            ['1', true],
+            ['true', true],
+        ];
+    }
+
+    /**
+     * `show` is an xsd:boolean: the writer says `0`, other producers may say `false`.
+     *
+     * @dataProvider dataProviderSlideShow
+     */
+    #[DataProvider('dataProviderSlideShow')]
+    public function testSlideVisibility(string $show, bool $expected): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->setIsVisible(false);
+        $oPhpPresentation->createSlide();
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sSlide = (string) $oZip->getFromName('ppt/slides/slide1.xml');
+        $oZip->addFromString('ppt/slides/slide1.xml', str_replace(' show="0"', ' show="' . $show . '"', $sSlide));
+        $oZip->close();
+
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        self::assertCount(2, $oPhpPresentationRead->getAllSlides());
+        self::assertSame($expected, $oPhpPresentationRead->getSlide(0)->isVisible());
+        self::assertTrue($oPhpPresentationRead->getSlide(1)->isVisible());
+    }
+
     public function testLoadFileChartBar(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_ChartBar.pptx';

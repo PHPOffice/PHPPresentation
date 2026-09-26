@@ -671,6 +671,12 @@ class PowerPoint2007 implements ReaderInterface
                 $oSlide->setName($oElement->getAttribute('name'));
             }
 
+            // Visibility: an xsd:boolean, and a slide is shown unless it says otherwise
+            $oElement = $xmlReader->getElement('/p:sld');
+            if ($oElement instanceof DOMElement && $oElement->hasAttribute('show')) {
+                $oSlide->setIsVisible(!in_array($oElement->getAttribute('show'), ['0', 'false'], true));
+            }
+
             // Background
             $oElement = $xmlReader->getElement('/p:sld/p:cSld/p:bg/p:bgPr');
             if ($oElement instanceof DOMElement) {
