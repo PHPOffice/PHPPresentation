@@ -33,6 +33,7 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -122,11 +123,24 @@ class ODPresentation implements ReaderInterface
         'alignment', 'background', 'columns', 'columnSpacing', 'columnsRTL', 'fill', 'font',
         'shadow', 'listStyle', 'spacingAfter', 'spacingBefore', 'lineSpacingMode', 'lineSpacing',
         'rowHeight', 'borders', 'border', 'insetBottom', 'insetLeft', 'insetRight',
-        'insetTop', 'verticalAlignCenter', 'wrap',
+        'insetTop', 'verticalAlignCenter', 'wrap', 'decorative',
     ];
 
     /**
-     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, language: null|string, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, border: null|Border, insetBottom: null|float, insetLeft: null|float, insetRight: null|float, insetTop: null|float, verticalAlignCenter: null|int, wrap: null|string}>
+     * The kind of placeholder each `presentation:class` a text frame can carry stands for; the
+     * other classes hold no text, or have no placeholder here.
+     */
+    protected const PLACEHOLDER_TYPE = [
+        'title' => Placeholder::PH_TYPE_TITLE,
+        'subtitle' => Placeholder::PH_TYPE_SUBTITLE,
+        'outline' => Placeholder::PH_TYPE_BODY,
+        'footer' => Placeholder::PH_TYPE_FOOTER,
+        'date-time' => Placeholder::PH_TYPE_DATETIME,
+        'page-number' => Placeholder::PH_TYPE_SLIDENUM,
+    ];
+
+    /**
+     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, language: null|string, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, border: null|Border, insetBottom: null|float, insetLeft: null|float, insetRight: null|float, insetTop: null|float, verticalAlignCenter: null|int, wrap: null|string, decorative: null|bool}>
      */
     protected $arrayStyles = [];
 
@@ -394,6 +408,7 @@ class ODPresentation implements ReaderInterface
                     $oShadow->setDistance(CommonDrawing::centimetersToPixels($distance));
                 }
             }
+            $decorative = $this->loadDecorative($nodeGraphicProps);
             // Read Columns
             $nodeColumns = $this->oXMLReader->getElement('style:columns', $nodeGraphicProps);
             if ($nodeColumns instanceof DOMElement) {
@@ -775,6 +790,7 @@ class ODPresentation implements ReaderInterface
             'insetTop' => $insetTop ?? null,
             'verticalAlignCenter' => $verticalAlignCenter ?? null,
             'wrap' => $wrap ?? null,
+            'decorative' => $decorative ?? null,
         ];
 
         return true;
@@ -968,15 +984,33 @@ class ODPresentation implements ReaderInterface
     /**
      * Read the decorative flag of a shape.
      *
+     * Its place is the graphic style of the shape: `draw:decorative` from ODF 1.4, or the
+     * `loext:decorative` extension that LibreOffice writes and reads. The shape element itself is
+     * read too, where this library's ODPresentation Writer used to put it.
+     *
      * @return bool false when the shape says nothing about it
      */
     protected function loadShapeDecorative(DOMElement $oNodeFrame): bool
     {
-        if (!$oNodeFrame->hasAttribute('loext:decorative')) {
-            return false;
+        $decorative = $this->arrayStyles[$this->getShapeStyleName($oNodeFrame)]['decorative'] ?? null;
+
+        return is_bool($decorative) ? $decorative : ($this->loadDecorative($oNodeFrame) ?? false);
+    }
+
+    /**
+     * Read the decorative flag of a node, under either of the names it has.
+     *
+     * @return null|bool null when the node says nothing about it
+     */
+    protected function loadDecorative(DOMElement $node): ?bool
+    {
+        foreach (['draw:decorative', 'loext:decorative'] as $attribute) {
+            if ($node->hasAttribute($attribute)) {
+                return 'true' === $node->getAttribute($attribute);
+            }
         }
 
-        return 'true' === $oNodeFrame->getAttribute('loext:decorative');
+        return null;
     }
 
     /**
@@ -1025,8 +1059,8 @@ class ODPresentation implements ReaderInterface
         $shape->setResizeProportional(true);
         $this->loadShapeOffset($shape, $oNodeFrame);
 
-        if ($oNodeFrame->hasAttribute('draw:style-name')) {
-            $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
+        if ($oNodeFrame->hasAttribute('draw:style-name') || $oNodeFrame->hasAttribute('presentation:style-name')) {
+            $keyStyle = $this->getShapeStyleName($oNodeFrame);
             if (isset($this->arrayStyles[$keyStyle])) {
                 $shape->setShadow($this->arrayStyles[$keyStyle]['shadow']);
                 $shape->setFill($this->arrayStyles[$keyStyle]['fill']);
@@ -1118,9 +1152,13 @@ class ODPresentation implements ReaderInterface
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $this->loadShapeOffset($oShape, $oNodeFrame);
+        $placeholderType = self::PLACEHOLDER_TYPE[$oNodeFrame->getAttribute('presentation:class')] ?? null;
+        if (null !== $placeholderType) {
+            $oShape->setPlaceHolder(new Placeholder($placeholderType));
+        }
 
-        if ($oNodeFrame->hasAttribute('draw:style-name')) {
-            $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
+        if ($oNodeFrame->hasAttribute('draw:style-name') || $oNodeFrame->hasAttribute('presentation:style-name')) {
+            $keyStyle = $this->getShapeStyleName($oNodeFrame);
             if (isset($this->arrayStyles[$keyStyle])) {
                 if (null !== $this->arrayStyles[$keyStyle]['columns']) {
                     $oShape->setColumns($this->arrayStyles[$keyStyle]['columns']);
@@ -1401,6 +1439,17 @@ class ODPresentation implements ReaderInterface
         if (count($oCell->getParagraphs()) > 0) {
             $oCell->setActiveParagraph(0);
         }
+    }
+
+    /**
+     * The name of the style a shape wears: its graphic style, or the presentation style a
+     * placeholder wears in its place.
+     */
+    protected function getShapeStyleName(DOMElement $oNode): string
+    {
+        return $oNode->hasAttribute('draw:style-name')
+            ? $oNode->getAttribute('draw:style-name')
+            : $oNode->getAttribute('presentation:style-name');
     }
 
     /**

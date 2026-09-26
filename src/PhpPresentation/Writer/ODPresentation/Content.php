@@ -63,6 +63,7 @@ class Content extends AbstractDecoratorWriter
         'paragraph' => 'P',
         'text' => 'T',
         'graphic' => 'gr',
+        'presentation' => 'pr',
         'drawing-page' => 'dp',
         'table-row' => 'ro',
         'table-cell' => 'ce',
@@ -82,6 +83,21 @@ class Content extends AbstractDecoratorWriter
         'file1' => 'text:file-name',
         'file2' => 'text:file-name',
         'file3' => 'text:file-name',
+    ];
+
+    /**
+     * The `presentation:class` of each kind of placeholder a text shape can hold. OpenDocument
+     * spells three of them differently, and has no class for the others, which are then written as
+     * an ordinary frame.
+     */
+    private const PLACEHOLDER_CLASS = [
+        Placeholder::PH_TYPE_TITLE => 'title',
+        'ctrTitle' => 'title',
+        Placeholder::PH_TYPE_SUBTITLE => 'subtitle',
+        Placeholder::PH_TYPE_BODY => 'outline',
+        Placeholder::PH_TYPE_FOOTER => 'footer',
+        Placeholder::PH_TYPE_DATETIME => 'date-time',
+        Placeholder::PH_TYPE_SLIDENUM => 'page-number',
     ];
 
     /**
@@ -145,6 +161,9 @@ class Content extends AbstractDecoratorWriter
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
+        // Not indented, as LibreOffice writes it: LibreOffice keeps the indentation after the
+        // last run as a space, which ODF 1.3 (part 3, 6.1.2) says to drop
+        $objWriter->setIndent(false);
         $objWriter->startDocument('1.0', 'UTF-8');
 
         // office:document-content
@@ -420,10 +439,12 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the decorative flag of a shape, ie the shape is ignored by assistive
-     * technologies. It has to be written before any child of the shape element.
+     * Write the style that says a shape is decorative, ie ignored by assistive technologies, on a
+     * shape that wears no graphic style otherwise: a table, a chart or a group. It has to be
+     * written before any child of the shape element.
      *
-     * ODF has no such attribute before version 1.4, so the LibreOffice extension is used.
+     * Impress reads the flag from the graphic style of a shape, not from the shape element, so a
+     * shape that wears a style of its own says it in that style (writeStylePartDecorative()).
      */
     protected function writeShapeDecorative(XMLWriter $objWriter, AbstractShape $shape): void
     {
@@ -431,7 +452,7 @@ class Content extends AbstractDecoratorWriter
             return;
         }
 
-        $objWriter->writeAttribute('loext:decorative', 'true');
+        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
     }
 
     /**
@@ -490,7 +511,6 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
-        $this->writeShapeDecorative($objWriter, $shape);
         // draw:frame > draw:plugin
         $objWriter->startElement('draw:plugin');
         $objWriter->writeAttribute('xlink:href', 'Pictures/' . $this->writtenPart($shape)->getIndexedFilename());
@@ -539,7 +559,6 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
-        $this->writeShapeDecorative($objWriter, $shape);
         // draw:image
         $objWriter->startElement('draw:image');
         $objWriter->writeAttribute('xlink:href', 'Pictures/' . $this->writtenPart($shape)->getIndexedFilename());
@@ -563,7 +582,17 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
+        $placeholderClass = $this->getPlaceholderClass($shape);
+        if (null === $placeholderClass) {
+            $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
+        } else {
+            // A placeholder is one only with its class and a style of the presentation family
+            // together, and that style takes the place of the graphic one: a frame carries one or
+            // the other. The geometry is the shape's own, not the one of a layout.
+            $objWriter->writeAttribute('presentation:style-name', $this->getAutomaticStyleName($shape));
+            $objWriter->writeAttribute('presentation:class', $placeholderClass);
+            $objWriter->writeAttribute('presentation:user-transformed', 'true');
+        }
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         if ($shape->getRotation() != 0) {
@@ -588,7 +617,6 @@ class Content extends AbstractDecoratorWriter
             $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
             $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         }
-        $this->writeShapeDecorative($objWriter, $shape);
         // draw:text-box
         $objWriter->startElement('draw:text-box');
 
@@ -771,6 +799,16 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * The `presentation:class` of the placeholder a text shape holds, if OpenDocument has one.
+     */
+    protected function getPlaceholderClass(RichText $shape): ?string
+    {
+        $placeholder = $shape->getPlaceholder();
+
+        return null === $placeholder ? null : (self::PLACEHOLDER_CLASS[$placeholder->getType()] ?? null);
+    }
+
+    /**
      * The element a placeholder writes its text with, if that text is a field.
      *
      * The number of a slide and its date are not the text the shape was given: they are
@@ -824,7 +862,6 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:x2', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX() + $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y2', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY() + $shape->getHeight()), 3) . 'cm');
 
-        $this->writeShapeDecorative($objWriter, $shape);
         $this->writeShapeDescription($objWriter, $shape);
         $this->writeShapeHyperlink($objWriter, $shape);
 
@@ -1069,6 +1106,9 @@ class Content extends AbstractDecoratorWriter
             if ($shape instanceof Table) {
                 $this->addTableStyle($shape);
             }
+            if (($shape instanceof Table || $shape instanceof Chart || $shape instanceof Group) && $shape->isDecorative()) {
+                $this->addDecorativeStyle($shape);
+            }
             // A group inside a group is walked by writeShapeGroup(), so it has to be walked here too
             if ($shape instanceof Group) {
                 $this->addShapeStyles($objWriter, $shape->getShapeCollection());
@@ -1288,11 +1328,14 @@ class Content extends AbstractDecoratorWriter
      */
     protected function addTxtStyle(RichText $shape): void
     {
-        $this->shareAutomaticStyle('graphic', function (XMLWriter $objWriter) use ($shape): void {
-            $objWriter->writeAttribute('style:parent-style-name', 'standard');
+        $family = null === $this->getPlaceholderClass($shape) ? 'graphic' : 'presentation';
+        $this->shareAutomaticStyle($family, function (XMLWriter $objWriter) use ($shape, $family): void {
+            // `standard` is a graphic style, and a style can only inherit from one of its family
+            $objWriter->writeAttributeIf('graphic' === $family, 'style:parent-style-name', 'standard');
             // style:graphic-properties
             $objWriter->startElement('style:graphic-properties');
             $objWriter->writeAttribute('style:mirror', 'none');
+            $this->writeStylePartDecorative($objWriter, $shape);
             $this->writeStylePartShadow($objWriter, $shape->getShadow());
             if (is_bool($shape->hasAutoShrinkVertical())) {
                 $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
@@ -1453,8 +1496,22 @@ class Content extends AbstractDecoratorWriter
             $objWriter->startElement('style:graphic-properties');
             $objWriter->writeAttribute('draw:stroke', 'none');
             $objWriter->writeAttribute('style:mirror', 'none');
+            $this->writeStylePartDecorative($objWriter, $shape);
             $this->writeStylePartFill($objWriter, $shape->getFill());
             $this->writeStylePartShadow($objWriter, $shape->getShadow());
+            $objWriter->endElement();
+        }, $shape);
+    }
+
+    /**
+     * Name the automatic style that says a table, a chart or a group is decorative. These wear no
+     * graphic style otherwise, so the style says nothing else.
+     */
+    protected function addDecorativeStyle(AbstractShape $shape): void
+    {
+        $this->shareAutomaticStyle('graphic', function (XMLWriter $objWriter) use ($shape): void {
+            $objWriter->startElement('style:graphic-properties');
+            $this->writeStylePartDecorative($objWriter, $shape);
             $objWriter->endElement();
         }, $shape);
     }
@@ -1489,6 +1546,7 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('svg:stroke-color', '#' . $borderColor->getRGB());
             }
             $objWriter->writeAttribute('svg:stroke-width', round(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 6) . 'cm');
+            $this->writeStylePartDecorative($objWriter, $shape);
             $this->writeStylePartShadow($objWriter, $shape->getShadow());
             $objWriter->endElement();
         }, $shape);
@@ -1884,6 +1942,17 @@ class Content extends AbstractDecoratorWriter
 
                 break;
         }
+    }
+
+    /**
+     * Write the decorative flag of a shape, ie the shape is ignored by assistive technologies.
+     *
+     * ODF has no such property before version 1.4, so the LibreOffice extension is used, where
+     * Impress reads it: in the graphic properties of the style of the shape.
+     */
+    protected function writeStylePartDecorative(XMLWriter $objWriter, AbstractShape $shape): void
+    {
+        $objWriter->writeAttributeIf($shape->isDecorative(), 'loext:decorative', 'true');
     }
 
     /**
