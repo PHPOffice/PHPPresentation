@@ -122,11 +122,11 @@ class ODPresentation implements ReaderInterface
         'alignment', 'background', 'columns', 'columnSpacing', 'columnsRTL', 'fill', 'font',
         'shadow', 'listStyle', 'spacingAfter', 'spacingBefore', 'lineSpacingMode', 'lineSpacing',
         'rowHeight', 'borders', 'border', 'insetBottom', 'insetLeft', 'insetRight',
-        'insetTop', 'verticalAlignCenter', 'visible', 'wrap',
+        'insetTop', 'verticalAlignCenter', 'visible', 'wrap', 'decorative',
     ];
 
     /**
-     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, language: null|string, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, border: null|Border, insetBottom: null|float, insetLeft: null|float, insetRight: null|float, insetTop: null|float, verticalAlignCenter: null|int, visible: null|bool, wrap: null|string}>
+     * @var array<string, array{alignment: null|Alignment, background: null|BackgroundColor|Image, columns: null|int, columnSpacing: null|int, columnsRTL: null|bool, fill: null|Fill, font: null|Font, language: null|string, shadow: null|Shadow, listStyle: null|array<int, array{alignment: Alignment, bullet: Bullet}>, spacingAfter: null|float, spacingBefore: null|float, lineSpacingMode: null|string, lineSpacing: null|string, rowHeight: null|int, borders: null|Borders, border: null|Border, insetBottom: null|float, insetLeft: null|float, insetRight: null|float, insetTop: null|float, verticalAlignCenter: null|int, visible: null|bool, wrap: null|string, decorative: null|bool}>
      */
     protected $arrayStyles = [];
 
@@ -397,6 +397,7 @@ class ODPresentation implements ReaderInterface
                     $oShadow->setDistance(CommonDrawing::centimetersToPixels($distance));
                 }
             }
+            $decorative = $this->loadDecorative($nodeGraphicProps);
             // Read Columns
             $nodeColumns = $this->oXMLReader->getElement('style:columns', $nodeGraphicProps);
             if ($nodeColumns instanceof DOMElement) {
@@ -779,6 +780,7 @@ class ODPresentation implements ReaderInterface
             'verticalAlignCenter' => $verticalAlignCenter ?? null,
             'visible' => $visible ?? null,
             'wrap' => $wrap ?? null,
+            'decorative' => $decorative ?? null,
         ];
 
         return true;
@@ -975,15 +977,33 @@ class ODPresentation implements ReaderInterface
     /**
      * Read the decorative flag of a shape.
      *
+     * Its place is the graphic style of the shape: `draw:decorative` from ODF 1.4, or the
+     * `loext:decorative` extension that LibreOffice writes and reads. The shape element itself is
+     * read too, where this library's ODPresentation Writer used to put it.
+     *
      * @return bool false when the shape says nothing about it
      */
     protected function loadShapeDecorative(DOMElement $oNodeFrame): bool
     {
-        if (!$oNodeFrame->hasAttribute('loext:decorative')) {
-            return false;
+        $decorative = $this->getStyle($oNodeFrame, 'draw:style-name')['decorative'];
+
+        return is_bool($decorative) ? $decorative : ($this->loadDecorative($oNodeFrame) ?? false);
+    }
+
+    /**
+     * Read the decorative flag of a node, under either of the names it has.
+     *
+     * @return null|bool null when the node says nothing about it
+     */
+    protected function loadDecorative(DOMElement $node): ?bool
+    {
+        foreach (['draw:decorative', 'loext:decorative'] as $attribute) {
+            if ($node->hasAttribute($attribute)) {
+                return 'true' === $node->getAttribute($attribute);
+            }
         }
 
-        return 'true' === $oNodeFrame->getAttribute('loext:decorative');
+        return null;
     }
 
     /**
