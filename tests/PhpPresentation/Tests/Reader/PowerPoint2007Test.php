@@ -1495,7 +1495,8 @@ class PowerPoint2007Test extends TestCase
 
         $oZip = new ZipArchive();
         $oZip->open($file);
-        for ($index = 0; $index < $oZip->numFiles; ++$index) {
+        // On PHP 7.4, addFromString() deletes the entry and appends a new one, which this loop would reach again
+        for ($index = 0, $count = $oZip->numFiles; $index < $count; ++$index) {
             $name = (string) $oZip->getNameIndex($index);
             if (1 === preg_match('#^ppt/charts/chart[^/]*\.xml$#', $name)) {
                 $oZip->addFromString($name, str_replace(
