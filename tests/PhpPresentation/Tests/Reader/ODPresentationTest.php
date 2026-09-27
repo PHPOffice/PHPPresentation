@@ -1505,6 +1505,22 @@ class ODPresentationTest extends TestCase
         self::assertSame($expected, $arrayShape[0]->hasColumnsRTL());
     }
 
+    public function testSlideVisibilitySurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->setIsVisible(false);
+        $oPhpPresentation->createSlide();
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        self::assertCount(2, $oPhpPresentationRead->getAllSlides());
+        self::assertFalse($oPhpPresentationRead->getSlide(0)->isVisible());
+        self::assertTrue($oPhpPresentationRead->getSlide(1)->isVisible());
+    }
+
     public function testSlideBackgroundSurvivesTheRoundTrip(): void
     {
         $oPhpPresentation = new PhpPresentation();
