@@ -1441,6 +1441,80 @@ class PowerPoint2007Test extends TestCase
         ];
     }
 
+    public function testChartTitleIsReadBack(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oChart = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oChart->getTitle()->setText('Sales by quarter');
+        $oChart->getTitle()->getFont()->setBold(true)->setSize(20);
+        $oChart->getPlotArea()->setType((new Bar())->addSeries(new Series('Downloads', ['Jan' => '1', 'Feb' => '5'])));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        self::assertTrue($arrayShape[0]->getTitle()->isVisible());
+        self::assertEquals('Sales by quarter', $arrayShape[0]->getTitle()->getText());
+        self::assertTrue($arrayShape[0]->getTitle()->getFont()->isBold());
+        self::assertEquals(20, $arrayShape[0]->getTitle()->getFont()->getSize());
+    }
+
+    /**
+     * @return array<array<null|bool|string>>
+     */
+    public static function dataProviderChartAutoTitleDeleted(): array
+    {
+        return [
+            ['1', false],
+            ['true', false],
+            [null, false],
+            ['0', true],
+            ['false', true],
+        ];
+    }
+
+    /**
+     * Without a title of its own, a chart shows the title the application makes up unless
+     * `c:autoTitleDeleted` says it was deleted: an xsd:boolean that is true when `val` is left out.
+     *
+     * @dataProvider dataProviderChartAutoTitleDeleted
+     */
+    #[DataProvider('dataProviderChartAutoTitleDeleted')]
+    public function testChartAutoTitleDeletedIsReadBack(?string $val, bool $expected): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oChart = $oPhpPresentation->getActiveSlide()->createChartShape();
+        $oChart->getTitle()->setVisible(false);
+        $oChart->getPlotArea()->setType((new Bar())->addSeries(new Series('Downloads', ['Jan' => '1', 'Feb' => '5'])));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        for ($index = 0; $index < $oZip->numFiles; ++$index) {
+            $name = (string) $oZip->getNameIndex($index);
+            if (1 === preg_match('#^ppt/charts/chart[^/]*\.xml$#', $name)) {
+                $oZip->addFromString($name, str_replace(
+                    '<c:autoTitleDeleted val="1"/>',
+                    null === $val ? '<c:autoTitleDeleted/>' : '<c:autoTitleDeleted val="' . $val . '"/>',
+                    (string) $oZip->getFromName($name)
+                ));
+            }
+        }
+        $oZip->close();
+
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertInstanceOf(Chart::class, $arrayShape[0]);
+        self::assertSame($expected, $arrayShape[0]->getTitle()->isVisible());
+    }
+
     public function testBarSettingsAreReadBack(): void
     {
         $oPhpPresentation = new PhpPresentation();

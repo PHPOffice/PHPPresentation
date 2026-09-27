@@ -1654,8 +1654,13 @@ class PowerPoint2007 implements ReaderInterface
                 $xmlReader = new XMLReader();
                 // @phpstan-ignore-next-line
                 if ($xmlReader->getDomFromString($fileChart)) {
-                    if ($oElement = $xmlReader->getElement('/c:chartSpace/c:chart/c:autoTitleDeleted')) {
-                        $oShape->getTitle()->setVisible(false);
+                    $oElementTitle = $xmlReader->getElement('/c:chartSpace/c:chart/c:title');
+                    if ($oElementTitle instanceof DOMElement) {
+                        $this->loadChartTitle($xmlReader, $oElementTitle, $oShape);
+                    } elseif ($oElement = $xmlReader->getElement('/c:chartSpace/c:chart/c:autoTitleDeleted')) {
+                        // An xsd:boolean that is true when `val` is left out. A title of the chart's own
+                        // shows whatever it says; it only hides the one the application would make up
+                        $oShape->getTitle()->setVisible(!in_array($oElement->getAttribute('val'), ['', '1', 'true'], true));
                     }
 
                     $shapeType = $this->loadTypeChart($xmlReader);
@@ -2365,6 +2370,28 @@ class PowerPoint2007 implements ReaderInterface
         $oElementLatin = $xmlReader->getElement('a:latin', $oElement);
         if ($oElementLatin instanceof DOMElement && $oElementLatin->hasAttribute('typeface')) {
             $oFont->setName($oElementLatin->getAttribute('typeface'));
+        }
+    }
+
+    /**
+     * The title of a chart: its text, and the font of its first run, where the writer puts it.
+     *
+     * @param DOMElement $oElement the `c:title` element of the chart
+     */
+    protected function loadChartTitle(XMLReader $xmlReader, DOMElement $oElement, Chart $oShape): void
+    {
+        $oTitle = $oShape->getTitle();
+        $title = '';
+        foreach ($xmlReader->getElements('c:tx/c:rich/a:p/a:r/a:t', $oElement) as $oElementText) {
+            $title .= $oElementText->nodeValue;
+        }
+        if ('' !== $title) {
+            $oTitle->setText($title);
+        }
+
+        $oElementFont = $xmlReader->getElement('c:tx/c:rich/a:p/a:r/a:rPr', $oElement);
+        if ($oElementFont instanceof DOMElement) {
+            $this->loadStyleFont($xmlReader, $oElementFont, $oTitle->getFont());
         }
     }
 
