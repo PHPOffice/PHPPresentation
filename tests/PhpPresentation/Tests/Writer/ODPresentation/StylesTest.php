@@ -226,6 +226,60 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
+    public function testFillInGroup(): void
+    {
+        $oGroup = $this->oPresentation->getActiveSlide()->createGroup();
+        $oGroup->createRichTextShape()->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
+            ->setStartColor(new Color('FFFF7700'))
+            ->setEndColor(new Color('FFFFFFFF'));
+        $oGroup->createRichTextShape()->getFill()->setFillType(Fill::FILL_PATTERN_LGGRID)
+            ->setStartColor(new Color('FFFF7700'))
+            ->setEndColor(new Color('FFFFFFFF'));
+
+        // content.xml named them, and styles.xml, which only looked at the shapes of a slide, did
+        // not define them
+        $gradientName = $this->getZipXmlAttributeValue(
+            'content.xml',
+            '//style:graphic-properties[@draw:fill-gradient-name]',
+            'draw:fill-gradient-name'
+        );
+        $this->assertZipXmlElementExists('styles.xml', '/office:document-styles/office:styles/draw:gradient[@draw:name=\'' . $gradientName . '\']');
+        $hatchName = $this->getZipXmlAttributeValue(
+            'content.xml',
+            '//style:graphic-properties[@draw:fill-hatch-name]',
+            'draw:fill-hatch-name'
+        );
+        $this->assertZipXmlElementExists('styles.xml', '/office:document-styles/office:styles/draw:hatch[@draw:name=\'' . $hatchName . '\']');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testFillNames(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        foreach (['FFFF7700', '80FF7700', 'FF0077FF'] as $color) {
+            $oSlide->createRichTextShape()->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
+                ->setStartColor(new Color($color))
+                ->setEndColor(new Color('FFFFFFFF'));
+        }
+        $oSlide->createRichTextShape()->getFill()->setFillType(Fill::FILL_PATTERN_LGGRID)
+            ->setStartColor(new Color('FFFF7700'))
+            ->setEndColor(new Color('FFFFFFFF'));
+
+        // Named as LibreOffice names a fill nobody named, and the first two, which differ only in
+        // an alpha ODF does not write, are one gradient
+        $element = '/office:document-styles/office:styles/draw:gradient';
+        $this->assertZipXmlElementCount('styles.xml', $element, 2);
+        $this->assertZipXmlAttributeEquals('styles.xml', $element . '[1]', 'draw:name', 'Gradient_20_1');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element . '[1]', 'draw:display-name', 'Gradient 1');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element . '[1]', 'draw:start-color', '#FF7700');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element . '[2]', 'draw:name', 'Gradient_20_2');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element . '[2]', 'draw:start-color', '#0077FF');
+        $element = '/office:document-styles/office:styles/draw:hatch';
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', 'Hatching_20_1');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:display-name', 'Hatching 1');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testStrokeDash(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
