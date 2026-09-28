@@ -1,11 +1,16 @@
 # AutoShape
 
 !!! warning
-    Available only on the PowerPoint2007 Writer and Reader
+    Available on the PowerPoint2007 Writer and Reader, and on the ODPresentation Writer and Reader
 
 The PowerPoint2007 Reader reads a shape as an `AutoShape` when it draws a preset other than a
 rectangle and is neither a text box nor a placeholder. The text of an `AutoShape` is a plain string,
 so a rectangle, where PowerPoint keeps most of its formatted text, is read as a `RichText`.
+
+The ODPresentation Writer writes an AutoShape the way LibreOffice writes an OOXML preset shape: a
+`draw:custom-shape` of type `ooxml-<type>`, carrying the geometry it is drawn from, as OpenDocument
+names no preset shapes. The ODPresentation Reader reads such a shape back, and a custom shape
+LibreOffice draws with a geometry of its own as the preset its export to PowerPoint names.
 
 To create a geometric form, create an object `AutoShape` and add it to slide.
 
