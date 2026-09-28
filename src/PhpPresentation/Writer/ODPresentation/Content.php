@@ -1434,7 +1434,7 @@ class Content extends AbstractDecoratorWriter
                     case Fill::FILL_GRADIENT_LINEAR:
                     case Fill::FILL_GRADIENT_PATH:
                         $objWriter->writeAttribute('draw:fill', 'gradient');
-                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shape->getFill()->getHashCode());
+                        $objWriter->writeAttribute('draw:fill-gradient-name', $this->shareFillStyle($shape->getFill()));
 
                         break;
                     case Fill::FILL_SOLID:
@@ -1745,7 +1745,7 @@ class Content extends AbstractDecoratorWriter
                         }
                         if (Fill::FILL_GRADIENT_LINEAR == $cellFill->getFillType()) {
                             $objWriter->writeAttribute('draw:fill', 'gradient');
-                            $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $cellFill->getHashCode());
+                            $objWriter->writeAttribute('draw:fill-gradient-name', $this->shareFillStyle($cellFill));
                         }
                         if (in_array($cellFill->getFillType(), Fill::PATTERN_TYPES, true)) {
                             $this->writePatternFill($objWriter, $cellFill);

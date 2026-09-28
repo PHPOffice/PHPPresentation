@@ -96,6 +96,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         // Variables
         $oPresentation = $this->getPhpPresentation();
         $arrayChart = [];
+        $arrayFillStyle = [];
 
         foreach ([
             __CLASS__ . '\Mimetype',
@@ -112,8 +113,10 @@ class ODPresentation extends AbstractWriter implements WriterInterface
             $oService->setPresentation($oPresentation);
             $oService->setDrawingHashTable($this->getDrawingHashTable());
             $oService->setArrayChart($arrayChart);
+            $oService->setArrayFillStyle($arrayFillStyle);
             $oZip = $oService->render();
             $arrayChart = $oService->getArrayChart();
+            $arrayFillStyle = $oService->getArrayFillStyle();
             unset($oService);
         }
 

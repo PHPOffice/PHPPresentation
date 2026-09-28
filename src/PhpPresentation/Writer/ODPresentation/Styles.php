@@ -24,13 +24,10 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\RichText;
-use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Border;
-use PhpOffice\PhpPresentation\Style\Fill;
 
 class Styles extends AbstractDecoratorWriter
 {
@@ -38,20 +35,6 @@ class Styles extends AbstractDecoratorWriter
      * The name of the style the master page is drawn with.
      */
     public const MASTER_PAGE_STYLE = 'sPres0';
-
-    /**
-     * Stores font styles draw:gradient nodes.
-     *
-     * @var array<int, string>
-     */
-    protected $arrayGradient = [];
-
-    /**
-     * Stores draw:hatch nodes.
-     *
-     * @var array<int, string>
-     */
-    protected $arrayHatch = [];
 
     /**
      * Stores font styles draw:stroke-dash nodes.
@@ -127,13 +110,20 @@ class Styles extends AbstractDecoratorWriter
             $this->writeBackgroundStyle($objWriter, $oMasterBackground, self::MASTER_PAGE_STYLE);
         }
 
+        // The gradients and hatches content.xml named, each once
+        foreach ($this->getArrayFillStyle() as $name => [$element, $attributes]) {
+            $objWriter->startElement($element);
+            $objWriter->writeAttribute('draw:name', $name);
+            $objWriter->writeAttribute('draw:display-name', str_replace('_20_', ' ', $name));
+            foreach ($attributes as $attribute => $value) {
+                $objWriter->writeAttribute($attribute, $value);
+            }
+            $objWriter->endElement();
+        }
+
         foreach ($this->getPresentation()->getAllSlides() as $keySlide => $oSlide) {
             foreach ($oSlide->getShapeCollection() as $shape) {
-                if ($shape instanceof Table) {
-                    $this->writeTableStyle($objWriter, $shape);
-                } elseif ($shape instanceof Group) {
-                    $this->writeGroupStyle($objWriter, $shape);
-                } elseif ($shape instanceof RichText) {
+                if ($shape instanceof RichText) {
                     $this->writeRichTextStyle($objWriter, $shape);
                 }
             }
@@ -212,15 +202,6 @@ class Styles extends AbstractDecoratorWriter
      */
     protected function writeRichTextStyle(XMLWriter $objWriter, RichText $shape): void
     {
-        $oFill = $shape->getFill();
-        if (Fill::FILL_GRADIENT_LINEAR == $oFill->getFillType() || Fill::FILL_GRADIENT_PATH == $oFill->getFillType()) {
-            if (!in_array($oFill->getHashCode(), $this->arrayGradient)) {
-                $this->writeGradientFill($objWriter, $oFill);
-            }
-        }
-        if (isset(self::HATCH_ODF[$oFill->getFillType()]) && !in_array($oFill->getHashCode(), $this->arrayHatch)) {
-            $this->writeHatchFill($objWriter, $oFill);
-        }
         $oBorder = $shape->getBorder();
         if (Border::DASH_SOLID != $oBorder->getDashStyle()) {
             if (!in_array($oBorder->getDashStyle(), $this->arrayStrokeDash)) {
@@ -303,84 +284,6 @@ class Styles extends AbstractDecoratorWriter
                 $this->arrayStrokeDash[] = $oBorder->getDashStyle();
             }
         }
-    }
-
-    /**
-     * Write the default style information for a Table shape.
-     */
-    protected function writeTableStyle(XMLWriter $objWriter, Table $shape): void
-    {
-        foreach ($shape->getRows() as $row) {
-            foreach ($row->getCells() as $cell) {
-                // A cell that was given no fill of its own is painted with the fill of its row,
-                // so that one needs its gradient defined too
-                $fill = Fill::FILL_UNSET == $cell->getFill()->getFillType() ? $row->getFill() : $cell->getFill();
-                if (Fill::FILL_GRADIENT_LINEAR == $fill->getFillType()) {
-                    if (!in_array($fill->getHashCode(), $this->arrayGradient)) {
-                        $this->writeGradientFill($objWriter, $fill);
-                    }
-                }
-                if (isset(self::HATCH_ODF[$fill->getFillType()]) && !in_array($fill->getHashCode(), $this->arrayHatch)) {
-                    $this->writeHatchFill($objWriter, $fill);
-                }
-            }
-        }
-    }
-
-    /**
-     * Writes the style information for a group of shapes.
-     */
-    protected function writeGroupStyle(XMLWriter $objWriter, Group $group): void
-    {
-        $shapes = $group->getShapeCollection();
-        foreach ($shapes as $shape) {
-            if ($shape instanceof Table) {
-                $this->writeTableStyle($objWriter, $shape);
-            } elseif ($shape instanceof Group) {
-                $this->writeGroupStyle($objWriter, $shape);
-            }
-        }
-    }
-
-    /**
-     * Write the gradient style.
-     */
-    protected function writeGradientFill(XMLWriter $objWriter, Fill $oFill): void
-    {
-        $objWriter->startElement('draw:gradient');
-        $objWriter->writeAttribute('draw:name', 'gradient_' . $oFill->getHashCode());
-        $objWriter->writeAttribute('draw:display-name', 'gradient_' . $oFill->getHashCode());
-        $objWriter->writeAttribute('draw:style', 'linear');
-        $objWriter->writeAttribute('draw:start-intensity', '100%');
-        $objWriter->writeAttribute('draw:end-intensity', '100%');
-        $objWriter->writeAttribute('draw:start-color', '#' . $oFill->getStartColor()->getRGB());
-        $objWriter->writeAttribute('draw:end-color', '#' . $oFill->getEndColor()->getRGB());
-        $objWriter->writeAttribute('draw:border', '0%');
-        $objWriter->writeAttribute('draw:angle', $oFill->getRotation() - 90);
-        $objWriter->endElement();
-        $this->arrayGradient[] = $oFill->getHashCode();
-    }
-
-    /**
-     * Write the hatch a pattern fill is drawn as.
-     *
-     * Only the patterns ODF can say are written; a pattern that is not a family of lines is
-     * painted solid by the caller and names no hatch at all.
-     */
-    protected function writeHatchFill(XMLWriter $objWriter, Fill $oFill): void
-    {
-        [$style, $rotation, $distance] = self::HATCH_ODF[$oFill->getFillType()];
-
-        $objWriter->startElement('draw:hatch');
-        $objWriter->writeAttribute('draw:name', 'hatch_' . $oFill->getHashCode());
-        $objWriter->writeAttribute('draw:display-name', 'hatch_' . $oFill->getHashCode());
-        $objWriter->writeAttribute('draw:style', $style);
-        $objWriter->writeAttribute('draw:color', '#' . $oFill->getStartColor()->getRGB());
-        $objWriter->writeAttribute('draw:distance', $distance);
-        $objWriter->writeAttribute('draw:rotation', (string) $rotation);
-        $objWriter->endElement();
-
-        $this->arrayHatch[] = $oFill->getHashCode();
     }
 
     /**
