@@ -82,6 +82,9 @@ class PptSlideLayouts extends AbstractSlide
             ++$relId;
         }
 
+        // Write hyperlink relationships
+        $this->writeHyperlinkRelations($oSlideLayout, $objWriter, $relId, '../slides/');
+
         $objWriter->endElement();
 
         // Return
