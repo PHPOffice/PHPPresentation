@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\DocumentProperties;
 
 class DocPropsCustom extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         // Variables
         $pId = 0;
@@ -95,9 +95,9 @@ class DocPropsCustom extends AbstractDecoratorWriter
         // > Properties
         $objWriter->endElement();
 
-        $this->oZip->addFromString('docProps/custom.xml', $objWriter->getData());
+        $this->oPackage->addPart('/docProps/custom.xml', 'application/vnd.openxmlformats-officedocument.custom-properties+xml', $objWriter->getData());
 
         // Return
-        return $this->oZip;
+        return $this->oPackage;
     }
 }

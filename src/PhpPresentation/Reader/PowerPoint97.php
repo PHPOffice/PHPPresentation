@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Reader;
 
+use DK\CompoundFile\CompoundFile;
 use Exception;
-use PhpOffice\Common\Microsoft\OLERead;
 use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\Exception\FeatureNotImplementedException;
@@ -419,12 +419,11 @@ class PowerPoint97 implements ReaderInterface
         }
 
         try {
-            // Use ParseXL for the hard work.
-            $ole = new OLERead();
-            // get excel data
-            $ole->read($pFilename);
+            $ole = CompoundFile::open($pFilename);
+            $found = null !== $ole->findEntry('PowerPoint Document');
+            $ole->close();
 
-            return true;
+            return $found;
         } catch (Exception $e) {
             return false;
         }
@@ -472,18 +471,24 @@ class PowerPoint97 implements ReaderInterface
      */
     private function loadOLE(): void
     {
-        // OLE reader
-        $oOLE = new OLERead();
-        $oOLE->read($this->filename);
+        $oOLE = CompoundFile::open($this->filename);
+
+        $stream = function (string $name) use ($oOLE): string {
+            $entry = $oOLE->findEntry($name);
+
+            return null === $entry ? '' : $oOLE->getStreamContents($entry);
+        };
 
         // PowerPoint Document Stream
-        $this->streamPowerpointDocument = $oOLE->getStream($oOLE->powerpointDocument);
+        $this->streamPowerpointDocument = $stream('PowerPoint Document');
 
         // Current User Stream
-        $this->streamCurrentUser = $oOLE->getStream($oOLE->currentUser);
+        $this->streamCurrentUser = $stream('Current User');
 
         // Get pictures data
-        $this->streamPictures = $oOLE->getStream($oOLE->pictures);
+        $this->streamPictures = $stream('Pictures');
+
+        $oOLE->close();
     }
 
     /**

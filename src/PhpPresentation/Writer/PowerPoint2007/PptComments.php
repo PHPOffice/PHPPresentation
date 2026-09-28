@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use DK\OpenXml\OpenXmlPackage;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Comment;
@@ -28,17 +28,17 @@ use PhpOffice\PhpPresentation\Slide;
 
 class PptComments extends AbstractDecoratorWriter
 {
-    public function render(): ZipInterface
+    public function render(): OpenXmlPackage
     {
         foreach ($this->getPresentation()->getAllSlides() as $numSlide => $oSlide) {
             $contentXml = $this->writeSlideComments($oSlide);
             if (empty($contentXml)) {
                 continue;
             }
-            $this->getZip()->addFromString('ppt/comments/comment' . ($numSlide + 1) . '.xml', $contentXml);
+            $this->oPackage->addPart('/ppt/comments/comment' . ($numSlide + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.comments+xml', $contentXml);
         }
 
-        return $this->getZip();
+        return $this->oPackage;
     }
 
     protected function writeSlideComments(Slide $oSlide): string
