@@ -53,6 +53,12 @@ use PhpOffice\PhpPresentation\Shape\Placeholder;
 $shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_TITLE));
 ```
 
+In an OpenDocument presentation, a text shape that is a title, a centered title, a subtitle, a
+body, a footer, a date or a slide number is written as a presentation object of that class, which
+is what makes LibreOffice export a title as a heading in a tagged PDF. It keeps its own position,
+size and style rather than take the ones of the layout. The other kinds of placeholder have no
+class to go by and are written as a plain text box.
+
 ### Fields
 
 The number of a slide and its date are not written as the text they were given: they are
