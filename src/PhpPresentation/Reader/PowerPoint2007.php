@@ -94,6 +94,7 @@ class PowerPoint2007 implements ReaderInterface
     private const REL_SLIDE_LAYOUT = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout';
     private const REL_NOTES_SLIDE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide';
     private const REL_THEME = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme';
+    private const REL_NOTES_MASTER = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesMaster';
 
     /**
      * The nine plots the Writer knows, by the element each is written as.
@@ -164,6 +165,21 @@ class PowerPoint2007 implements ReaderInterface
      * @var bool
      */
     protected $loadImages = true;
+
+    /**
+     * The fonts of the theme of the part being read, by the reference that names each one in a
+     * typeface (`+mj-lt` is the Latin font for headings, `+mn-ea` the East Asian one for body text).
+     *
+     * @var array<string, string>
+     */
+    protected $themeFonts = [];
+
+    /**
+     * The fonts of the theme of each master slide, by the object id of the master.
+     *
+     * @var array<int, array<string, string>>
+     */
+    protected $themeFontsByMaster = [];
 
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
@@ -727,6 +743,17 @@ class PowerPoint2007 implements ReaderInterface
                 }
             }
 
+            // The fonts of the theme of the master the layout of the slide belongs to
+            $this->themeFonts = [];
+            foreach ($this->arrayRels[$oSlide->getRelsIndex()] as $valueRel) {
+                if (self::REL_SLIDE_LAYOUT == $valueRel['Type']) {
+                    $oLayout = $this->arraySlideLayouts[$this->resolve($oSlide->getRelsIndex(), $valueRel['Target'])] ?? null;
+                    $this->themeFonts = null === $oLayout ? [] : $this->themeFontsByMaster[spl_object_id($oLayout->getSlideMaster())] ?? [];
+
+                    break;
+                }
+            }
+
             // Shapes
             $arrayElements = $xmlReader->getElements('/p:sld/p:cSld/p:spTree/*');
             $this->loadSlideShapes($xmlReader, $oSlide, $arrayElements, $xmlReader);
@@ -755,6 +782,21 @@ class PowerPoint2007 implements ReaderInterface
             $oSlideMaster = $this->oPhpPresentation->createMasterSlide();
             $oSlideMaster->setTextStyles(new TextStyle(false));
             $oSlideMaster->setRelsIndex($this->relsOf($partName));
+
+            // Load the theme first: the shapes and the layouts of the master name their fonts
+            // through it
+            $this->themeFonts = [];
+            foreach ($this->arrayRels[$oSlideMaster->getRelsIndex()] as $arrayRel) {
+                if (self::REL_THEME == $arrayRel['Type']) {
+                    $pptTheme = $this->getFromName($this->resolve($oSlideMaster->getRelsIndex(), $arrayRel['Target']));
+                    if (false !== $pptTheme) {
+                        $this->loadTheme($pptTheme, $oSlideMaster);
+                    }
+
+                    break;
+                }
+            }
+            $this->themeFontsByMaster[spl_object_id($oSlideMaster)] = $this->themeFonts;
 
             // Background
             $oElement = $xmlReader->getElement('/p:sldMaster/p:cSld/p:bg');
@@ -852,18 +894,6 @@ class PowerPoint2007 implements ReaderInterface
                 }
             }
 
-            // Load the theme
-            foreach ($this->arrayRels[$oSlideMaster->getRelsIndex()] as $arrayRel) {
-                if (self::REL_THEME == $arrayRel['Type']) {
-                    $pptTheme = $this->getFromName($this->resolve($oSlideMaster->getRelsIndex(), $arrayRel['Target']));
-                    if (false !== $pptTheme) {
-                        $this->loadTheme($pptTheme, $oSlideMaster);
-                    }
-
-                    break;
-                }
-            }
-
             // Load the Layoutslide
             foreach ($xmlReader->getElements('/p:sldMaster/p:sldLayoutIdLst/p:sldLayoutId') as $oElement) {
                 if (!($oElement instanceof DOMElement)) {
@@ -950,7 +980,59 @@ class PowerPoint2007 implements ReaderInterface
                     $oSlideMaster->addSchemeColor($oSchemeColor);
                 }
             }
+            $this->themeFonts = $this->readThemeFonts($xmlReader);
         }
+    }
+
+    /**
+     * The fonts of the theme of a master or a notes master.
+     *
+     * @return array<string, string>
+     */
+    protected function loadThemeFonts(string $masterPart): array
+    {
+        $masterRels = $this->relsOf($masterPart);
+        $this->loadRels($masterRels);
+        foreach ($this->arrayRels[$masterRels] ?? [] as $arrayRel) {
+            if (self::REL_THEME == $arrayRel['Type']) {
+                $pptTheme = $this->getFromName($this->resolve($masterRels, $arrayRel['Target']));
+                $xmlReader = new XMLReader();
+                // @phpstan-ignore-next-line
+                if (false !== $pptTheme && $xmlReader->getDomFromString($pptTheme)) {
+                    return $this->readThemeFonts($xmlReader);
+                }
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * The fonts of a theme, by the reference that names each one in a typeface. A script the
+     * theme gives no font of its own names none, and the text keeps the font it has.
+     *
+     * @return array<string, string>
+     */
+    protected function readThemeFonts(XMLReader $xmlReader): array
+    {
+        $fonts = [];
+        foreach (['mj' => 'a:majorFont', 'mn' => 'a:minorFont'] as $kind => $fontElement) {
+            foreach (['lt' => 'a:latin', 'ea' => 'a:ea', 'cs' => 'a:cs'] as $script => $scriptElement) {
+                $oElement = $xmlReader->getElement('/a:theme/a:themeElements/a:fontScheme/' . $fontElement . '/' . $scriptElement);
+                $fonts['+' . $kind . '-' . $script] = $oElement instanceof DOMElement ? $oElement->getAttribute('typeface') : '';
+            }
+        }
+
+        return $fonts;
+    }
+
+    /**
+     * The font a typeface names: itself, or the font of the theme a reference such as `+mn-lt`
+     * stands for, empty when the theme gives none.
+     */
+    protected function getTypeface(string $typeface): string
+    {
+        return $this->themeFonts[$typeface] ?? $typeface;
     }
 
     protected function loadSlideBackground(XMLReader $xmlReader, DOMElement $oElement, AbstractSlide $oSlide): void
@@ -1008,6 +1090,16 @@ class PowerPoint2007 implements ReaderInterface
         // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             $oNote = $oSlide->getNote();
+
+            // The notes master has a theme of its own
+            $this->themeFonts = [];
+            $notesRels = $this->relsOf($partName);
+            $this->loadRels($notesRels);
+            foreach ($this->arrayRels[$notesRels] ?? [] as $arrayRel) {
+                if (self::REL_NOTES_MASTER == $arrayRel['Type']) {
+                    $this->themeFonts = $this->loadThemeFonts($this->resolve($notesRels, $arrayRel['Target']));
+                }
+            }
 
             $arrayElements = $xmlReader->getElements('/p:notes/p:cSld/p:spTree/*');
             $this->loadSlideShapes($xmlReader, $oNote, $arrayElements, $xmlReader);
@@ -2078,8 +2170,9 @@ class PowerPoint2007 implements ReaderInterface
 
             $oElementBuFont = $document->getElement('a:buFont', $oSubElement);
             if ($oElementBuFont instanceof DOMElement) {
-                if ($oElementBuFont->hasAttribute('typeface')) {
-                    $oParagraph->getBulletStyle()->setBulletFont($oElementBuFont->getAttribute('typeface'));
+                $typeface = $this->getTypeface($oElementBuFont->getAttribute('typeface'));
+                if ('' !== $typeface) {
+                    $oParagraph->getBulletStyle()->setBulletFont($typeface);
                 }
             }
             $oElementBuChar = $document->getElement('a:buChar', $oSubElement);
@@ -2190,14 +2283,16 @@ class PowerPoint2007 implements ReaderInterface
                         $oText->getFont()->setFormat(Font::FORMAT_LATIN);
                         $oElementFontFormat = $oElementFontFormatLatin;
                     }
-                    if ($oElementFontFormat instanceof DOMElement && $oElementFontFormat->hasAttribute('typeface')) {
-                        $oText->getFont()->setName($oElementFontFormat->getAttribute('typeface'));
+                    $typeface = $oElementFontFormat instanceof DOMElement ? $this->getTypeface($oElementFontFormat->getAttribute('typeface')) : '';
+                    if ('' !== $typeface) {
+                        $oText->getFont()->setName($typeface);
                     }
                     // Font definition
                     $oElementFont = $document->getElement('a:latin', $oElementrPr);
                     if ($oElementFont instanceof DOMElement) {
-                        if ($oElementFont->hasAttribute('typeface')) {
-                            $oText->getFont()->setName($oElementFont->getAttribute('typeface'));
+                        $typeface = $this->getTypeface($oElementFont->getAttribute('typeface'));
+                        if ('' !== $typeface) {
+                            $oText->getFont()->setName($typeface);
                         }
                         if ($oElementFont->hasAttribute('panose')) {
                             $oText->getFont()->setPanose($oElementFont->getAttribute('panose'));
@@ -2444,8 +2539,9 @@ class PowerPoint2007 implements ReaderInterface
             $oFont->setColor($this->loadStyleColor($xmlReader, $oElementColor));
         }
         $oElementLatin = $xmlReader->getElement('a:latin', $oElement);
-        if ($oElementLatin instanceof DOMElement && $oElementLatin->hasAttribute('typeface')) {
-            $oFont->setName($oElementLatin->getAttribute('typeface'));
+        $typeface = $oElementLatin instanceof DOMElement ? $this->getTypeface($oElementLatin->getAttribute('typeface')) : '';
+        if ('' !== $typeface) {
+            $oFont->setName($typeface);
         }
     }
 
