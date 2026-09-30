@@ -35,6 +35,7 @@ use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Group;
+use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -1209,16 +1210,56 @@ class ODPresentation implements ReaderInterface
     protected function loadShapeGroup(DOMElement $oNodeGroup, ShapeContainerInterface $container): void
     {
         $oShape = new Group();
+        $oShape->setName($oNodeGroup->getAttribute('draw:name'));
         $oShape->setDescription($this->loadShapeDescription($oNodeGroup));
         $oShape->setDecorative($this->loadShapeDecorative($oNodeGroup));
+        $this->loadShapeHyperlink($oNodeGroup, $oShape);
         $container->addShape($oShape);
 
         $this->loadShapes($oNodeGroup, $oShape);
     }
 
     /**
+     * Read where a link goes, a slide of this presentation by its name or anything else by its
+     * address, and the title a `text:a` gives it.
+     *
+     * The title is `office:title`: ODF 1.3 Part 3 §19.387 makes it the short accessible description
+     * of the link, and its Appendix D.2 maps the alternative text of a link from another format to
+     * it. LibreOffice writes that text to `office:name` instead, which §19.380.9 keeps for the name
+     * of a link from an HTML document, so `office:name` is read when there is no `office:title`.
+     *
+     * @param DOMElement $node a `text:a`, or the `presentation:event-listener` of a shape
+     */
+    protected function loadHyperlink(DOMElement $node, Hyperlink $hyperlink): void
+    {
+        $href = $node->getAttribute('xlink:href');
+        if (0 === strpos($href, '#') && isset($this->arraySlideNumbers[substr($href, 1)])) {
+            $hyperlink->setSlideNumber($this->arraySlideNumbers[substr($href, 1)]);
+        } else {
+            $hyperlink->setUrl($href);
+        }
+        if ($node->hasAttribute('office:title')) {
+            $hyperlink->setTooltip($node->getAttribute('office:title'));
+        } elseif ($node->hasAttribute('office:name')) {
+            $hyperlink->setTooltip($node->getAttribute('office:name'));
+        }
+    }
+
+    /**
+     * Read the link a click on a shape follows, which ODF writes as an event listener of the shape.
+     */
+    protected function loadShapeHyperlink(DOMElement $oNodeShape, AbstractShape $shape): void
+    {
+        $oNodeListener = $this->oXMLReader->getElement('office:event-listeners/presentation:event-listener[@script:event-name="dom:click"][@xlink:href]', $oNodeShape);
+        if ($oNodeListener instanceof DOMElement) {
+            $this->loadHyperlink($oNodeListener, $shape->getHyperlink());
+        }
+    }
+
+    /**
      * Read the description of a shape, the alternative text exposed to assistive
-     * technologies. Falls back to the shape name, as written by older versions.
+     * technologies. A shape with no `svg:desc` has none: its `draw:name` is a label for the
+     * author, and is read as its name.
      */
     protected function loadShapeDescription(DOMElement $oNodeFrame): string
     {
@@ -1227,7 +1268,7 @@ class ODPresentation implements ReaderInterface
             return $oNodeDesc->nodeValue ?? '';
         }
 
-        return $oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '';
+        return '';
     }
 
     /**
@@ -1301,6 +1342,7 @@ class ODPresentation implements ReaderInterface
         $shape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
         $shape->setDescription($this->loadShapeDescription($oNodeFrame));
         $shape->setDecorative($this->loadShapeDecorative($oNodeFrame));
+        $this->loadShapeHyperlink($oNodeFrame, $shape);
         $shape->setResizeProportional(false);
         $shape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $shape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
@@ -1347,8 +1389,10 @@ class ODPresentation implements ReaderInterface
         };
 
         $shape = new Line($point('svg:x1'), $point('svg:y1'), $point('svg:x2'), $point('svg:y2'));
+        $shape->setName($oNodeLine->getAttribute('draw:name'));
         $shape->setDescription($this->loadShapeDescription($oNodeLine));
         $shape->setDecorative($this->loadShapeDecorative($oNodeLine));
+        $this->loadShapeHyperlink($oNodeLine, $shape);
 
         $container->addShape($shape);
     }
@@ -1885,8 +1929,10 @@ class ODPresentation implements ReaderInterface
         ($container ?? $this->oPhpPresentation->getActiveSlide())->addShape($oShape);
         $oShape->setParagraphs([]);
 
+        $oShape->setName($oNodeFrame->getAttribute('draw:name'));
         $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
         $oShape->setDecorative($this->loadShapeDecorative($oNodeFrame));
+        $this->loadShapeHyperlink($oNodeFrame, $oShape);
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $this->loadShapeOffset($oShape, $oNodeFrame);
@@ -2029,12 +2075,7 @@ class ODPresentation implements ReaderInterface
             if ($oTextRunLink instanceof DOMElement) {
                 $oTextRun->setText($oTextRunLink->nodeValue);
                 if ($oTextRunLink->hasAttribute('xlink:href')) {
-                    $href = $oTextRunLink->getAttribute('xlink:href');
-                    if (0 === strpos($href, '#') && isset($this->arraySlideNumbers[substr($href, 1)])) {
-                        $oTextRun->getHyperlink()->setSlideNumber($this->arraySlideNumbers[substr($href, 1)]);
-                    } else {
-                        $oTextRun->getHyperlink()->setUrl($href);
-                    }
+                    $this->loadHyperlink($oTextRunLink, $oTextRun->getHyperlink());
                 }
             } elseif ($oNodeField instanceof DOMElement) {
                 // the span holds the field, and the field holds the text it stands in for
@@ -2104,8 +2145,10 @@ class ODPresentation implements ReaderInterface
 
         $oShape = new Table(max($columns, 1));
         $container->addShape($oShape);
+        $oShape->setName($oNodeFrame->getAttribute('draw:name'));
         $oShape->setDescription($this->loadShapeDescription($oNodeFrame));
         $oShape->setDecorative($this->loadShapeDecorative($oNodeFrame));
+        $this->loadShapeHyperlink($oNodeFrame, $oShape);
         $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
         $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $this->loadShapeOffset($oShape, $oNodeFrame);

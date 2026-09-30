@@ -537,6 +537,16 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * Write the name of a shape, the label an application lists it by, when it has one.
+     */
+    protected function writeShapeName(XMLWriter $objWriter, AbstractShape $shape): void
+    {
+        if ('' !== $shape->getName()) {
+            $objWriter->writeAttribute('draw:name', $shape->getName());
+        }
+    }
+
+    /**
      * Write the hyperlink a shape as a whole carries, which ODF states as a listener for the
      * click on it rather than as a property of the shape.
      *
@@ -573,7 +583,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:name', $shape->getName());
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
@@ -621,7 +631,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:name', $shape->getName());
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
@@ -680,6 +690,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
+        $this->writeShapeName($objWriter, $shape);
         $placeholderClass = $this->getPlaceholderClass($shape);
         if (null === $placeholderClass) {
             $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
@@ -738,12 +749,7 @@ class Content extends AbstractDecoratorWriter
                             $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($richtext));
                         }
                         if (true === $richtext->hasHyperlink() && '' != $richtext->getHyperlink()->getUrl()) {
-                            // text:a
-                            $objWriter->startElement('text:a');
-                            $objWriter->writeAttribute('xlink:type', 'simple');
-                            $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($richtext->getHyperlink()));
-                            $objWriter->text($richtext->getText());
-                            $objWriter->endElement();
+                            $this->writeTextHyperlink($objWriter, $richtext->getHyperlink(), $richtext->getText());
                         } elseif (null !== ($field = $this->getFieldElement($richtext, $fieldName))) {
                             $objWriter->writeElement($field, $richtext->getText());
                         } else {
@@ -803,12 +809,7 @@ class Content extends AbstractDecoratorWriter
                             $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($richtext));
                         }
                         if (true === $richtext->hasHyperlink() && '' != $richtext->getHyperlink()->getUrl()) {
-                            // text:a
-                            $objWriter->startElement('text:a');
-                            $objWriter->writeAttribute('xlink:type', 'simple');
-                            $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($richtext->getHyperlink()));
-                            $objWriter->text($richtext->getText());
-                            $objWriter->endElement();
+                            $this->writeTextHyperlink($objWriter, $richtext->getHyperlink(), $richtext->getText());
                         } elseif (null !== ($field = $this->getFieldElement($richtext, $fieldName))) {
                             $objWriter->writeElement($field, $richtext->getText());
                         } else {
@@ -933,6 +934,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:line
         $objWriter->startElement('draw:line');
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
         $objWriter->writeAttribute('svg:x1', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y1', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
@@ -956,7 +958,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:custom-shape
         $objWriter->startElement('draw:custom-shape');
-        $objWriter->writeAttribute('draw:name', $shape->getName());
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
@@ -1026,6 +1028,27 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
+     * Write a run of text that is a hyperlink, with its tooltip as the title of the link.
+     *
+     * The title is `office:title`, the short accessible description ODF 1.3 Part 3 §19.387 gives a
+     * link and the attribute its Appendix D.2 maps the alternative text of a link to. It is not
+     * `office:name`, where LibreOffice writes it: §19.380.9 keeps that for the name of a link from
+     * an HTML document. The Reader reads both.
+     */
+    protected function writeTextHyperlink(XMLWriter $objWriter, Hyperlink $hyperlink, string $text): void
+    {
+        // text:a
+        $objWriter->startElement('text:a');
+        $objWriter->writeAttribute('xlink:type', 'simple');
+        $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($hyperlink));
+        if ('' !== $hyperlink->getTooltip()) {
+            $objWriter->writeAttribute('office:title', $hyperlink->getTooltip());
+        }
+        $objWriter->text($text);
+        $objWriter->endElement();
+    }
+
+    /**
      * The target of a hyperlink, in the terms ODF addresses it.
      *
      * A link to another slide is stored as the PowerPoint action string `ppaction://hlinksldjump`,
@@ -1052,6 +1075,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
@@ -1105,12 +1129,7 @@ class Content extends AbstractDecoratorWriter
                                         $objWriter->writeAttribute('text:style-name', $this->getAutomaticStyleName($shapeRichText));
                                     }
                                     if (true === $shapeRichText->hasHyperlink() && '' !== $shapeRichText->getHyperlink()->getUrl()) {
-                                        // text:a
-                                        $objWriter->startElement('text:a');
-                                        $objWriter->writeAttribute('xlink:type', 'simple');
-                                        $objWriter->writeAttribute('xlink:href', $this->getHyperlinkHref($shapeRichText->getHyperlink()));
-                                        $objWriter->text($shapeRichText->getText());
-                                        $objWriter->endElement();
+                                        $this->writeTextHyperlink($objWriter, $shapeRichText->getHyperlink(), $shapeRichText->getText());
                                     } else {
                                         $objWriter->text($shapeRichText->getText());
                                     }
@@ -1162,7 +1181,7 @@ class Content extends AbstractDecoratorWriter
 
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:name', $shape->getTitle()->getText());
+        $objWriter->writeAttribute('draw:name', '' !== $shape->getName() ? $shape->getName() : $shape->getTitle()->getText());
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
@@ -1193,6 +1212,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:g
         $objWriter->startElement('draw:g');
+        $this->writeShapeName($objWriter, $group);
 
         $this->writeShapeDecorative($objWriter, $group);
         $this->writeShapeDescription($objWriter, $group);
