@@ -38,6 +38,7 @@ use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
+use PhpOffice\PhpPresentation\Shape\RichText\Numbering;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
@@ -417,7 +418,7 @@ class Content extends AbstractDecoratorWriter
      */
     protected function addListStyles(array $paragraphs): void
     {
-        foreach (Paragraph::getContinuedNumericStartAts($paragraphs) as $key => $continuedStartAt) {
+        foreach ((new Numbering($paragraphs))->getContinuedStartAts() as $key => $continuedStartAt) {
             $this->continuedStartAtByParagraph[spl_object_id($paragraphs[$key])] = $continuedStartAt;
         }
         $run = [];

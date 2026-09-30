@@ -41,6 +41,7 @@ use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
+use PhpOffice\PhpPresentation\Shape\RichText\Numbering;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
@@ -649,7 +650,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      */
     protected function writeParagraphs(XMLWriter $objWriter, array $paragraphs): void
     {
-        $continuedStartAts = Paragraph::getContinuedNumericStartAts($paragraphs);
+        $continuedStartAts = (new Numbering($paragraphs))->getContinuedStartAts();
         // Loop trough paragraphs
         foreach ($paragraphs as $key => $paragraph) {
             // a:p

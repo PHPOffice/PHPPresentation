@@ -42,6 +42,7 @@ use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\Numbering;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Shape\Table\Cell;
@@ -2126,8 +2127,9 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected function loadNumericStartAts(array $paragraphs): void
     {
-        $continuedStartAts = Paragraph::getContinuedNumericStartAts($paragraphs);
-        foreach (Paragraph::getResumedNumericStartAts($paragraphs) as $key => $resumedStartAt) {
+        $numbering = new Numbering($paragraphs);
+        $continuedStartAts = $numbering->getContinuedStartAts();
+        foreach ($numbering->getResumedStartAts() as $key => $resumedStartAt) {
             $bullet = $paragraphs[$key]->getBulletStyle();
             if (null !== $bullet && null !== $resumedStartAt && $resumedStartAt === $bullet->getBulletNumericStartAt()) {
                 $bullet->setBulletNumericStartAt(null)->setBulletNumericContinue();
