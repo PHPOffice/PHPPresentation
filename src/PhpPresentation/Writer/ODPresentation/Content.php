@@ -519,7 +519,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:name', $shape->getName());
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
@@ -567,7 +567,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:name', $shape->getName());
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
@@ -894,7 +894,7 @@ class Content extends AbstractDecoratorWriter
     {
         // draw:custom-shape
         $objWriter->startElement('draw:custom-shape');
-        $objWriter->writeAttribute('draw:name', $shape->getName());
+        $this->writeShapeName($objWriter, $shape);
         $objWriter->writeAttribute('draw:style-name', $this->getAutomaticStyleName($shape));
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
