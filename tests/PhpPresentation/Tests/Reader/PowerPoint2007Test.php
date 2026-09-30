@@ -2531,6 +2531,60 @@ class PowerPoint2007Test extends TestCase
         return array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
     }
 
+    public function testThemeFontReferenceIsReadAsTheFontOfTheTheme(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET)->setBulletFont('+mj-lt');
+        $oShape->createTextRun('Theme')->getFont()->setName('+mn-lt');
+        $oShape->createTextRun('None')->getFont()->setName('+mn-ea');
+        $oShape->createTextRun('Named')->getFont()->setName('Arial');
+        $oPhpPresentation->getActiveSlide()->getNote()->createRichTextShape()->createTextRun('Notes')->getFont()->setName('+mn-lt');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+
+        // The theme names a font for headings and one for body text, and none for East Asian
+        // text, which then keeps the font it has; the notes master has a theme of its own
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sTheme = $oZip->getFromName('ppt/theme/theme1.xml');
+        self::assertIsString($sTheme);
+        $sTheme = (string) preg_replace('#(<a:majorFont>\s*<a:latin typeface=")Calibri#', '$1Aptos Display', $sTheme, 1, $countMajor);
+        $sTheme = (string) preg_replace('#(<a:minorFont>\s*<a:latin typeface=")Calibri#', '$1Aptos', $sTheme, 1, $countMinor);
+        self::assertEquals([1, 1], [$countMajor, $countMinor]);
+        $oZip->deleteName('ppt/theme/theme1.xml');
+        $oZip->addFromString('ppt/theme/theme1.xml', $sTheme);
+        $sRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/%s" Target="%s"/></Relationships>';
+        $oZip->addFromString('ppt/notesSlides/_rels/notesSlide1.xml.rels', sprintf($sRels, 'notesMaster', '../notesMasters/notesMaster1.xml'));
+        $oZip->addFromString('ppt/notesMasters/notesMaster1.xml', '<p:notesMaster xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"/>');
+        $oZip->addFromString('ppt/notesMasters/_rels/notesMaster1.xml.rels', sprintf($sRels, 'theme', '../theme/theme2.xml'));
+        $oZip->addFromString('ppt/theme/theme2.xml', str_replace('Aptos', 'Notes Font', $sTheme));
+        $oZip->close();
+
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $oShape = $oPhpPresentationRead->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(RichText::class, $oShape);
+        $oParagraph = $oShape->getParagraph(0);
+        self::assertEquals('Aptos Display', $oParagraph->getBulletStyle()->getBulletFont());
+        $fonts = [];
+        foreach ($oParagraph->getRichTextElements() as $oRun) {
+            self::assertInstanceOf(RichText\Run::class, $oRun);
+            $fonts[] = $oRun->getFont()->getName();
+        }
+        self::assertEquals(['Aptos', 'Calibri', 'Arial'], $fonts);
+
+        // The shape of the text of the notes comes after the image of the slide
+        $oShapes = $oPhpPresentationRead->getActiveSlide()->getNote()->getShapeCollection();
+        $oShape = end($oShapes);
+        self::assertInstanceOf(RichText::class, $oShape);
+        $oRun = $oShape->getParagraph(0)->getRichTextElements()[0];
+        self::assertInstanceOf(RichText\Run::class, $oRun);
+        self::assertEquals('Notes Font', $oRun->getFont()->getName());
+    }
+
     public function testHyperlinkOnMasterAndLayoutSurvivesTheRoundTrip(): void
     {
         $oPhpPresentation = new PhpPresentation();
