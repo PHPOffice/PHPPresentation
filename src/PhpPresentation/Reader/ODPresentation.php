@@ -1962,7 +1962,11 @@ class ODPresentation implements ReaderInterface
      */
     protected function readParagraph($oShape, DOMElement $oNodeParent): void
     {
-        $oParagraph = $oShape->createParagraph();
+        // A new paragraph takes the alignment and the marker of the one before it, which is a list
+        // item as often as not; a paragraph outside a list has no marker and only its own style.
+        $oParagraph = $oShape->createParagraph()
+            ->setAlignment(new Alignment())
+            ->setBulletStyle(new Bullet());
         if ($oNodeParent->hasAttribute('text:style-name')) {
             $keyStyle = $oNodeParent->getAttribute('text:style-name');
             if (isset($this->arrayStyles[$keyStyle])) {
@@ -2047,18 +2051,32 @@ class ODPresentation implements ReaderInterface
 
     /**
      * Read List.
+     *
+     * A list nested in another one names no style of its own as LibreOffice writes it, and then
+     * wears the style of the list around it (ODF 1.2, 19.880); an item can override the style
+     * for itself and the lists it holds with `text:style-override`. A `text:list-header` is an
+     * item that shows no marker.
      */
-    protected function readList(RichText $oShape, DOMElement $oNodeParent): void
+    protected function readList(RichText $oShape, DOMElement $oNodeParent, string $listStyleName = ''): void
     {
-        foreach ($this->oXMLReader->getElements('text:list-item/*', $oNodeParent) as $oNodeListItem) {
-            if ($oNodeListItem instanceof DOMElement) {
-                if ('text:p' == $oNodeListItem->nodeName) {
-                    $this->readListItem($oShape, $oNodeListItem, $oNodeParent);
+        if ($oNodeParent->hasAttribute('text:style-name')) {
+            $listStyleName = $oNodeParent->getAttribute('text:style-name');
+        }
+        foreach ($this->oXMLReader->getElements('text:list-item|text:list-header', $oNodeParent) as $oNodeItem) {
+            if (!$oNodeItem instanceof DOMElement) {
+                continue;
+            }
+            $itemStyleName = $oNodeItem->getAttribute('text:style-override') ?: $listStyleName;
+            foreach ($this->oXMLReader->getElements('text:p|text:h|text:list', $oNodeItem) as $oNodeListItem) {
+                if (!$oNodeListItem instanceof DOMElement) {
+                    continue;
                 }
                 if ('text:list' == $oNodeListItem->nodeName) {
                     ++$this->levelParagraph;
-                    $this->readList($oShape, $oNodeListItem);
+                    $this->readList($oShape, $oNodeListItem, $itemStyleName);
                     --$this->levelParagraph;
+                } else {
+                    $this->readListItem($oShape, $oNodeListItem, $itemStyleName, 'text:list-header' == $oNodeItem->nodeName);
                 }
             }
         }
@@ -2067,16 +2085,13 @@ class ODPresentation implements ReaderInterface
     /**
      * Read List Item.
      */
-    protected function readListItem(RichText $oShape, DOMElement $oNodeParent, DOMElement $oNodeParagraph): void
+    protected function readListItem(RichText $oShape, DOMElement $oNodeParent, string $listStyleName, bool $isHeader = false): void
     {
         $oParagraph = $oShape->createParagraph();
-        if ($oNodeParagraph->hasAttribute('text:style-name')) {
-            $keyStyle = $oNodeParagraph->getAttribute('text:style-name');
-            if (isset($this->arrayStyles[$keyStyle]) && !empty($this->arrayStyles[$keyStyle]['listStyle'])) {
-                $oParagraph->setAlignment($this->arrayStyles[$keyStyle]['listStyle'][$this->levelParagraph]['alignment']);
-                $oParagraph->setBulletStyle($this->arrayStyles[$keyStyle]['listStyle'][$this->levelParagraph]['bullet']);
-            }
-        }
+        $listLevel = $this->arrayStyles[$listStyleName]['listStyle'][$this->levelParagraph] ?? null;
+        // Each paragraph gets a copy: the style is shared by every item at that level
+        $oParagraph->setAlignment(null !== $listLevel ? clone $listLevel['alignment'] : (new Alignment())->setLevel($this->levelParagraph));
+        $oParagraph->setBulletStyle(null !== $listLevel && !$isHeader ? clone $listLevel['bullet'] : new Bullet());
         foreach ($this->oXMLReader->getElements('text:span', $oNodeParent) as $oNodeRichTextElement) {
             if ($oNodeRichTextElement instanceof DOMElement) {
                 $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
