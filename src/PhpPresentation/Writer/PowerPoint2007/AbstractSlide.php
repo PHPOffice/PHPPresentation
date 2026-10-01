@@ -41,6 +41,7 @@ use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
+use PhpOffice\PhpPresentation\Shape\RichText\Numbering;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
@@ -649,13 +650,14 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      */
     protected function writeParagraphs(XMLWriter $objWriter, array $paragraphs): void
     {
+        $continuedStartAts = (new Numbering($paragraphs))->getContinuedStartAts();
         // Loop trough paragraphs
-        foreach ($paragraphs as $paragraph) {
+        foreach ($paragraphs as $key => $paragraph) {
             // a:p
             $objWriter->startElement('a:p');
 
             // a:pPr
-            $this->writeParagraphStyles($objWriter, $paragraph, false);
+            $this->writeParagraphStyles($objWriter, $paragraph, false, $continuedStartAts[$key] ?? null);
 
             // Loop trough rich text elements
             $elements = $paragraph->getRichTextElements();
@@ -702,8 +704,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
     /**
      * Write Paragraph Styles (a:pPr).
+     *
+     * @param null|int $continuedStartAt the start of the numbering the paragraph continues, if it continues one
      */
-    protected function writeParagraphStyles(XMLWriter $objWriter, Paragraph $paragraph, bool $isPlaceholder = false): void
+    protected function writeParagraphStyles(XMLWriter $objWriter, Paragraph $paragraph, bool $isPlaceholder = false, ?int $continuedStartAt = null): void
     {
         $objWriter->startElement('a:pPr');
         $objWriter->writeAttribute('algn', $paragraph->getAlignment()->getHorizontal());
@@ -763,9 +767,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                     // a:buAutoNum
                     $objWriter->startElement('a:buAutoNum');
                     $objWriter->writeAttribute('type', $paragraph->getBulletStyle()->getBulletNumericStyle());
-                    if ($paragraph->getBulletStyle()->getBulletNumericStartAt() != 1) {
-                        $objWriter->writeAttribute('startAt', $paragraph->getBulletStyle()->getBulletNumericStartAt());
-                    }
+                    // PowerPoint numbers on while the start stays the same, so the start of the
+                    // numbering is written on every paragraph of it, as PowerPoint writes it
+                    $startAt = $paragraph->getBulletStyle()->getBulletNumericStartAt() ?? $continuedStartAt ?? 1;
+                    $objWriter->writeAttributeIf(1 != $startAt, 'startAt', $startAt);
                     $objWriter->endElement();
                 }
             }
