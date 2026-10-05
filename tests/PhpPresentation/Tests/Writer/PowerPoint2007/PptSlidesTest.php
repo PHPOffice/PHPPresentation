@@ -969,6 +969,8 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/notesSlides/notesSlide1.xml', $element, 'cx', Drawing::pixelsToEmu(round($oNote->getExtentX() / 2)));
         $this->assertZipXmlAttributeEquals('ppt/notesSlides/notesSlide1.xml', $element, 'cy', Drawing::pixelsToEmu(round($oNote->getExtentY() / 2)));
 
+        $this->assertZipXmlElementExists('ppt/notesSlides/notesSlide1.xml', '/p:notes/p:clrMapOvr/a:masterClrMapping');
+
         // Notes Placeholder
         $element = '/p:notes/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr[@id="3"][@name="Notes Placeholder"]';
         $this->assertZipXmlElementExists('ppt/notesSlides/notesSlide1.xml', $element);
