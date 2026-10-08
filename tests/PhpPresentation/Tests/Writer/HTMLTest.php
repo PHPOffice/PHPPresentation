@@ -123,4 +123,24 @@ class HTMLTest extends PhpPresentationTestCase
         $object = new HTML();
         $object->save('');
     }
+
+    /**
+     * No browser shows a metafile : it is shown as the PNG it draws.
+     */
+    public function testSaveMetafile(): void
+    {
+        $filename = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+
+        $slide = $this->oPresentation->getActiveSlide();
+        $slide->createDrawingShape()->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/fish.wmf');
+        $slide->createDrawingShape()->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/inkscape_shapes_emfplus.emf');
+
+        (new HTML($this->oPresentation))->save($filename);
+        $content = (string) file_get_contents($filename);
+        unlink($filename);
+
+        self::assertSame(2, substr_count($content, '<img src="data:image/png;base64,'));
+        self::assertStringNotContainsString('image/x-wmf', $content);
+        self::assertStringNotContainsString('image/x-emf', $content);
+    }
 }

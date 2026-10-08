@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest.
@@ -134,5 +135,33 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . str_replace(' ', '_', $oBkgImage->getIndexedFilename((string) 0)));
         $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @dataProvider dataProviderMetafile
+     */
+    #[DataProvider('dataProviderMetafile')]
+    public function testDrawingMetafile(string $filename, string $extension, string $mimeType): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/' . $filename);
+
+        // LibreOffice stores a metafile as it is
+        $element = '/manifest:manifest/manifest:file-entry[5]';
+        $this->assertZipFileExists('Pictures/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlAttributeEndsWith('META-INF/manifest.xml', $element, 'manifest:full-path', '.' . $extension);
+        $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:media-type', $mimeType);
+    }
+
+    /**
+     * @return array<string, array{string, string, string}>
+     */
+    public static function dataProviderMetafile(): array
+    {
+        return [
+            'WMF' => ['fish.wmf', 'wmf', 'image/x-wmf'],
+            'EMF' => ['inkscape_shapes.emf', 'emf', 'image/x-emf'],
+            'EMF+' => ['inkscape_shapes_emfplus.emf', 'emf', 'image/x-emf'],
+        ];
     }
 }

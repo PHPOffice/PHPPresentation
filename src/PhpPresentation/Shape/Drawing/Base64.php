@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
 use PhpOffice\PhpPresentation\Exception\UnauthorizedMimetypeException;
+use PhpOffice\PhpPresentation\Shared\Metafile;
 
 class Base64 extends AbstractDrawingAdapter
 {
@@ -44,6 +45,8 @@ class Base64 extends AbstractDrawingAdapter
         'image/png' => 'png',
         'image/gif' => 'gif',
         'image/svg+xml' => 'svg',
+        'image/x-wmf' => 'wmf',
+        'image/x-emf' => 'emf',
     ];
 
     /**
@@ -86,6 +89,8 @@ class Base64 extends AbstractDrawingAdapter
         [$data] = explode(';', $this->getData());
         [, $mime] = explode(':', $data);
 
+        // a metafile is met under its type without its `x-` too
+        $mime = Metafile::isMimeType($mime) ? 'image/x-' . Metafile::getExtension($mime) : $mime;
         if (!array_key_exists($mime, $this->arrayMimeExtension)) {
             throw new UnauthorizedMimetypeException($mime, $this->arrayMimeExtension);
         }
@@ -113,6 +118,13 @@ class Base64 extends AbstractDrawingAdapter
             $image = getimagesize($uri);
         } else {
             $image = getimagesizefromstring($sImage);
+        }
+        if (!is_array($image)) {
+            // a metafile is no image `getimagesize()` knows
+            $mimeType = Metafile::getMimeType($sImage);
+            if (null !== $mimeType) {
+                return $mimeType;
+            }
         }
 
         return image_type_to_mime_type($image[2]);

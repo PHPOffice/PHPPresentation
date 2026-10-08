@@ -44,6 +44,7 @@ use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Shape\Table\Cell;
 use PhpOffice\PhpPresentation\Shape\Table\Row;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
+use PhpOffice\PhpPresentation\Shared\Metafile;
 use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -1289,6 +1290,10 @@ class ODPresentation implements ReaderInterface
         }
 
         // Contents of file
+        if (empty($mimetype)) {
+            // a metafile is no image GD can draw, and is kept as it is
+            $mimetype = (string) Metafile::getMimeType($imageFile);
+        }
         if (empty($mimetype)) {
             $shape = new Gd();
             $shape->setImageResource(imagecreatefromstring($imageFile));

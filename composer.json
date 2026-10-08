@@ -28,11 +28,13 @@
     "require-dev": {
         "phpunit/phpunit": ">=7.0",
         "phpmd/phpmd": "2.*",
+        "phpoffice/wmf": "^0.2",
         "phpstan/phpstan": "^2.2,!=2.2.11",
         "dompdf/dompdf": "^3.1"
     },
     "suggest": {
-        "ext-gd": "Required to add images"
+        "ext-gd": "Required to add images",
+        "phpoffice/wmf": "Allows adding WMF, EMF and EMF+ images (requires ext-gd)"
     },
     "autoload": {
         "psr-4": {

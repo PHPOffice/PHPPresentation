@@ -28,6 +28,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Shared\Metafile;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Font;
@@ -221,7 +222,17 @@ class HTML extends AbstractWriter implements WriterInterface
 
     protected function writeImage(Drawing\AbstractDrawingAdapter $shape): void
     {
-        $imageData = 'data:' . $shape->getMimeType() . ';base64,' . base64_encode($shape->getContents());
+        $mimeType = $shape->getMimeType();
+        $contents = $shape->getContents();
+        // no browser shows a metafile, so it is shown as the PNG it draws
+        if (Metafile::isMimeType($mimeType)) {
+            $png = Metafile::convertToPng($contents);
+            if (null !== $png) {
+                $mimeType = 'image/png';
+                $contents = $png;
+            }
+        }
+        $imageData = 'data:' . $mimeType . ';base64,' . base64_encode($contents);
 
         $styles = [];
         $styles[] = 'position: absolute';

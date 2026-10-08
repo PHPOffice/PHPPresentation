@@ -25,6 +25,7 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
+use PhpOffice\PhpPresentation\Shared\Metafile;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\ContentTypes.
@@ -134,6 +135,13 @@ class ContentTypes extends AbstractDecoratorWriter
                 // Normalize any odd returns (some environments report "image/svg")
                 if ($extension === 'svg') {
                     $mimeType = 'image/svg+xml';
+                }
+                // PowerPoint names the metafiles by their `x-` types, whatever the environment says
+                if ($extension === 'wmf') {
+                    $mimeType = Metafile::MIME_WMF;
+                }
+                if ($extension === 'emf') {
+                    $mimeType = Metafile::MIME_EMF;
                 }
 
                 if (!isset($aMediaContentTypes[$extension])) {

@@ -65,7 +65,7 @@ class Base64Test extends TestCase
     public function testExtensionException(): void
     {
         $this->expectException(UnauthorizedMimetypeException::class);
-        $this->expectExceptionMessage('The mime type fake/fake is not found in autorized values (jpg, png, gif, svg)');
+        $this->expectExceptionMessage('The mime type fake/fake is not found in autorized values (jpg, png, gif, svg, wmf, emf)');
 
         $imgData = str_replace('image/jpeg', 'fake/fake', $this->imageDataPNG);
 
@@ -86,6 +86,30 @@ class Base64Test extends TestCase
         $oDrawing = new Base64();
         $oDrawing->setData($this->imageDataSVG);
         self::assertEquals('image/svg+xml', $oDrawing->getMimeType());
+    }
+
+    public function testMetafile(): void
+    {
+        $contents = (string) file_get_contents(dirname(__DIR__, 4) . '/resources/images/fish.wmf');
+
+        $oDrawing = new Base64();
+        $oDrawing->setData('data:image/x-wmf;base64,' . base64_encode($contents));
+        self::assertEquals('wmf', $oDrawing->getExtension());
+        self::assertEquals('image/x-wmf', $oDrawing->getMimeType());
+        self::assertEquals($contents, $oDrawing->getContents());
+
+        // the types without their `x-` are met too
+        $oDrawing->setData('data:image/emf;base64,' . base64_encode($contents));
+        self::assertEquals('emf', $oDrawing->getExtension());
+    }
+
+    public function testMetafileWithoutMimeType(): void
+    {
+        $contents = (string) file_get_contents(dirname(__DIR__, 4) . '/resources/images/inkscape_shapes.emf');
+
+        $oDrawing = new Base64();
+        $oDrawing->setData('data:;base64,' . base64_encode($contents));
+        self::assertEquals('image/x-emf', $oDrawing->getMimeType());
     }
 
     public function testMimeTypeFunctionNotExists(): void

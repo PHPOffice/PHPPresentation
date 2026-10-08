@@ -13,6 +13,29 @@ You can add multiples formats of image :
 - JPEG
 - PNG
 - SVG
+- WMF, EMF & EMF+ (Windows metafiles), if the optional library [phpoffice/wmf](https://github.com/PHPOffice/WMF) and the GD extension are installed
+
+## Windows metafiles
+
+To add a WMF, an EMF or an EMF+ file, install the optional library [phpoffice/wmf](https://github.com/PHPOffice/WMF) :
+
+``` sh
+composer require phpoffice/wmf
+```
+
+It says what a metafile is (`image/x-wmf` or `image/x-emf` ; an EMF+ file is an EMF file) and measures it, which `getimagesize()` can't do.
+
+``` php
+<?php
+
+$shape = $slide->createDrawingShape();
+$shape->setName('Chart')
+    ->setDescription('A chart drawn as a metafile')
+    ->setPath('/path/to/chart.emf');
+```
+
+The PowerPoint2007 and ODPresentation Writers store a metafile as it is, and their Readers read it back.
+The Writers whose target can't show a metafile (HTML, PDF and Keynote) write the PNG it draws instead.
 
 ## File
 

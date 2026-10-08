@@ -40,6 +40,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
+use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line as LineShape;
@@ -2694,5 +2695,69 @@ class PowerPoint2007Test extends TestCase
             $read[] = [$oParagraph->getBulletStyle()->getBulletNumericStartAt(), $oParagraph->getBulletStyle()->isBulletNumericContinue()];
         }
         self::assertSame([[1, false], [null, false], [null, false], [null, true], [null, false], [null, false], [1, false], [null, false], [null, true]], $read);
+    }
+
+    /**
+     * @dataProvider dataProviderMetafile
+     */
+    #[DataProvider('dataProviderMetafile')]
+    public function testMetafileSurvivesTheRoundTrip(string $filename, string $extension, string $mimeType): void
+    {
+        $path = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/' . $filename;
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createDrawingShape()->setPath($path)->setName('Metafile');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        // GD draws no metafile, and the shape holding it was dropped
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(Base64::class, $arrayShape[0]);
+        self::assertEquals('Metafile', $arrayShape[0]->getName());
+        self::assertEquals($mimeType, $arrayShape[0]->getMimeType());
+        self::assertEquals($extension, $arrayShape[0]->getExtension());
+        self::assertEquals(file_get_contents($path), $arrayShape[0]->getContents());
+    }
+
+    /**
+     * An EMF on a master slide and on a layout, where #741 met one : it was dropped, and its
+     * shape with it.
+     */
+    public function testMetafileOnMasterAndLayoutSurvivesTheRoundTrip(): void
+    {
+        $path = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/inkscape_shapes.emf';
+        $oPhpPresentation = new PhpPresentation();
+        $oMaster = $oPhpPresentation->getAllMasterSlides()[0];
+        $oMaster->createDrawingShape()->setPath($path)->setName('On the master');
+        $oMaster->getAllSlideLayouts()[0]->createDrawingShape()->setPath($path)->setName('On the layout');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $oMasterRead = $oPhpPresentationRead->getAllMasterSlides()[0];
+        foreach ([$oMasterRead, $oMasterRead->getAllSlideLayouts()[0]] as $oContainer) {
+            $arrayShape = array_values(array_filter($oContainer->getShapeCollection(), fn ($oShape) => $oShape instanceof Base64));
+            self::assertCount(1, $arrayShape);
+            self::assertEquals('image/x-emf', $arrayShape[0]->getMimeType());
+            self::assertEquals(file_get_contents($path), $arrayShape[0]->getContents());
+        }
+        self::assertEquals('On the master', array_values(array_filter($oMasterRead->getShapeCollection(), fn ($oShape) => $oShape instanceof Base64))[0]->getName());
+    }
+
+    /**
+     * @return array<string, array{string, string, string}>
+     */
+    public static function dataProviderMetafile(): array
+    {
+        return [
+            'WMF' => ['fish.wmf', 'wmf', 'image/x-wmf'],
+            'EMF' => ['inkscape_shapes.emf', 'emf', 'image/x-emf'],
+            'EMF+' => ['inkscape_shapes_emfplus.emf', 'emf', 'image/x-emf'],
+        ];
     }
 }

@@ -2741,4 +2741,51 @@ class ODPresentationTest extends TestCase
         self::assertInstanceOf(Line::class, $arrayShape[0]);
         self::assertInstanceOf(RichText::class, $arrayShape[1]);
     }
+
+    /**
+     * @dataProvider dataProviderMetafile
+     */
+    #[DataProvider('dataProviderMetafile')]
+    public function testMetafileSurvivesTheRoundTrip(string $filename, string $extension, string $mimeType): void
+    {
+        $path = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/' . $filename;
+        $oPhpPresentation = new PhpPresentation();
+        $oPhpPresentation->getActiveSlide()->createDrawingShape()->setPath($path);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(Base64::class, $arrayShape[0]);
+        self::assertEquals($mimeType, $arrayShape[0]->getMimeType());
+        self::assertEquals($extension, $arrayShape[0]->getExtension());
+        self::assertEquals(file_get_contents($path), $arrayShape[0]->getContents());
+
+        // A document which names no type for its image : GD can't draw a metafile, so its contents say what it is
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $oZip->addFromString('content.xml', (string) preg_replace('/ loext:mime-type="[^"]*"/', '', (string) $oZip->getFromName('content.xml')));
+        $oZip->close();
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        self::assertInstanceOf(Base64::class, $arrayShape[0]);
+        self::assertEquals($mimeType, $arrayShape[0]->getMimeType());
+    }
+
+    /**
+     * @return array<string, array{string, string, string}>
+     */
+    public static function dataProviderMetafile(): array
+    {
+        return [
+            'WMF' => ['fish.wmf', 'wmf', 'image/x-wmf'],
+            'EMF' => ['inkscape_shapes.emf', 'emf', 'image/x-emf'],
+            'EMF+' => ['inkscape_shapes_emfplus.emf', 'emf', 'image/x-emf'],
+        ];
+    }
 }
