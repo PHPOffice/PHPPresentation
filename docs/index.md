@@ -42,61 +42,69 @@ Documentation.
 
 ## File formats
 
-Below are the supported features for each file formats.
+Below are the supported features for each file formats. :material-alert-outline: means partly supported: the [Writers](usage/writers.md#supported-features) and [Readers](usage/readers.md#supported-features) pages say what is missing, feature by feature.
 
 
 ### Writers
 
-| Features                  |                      | HTML  | ODP   | PDF   | PPTX  |
-|---------------------------|----------------------|-------|-------|-------|-------|
-| **Document**              | Mark as final        |       |       |       | :material-check: |
-| **Document Properties**   | Standard             |       | :material-check: |       | :material-check: |
-|                           | Custom               |       | :material-check: |       | :material-check: |
-| **Slides**                |                      | :material-check: | :material-check: | :material-check: | :material-check: |
-|                           | Name                 |       | :material-check: |       |       |
-| **Element Shape**         | AutoShape            |       | :material-check: |       | :material-check: |
-|                           | Image                | :material-check: | :material-check: | :material-check: | :material-check: |
-|                           | Hyperlink            | :material-check: | :material-check: | :material-check: | :material-check: |
-|                           | Line                 |       | :material-check: |       | :material-check: |
-|                           | MemoryImage          | :material-check: | :material-check: | :material-check: | :material-check: |
-|                           | RichText             |       | :material-check: |       | :material-check: |
-|                           | Table                | :material-check: | :material-check: | :material-check: | :material-check: |
-|                           | Text                 |       | :material-check: |       | :material-check: |
-| **Charts**                | Area                 |       | :material-check: |       | :material-check: |
-|                           | Bar                  |       | :material-check: |       | :material-check: |
-|                           | Bar3D                |       | :material-check: |       | :material-check: |
-|                           | Doughnut             |       | :material-check: |       | :material-check: |
-|                           | Line                 |       | :material-check: |       | :material-check: |
-|                           | Pie                  |       | :material-check: |       | :material-check: |
-|                           | Pie3D                |       | :material-check: |       | :material-check: |
-|                           | Radar                |       | :material-check: |       | :material-check: |
-|                           | Scatter              |       | :material-check: |       | :material-check: |
+| Features                  |                      | HTML  | Keynote | ODP   | PDF   | PPTX  | Serialized |
+|---------------------------|----------------------|-------|---------|-------|-------|-------|------------|
+| **Document**              | Mark as final        |       |         |       |       | :material-check: | :material-check: |
+| **Document Properties**   | Standard             |       |         | :material-alert-outline: |       | :material-check: | :material-check: |
+|                           | Custom               |       |         | :material-check: |       | :material-check: | :material-check: |
+| **Slides**                |                      | :material-alert-outline: | :material-check: | :material-check: | :material-check: | :material-check: | :material-check: |
+|                           | Name                 |       |         | :material-check: |       | :material-check: | :material-check: |
+| **Element Shape**         | AutoShape            |       |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Image                | :material-check: | :material-check: | :material-check: | :material-check: | :material-check: | :material-alert-outline: |
+|                           | Hyperlink            | :material-check: |         | :material-check: | :material-check: | :material-check: | :material-check: |
+|                           | Line                 |       |         | :material-check: |       | :material-check: | :material-check: |
+|                           | MemoryImage          | :material-check: | :material-check: | :material-check: | :material-check: | :material-check: | :material-alert-outline: |
+|                           | RichText             | :material-check: | :material-alert-outline: | :material-check: | :material-check: | :material-check: | :material-check: |
+|                           | Table                | :material-alert-outline: |         | :material-check: | :material-alert-outline: | :material-check: | :material-check: |
+|                           | Text                 | :material-alert-outline: |         | :material-check: | :material-alert-outline: | :material-check: | :material-check: |
+|                           | Group                |       |         | :material-check: |       | :material-check: | :material-alert-outline: |
+|                           | Media                | :material-alert-outline: |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Comment              |       |         | :material-check: |       | :material-check: | :material-check: |
+| **Charts**                | Area                 |       |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Bar                  |       |         | :material-alert-outline: |       | :material-check: | :material-check: |
+|                           | Bar3D                |       |         | :material-alert-outline: |       | :material-check: | :material-check: |
+|                           | Doughnut             |       |         | :material-alert-outline: |       | :material-check: | :material-check: |
+|                           | Line                 |       |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Pie                  |       |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Pie3D                |       |         | :material-alert-outline: |       | :material-check: | :material-check: |
+|                           | Radar                |       |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Scatter              |       |         | :material-check: |       | :material-check: | :material-check: |
 
 
 ### Readers
 
-| Features                  |                      | ODP   | PPT   | PPTX  |
-|---------------------------|----------------------|-------|-------|-------|
-| **Document**              | Mark as final        |       |       | :material-check: |
-| **Document Properties**   | Standard             | :material-check: |       | :material-check: |
-|                           | Custom               | :material-check: |       | :material-check: |
-| **Slides**                |                      | :material-check: |       | :material-check: |
-|                           | Name                 |       |       |       |
-| **Element Shape**         | AutoShape            | :material-check: |       | :material-check: |
-|                           | Image                | :material-check: | :material-check: | :material-check: |
-|                           | Hyperlink            | :material-check: | :material-check: | :material-check: |
-|                           | RichText             | :material-check: | :material-check: | :material-check: |
-|                           | Table                |       |       | :material-check: |
-|                           | Text                 | :material-check: | :material-check: | :material-check: |
-| **Charts**                | Area                 | :material-check: |       |       |
-|                           | Bar                  | :material-check: |       | :material-check: |
-|                           | Bar3D                | :material-check: |       |       |
-|                           | Doughnut             | :material-check: |       |       |
-|                           | Line                 | :material-check: |       |       |
-|                           | Pie                  | :material-check: |       |       |
-|                           | Pie3D                | :material-check: |       |       |
-|                           | Radar                | :material-check: |       |       |
-|                           | Scatter              | :material-check: |       |       |
+| Features                  |                      | Keynote | ODP   | PPT   | PPTX  | Serialized |
+|---------------------------|----------------------|---------|-------|-------|-------|------------|
+| **Document**              | Mark as final        |         |       |       | :material-check: | :material-check: |
+| **Document Properties**   | Standard             |         | :material-alert-outline: |       | :material-alert-outline: | :material-check: |
+|                           | Custom               |         | :material-check: |       | :material-check: | :material-check: |
+| **Slides**                |                      | :material-alert-outline: | :material-check: | :material-check: | :material-check: | :material-check: |
+|                           | Name                 |         | :material-check: |       | :material-check: | :material-check: |
+| **Element Shape**         | AutoShape            |         | :material-alert-outline: |       | :material-alert-outline: | :material-check: |
+|                           | Image                | :material-alert-outline: | :material-check: | :material-alert-outline: | :material-check: | :material-alert-outline: |
+|                           | Hyperlink            |         | :material-check: | :material-alert-outline: | :material-check: | :material-check: |
+|                           | Line                 |         | :material-alert-outline: | :material-alert-outline: | :material-alert-outline: | :material-check: |
+|                           | MemoryImage          | :material-alert-outline: | :material-check: | :material-alert-outline: | :material-check: | :material-alert-outline: |
+|                           | RichText             | :material-alert-outline: | :material-check: | :material-check: | :material-check: | :material-check: |
+|                           | Table                |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Text                 |         | :material-check: | :material-alert-outline: | :material-check: | :material-check: |
+|                           | Group                |         | :material-check: | :material-alert-outline: | :material-check: | :material-alert-outline: |
+|                           | Media                |         |       |       |       | :material-check: |
+|                           | Comment              |         |       |       |       | :material-check: |
+| **Charts**                | Area                 |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Bar                  |         | :material-alert-outline: |       | :material-check: | :material-check: |
+|                           | Bar3D                |         | :material-alert-outline: |       | :material-alert-outline: | :material-check: |
+|                           | Doughnut             |         | :material-alert-outline: |       | :material-check: | :material-check: |
+|                           | Line                 |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Pie                  |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Pie3D                |         | :material-alert-outline: |       | :material-alert-outline: | :material-check: |
+|                           | Radar                |         | :material-check: |       | :material-check: | :material-check: |
+|                           | Scatter              |         | :material-check: |       | :material-check: | :material-check: |
 
 
 ## Contributing
