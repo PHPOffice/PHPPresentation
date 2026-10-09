@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
 use PhpOffice\Common\File as CommonFile;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Shared\Metafile;
 use ZipArchive;
 
 class ZipFile extends AbstractDrawingAdapter
@@ -78,11 +79,19 @@ class ZipFile extends AbstractDrawingAdapter
         }
         $oArchive = new ZipArchive();
         $oArchive->open($this->getZipFileOut());
+        $contents = (string) $oArchive->getFromName($this->getZipFileIn());
         if (!function_exists('getimagesizefromstring')) {
-            $uri = 'data://application/octet-stream;base64,' . base64_encode($oArchive->getFromName($this->getZipFileIn()));
+            $uri = 'data://application/octet-stream;base64,' . base64_encode($contents);
             $image = getimagesize($uri);
         } else {
-            $image = getimagesizefromstring($oArchive->getFromName($this->getZipFileIn()));
+            $image = getimagesizefromstring($contents);
+        }
+        if (!is_array($image)) {
+            // a metafile is no image `getimagesize()` knows
+            $mimeType = Metafile::getMimeType($contents);
+            if (null !== $mimeType) {
+                return $mimeType;
+            }
         }
 
         return image_type_to_mime_type($image[2]);

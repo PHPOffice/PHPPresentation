@@ -30,6 +30,7 @@ use PhpOffice\PhpPresentation\Reader\Keynote\Protobuf;
 use PhpOffice\PhpPresentation\Reader\Keynote\Snappy;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shared\Metafile;
 use PhpOffice\PhpPresentation\Slide;
 use ZipArchive;
 
@@ -585,12 +586,14 @@ class Keynote implements ReaderInterface
             return null;
         }
         $size = @getimagesizefromstring($contents);
-        if (false === $size) {
+        // a metafile is no image `getimagesize()` knows
+        $size = false !== $size ? [$size[0], $size[1], $size['mime']] : Metafile::getImageSize($contents);
+        if (null === $size) {
             return null;
         }
 
         $oDrawing = new Base64();
-        $oDrawing->setData('data:' . $size['mime'] . ';base64,' . base64_encode($contents));
+        $oDrawing->setData('data:' . $size[2] . ';base64,' . base64_encode($contents));
         $oDrawing->setName(basename($entry));
         $oDrawing->getShadow()->setVisible(false);
         $oDrawing->setResizeProportional(false);

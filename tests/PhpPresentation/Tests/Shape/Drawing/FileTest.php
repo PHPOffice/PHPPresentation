@@ -105,6 +105,35 @@ class FileTest extends TestCase
         self::assertEquals(0, $object->getHeight());
     }
 
+    public function testPathOfAMetafile(): void
+    {
+        $object = new File();
+
+        // `getimagesize()` knows no metafile : phpoffice/wmf measures it
+        $object->setPath(dirname(__DIR__, 4) . '/resources/images/fish.wmf');
+
+        self::assertEquals(217, $object->getWidth());
+        self::assertEquals(159, $object->getHeight());
+        self::assertEquals('wmf', $object->getExtension());
+    }
+
+    public function testPathOfAMetafileWithoutAnExtension(): void
+    {
+        $path = (string) tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        copy(dirname(__DIR__, 4) . '/resources/images/inkscape_shapes_emfplus.emf', $path);
+
+        $object = new File();
+        $object->setPath($path);
+
+        self::assertEquals(200, $object->getWidth());
+        self::assertEquals(151, $object->getHeight());
+        self::assertEquals('emf', $object->getExtension());
+        self::assertEquals('image/x-emf', $object->getMimeType());
+        self::assertStringEndsWith($object->getImageIndex() . '.emf', $object->getIndexedFilename());
+
+        unlink($path);
+    }
+
     /**
      * @return array<array<string>>
      */
@@ -118,6 +147,18 @@ class FileTest extends TestCase
             [
                 dirname(__DIR__, 4) . '/resources/images/tiger.svg',
                 'image/svg+xml',
+            ],
+            [
+                dirname(__DIR__, 4) . '/resources/images/fish.wmf',
+                'image/x-wmf',
+            ],
+            [
+                dirname(__DIR__, 4) . '/resources/images/inkscape_shapes.emf',
+                'image/x-emf',
+            ],
+            [
+                dirname(__DIR__, 4) . '/resources/images/inkscape_shapes_emfplus.emf',
+                'image/x-emf',
             ],
         ];
     }

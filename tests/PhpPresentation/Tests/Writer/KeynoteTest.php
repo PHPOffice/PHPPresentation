@@ -176,4 +176,30 @@ class KeynoteTest extends PhpPresentationTestCase
 
         return (new KeynoteReader())->load($this->filePath);
     }
+
+    /**
+     * Keynote shows no metafile : it is written as the PNG it draws, and read back as one.
+     */
+    public function testSaveMetafile(): void
+    {
+        $this->oPresentation->getActiveSlide()->createDrawingShape()
+            ->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/inkscape_shapes.emf');
+
+        $oPhpPresentation = $this->writeAndLoad();
+
+        $oZip = new ZipArchive();
+        self::assertTrue($oZip->open($this->filePath));
+        self::assertEquals(2, $oZip->numFiles);
+        $entry = (string) $oZip->getNameIndex(1);
+        self::assertMatchesRegularExpression('#^Data/inkscape_shapes[0-9]+\.png$#', $entry);
+        self::assertStringContainsString('sf:path="' . $entry . '"', (string) $oZip->getFromName('index.apxl'));
+        $oZip->close();
+
+        $shapes = array_values((array) $oPhpPresentation->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $shapes);
+        self::assertInstanceOf(Base64::class, $shapes[0]);
+        self::assertEquals('image/png', $shapes[0]->getMimeType());
+        self::assertEquals(200, $shapes[0]->getWidth());
+        self::assertEquals(151, $shapes[0]->getHeight());
+    }
 }

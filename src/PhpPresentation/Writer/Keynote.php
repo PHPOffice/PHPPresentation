@@ -30,6 +30,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Reader\Keynote as KeynoteReader;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shared\Metafile;
 use PhpOffice\PhpPresentation\Slide;
 
 /**
@@ -48,6 +49,13 @@ class Keynote extends AbstractWriter implements WriterInterface
      * @var string
      */
     protected const PATH_DATA = 'Data/';
+
+    /**
+     * The name and the contents each image is written with, by the shape it belongs to.
+     *
+     * @var array<int, array{0: string, 1: string}>
+     */
+    protected $imageFiles = [];
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Writer\Keynote.
@@ -72,6 +80,7 @@ class Keynote extends AbstractWriter implements WriterInterface
         }
 
         $this->getDrawingHashTable()->addFromSource($this->allDrawings());
+        $this->imageFiles = [];
 
         $oZip = $this->getZipAdapter();
         $oZip->open($pFilename);
@@ -79,11 +88,35 @@ class Keynote extends AbstractWriter implements WriterInterface
         foreach ($this->getPhpPresentation()->getAllSlides() as $oSlide) {
             foreach ($oSlide->getShapeCollection() as $oShape) {
                 if ($oShape instanceof AbstractDrawingAdapter) {
-                    $oZip->addFromString(self::PATH_DATA . $oShape->getIndexedFilename(), $oShape->getContents());
+                    [$filename, $contents] = $this->getImageFile($oShape);
+                    $oZip->addFromString(self::PATH_DATA . $filename, $contents);
                 }
             }
         }
         $oZip->close();
+    }
+
+    /**
+     * The name and the contents an image is written with : a metafile, which Keynote doesn't
+     * show, is written as the PNG it draws.
+     *
+     * @return array{0: string, 1: string}
+     */
+    protected function getImageFile(AbstractDrawingAdapter $oShape): array
+    {
+        $key = spl_object_id($oShape);
+        if (!isset($this->imageFiles[$key])) {
+            $filename = $oShape->getIndexedFilename();
+            $contents = $oShape->getContents();
+            $png = Metafile::isMimeType($oShape->getMimeType()) ? Metafile::convertToPng($contents) : null;
+            if (null !== $png) {
+                $filename = pathinfo($filename, PATHINFO_FILENAME) . '.png';
+                $contents = $png;
+            }
+            $this->imageFiles[$key] = [$filename, $contents];
+        }
+
+        return $this->imageFiles[$key];
     }
 
     /**
@@ -170,7 +203,7 @@ class Keynote extends AbstractWriter implements WriterInterface
      */
     protected function writeImage(XMLWriter $objWriter, AbstractDrawingAdapter $oShape): void
     {
-        $filename = $oShape->getIndexedFilename();
+        [$filename] = $this->getImageFile($oShape);
 
         $objWriter->startElement('key:image');
         $this->writeGeometry($objWriter, $oShape->getOffsetX(), $oShape->getOffsetY(), $oShape->getWidth(), $oShape->getHeight());

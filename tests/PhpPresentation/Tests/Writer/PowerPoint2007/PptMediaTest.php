@@ -23,6 +23,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptMedia.
@@ -142,5 +143,33 @@ class PptMediaTest extends PhpPresentationTestCase
             '/Relationships/Relationship[@Id="rId3"][@Target="../media/' . $oShape1->getIndexedFilename() . '"]'
         );
         $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * @dataProvider dataProviderMetafile
+     */
+    #[DataProvider('dataProviderMetafile')]
+    public function testDrawingMetafile(string $filename, string $extension, string $mimeType): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/' . $filename);
+
+        // PowerPoint stores a metafile as it is
+        $this->assertZipFileExists('ppt/media/' . $oShape->getIndexedFilename());
+        self::assertStringEndsWith('.' . $extension, $oShape->getIndexedFilename());
+        $this->assertZipXmlElementExists('[Content_Types].xml', '/*[local-name()=\'Types\']/*[local-name()=\'Default\'][@Extension=\'' . $extension . '\'][@ContentType=\'' . $mimeType . '\']');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * @return array<string, array{string, string, string}>
+     */
+    public static function dataProviderMetafile(): array
+    {
+        return [
+            'WMF' => ['fish.wmf', 'wmf', 'image/x-wmf'],
+            'EMF' => ['inkscape_shapes.emf', 'emf', 'image/x-emf'],
+            'EMF+' => ['inkscape_shapes_emfplus.emf', 'emf', 'image/x-emf'],
+        ];
     }
 }

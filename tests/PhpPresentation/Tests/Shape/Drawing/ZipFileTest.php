@@ -23,6 +23,7 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Shape\Drawing\ZipFile;
 use PHPUnit\Framework\TestCase;
+use ZipArchive;
 
 /**
  * Test class for Drawing element.
@@ -80,5 +81,22 @@ class ZipFileTest extends TestCase
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileOk);
         self::assertEquals('image/gif', $oDrawing->getMimeType());
+    }
+
+    public function testMetafile(): void
+    {
+        $path = (string) tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        $zip = new ZipArchive();
+        $zip->open($path, ZipArchive::OVERWRITE);
+        $zip->addFile(dirname(__DIR__, 4) . '/resources/images/inkscape_shapes_emfplus.emf', 'media/image1.emf');
+        $zip->close();
+
+        $oDrawing = new ZipFile();
+        $oDrawing->setPath('zip://' . $path . '#media/image1.emf');
+        self::assertEquals('emf', $oDrawing->getExtension());
+        // `getimagesize()` knows no metafile : phpoffice/wmf says what it is
+        self::assertEquals('image/x-emf', $oDrawing->getMimeType());
+
+        unlink($path);
     }
 }
