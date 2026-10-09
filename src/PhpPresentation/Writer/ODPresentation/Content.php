@@ -714,7 +714,9 @@ class Content extends AbstractDecoratorWriter
         $paragraphs = $shape->getParagraphs();
         $paragraphId = 0;
         $sCstShpOpenList = '';
-        $iCstShpLastBulletLvl = 0;
+        // The level of the innermost list open, -1 when none is: a list open at level n is n + 1
+        // `text:list` elements, each but the innermost in a `text:list-item` of the one around it.
+        $iCstShpLastBulletLvl = -1;
         $fieldName = $this->getPlaceholderField($shape);
 
         foreach ($paragraphs as $paragraph) {
@@ -723,12 +725,7 @@ class Content extends AbstractDecoratorWriter
             // being written that says so, not the one before it: asking the one before left a
             // plain paragraph that follows a list inside the last item of that list.
             if ('' !== $sCstShpOpenList && $sCstShpListStyle !== $sCstShpOpenList) {
-                for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; --$iInc) {
-                    // text:list-item
-                    $objWriter->endElement();
-                    // text:list
-                    $objWriter->endElement();
-                }
+                $iCstShpLastBulletLvl = $this->writeListLevel($objWriter, $iCstShpLastBulletLvl, -1, $sCstShpOpenList);
                 $sCstShpOpenList = '';
             }
             //===============================================
@@ -778,26 +775,7 @@ class Content extends AbstractDecoratorWriter
                 // Bullet list
                 //===============================================
             } else {
-                // Open the list
-                if ('' === $sCstShpOpenList || $iCstShpLastBulletLvl < $paragraph->getAlignment()->getLevel()) {
-                    // text:list
-                    $objWriter->startElement('text:list');
-                    $objWriter->writeAttribute('text:style-name', $sCstShpListStyle);
-                }
-                if ('' !== $sCstShpOpenList) {
-                    if ($iCstShpLastBulletLvl == $paragraph->getAlignment()->getLevel()) {
-                        // text:list-item
-                        $objWriter->endElement();
-                    } elseif ($iCstShpLastBulletLvl > $paragraph->getAlignment()->getLevel()) {
-                        // text:list-item
-                        $objWriter->endElement();
-                        // text:list
-                        $objWriter->endElement();
-                        // text:list-item
-                        $objWriter->endElement();
-                    }
-                }
-
+                $iCstShpLastBulletLvl = $this->writeListLevel($objWriter, $iCstShpLastBulletLvl, $paragraph->getAlignment()->getLevel(), $sCstShpListStyle);
                 // text:list-item
                 $objWriter->startElement('text:list-item');
                 ++$paragraphId;
@@ -841,18 +819,10 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->endElement();
             }
             $sCstShpOpenList = $sCstShpListStyle;
-            $iCstShpLastBulletLvl = $paragraph->getAlignment()->getLevel();
         }
 
         // Close the open list
-        if ('' !== $sCstShpOpenList) {
-            for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; --$iInc) {
-                // text:list-item
-                $objWriter->endElement();
-                // text:list
-                $objWriter->endElement();
-            }
-        }
+        $this->writeListLevel($objWriter, $iCstShpLastBulletLvl, -1, $sCstShpOpenList);
 
         // > draw:text-box
         $objWriter->endElement();
@@ -862,6 +832,42 @@ class Content extends AbstractDecoratorWriter
 
         // > draw:frame
         $objWriter->endElement();
+    }
+
+    /**
+     * Go from the list open at one level to the one at another, a level at a time, and return the
+     * level reached; -1 on either side is no list.
+     *
+     * Every level in between gets a `text:list` of its own inside a `text:list-item` with no
+     * paragraph, as LibreOffice writes a list that starts deeper than its first level or skips one,
+     * so that each element closes where it opened. The item of the paragraph at the level reached
+     * is left to the caller: the one before it at that level is closed here.
+     */
+    private function writeListLevel(XMLWriter $objWriter, int $current, int $level, string $styleName): int
+    {
+        for (; $current > $level; --$current) {
+            // text:list-item, text:list
+            $objWriter->endElement();
+            $objWriter->endElement();
+        }
+        if ($current === $level && $level >= 0) {
+            // text:list-item
+            $objWriter->endElement();
+        }
+        // Going deeper, the item of the paragraph before holds the list of the next level.
+        for ($open = $current; $current < $level; ++$current) {
+            if ($current >= 0 && $current !== $open) {
+                // text:list-item
+                $objWriter->startElement('text:list-item');
+            }
+            // text:list
+            $objWriter->startElement('text:list');
+            if ($current < 0) {
+                $objWriter->writeAttribute('text:style-name', $styleName);
+            }
+        }
+
+        return $current;
     }
 
     /**

@@ -710,6 +710,38 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testListThatSkipsALevelClosesWhereItOpens(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        // a jump from the first level to the third, and a list that starts on the second
+        foreach ([[0, 2, 1, 0], [1, 0]] as $levels) {
+            $oShape = $oSlide->createRichTextShape();
+            foreach ($levels as $i => $level) {
+                $oParagraph = 0 === $i ? $oShape->getActiveParagraph() : $oShape->createParagraph();
+                $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+                $oParagraph->getAlignment()->setLevel($level);
+                $oParagraph->createTextRun('Item ' . $i);
+            }
+        }
+
+        // each level skipped is an item with no paragraph, which holds the list of the next level
+        $frame = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
+        $list = $frame . '[1]/draw:text-box/text:list';
+        $this->assertZipXmlElementCount('content.xml', $frame, 2);
+        $this->assertZipXmlElementEquals('content.xml', $list . '/text:list-item[1]/text:p/text:span', 'Item 0');
+        $this->assertZipXmlElementNotExists('content.xml', $list . '/text:list-item[1]/text:list/text:list-item[1]/text:p');
+        $this->assertZipXmlElementEquals('content.xml', $list . '/text:list-item[1]/text:list/text:list-item[1]/text:list/text:list-item/text:p/text:span', 'Item 1');
+        $this->assertZipXmlElementEquals('content.xml', $list . '/text:list-item[1]/text:list/text:list-item[2]/text:p/text:span', 'Item 2');
+        $this->assertZipXmlElementEquals('content.xml', $list . '/text:list-item[2]/text:p/text:span', 'Item 3');
+        $list = $frame . '[2]/draw:text-box/text:list';
+        $this->assertZipXmlElementNotExists('content.xml', $list . '/text:list-item[1]/text:p');
+        $this->assertZipXmlElementEquals('content.xml', $list . '/text:list-item[1]/text:list/text:list-item/text:p/text:span', 'Item 0');
+        $this->assertZipXmlElementEquals('content.xml', $list . '/text:list-item[2]/text:p/text:span', 'Item 1');
+        // a nested list wears the style of the list around it, as LibreOffice writes one
+        $this->assertZipXmlElementCount('content.xml', $frame . '/draw:text-box//text:list[@text:style-name]', 2);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testStyleIsSharedByEverythingThatWritesIt(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

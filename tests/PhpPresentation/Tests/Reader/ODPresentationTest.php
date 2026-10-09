@@ -1819,6 +1819,153 @@ class ODPresentationTest extends TestCase
         self::assertEquals([[0, '•', 20], [1, '–', 60], [0, '•', 20], [0, '•', 80]], $read);
     }
 
+    public function testListThatSkipsALevelSurvivesTheRoundTrip(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        // a jump from the first level to the third, and a list that starts on the second
+        foreach ([[0, 2, 1, 0], [1, 0]] as $levels) {
+            $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+            foreach ($levels as $i => $level) {
+                $oParagraph = 0 === $i ? $oShape->getActiveParagraph() : $oShape->createParagraph();
+                $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET)->setBulletChar(['•', '–', '◦'][$level]);
+                $oParagraph->getAlignment()->setLevel($level);
+                $oParagraph->createTextRun('Item');
+            }
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $read = [];
+        foreach ($oPhpPresentationRead->getActiveSlide()->getShapeCollection() as $oShape) {
+            self::assertInstanceOf(RichText::class, $oShape);
+            foreach ($oShape->getParagraphs() as $oParagraph) {
+                $read[] = [$oParagraph->getAlignment()->getLevel(), $oParagraph->getBulletStyle()->getBulletChar()];
+            }
+        }
+        self::assertEquals([[0, '•'], [2, '◦'], [1, '–'], [0, '•'], [1, '–'], [0, '•']], $read);
+    }
+
+    public function testParagraphAfterAListHasNoMarker(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        $oShape->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+        $oShape->getActiveParagraph()->getAlignment()->setLevel(1)->setMarginLeft(60);
+        $oShape->createTextRun('Item');
+        $oParagraph = $oShape->createParagraph();
+        $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
+        $oParagraph->getAlignment()->setLevel(0)->setMarginLeft(0);
+        $oShape->createTextRun('After');
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $oShape = $oPhpPresentationRead->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(RichText::class, $oShape);
+        self::assertEquals(Bullet::TYPE_BULLET, $oShape->getParagraph(0)->getBulletStyle()->getBulletType());
+        self::assertEquals(Bullet::TYPE_NONE, $oShape->getParagraph(1)->getBulletStyle()->getBulletType());
+        self::assertEquals(0, $oShape->getParagraph(1)->getAlignment()->getLevel());
+        self::assertEquals(0, $oShape->getParagraph(1)->getAlignment()->getMarginLeft());
+    }
+
+    public function testListHeadingLevelWithoutStyleAndParagraphAfter(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+        foreach (['A' => [0, 25, Bullet::TYPE_BULLET], 'B' => [2, 50, Bullet::TYPE_BULLET], 'C' => [0, 0, Bullet::TYPE_NONE]] as $text => [$level, $marginLeft, $type]) {
+            $oParagraph = 'A' === $text ? $oShape->getActiveParagraph() : $oShape->createParagraph();
+            $oParagraph->getBulletStyle()->setBulletType($type);
+            $oParagraph->getAlignment()->setLevel($level)->setMarginLeft($marginLeft);
+            $oParagraph->createTextRun($text);
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+
+        // The first item is a heading, the list style says nothing of the third level, and the
+        // paragraph after the list has no style of its own
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sContent = $oZip->getFromName('content.xml');
+        self::assertIsString($sContent);
+        $sContent = (string) preg_replace('#<text:list-level-style-bullet text:level="3".*?</text:list-level-style-bullet>#', '', $sContent, 1, $countLevel);
+        $sContent = (string) preg_replace('#<text:p( text:style-name="\w+"><text:span text:style-name="\w+">A</text:span>)</text:p>#', '<text:h$1</text:h>', $sContent, 1, $countHeading);
+        $sContent = (string) preg_replace('#<text:p text:style-name="\w+">(<text:span text:style-name="\w+">C</text:span>)#', '<text:p>$1', $sContent, 1, $countParagraph);
+        self::assertEquals([1, 1, 1], [$countLevel, $countHeading, $countParagraph]);
+        $oZip->deleteName('content.xml');
+        $oZip->addFromString('content.xml', $sContent);
+        $oZip->close();
+
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $oShape = $oPhpPresentationRead->getActiveSlide()->getShapeCollection()[0];
+        self::assertInstanceOf(RichText::class, $oShape);
+        $read = [];
+        foreach ($oShape->getParagraphs() as $oParagraph) {
+            $read[] = [$oParagraph->getPlainText(), $oParagraph->getAlignment()->getLevel(), $oParagraph->getAlignment()->getMarginLeft(), $oParagraph->getBulletStyle()->getBulletType()];
+        }
+        self::assertEquals([
+            ['A', 0, 25, Bullet::TYPE_BULLET],
+            ['B', 2, 0, Bullet::TYPE_NONE],
+            ['C', 0, 0, Bullet::TYPE_NONE],
+        ], $read);
+    }
+
+    public function testListHeaderAndStyleOverride(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        foreach (['•', '–'] as $char) {
+            $oShape = $oPhpPresentation->getActiveSlide()->createRichTextShape();
+            foreach ([0, 1] as $i) {
+                $oParagraph = 0 === $i ? $oShape->getActiveParagraph() : $oShape->createParagraph();
+                $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET)->setBulletChar($char);
+                $oParagraph->createTextRun('Item ' . $i);
+            }
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new ODPresentationWriter($oPhpPresentation))->save($file);
+
+        // In the first list, the first item becomes a header, which shows no marker, and the
+        // second one wears the list style of the second list in place of its own
+        $oZip = new ZipArchive();
+        $oZip->open($file);
+        $sContent = $oZip->getFromName('content.xml');
+        self::assertIsString($sContent);
+        $sContent = preg_replace(
+            '#<text:list text:style-name="L1"><text:list-item>(.*?)</text:list-item><text:list-item>#',
+            '<text:list text:style-name="L1"><text:list-header>$1</text:list-header><text:list-item text:style-override="L2">',
+            $sContent,
+            1
+        );
+        $oZip->deleteName('content.xml');
+        $oZip->addFromString('content.xml', (string) $sContent);
+        $oZip->close();
+
+        $oPhpPresentationRead = (new ODPresentation())->load($file);
+        unlink($file);
+
+        $read = [];
+        foreach ($oPhpPresentationRead->getActiveSlide()->getShapeCollection() as $oShape) {
+            self::assertInstanceOf(RichText::class, $oShape);
+            foreach ($oShape->getParagraphs() as $oParagraph) {
+                $read[] = [$oParagraph->getBulletStyle()->getBulletType(), $oParagraph->getBulletStyle()->getBulletChar()];
+            }
+        }
+        self::assertEquals([
+            [Bullet::TYPE_NONE, '-'],
+            [Bullet::TYPE_BULLET, '–'],
+            [Bullet::TYPE_BULLET, '–'],
+            [Bullet::TYPE_BULLET, '–'],
+        ], $read);
+    }
+
     public function testTableSurvivesTheRoundTrip(): void
     {
         $oPhpPresentation = new PhpPresentation();
