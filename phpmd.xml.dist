@@ -36,8 +36,9 @@
         <!-- Reader/ODPresentation reads a group, which is a shape holding shapes: the group
              and the container it is put in are two more classes -->
         <!-- Reader/ODPresentation reads a metafile (WMF, EMF), which only Shared/Metafile can tell from its contents -->
+        <!-- Reader/ODPresentation reads the hyperlink of a shape, which is a class of its own -->
 		<properties>
-            <property name="maximum" value="55" />
+            <property name="maximum" value="56" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">

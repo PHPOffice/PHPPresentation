@@ -120,11 +120,11 @@ notes list.
 |  | Speaker notes | :material-close: | :material-alert-outline:<sup>6</sup> | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Masters and layouts | :material-close: | :material-close: | :material-alert-outline:<sup>7</sup> | :material-close: | :material-check: | :material-alert-outline:<sup>8</sup> |
 |  | Placeholders (title, body, date, footer, slide number) | :material-alert-outline:<sup>9</sup> | :material-alert-outline:<sup>10</sup> | :material-check: | :material-alert-outline:<sup>11</sup> | :material-alert-outline:<sup>12</sup> | :material-check: |
-| **Shape (all)** | Name | :material-close: |  | :material-alert-outline:<sup>13</sup> |  | :material-alert-outline:<sup>14</sup> | :material-check: |
+| **Shape (all)** | Name | :material-close: |  | :material-check:<sup>13</sup> |  | :material-alert-outline:<sup>14</sup> | :material-check: |
 |  | Description (alternative text) | :material-alert-outline:<sup>15</sup> | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Decorative flag | :material-close: |  | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Hyperlink on the shape | :material-close: | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Hyperlink tooltip | :material-close: |  | :material-close: | :material-close: | :material-check: | :material-check: |
+|  | Hyperlink tooltip | :material-close: |  | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Position and size | :material-check: | :material-check: | :material-check: | :material-check: | :material-check: | :material-check: |
 |  | Rotation | :material-close: | :material-close: | :material-alert-outline:<sup>16</sup> | :material-close: | :material-alert-outline:<sup>17</sup> | :material-check: |
 |  | Fill | :material-close: | :material-close: | :material-alert-outline:<sup>18</sup> | :material-close: | :material-check: | :material-check: |
@@ -181,7 +181,7 @@ notes list.
 10. Every text box written as body placeholder.
 11. Slide text only, no master inheritance.
 12. Placeholder also flagged txBox.
-13. Images, media, AutoShapes; chart gets title.
+13. A chart with no name is named after its title.
 14. Placeholders named by type.
 15. Images only (alt/title).
 16. Text boxes and AutoShapes only.
