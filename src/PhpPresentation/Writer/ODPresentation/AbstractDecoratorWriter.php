@@ -164,15 +164,65 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         }
 
         $objWriter->writeAttribute('draw:fill', 'hatch');
-        $objWriter->writeAttribute('draw:fill-hatch-name', 'hatch_' . $fill->getHashCode());
+        $objWriter->writeAttribute('draw:fill-hatch-name', $this->shareFillStyle($fill));
         $objWriter->writeAttribute('draw:fill-hatch-solid', 'true');
         $objWriter->writeAttribute('draw:fill-color', '#' . $fill->getEndColor()->getRGB());
+    }
+
+    /**
+     * Give a gradient or a hatch a name, reusing the name of an identical one.
+     *
+     * The name is the one LibreOffice gives a fill nobody named, `Gradient 1` or `Hatching 1`, with
+     * the space spelled `_20_` as `draw:name` wants it. `content.xml` is written first and names the
+     * fills of every shape it writes, and `styles.xml` defines each of them once, from here.
+     */
+    protected function shareFillStyle(Fill $fill): string
+    {
+        if (isset(self::HATCH_ODF[$fill->getFillType()])) {
+            [$style, $rotation, $distance] = self::HATCH_ODF[$fill->getFillType()];
+            $fillStyle = ['draw:hatch', [
+                'draw:style' => $style,
+                'draw:color' => '#' . $fill->getStartColor()->getRGB(),
+                'draw:distance' => $distance,
+                'draw:rotation' => (string) $rotation,
+            ]];
+            $prefix = 'Hatching';
+        } else {
+            $fillStyle = ['draw:gradient', [
+                'draw:style' => 'linear',
+                'draw:start-intensity' => '100%',
+                'draw:end-intensity' => '100%',
+                'draw:start-color' => '#' . $fill->getStartColor()->getRGB(),
+                'draw:end-color' => '#' . $fill->getEndColor()->getRGB(),
+                'draw:border' => '0%',
+                'draw:angle' => (string) ($fill->getRotation() - 90),
+            ]];
+            $prefix = 'Gradient';
+        }
+
+        $name = array_search($fillStyle, $this->arrayFillStyle, true);
+        if (false === $name) {
+            $count = count(array_filter($this->arrayFillStyle, function (array $other) use ($fillStyle): bool {
+                return $other[0] === $fillStyle[0];
+            }));
+            $name = $prefix . '_20_' . ($count + 1);
+            $this->arrayFillStyle[$name] = $fillStyle;
+        }
+
+        return (string) $name;
     }
 
     /**
      * @var Chart[]
      */
     protected $arrayChart;
+
+    /**
+     * The gradients and hatches named so far: the element and its attributes, by `draw:name`.
+     *
+     * @var array<string, array{0: string, 1: array<string, string>}>
+     */
+    protected $arrayFillStyle = [];
 
     /**
      * The background of the master page, which every slide is drawn on top of.
@@ -204,6 +254,24 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     public function setArrayChart($arrayChart)
     {
         $this->arrayChart = $arrayChart;
+
+        return $this;
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: array<string, string>}>
+     */
+    public function getArrayFillStyle(): array
+    {
+        return $this->arrayFillStyle;
+    }
+
+    /**
+     * @param array<string, array{0: string, 1: array<string, string>}> $arrayFillStyle
+     */
+    public function setArrayFillStyle(array $arrayFillStyle): self
+    {
+        $this->arrayFillStyle = $arrayFillStyle;
 
         return $this;
     }
