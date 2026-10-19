@@ -141,53 +141,53 @@ model, with the exceptions its notes list.
 |  | Speaker notes | :material-alert-outline:<sup>7</sup> | :material-check: | :material-alert-outline:<sup>8</sup> | :material-check: | :material-check: |
 |  | Masters and layouts | :material-close: | :material-close: | :material-close: | :material-check: | :material-alert-outline:<sup>9</sup> |
 |  | Placeholders (title, body, date, footer, slide number) | :material-close: | :material-check: | :material-close: | :material-alert-outline:<sup>10</sup> | :material-check: |
-| **Shape (all)** | Name |  | :material-alert-outline:<sup>11</sup> | :material-close: | :material-check: | :material-check: |
-|  | Description (alternative text) | :material-close: | :material-alert-outline:<sup>12</sup> | :material-close: | :material-check: | :material-check: |
+| **Shape (all)** | Name |  | :material-check: | :material-close: | :material-check: | :material-check: |
+|  | Description (alternative text) | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Decorative flag |  | :material-check: |  | :material-check: | :material-check: |
 |  | Hyperlink on the shape | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Hyperlink tooltip |  | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Position and size | :material-alert-outline:<sup>13</sup> | :material-check: | :material-check: | :material-check: | :material-check: |
-|  | Rotation | :material-close: | :material-check: | :material-alert-outline:<sup>14</sup> | :material-alert-outline:<sup>15</sup> | :material-check: |
-|  | Fill | :material-close: | :material-alert-outline:<sup>16</sup> | :material-close: | :material-alert-outline:<sup>17</sup> | :material-check: |
-|  | Border / outline | :material-close: | :material-alert-outline:<sup>18</sup> | :material-alert-outline:<sup>19</sup> | :material-alert-outline:<sup>20</sup> | :material-check: |
-|  | Shadow | :material-close: | :material-alert-outline:<sup>21</sup> | :material-alert-outline:<sup>22</sup> | :material-alert-outline:<sup>23</sup> | :material-check: |
-|  | Order (z-order) of shapes on a slide | :material-alert-outline:<sup>24</sup> | :material-check: | :material-check: | :material-check: | :material-check: |
-| **Shape types** | AutoShape | :material-close: | :material-alert-outline:<sup>25</sup> | :material-close: | :material-alert-outline:<sup>26</sup> | :material-check: |
-|  | Image (file, Base64, ZIP, GD / memory) | :material-alert-outline:<sup>27</sup> | :material-check: | :material-alert-outline:<sup>28</sup> | :material-check: | :material-alert-outline:<sup>29</sup> |
+|  | Position and size | :material-alert-outline:<sup>11</sup> | :material-check: | :material-check: | :material-check: | :material-check: |
+|  | Rotation | :material-close: | :material-check: | :material-alert-outline:<sup>12</sup> | :material-alert-outline:<sup>13</sup> | :material-check: |
+|  | Fill | :material-close: | :material-alert-outline:<sup>14</sup> | :material-close: | :material-alert-outline:<sup>15</sup> | :material-check: |
+|  | Border / outline | :material-close: | :material-alert-outline:<sup>16</sup> | :material-alert-outline:<sup>17</sup> | :material-alert-outline:<sup>18</sup> | :material-check: |
+|  | Shadow | :material-close: | :material-alert-outline:<sup>19</sup> | :material-alert-outline:<sup>20</sup> | :material-alert-outline:<sup>21</sup> | :material-check: |
+|  | Order (z-order) of shapes on a slide | :material-alert-outline:<sup>22</sup> | :material-check: | :material-check: | :material-check: | :material-check: |
+| **Shape types** | AutoShape | :material-close: | :material-alert-outline:<sup>23</sup> | :material-close: | :material-alert-outline:<sup>24</sup> | :material-check: |
+|  | Image (file, Base64, ZIP, GD / memory) | :material-alert-outline:<sup>25</sup> | :material-check: | :material-alert-outline:<sup>26</sup> | :material-check: | :material-alert-outline:<sup>27</sup> |
 |  | Media (audio, video) | :material-close: | :material-close: | :material-close: | :material-close: | :material-check: |
-|  | Line | :material-close: | :material-alert-outline:<sup>30</sup> | :material-alert-outline:<sup>31</sup> | :material-alert-outline:<sup>32</sup> | :material-check: |
-|  | Group | :material-close: | :material-check: | :material-alert-outline:<sup>33</sup> | :material-check: | :material-alert-outline:<sup>34</sup> |
-|  | RichText (text box) | :material-alert-outline:<sup>35</sup> | :material-check: | :material-check: | :material-check: | :material-check: |
+|  | Line | :material-close: | :material-alert-outline:<sup>28</sup> | :material-alert-outline:<sup>29</sup> | :material-alert-outline:<sup>30</sup> | :material-check: |
+|  | Group | :material-close: | :material-check: | :material-alert-outline:<sup>31</sup> | :material-check: | :material-alert-outline:<sup>32</sup> |
+|  | RichText (text box) | :material-alert-outline:<sup>33</sup> | :material-check: | :material-check: | :material-check: | :material-check: |
 |  | Table | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Chart | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Comment | :material-close: | :material-close: | :material-close: | :material-close: | :material-check: |
-| **Text** | Paragraph alignment and indent | :material-close: | :material-alert-outline:<sup>36</sup> | :material-alert-outline:<sup>37</sup> | :material-check: | :material-check: |
-|  | Line spacing, spacing before/after | :material-close: | :material-alert-outline:<sup>38</sup> | :material-close: | :material-check: | :material-check: |
-|  | Bullets (character, colour, size) | :material-close: | :material-alert-outline:<sup>39</sup> | :material-alert-outline:<sup>40</sup> | :material-check: | :material-check: |
+| **Text** | Paragraph alignment and indent | :material-close: | :material-alert-outline:<sup>34</sup> | :material-alert-outline:<sup>35</sup> | :material-check: | :material-check: |
+|  | Line spacing, spacing before/after | :material-close: | :material-alert-outline:<sup>36</sup> | :material-close: | :material-check: | :material-check: |
+|  | Bullets (character, colour, size) | :material-close: | :material-alert-outline:<sup>37</sup> | :material-alert-outline:<sup>38</sup> | :material-check: | :material-check: |
 |  | Numbered lists (format, start) | :material-close: | :material-close: | :material-close: | :material-check: | :material-check: |
-|  | Font: name, size, bold, italic, colour | :material-close: | :material-check: | :material-alert-outline:<sup>41</sup> | :material-check: | :material-check: |
-|  | Font: underline, strikethrough, superscript/subscript, caps | :material-close: | :material-alert-outline:<sup>42</sup> | :material-alert-outline:<sup>43</sup> | :material-check: | :material-check: |
+|  | Font: name, size, bold, italic, colour | :material-close: | :material-check: | :material-alert-outline:<sup>39</sup> | :material-check: | :material-check: |
+|  | Font: underline, strikethrough, superscript/subscript, caps | :material-close: | :material-alert-outline:<sup>40</sup> | :material-alert-outline:<sup>41</sup> | :material-check: | :material-check: |
 |  | Language of a run | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Hyperlink on text | :material-close: | :material-check: | :material-alert-outline:<sup>44</sup> | :material-check: | :material-check: |
-|  | Fields (date/time, slide number) | :material-close: | :material-alert-outline:<sup>45</sup> | :material-close: | :material-check: | :material-check: |
-|  | Text box: insets, autofit, wrap, columns, vertical/RTL | :material-close: | :material-alert-outline:<sup>46</sup> | :material-alert-outline:<sup>47</sup> | :material-alert-outline:<sup>48</sup> | :material-check: |
+|  | Hyperlink on text | :material-close: | :material-check: | :material-alert-outline:<sup>42</sup> | :material-check: | :material-check: |
+|  | Fields (date/time, slide number) | :material-close: | :material-alert-outline:<sup>43</sup> | :material-close: | :material-check: | :material-check: |
+|  | Text box: insets, autofit, wrap, columns, vertical/RTL | :material-close: | :material-alert-outline:<sup>44</sup> | :material-alert-outline:<sup>45</sup> | :material-alert-outline:<sup>46</sup> | :material-check: |
 | **Table** | Merged cells (column span, row span) | :material-close: | :material-close: | :material-close: | :material-check: | :material-check: |
-|  | Cell borders and fill | :material-close: | :material-alert-outline:<sup>49</sup> | :material-close: | :material-check: | :material-check: |
+|  | Cell borders and fill | :material-close: | :material-alert-outline:<sup>47</sup> | :material-close: | :material-check: | :material-check: |
 |  | Header row | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Column widths, row heights | :material-close: | :material-alert-outline:<sup>50</sup> | :material-close: | :material-check: | :material-check: |
+|  | Column widths, row heights | :material-close: | :material-alert-outline:<sup>48</sup> | :material-close: | :material-check: | :material-check: |
 | **Charts** | Area | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Bar | :material-close: | :material-alert-outline:<sup>51</sup> | :material-close: | :material-check: | :material-check: |
-|  | Bar3D | :material-close: | :material-alert-outline:<sup>52</sup> | :material-close: | :material-alert-outline:<sup>53</sup> | :material-check: |
-|  | Doughnut | :material-close: | :material-alert-outline:<sup>54</sup> | :material-close: | :material-check: | :material-check: |
+|  | Bar | :material-close: | :material-alert-outline:<sup>49</sup> | :material-close: | :material-check: | :material-check: |
+|  | Bar3D | :material-close: | :material-alert-outline:<sup>50</sup> | :material-close: | :material-alert-outline:<sup>51</sup> | :material-check: |
+|  | Doughnut | :material-close: | :material-alert-outline:<sup>52</sup> | :material-close: | :material-check: | :material-check: |
 |  | Line | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Pie | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Pie3D | :material-close: | :material-alert-outline:<sup>55</sup> | :material-close: | :material-alert-outline:<sup>56</sup> | :material-check: |
+|  | Pie3D | :material-close: | :material-alert-outline:<sup>53</sup> | :material-close: | :material-alert-outline:<sup>54</sup> | :material-check: |
 |  | Radar | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Scatter | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Chart title | :material-close: | :material-check: | :material-close: | :material-alert-outline:<sup>57</sup> | :material-check: |
-|  | Legend | :material-close: | :material-alert-outline:<sup>58</sup> | :material-close: | :material-alert-outline:<sup>59</sup> | :material-check: |
-|  | Axes (title, min/max, gridlines, format) | :material-close: | :material-alert-outline:<sup>60</sup> | :material-close: | :material-alert-outline:<sup>61</sup> | :material-check: |
-|  | Series: labels, colours, markers | :material-close: | :material-alert-outline:<sup>62</sup> | :material-close: | :material-alert-outline:<sup>63</sup> | :material-check: |
+|  | Chart title | :material-close: | :material-check: | :material-close: | :material-alert-outline:<sup>55</sup> | :material-check: |
+|  | Legend | :material-close: | :material-alert-outline:<sup>56</sup> | :material-close: | :material-alert-outline:<sup>57</sup> | :material-check: |
+|  | Axes (title, min/max, gridlines, format) | :material-close: | :material-alert-outline:<sup>58</sup> | :material-close: | :material-alert-outline:<sup>59</sup> | :material-check: |
+|  | Series: labels, colours, markers | :material-close: | :material-alert-outline:<sup>60</sup> | :material-close: | :material-alert-outline:<sup>61</sup> | :material-check: |
 |  | Chart language |  | :material-close: | :material-close: | :material-check: | :material-check: |
 
 1. Category, company, revision, status not read; dates only with zone, no fraction.
@@ -200,56 +200,54 @@ model, with the exceptions its notes list.
 8. First shape only; breaks with several slides.
 9. Master/layout images kept as external paths.
 10. Type only; idx, untyped ph dropped.
-11. Images, charts, AutoShapes only.
-12. Falls back to name when absent.
-13. IWA: no geometry read, APXL only.
-14. Raw 16.16 value, not converted to degrees.
-15. Not charts or tables.
-16. None and solid only.
-17. Chart fill not read.
-18. Not lines.
-19. Line colour only; shape outlines ignored.
-20. Not lines or charts.
-21. Not lines.
-22. Offset only, direction fixed 45°, no colour.
-23. Not lines, groups or charts.
-24. IWA: images placed after all text.
-25. Rounded corner not read.
-26. Rectangles come back as RichText.
-27. Raster and WMF/EMF only; SVG/PDF images dropped.
-28. JPEG/PNG blips only; others throw.
-29. Base64 and GD not loadable.
+11. IWA: no geometry read, APXL only.
+12. Raw 16.16 value, not converted to degrees.
+13. Not charts or tables.
+14. None and solid only.
+15. Chart fill not read.
+16. Not lines.
+17. Line colour only; shape outlines ignored.
+18. Not lines or charts.
+19. Not lines.
+20. Offset only, direction fixed 45°, no colour.
+21. Not lines, groups or charts.
+22. IWA: images placed after all text.
+23. Rounded corner not read.
+24. Rectangles come back as RichText.
+25. Raster and WMF/EMF only; SVG/PDF images dropped.
+26. JPEG/PNG blips only; others throw.
+27. Base64 and GD not loadable.
+28. Ends only; line style not read.
+29. Height overwritten by line width; no flip.
 30. Ends only; line style not read.
-31. Height overwritten by line width; no flip.
-32. Ends only; line style not read.
-33. Group geometry not read; child anchors raw.
-34. Child images kept as external paths.
-35. Plain text; formatting not read.
-36. List items lose alignment; hanging indent read positive.
-37. Alignment applied to first paragraph only.
-38. Lost on list items.
-39. No bullet colour.
-40. Character only; no bullet colour, size, font.
-41. Font name keeps NUL padding.
-42. Small caps read from lowercase.
-43. Single underline only; super/subscript throws.
-44. External URLs only.
-45. Date/time format not read.
-46. No autofit, no vertical text.
-47. Insets only; no autofit/wrap/columns/direction.
-48. No autofit, columns, vertical text.
-49. Cell fill solid only.
-50. Row heights only.
-51. Gap width and overlap not read.
-52. View3D, gap width not read.
+31. Group geometry not read; child anchors raw.
+32. Child images kept as external paths.
+33. Plain text; formatting not read.
+34. List items lose alignment; hanging indent read positive.
+35. Alignment applied to first paragraph only.
+36. Lost on list items.
+37. No bullet colour.
+38. Character only; no bullet colour, size, font.
+39. Font name keeps NUL padding.
+40. Small caps read from lowercase.
+41. Single underline only; super/subscript throws.
+42. External URLs only.
+43. Date/time format not read.
+44. No autofit, no vertical text.
+45. Insets only; no autofit/wrap/columns/direction.
+46. No autofit, columns, vertical text.
+47. Cell fill solid only.
+48. Row heights only.
+49. Gap width and overlap not read.
+50. View3D, gap width not read.
+51. View3D not read.
+52. Hole size, first slice angle not read.
 53. View3D not read.
-54. Hole size, first slice angle not read.
-55. View3D not read.
-56. View3D not read.
-57. Title position not read.
-58. No fill or border.
-59. Visibility and position only.
-60. No number format, tick marks, reverse order.
-61. No min/max, units, gridlines, number format.
-62. No label position or series-name label.
-63. No markers, label position, font.
+54. View3D not read.
+55. Title position not read.
+56. No fill or border.
+57. Visibility and position only.
+58. No number format, tick marks, reverse order.
+59. No min/max, units, gridlines, number format.
+60. No label position or series-name label.
+61. No markers, label position, font.
