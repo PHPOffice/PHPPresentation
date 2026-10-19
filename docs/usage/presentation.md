@@ -67,7 +67,7 @@ $properties->setStatus('Work in Progress');
 $properties->setRevision('Version 1.2.3');
 ```
 
-`setLanguage()` takes a language tag such as `en-US`, `uk` or `zh-Hant-TW`, and throws an `InvalidParameterException` for anything else. It defaults to `en-US`, and a text run that carries no language of its own is written with it.
+`setLanguage()` takes a language tag such as `en-US`, `uk` or `zh-Hant-TW`, and throws an `InvalidParameterException` for anything else. It defaults to `en-US`, and a text run that carries no language of its own is written with it, as is the text of a chart that names none of its own (see [Charts](shapes/chart.md#language)).
 
 ### Custom Properties
 

@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PHPUnit\Framework\TestCase;
 
@@ -79,5 +80,27 @@ class ChartTest extends TestCase
         self::assertFalse($object->hasIncludedSpreadsheet());
         self::assertInstanceOf(Chart::class, $object->setIncludeSpreadsheet(true));
         self::assertTrue($object->hasIncludedSpreadsheet());
+    }
+
+    public function testLanguage(): void
+    {
+        $object = new Chart();
+
+        // null is the language of the document
+        self::assertNull($object->getLanguage());
+        $hashOfTheDocument = $object->getHashCode();
+        self::assertInstanceOf(Chart::class, $object->setLanguage('de-DE'));
+        self::assertEquals('de-DE', $object->getLanguage());
+        self::assertNotEquals($hashOfTheDocument, $object->getHashCode());
+        self::assertInstanceOf(Chart::class, $object->setLanguage());
+        self::assertNull($object->getLanguage());
+        self::assertEquals($hashOfTheDocument, $object->getHashCode());
+    }
+
+    public function testLanguageIsATag(): void
+    {
+        $this->expectException(InvalidParameterException::class);
+
+        (new Chart())->setLanguage('not a language');
     }
 }

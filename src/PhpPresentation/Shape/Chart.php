@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Shape;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\Shape\Chart\Legend;
 use PhpOffice\PhpPresentation\Shape\Chart\PlotArea;
 use PhpOffice\PhpPresentation\Shape\Chart\Title;
@@ -78,6 +79,13 @@ class Chart extends AbstractGraphic implements ComparableInterface
     private $displayBlankAs = self::BLANKAS_ZERO;
 
     /**
+     * The language of the text of the chart, or null for the language of the document.
+     *
+     * @var null|string
+     */
+    private $language;
+
+    /**
      * Create a new Chart.
      */
     public function __construct()
@@ -108,6 +116,14 @@ class Chart extends AbstractGraphic implements ComparableInterface
     public function getDisplayBlankAs(): string
     {
         return $this->displayBlankAs;
+    }
+
+    /**
+     * The language of the text of the chart, or null when it takes the language of the document.
+     */
+    public function getLanguage(): ?string
+    {
+        return $this->language;
     }
 
     /**
@@ -163,6 +179,21 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
+     * Set the language of the text of the chart -- its title, its legend, its data labels and its
+     * axes. Null, the default, leaves it to the language of the document.
+     */
+    public function setLanguage(?string $language = null): self
+    {
+        if (null !== $language && !preg_match('/^[A-Za-z]{1,8}(-[A-Za-z0-9]{1,8})*$/', $language)) {
+            throw new InvalidParameterException('language', $language, 'The value is not a language tag');
+        }
+
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
      * Is the spreadsheet included for editing data ?
      */
     public function setIncludeSpreadsheet(bool $value = false): self
@@ -192,6 +223,6 @@ class Chart extends AbstractGraphic implements ComparableInterface
         // deduplicates; two charts that happen to hold the same numbers are still two charts, each
         // with its own relationship, its own `_rels` and its own embedded workbook. The image index
         // is what keeps them apart, and it is per instance.
-        return md5(parent::getHashCode() . $this->title->getHashCode() . $this->legend->getHashCode() . $this->plotArea->getHashCode() . $this->view3D->getHashCode() . ($this->includeSpreadsheet ? 1 : 0) . $this->getImageIndex() . __CLASS__);
+        return md5(parent::getHashCode() . $this->title->getHashCode() . $this->legend->getHashCode() . $this->plotArea->getHashCode() . $this->view3D->getHashCode() . ($this->includeSpreadsheet ? 1 : 0) . $this->language . $this->getImageIndex() . __CLASS__);
     }
 }
