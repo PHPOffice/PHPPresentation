@@ -188,7 +188,7 @@ model, with the exceptions its notes list.
 |  | Legend | :material-close: | :material-alert-outline:<sup>58</sup> | :material-close: | :material-alert-outline:<sup>59</sup> | :material-check: |
 |  | Axes (title, min/max, gridlines, format) | :material-close: | :material-alert-outline:<sup>60</sup> | :material-close: | :material-alert-outline:<sup>61</sup> | :material-check: |
 |  | Series: labels, colours, markers | :material-close: | :material-alert-outline:<sup>62</sup> | :material-close: | :material-alert-outline:<sup>63</sup> | :material-check: |
-|  | Chart language |  | :material-close: | :material-close: | :material-close: | :material-check: |
+|  | Chart language |  | :material-close: | :material-close: | :material-check: | :material-check: |
 
 1. Category, company, revision, status not read; dates only with zone, no fraction.
 2. Company (app.xml) not read.

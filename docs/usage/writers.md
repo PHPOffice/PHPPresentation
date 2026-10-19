@@ -167,7 +167,7 @@ notes list.
 |  | Legend | :material-close: | :material-close: | :material-alert-outline:<sup>49</sup> | :material-close: | :material-check: | :material-check: |
 |  | Axes (title, min/max, gridlines, format) | :material-close: | :material-close: | :material-alert-outline:<sup>50</sup> | :material-close: | :material-check: | :material-check: |
 |  | Series: labels, colours, markers | :material-close: | :material-close: | :material-alert-outline:<sup>51</sup> | :material-close: | :material-check: | :material-check: |
-|  | Chart language | :material-close: |  | :material-close: | :material-close: | :material-alert-outline:<sup>52</sup> | :material-check: |
+|  | Chart language | :material-close: |  | :material-close: | :material-close: | :material-check: | :material-check: |
 
 1. Category, company, revision, status not written.
 2. Loop and browse type only.
@@ -220,4 +220,3 @@ notes list.
 49. No fill or border.
 50. No number format, tick marks, reverse order.
 51. No label position or series-name label.
-52. Always en-US, ignores document language.
