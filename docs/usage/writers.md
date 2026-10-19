@@ -186,7 +186,7 @@ notes list.
 15. Images only (alt/title).
 16. Text boxes and AutoShapes only.
 17. Not tables.
-18. Images/AutoShapes solid only; group gradients undefined.
+18. Images/AutoShapes solid only.
 19. Not images; lines without dash.
 20. 8 directions; alpha fades whole shape.
 21. Not charts or groups.
