@@ -65,6 +65,16 @@ class Gd extends AbstractDrawingAdapter
     protected $uniqueName;
 
     /**
+     * The bytes the picture was read from.
+     *
+     * A picture that was made rather than read has none, and its contents are rendered
+     * from its resource instead.
+     *
+     * @var string
+     */
+    protected $contents = '';
+
+    /**
      * Gd constructor.
      */
     public function __construct()
@@ -93,6 +103,9 @@ class Gd extends AbstractDrawingAdapter
     public function setImageResource($value = null)
     {
         $this->imageResource = $value;
+        // the bytes that were read describe the resource they were decoded into, so a
+        // resource that is not that one has no bytes
+        $this->contents = '';
 
         if (null !== $this->imageResource && false !== $this->imageResource) {
             // Get width/height
@@ -149,8 +162,25 @@ class Gd extends AbstractDrawingAdapter
         return $this;
     }
 
+    /**
+     * Set the bytes the picture was read from.
+     *
+     * The bytes are the ones the file holds, so that a picture read out of a package
+     * is given back as it was read rather than as an encoding of it made again.
+     */
+    public function setContents(string $contents): self
+    {
+        $this->contents = $contents;
+
+        return $this;
+    }
+
     public function getContents(): string
     {
+        if ('' !== $this->contents) {
+            return $this->contents;
+        }
+
         ob_start();
         if (self::MIMETYPE_DEFAULT === $this->getMimeType()) {
             imagealphablending($this->getImageResource(), false);
@@ -174,6 +204,10 @@ class Gd extends AbstractDrawingAdapter
 
     public function getIndexedFilename(): string
     {
+        if ('' !== $this->path) {
+            return $this->nameFromPath($this->getExtension());
+        }
+
         return $this->uniqueName . $this->getImageIndex() . '.' . $this->getExtension();
     }
 

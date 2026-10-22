@@ -1311,6 +1311,8 @@ class PowerPoint2007 implements ReaderInterface
                     return;
                 }
                 $oShape->setImageResource($image);
+                // the bytes are set after the resource, because setting a resource drops them
+                $oShape->setContents($imageFile);
             } elseif ($oShape instanceof Base64) {
                 $oShape->setData('data:' . $mimeType . ';base64,' . base64_encode($imageFile));
             }

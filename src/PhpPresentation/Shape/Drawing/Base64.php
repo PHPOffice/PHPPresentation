@@ -100,6 +100,10 @@ class Base64 extends AbstractDrawingAdapter
 
     public function getIndexedFilename(): string
     {
+        if ('' !== $this->path) {
+            return $this->nameFromPath($this->getExtension());
+        }
+
         return $this->uniqueName . $this->getImageIndex() . '.' . $this->getExtension();
     }
 

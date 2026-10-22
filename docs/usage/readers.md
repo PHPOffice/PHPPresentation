@@ -104,7 +104,7 @@ foreach ($reader->getActiveSlide()->getShapeCollection() as $shape) {
 }
 ```
 
-The bytes behind that path are the ones the file holds, so a picture can be written out of the package it was read from. The contents of the shape itself are still an encoding of the picture made again, which is what a `Gd` holds.
+The bytes behind that path are the ones the file holds, so a picture can be written out of the package it was read from. The picture keeps them too, so `getContents()` gives back the file rather than an encoding of the picture made again, and it is named after the file it came from, with an index to tell two files of the same name apart.
 
 ### Options
 
@@ -234,7 +234,7 @@ model, with the exceptions its notes list.
 26. Rectangles come back as RichText.
 27. Raster and WMF/EMF only; SVG/PDF images dropped.
 28. JPEG/PNG blips only; others throw.
-29. Base64 and GD; the path gives the part the picture was read from.
+29. Base64 and GD not loadable; the path gives the part the picture was read from.
 30. Ends only; line style not read.
 31. Height overwritten by line width; no flip.
 32. Ends only; line style not read.

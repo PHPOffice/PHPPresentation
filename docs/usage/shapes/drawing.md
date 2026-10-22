@@ -99,6 +99,8 @@ $shape->setName('Sample image')
 $slide->addShape($shape);
 ```
 
+A GD drawing that was read out of a package keeps the bytes the file holds, and `getContents()` gives them back rather than an encoding of the picture made again. `setContents()` is how they are put there. Setting the resource drops them: they describe the resource they were decoded into, and another resource is not that one.
+
 ## ZipFile
 
 ``` php
