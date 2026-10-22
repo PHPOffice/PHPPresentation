@@ -250,6 +250,20 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
+     * The path of a part of the package, as a URL that reads it.
+     *
+     * `zip://` is the only way to name a file inside an archive, and the name it carries is
+     * the part's own: a picture read out of a package says where it came from, and a caller
+     * can read the bytes that were in the file rather than an encoding of them made again.
+     */
+    protected function zipPath(string $part): string
+    {
+        $file = realpath($this->filename);
+
+        return 'zip://' . (false === $file ? $this->filename : $file) . '#' . $part;
+    }
+
+    /**
      * Name of the part holding a part's relationships.
      *
      * A part keeps them in a `_rels` folder beside it, in a file named after it, which is where
@@ -1283,6 +1297,8 @@ class PowerPoint2007 implements ReaderInterface
         }
 
         if (!empty($imageFile)) {
+            $oShape->setPath($this->zipPath($pathImage));
+
             if ($oShape instanceof Gd) {
                 $info = getimagesizefromstring($imageFile);
                 if (!$info) {

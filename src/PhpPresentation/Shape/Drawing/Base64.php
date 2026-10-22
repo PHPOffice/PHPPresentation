@@ -52,7 +52,7 @@ class Base64 extends AbstractDrawingAdapter
     /**
      * @var string
      */
-    protected $path;
+    protected $path = '';
 
     /**
      * Base64 constructor.
