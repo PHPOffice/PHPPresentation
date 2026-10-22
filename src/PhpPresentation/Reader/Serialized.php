@@ -238,10 +238,10 @@ class Serialized implements ReaderInterface
             if (!in_array(get_class($value), self::ALLOWED_CLASSES, true)) {
                 return false;
             }
-            if ($seen->contains($value)) {
+            if ($seen->offsetExists($value)) {
                 return true;
             }
-            $seen->attach($value);
+            $seen->offsetSet($value);
             if ($value instanceof Shape\Drawing\Gd
                 && !in_array($value->getRenderingFunction(), ['imagepng', 'imagegif', 'imagejpeg', 'imagebmp', 'imagewebp'], true)) {
                 return false;
