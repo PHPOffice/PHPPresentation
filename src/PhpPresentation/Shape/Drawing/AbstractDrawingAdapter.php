@@ -38,4 +38,21 @@ abstract class AbstractDrawingAdapter extends AbstractGraphic
      * @return self
      */
     abstract public function setPath(string $path);
+
+    /**
+     * The name a drawing is given in the package it is written to.
+     *
+     * The file name it was read from, and the index that tells two drawings with the
+     * same file name apart: the writers write one media part per name, so two
+     * pictures called `logo.png` would share one part, and one of them would come
+     * out with the other's picture.
+     */
+    protected function nameFromPath(string $extension): string
+    {
+        $name = pathinfo($this->getPath(), PATHINFO_FILENAME);
+        $name .= $this->getImageIndex();
+        $name .= '.' . $extension;
+
+        return str_replace(' ', '_', $name);
+    }
 }

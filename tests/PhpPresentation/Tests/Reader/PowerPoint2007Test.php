@@ -42,6 +42,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Drawing\ZipFile;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line as LineShape;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
@@ -106,6 +107,166 @@ class PowerPoint2007Test extends TestCase
 
         $object = new PowerPoint2007();
         $object->load($file);
+    }
+
+    /**
+     * A picture read out of a package says where it came from.
+     *
+     * The path is a `zip://` URL, so it names the part of the package the picture was read
+     * from and it reads: the bytes behind it are the ones the file holds, rather than an
+     * encoding of them made again on the way out.
+     */
+    public function testPictureHasThePathItWasReadFrom(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.pptx';
+        $oPhpPresentation = (new PowerPoint2007())->load($file);
+
+        $oPicture = null;
+        foreach ((array) $oPhpPresentation->getSlide(0)->getShapeCollection() as $oShape) {
+            if ($oShape instanceof Gd) {
+                $oPicture = $oShape;
+
+                break;
+            }
+        }
+
+        self::assertInstanceOf(Gd::class, $oPicture);
+
+        $path = $oPicture->getPath();
+
+        self::assertStringStartsWith('zip://', $path);
+
+        $part = substr($path, (int) strpos($path, '#') + 1);
+        self::assertStringEndsWith('.gif', $part);
+
+        $zip = new ZipArchive();
+        $zip->open($file);
+        $original = $zip->getFromName($part);
+        $zip->close();
+
+        self::assertNotFalse($original);
+        self::assertSame($original, file_get_contents($path));
+    }
+
+    /**
+     * A picture read out of a package gives back the bytes the file holds.
+     *
+     * The reader decodes a raster into a resource, and the resource is rendered again on
+     * the way out, which is an encoding of the picture made again rather than the file.
+     * The bytes are kept beside the resource, so that a picture read out of a package is
+     * written back as it was read.
+     */
+    public function testPictureGivesBackTheBytesItWasReadFrom(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.pptx';
+        $oPhpPresentation = (new PowerPoint2007())->load($file);
+
+        $oPicture = null;
+        foreach ((array) $oPhpPresentation->getSlide(0)->getShapeCollection() as $oShape) {
+            if ($oShape instanceof Gd) {
+                $oPicture = $oShape;
+
+                break;
+            }
+        }
+
+        self::assertInstanceOf(Gd::class, $oPicture);
+
+        $zip = new ZipArchive();
+        $zip->open($file);
+        $original = $zip->getFromName('ppt/media/phppowerpoint_logo1.gif');
+        $zip->close();
+
+        self::assertNotFalse($original);
+        self::assertSame($original, $oPicture->getContents());
+    }
+
+    /**
+     * A picture read out of a package is named after the file it was read from.
+     *
+     * The name is the one the constructor made up otherwise, so the same deck read twice
+     * gave two different names for the same picture. The index that tells two pictures
+     * with the same file name apart is a counter of its own, so it is not asserted here.
+     */
+    public function testPictureIsNamedAfterTheFileItWasReadFrom(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.pptx';
+        $oPhpPresentation = (new PowerPoint2007())->load($file);
+
+        $oPicture = null;
+        foreach ((array) $oPhpPresentation->getSlide(0)->getShapeCollection() as $oShape) {
+            if ($oShape instanceof Gd) {
+                $oPicture = $oShape;
+
+                break;
+            }
+        }
+
+        self::assertInstanceOf(Gd::class, $oPicture);
+        self::assertStringStartsWith('phppowerpoint_logo1', $oPicture->getIndexedFilename());
+        self::assertStringEndsWith('.gif', $oPicture->getIndexedFilename());
+    }
+
+    /**
+     * A deck read out of a package and written back keeps its media parts as they were.
+     *
+     * The Writer writes what a shape gives back, so a picture that gives back the bytes it
+     * was read from is written as the file held it. Every picture of the deck is checked,
+     * because a part that is written under the name of another one would leave one of them
+     * with the other's picture.
+     */
+    public function testDeckWrittenBackKeepsItsMediaParts(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.pptx';
+        $oPhpPresentation = (new PowerPoint2007())->load($file);
+
+        $pictures = [];
+        foreach ($oPhpPresentation->getAllSlides() as $oSlide) {
+            foreach ((array) $oSlide->getShapeCollection() as $oShape) {
+                if ($oShape instanceof Gd) {
+                    $pictures[] = $oShape;
+                }
+            }
+        }
+
+        self::assertNotEmpty($pictures);
+
+        $written = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($written);
+
+        $zip = new ZipArchive();
+        $zip->open($file);
+        $originals = [];
+        foreach ($pictures as $oPicture) {
+            $part = substr($oPicture->getPath(), (int) strpos($oPicture->getPath(), '#') + 1);
+            $originals[$oPicture->getIndexedFilename()] = $zip->getFromName($part);
+        }
+        $zip->close();
+
+        $zip = new ZipArchive();
+        $zip->open($written);
+        foreach ($originals as $name => $original) {
+            $readBack = $zip->getFromName('ppt/media/' . $name);
+            self::assertNotFalse($original, 'the part the picture was read from is in the package');
+            self::assertNotFalse($readBack, 'the part the picture was written to is in the package');
+            self::assertSame($original, $readBack);
+        }
+        $zip->close();
+
+        unlink($written);
+    }
+
+    /**
+     * A picture that was made rather than read has no path, and says so.
+     *
+     * The property is a string, so an empty one is what it holds until something is read
+     * into it, and the accessor answers rather than throwing.
+     */
+    public function testPictureWithoutAPathSaysSo(): void
+    {
+        self::assertSame('', (new Gd())->getPath());
+        self::assertSame('', (new Base64())->getPath());
+        self::assertSame('', (new ZipFile())->getPath());
     }
 
     public function testFileSupportsNotExists(): void

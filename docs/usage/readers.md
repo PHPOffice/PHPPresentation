@@ -90,6 +90,22 @@ $reader = IOFactory::createReader('PowerPoint2007');
 $reader->load(__DIR__ . '/sample.pptx');
 ```
 
+A picture is given the path it was read from, as a `zip://` URL into the package:
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+
+foreach ($reader->getActiveSlide()->getShapeCollection() as $shape) {
+    if ($shape instanceof Gd) {
+        echo $shape->getPath(); // zip:///path/to/sample.pptx#ppt/media/image1.png
+    }
+}
+```
+
+The bytes behind that path are the ones the file holds, so a picture can be written out of the package it was read from. The picture keeps them too, so `getContents()` gives back the file rather than an encoding of the picture made again, and it is named after the file it came from, with an index to tell two files of the same name apart.
+
 ### Options
 
 #### Load without images
@@ -218,7 +234,7 @@ model, with the exceptions its notes list.
 26. Rectangles come back as RichText.
 27. Raster and WMF/EMF only; SVG/PDF images dropped.
 28. JPEG/PNG blips only; others throw.
-29. Base64 and GD not loadable.
+29. Base64 and GD not loadable; the path gives the part the picture was read from.
 30. Ends only; line style not read.
 31. Height overwritten by line width; no flip.
 32. Ends only; line style not read.

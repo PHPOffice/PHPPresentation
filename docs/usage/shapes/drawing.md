@@ -15,6 +15,8 @@ You can add multiples formats of image :
 - SVG
 - WMF, EMF & EMF+ (Windows metafiles), if the optional library [phpoffice/wmf](https://github.com/PHPOffice/WMF) and the GD extension are installed
 
+A drawing that was given no path answers with an empty path: `getPath()` is typed `string`, and a drawing that was made rather than read has no path until one is set on it.
+
 ## Windows metafiles
 
 To add a WMF, an EMF or an EMF+ file, install the optional library [phpoffice/wmf](https://github.com/PHPOffice/WMF) :
@@ -96,6 +98,8 @@ $shape->setName('Sample image')
     ->setMimeType(Drawing\Gd::MIMETYPE_DEFAULT);
 $slide->addShape($shape);
 ```
+
+A GD drawing that was read out of a package keeps the bytes the file holds, and `getContents()` gives them back rather than an encoding of the picture made again. `setContents()` is how they are put there. Setting the resource drops them: they describe the resource they were decoded into, and another resource is not that one.
 
 ## ZipFile
 
