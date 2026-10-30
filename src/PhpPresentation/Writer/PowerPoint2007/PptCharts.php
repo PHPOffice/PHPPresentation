@@ -1334,6 +1334,20 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
+            // The schema names the shape properties of a series right after its title, and a
+            // series in another order is one PowerPoint has to repair before it opens.
+            $seriesFill = $series->getFill();
+            if (Fill::FILL_NONE != $seriesFill->getFillType()
+                && Fill::FILL_UNSET != $seriesFill->getFillType()
+            ) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $seriesFill);
+                // ## c:spPr
+                $objWriter->endElement();
+            }
+
             // Fills & outlines for points?
             $dataPointFills = $series->getDataPointFills();
             $dataPointOutlines = $series->getDataPointOutlines();
@@ -1501,6 +1515,20 @@ class PptCharts extends AbstractDecoratorWriter
             $coords = ($includeSheet ? 'Sheet1!$' . Coordinate::stringFromColumnIndex(2 + $seriesIndex) . '$1' : '');
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
+
+            // The schema names the shape properties of a series right after its title, and a
+            // series in another order is one PowerPoint has to repair before it opens.
+            $seriesFill = $series->getFill();
+            if (Fill::FILL_NONE != $seriesFill->getFillType()
+                && Fill::FILL_UNSET != $seriesFill->getFillType()
+            ) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $seriesFill);
+                // ## c:spPr
+                $objWriter->endElement();
+            }
 
             // Fills & outlines for points?
             $dataPointFills = $series->getDataPointFills();
@@ -1674,6 +1702,20 @@ class PptCharts extends AbstractDecoratorWriter
             $coords = ($includeSheet ? 'Sheet1!$' . Coordinate::stringFromColumnIndex(2 + $seriesIndex) . '$1' : '');
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
+
+            // The schema names the shape properties of a series right after its title, and a
+            // series in another order is one PowerPoint has to repair before it opens.
+            $seriesFill = $series->getFill();
+            if (Fill::FILL_NONE != $seriesFill->getFillType()
+                && Fill::FILL_UNSET != $seriesFill->getFillType()
+            ) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $seriesFill);
+                // ## c:spPr
+                $objWriter->endElement();
+            }
 
             // c:explosion
             $objWriter->startElement('c:explosion');

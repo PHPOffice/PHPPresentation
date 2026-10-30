@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
+use DOMElement;
+use DOMXPath;
 use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\Exception\UndefinedChartTypeException;
 use PhpOffice\PhpPresentation\Shape\Chart;
@@ -2236,6 +2238,73 @@ class PptChartsTest extends PhpPresentationTestCase
             '/Relationships/Relationship[@Id="rId3"][@Target="../charts/' . $oChart2->getIndexedFilename() . '"]'
         );
         $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A doughnut, a pie and a pie in three dimensions dropped the fill of the series itself: the
+     * shape properties of a series carry it, and the schema names them right after its title.
+     *
+     * @param list<string> $children
+     *
+     * @dataProvider dataProviderSeriesFillOfItsOwn
+     */
+    #[DataProvider('dataProviderSeriesFillOfItsOwn')]
+    public function testSeriesFillOfItsOwnIsWritten(string $chartType, string $chartElementName, array $children): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4F81BD'));
+
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
+        $oChart->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oChart);
+
+        $file = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $series = '/c:chartSpace/c:chart/c:plotArea/' . $chartElementName . '/c:ser';
+
+        self::assertSame($children, $this->getSeriesChildElementNames($file, $series));
+        $this->assertZipXmlElementExists($file, $series . '/c:spPr/a:solidFill/a:srgbClr');
+        $this->assertZipXmlAttributeEquals($file, $series . '/c:spPr/a:solidFill/a:srgbClr', 'val', '4F81BD');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * @return array<array{string, string, list<string>}>
+     */
+    public static function dataProviderSeriesFillOfItsOwn(): iterable
+    {
+        yield [Doughnut::class, 'c:doughnutChart', ['c:idx', 'c:order', 'c:tx', 'c:spPr', 'c:cat', 'c:val']];
+        yield [Pie::class, 'c:pieChart', ['c:idx', 'c:order', 'c:tx', 'c:spPr', 'c:dLbls', 'c:cat', 'c:val']];
+        yield [Pie3D::class, 'c:pie3DChart', ['c:idx', 'c:order', 'c:tx', 'c:spPr', 'c:explosion', 'c:dLbls', 'c:cat', 'c:val']];
+    }
+
+    /**
+     * The names of the children of a series, in the order they were written.
+     *
+     * @return list<string>
+     */
+    private function getSeriesChildElementNames(string $filePath, string $xPath): array
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+
+        $nodeList = (new DOMXPath($this->getXmlDom($filePath)))->query($xPath);
+        self::assertNotFalse($nodeList);
+        $element = $nodeList->item(0);
+        self::assertNotNull(
+            $element,
+            sprintf('The element "%s" doesn\'t exist in the file "%s"', $xPath, $filePath)
+        );
+
+        $names = [];
+        foreach ($element->childNodes as $child) {
+            if ($child instanceof DOMElement) {
+                $names[] = $child->nodeName;
+            }
+        }
+
+        return $names;
     }
 
     /**
