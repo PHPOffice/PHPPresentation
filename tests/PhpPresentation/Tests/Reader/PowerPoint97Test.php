@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
+use PhpOffice\PhpPresentation\Exception\FeatureNotImplementedException;
 use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\Reader\PowerPoint97;
@@ -152,6 +153,35 @@ class PowerPoint97Test extends TestCase
 
         $oSlide = $oPhpPresentation->getSlide(0);
         self::assertCount(4, $oSlide->getShapeCollection());
+    }
+
+    /**
+     * A presentation that holds no picture has no Pictures stream at all, and the Reader must
+     * not ask for one: it answers with an exception of its own rather than with the TypeError
+     * `phpoffice/common` raises when it is given the stream that is not there.
+     */
+    public function testLoadFileWithoutPicturesStream(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Issue_00817.pps';
+        $this->expectException(FeatureNotImplementedException::class);
+
+        $object = new PowerPoint97();
+        $object->load($file);
+    }
+
+    /**
+     * The file of the test above is a presentation this Reader recognises; only the part of
+     * the format it does not know yet stops it.
+     *
+     * The assertion holds whether the change is in or not — `canRead()` reads no stream at
+     * all — so it is a guard on the fixture and not coverage of the change.
+     */
+    public function testCanReadFileWithoutPicturesStream(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Issue_00817.pps';
+        $object = new PowerPoint97();
+
+        self::assertTrue($object->canRead($file));
     }
 
     /**

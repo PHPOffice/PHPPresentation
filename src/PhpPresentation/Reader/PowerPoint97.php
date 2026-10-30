@@ -376,7 +376,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * Stream "Pictures".
      *
-     * @var string
+     * @var null|string
      */
     private $streamPictures;
 
@@ -458,7 +458,9 @@ class PowerPoint97 implements ReaderInterface
         // Read OLE Blocks
         $this->loadOLE();
         // Read pictures in the Pictures Stream
-        $this->loadPicturesStream();
+        if (null !== $this->streamPictures) {
+            $this->loadPicturesStream($this->streamPictures);
+        }
         // Read information in the Current User Stream
         $this->loadCurrentUserStream();
         // Read information in the PowerPoint Document Stream
@@ -483,7 +485,11 @@ class PowerPoint97 implements ReaderInterface
         $this->streamCurrentUser = $oOLE->getStream($oOLE->currentUser);
 
         // Get pictures data
-        $this->streamPictures = $oOLE->getStream($oOLE->pictures);
+        // A presentation that holds no picture has no Pictures stream: OLERead leaves its id at null.
+        $this->streamPictures = null;
+        if (null !== $oOLE->pictures) {
+            $this->streamPictures = $oOLE->getStream($oOLE->pictures);
+        }
     }
 
     /**
@@ -491,10 +497,8 @@ class PowerPoint97 implements ReaderInterface
      *
      * @see http://msdn.microsoft.com/en-us/library/dd920746(v=office.12).aspx
      */
-    private function loadPicturesStream(): void
+    private function loadPicturesStream(string $stream): void
     {
-        $stream = $this->streamPictures;
-
         $pos = 0;
         do {
             $arrayRH = $this->loadRecordHeader($stream, $pos);
@@ -1265,7 +1269,7 @@ class PowerPoint97 implements ReaderInterface
                     ++$arrayReturn['length'];
                     --$data['recLen'];
                     // BLIPFileData
-                    $arrayReturn['picture'] = substr($this->streamPictures, $pos + $arrayReturn['length'], $data['recLen']);
+                    $arrayReturn['picture'] = substr($stream, $pos + $arrayReturn['length'], $data['recLen']);
                     $arrayReturn['length'] += $data['recLen'];
 
                     break;
