@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
+use DOMElement;
+use DOMXPath;
 use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\Exception\UndefinedChartTypeException;
 use PhpOffice\PhpPresentation\Shape\Chart;
@@ -2310,5 +2312,144 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementNotExists($file, '//*[@lang!="de-DE"]');
         $this->assertZipXmlAttributeEquals($file, '/c:chartSpace/c:lang', 'val', 'de-DE');
         $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A data point that has a fill of its own is written as a data point of the series.
+     *
+     * @dataProvider dataProviderChartTypeWithDataPoint
+     */
+    #[DataProvider('dataProviderChartTypeWithDataPoint')]
+    public function testSeriesDataPointFillIsWritten(string $chartType, string $chartElementName): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
+        $oChart->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oChart);
+
+        $file = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $series = '/c:chartSpace/c:chart/c:plotArea/' . $chartElementName . '/c:ser';
+
+        $this->assertZipXmlElementCount($file, $series . '/c:dPt', 1);
+        $this->assertZipXmlAttributeEquals($file, $series . '/c:dPt/c:idx', 'val', '0');
+        $this->assertZipXmlElementExists($file, $series . '/c:dPt/c:spPr/a:solidFill');
+
+        // The schema names the data points after the shared part of a series and before its data
+        // labels, and a series in another order is one PowerPoint has to repair before it opens.
+        self::assertSame(
+            [
+                'c:areaChart' => ['c:idx', 'c:order', 'c:tx', 'c:dPt', 'c:dLbls', 'c:cat', 'c:val'],
+                'c:lineChart' => ['c:idx', 'c:order', 'c:tx', 'c:spPr', 'c:marker', 'c:dPt', 'c:dLbls', 'c:cat', 'c:val', 'c:smooth'],
+                'c:radarChart' => ['c:idx', 'c:order', 'c:tx', 'c:spPr', 'c:marker', 'c:dPt', 'c:dLbls', 'c:cat', 'c:val'],
+                'c:scatterChart' => ['c:idx', 'c:order', 'c:tx', 'c:spPr', 'c:marker', 'c:dPt', 'c:dLbls', 'c:xVal', 'c:yVal', 'c:smooth'],
+            ][$chartElementName],
+            $this->getChildElementNames($file, $series)
+        );
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A data point that has an outline of its own is written as a data point of the series.
+     *
+     * @dataProvider dataProviderChartTypeWithDataPoint
+     */
+    #[DataProvider('dataProviderChartTypeWithDataPoint')]
+    public function testSeriesDataPointOutlineIsWritten(string $chartType, string $chartElementName): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getDataPointOutline(0)->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_RED));
+
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
+        $oChart->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oChart);
+
+        $file = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $series = '/c:chartSpace/c:chart/c:plotArea/' . $chartElementName . '/c:ser';
+
+        $this->assertZipXmlElementCount($file, $series . '/c:dPt', 1);
+        $this->assertZipXmlAttributeEquals($file, $series . '/c:dPt/c:idx', 'val', '0');
+        $this->assertZipXmlElementExists($file, $series . '/c:dPt/c:spPr/a:ln');
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A data point that refuses its fill and names no outline is written as a data point without
+     * shape properties of its own.
+     *
+     * @dataProvider dataProviderChartTypeWithDataPoint
+     */
+    #[DataProvider('dataProviderChartTypeWithDataPoint')]
+    public function testSeriesDataPointWithoutShapePropertiesIsWritten(string $chartType, string $chartElementName): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_NONE);
+
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
+        $oChart->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oChart);
+
+        $file = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $series = '/c:chartSpace/c:chart/c:plotArea/' . $chartElementName . '/c:ser';
+
+        $this->assertZipXmlElementCount($file, $series . '/c:dPt', 1);
+        $this->assertZipXmlAttributeEquals($file, $series . '/c:dPt/c:idx', 'val', '0');
+        $this->assertZipXmlElementNotExists($file, $series . '/c:dPt/c:spPr');
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * The names of the children of an element, in the order they were written.
+     *
+     * @return list<string>
+     */
+    private function getChildElementNames(string $filePath, string $xPath): array
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+
+        $nodeList = (new DOMXPath($this->getXmlDom($filePath)))->query($xPath);
+        self::assertNotFalse($nodeList);
+        $element = $nodeList->item(0);
+        self::assertNotNull(
+            $element,
+            sprintf('The element "%s" doesn\'t exist in the file "%s"', $xPath, $filePath)
+        );
+
+        $names = [];
+        foreach ($element->childNodes as $child) {
+            if ($child instanceof DOMElement) {
+                $names[] = $child->nodeName;
+            }
+        }
+
+        return $names;
+    }
+
+    /**
+     * @return array<array<int, string>>
+     */
+    public static function dataProviderChartTypeWithDataPoint(): iterable
+    {
+        foreach ([
+            [Area::class, 'c:areaChart'],
+            [Line::class, 'c:lineChart'],
+            [Radar::class, 'c:radarChart'],
+            [Scatter::class, 'c:scatterChart'],
+        ] as $chartType) {
+            yield $chartType;
+        }
     }
 }
