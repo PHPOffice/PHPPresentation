@@ -229,4 +229,26 @@ class AxisTest extends TestCase
         self::assertInstanceOf(Axis::class, $object->setMajorUnit());
         self::assertNull($object->getMajorUnit());
     }
+
+    public function testTickLabelSkip(): void
+    {
+        $object = new Axis();
+
+        self::assertNull($object->getTickLabelSkip());
+        self::assertInstanceOf(Axis::class, $object->setTickLabelSkip(3));
+        self::assertEquals(3, $object->getTickLabelSkip());
+        self::assertInstanceOf(Axis::class, $object->setTickLabelSkip());
+        self::assertNull($object->getTickLabelSkip());
+
+        // The schema holds no count of zero, and none below it.
+        self::assertInstanceOf(Axis::class, $object->setTickLabelSkip(0));
+        self::assertNull($object->getTickLabelSkip());
+
+        self::assertInstanceOf(Axis::class, $object->setTickLabelSkip(-1));
+        self::assertNull($object->getTickLabelSkip());
+
+        // And none above what an unsigned short holds.
+        self::assertInstanceOf(Axis::class, $object->setTickLabelSkip(65536));
+        self::assertSame(65535, $object->getTickLabelSkip());
+    }
 }

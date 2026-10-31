@@ -2712,10 +2712,10 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('val', '100');
             $objWriter->endElement();
 
-            // c:majorUnit
-            if ($oAxis->getMajorUnit() !== null) {
+            // c:tickLblSkip
+            if (null !== $oAxis->getTickLabelSkip()) {
                 $objWriter->startElement('c:tickLblSkip');
-                $objWriter->writeAttribute('val', $oAxis->getMajorUnit());
+                $objWriter->writeAttribute('val', $oAxis->getTickLabelSkip());
                 $objWriter->endElement();
             }
         }

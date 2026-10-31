@@ -79,7 +79,7 @@ $shape->getView3D()->setRotationX(30);
 $shape->getView3D()->setPerspective(30);
 $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
 $shape->getLegend()->getFont()->setItalic(true);
-$shape->getPlotArea()->getAxisX()->setMajorUnit(3);
+$shape->getPlotArea()->getAxisX()->setTickLabelSkip(3);
 $shape->getPlotArea()->getAxisY()->setMajorUnit(5);
 
 // Create templated slide

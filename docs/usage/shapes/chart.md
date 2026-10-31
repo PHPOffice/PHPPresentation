@@ -227,6 +227,25 @@ $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
 ```
 
+##### Skip
+
+You can define how many tick labels are skipped between the ones that are drawn with the
+`setTickLabelSkip` method. It takes a number of labels, and a category axis is the one that
+has them: a skip of 1 draws every second label.
+
+For resetting it, you pass `null` as parameter to this method. A skip of zero or less is kept
+as no skip at all, and nothing is written for it.
+
+``` php
+<?php
+
+$line = new Line();
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->getAxisX()->setTickLabelSkip(1);
+```
+
 ##### Font
 
 You can define the tick label font with the `setTickLabelFont` method.
