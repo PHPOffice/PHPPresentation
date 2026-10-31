@@ -772,6 +772,20 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
+            // The schema names the shape properties of a series right after its title, and a
+            // series in another order is one PowerPoint has to repair before it opens.
+            $seriesFill = $series->getFill();
+            if (Fill::FILL_NONE != $seriesFill->getFillType()
+                && Fill::FILL_UNSET != $seriesFill->getFillType()
+            ) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $seriesFill);
+                // ## c:spPr
+                $objWriter->endElement();
+            }
+
             // c:ser > c:dLbls
             // @link : https://msdn.microsoft.com/en-us/library/documentformat.openxml.drawing.charts.areachartseries.aspx
             // a data label block nothing shows is a block PowerPoint has to read and ignore
@@ -800,18 +814,6 @@ class PptCharts extends AbstractDecoratorWriter
                 $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
                 // c:ser > ##c:dLbls
-                $objWriter->endElement();
-            }
-
-            $seriesFill = $series->getFill();
-            if (Fill::FILL_NONE != $seriesFill->getFillType()
-                && Fill::FILL_UNSET != $seriesFill->getFillType()
-            ) {
-                // c:spPr
-                $objWriter->startElement('c:spPr');
-                // Write fill
-                $this->writeFill($objWriter, $seriesFill);
-                // ## c:spPr
                 $objWriter->endElement();
             }
 
@@ -891,6 +893,20 @@ class PptCharts extends AbstractDecoratorWriter
             $coords = ($includeSheet ? 'Sheet1!$' . Coordinate::stringFromColumnIndex(2 + $seriesIndex) . '$1' : '');
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
+
+            // The schema names the shape properties of a series right after its title, and a
+            // series in another order is one PowerPoint has to repair before it opens.
+            $seriesFill = $series->getFill();
+            if (Fill::FILL_NONE != $seriesFill->getFillType()
+                && Fill::FILL_UNSET != $seriesFill->getFillType()
+            ) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $seriesFill);
+                // ## c:spPr
+                $objWriter->endElement();
+            }
 
             // Fills & outlines for points?
             $dataPointFills = $series->getDataPointFills();
@@ -1017,19 +1033,6 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->endElement();
             }
 
-            // c:spPr
-            $seriesFill = $series->getFill();
-            if (Fill::FILL_NONE != $seriesFill->getFillType()
-                && Fill::FILL_UNSET != $seriesFill->getFillType()
-            ) {
-                // c:spPr
-                $objWriter->startElement('c:spPr');
-                // Write fill
-                $this->writeFill($objWriter, $seriesFill);
-                // ## c:spPr
-                $objWriter->endElement();
-            }
-
             // Write X axis data
             $axisXData = array_keys($series->getValues());
 
@@ -1120,6 +1123,20 @@ class PptCharts extends AbstractDecoratorWriter
             $coords = ($includeSheet ? 'Sheet1!$' . Coordinate::stringFromColumnIndex(2 + $seriesIndex) . '$1' : '');
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
+
+            // The schema names the shape properties of a series right after its title, and a
+            // series in another order is one PowerPoint has to repair before it opens.
+            $seriesFill = $series->getFill();
+            if (Fill::FILL_NONE != $seriesFill->getFillType()
+                && Fill::FILL_UNSET != $seriesFill->getFillType()
+            ) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $seriesFill);
+                // ## c:spPr
+                $objWriter->endElement();
+            }
 
             // Fills & outlines for points?
             $dataPointFills = $series->getDataPointFills();
@@ -1236,19 +1253,6 @@ class PptCharts extends AbstractDecoratorWriter
                 // c:showLeaderLines
                 $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
-                $objWriter->endElement();
-            }
-
-            // c:spPr
-            $seriesFill = $series->getFill();
-            if (Fill::FILL_NONE != $seriesFill->getFillType()
-                && Fill::FILL_UNSET != $seriesFill->getFillType()
-            ) {
-                // c:spPr
-                $objWriter->startElement('c:spPr');
-                // Write fill
-                $this->writeFill($objWriter, $seriesFill);
-                // ## c:spPr
                 $objWriter->endElement();
             }
 
@@ -1445,13 +1449,16 @@ class PptCharts extends AbstractDecoratorWriter
                 $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
                 $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
                 $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
-                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
+                // The schema names the separator before the leader lines, and a data label
+                // block in another order is one PowerPoint has to repair before it opens.
                 $separator = $series->getSeparator();
                 if (!empty($separator) && PHP_EOL != $separator) {
                     // c:dLbls\c:separator
                     $objWriter->writeElement('c:separator', $separator);
                 }
+
+                $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
                 // c:dLbls\
                 $objWriter->endElement();

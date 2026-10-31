@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
+use DOMElement;
+use DOMXPath;
 use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\Exception\UndefinedChartTypeException;
 use PhpOffice\PhpPresentation\Shape\Chart;
@@ -2310,5 +2312,123 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementNotExists($file, '//*[@lang!="de-DE"]');
         $this->assertZipXmlAttributeEquals($file, '/c:chartSpace/c:lang', 'val', 'de-DE');
         $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * The schema names the shape properties of a series right after its title, and a series that
+     * names them later is one PowerPoint has to repair before it opens.
+     *
+     * @dataProvider dataProviderSeriesShapeProperties
+     */
+    #[DataProvider('dataProviderSeriesShapeProperties')]
+    public function testSeriesShapePropertiesFollowTheTitle(string $chartType, string $chartElementName): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+        // A fill of its own, so that the series writes shape properties at all.
+        $oSeries->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+
+        // A data point of its own, so that the shape properties are pinned against
+        // it and not only against the labels. The area chart writes no data points
+        // at all, which is a defect of its own and not of this pull request.
+        $writesDataPoints = $chartType !== Area::class;
+        if ($writesDataPoints) {
+            $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID);
+        }
+
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
+        $oChart->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oChart);
+
+        $file = 'ppt/charts/' . $oShape->getIndexedFilename();
+
+        $expected = ['c:idx', 'c:order', 'c:tx', 'c:spPr'];
+        if ($writesDataPoints) {
+            $expected[] = 'c:dPt';
+        }
+        $expected = array_merge($expected, ['c:dLbls', 'c:cat', 'c:val']);
+
+        self::assertSame(
+            $expected,
+            $this->getChildElementNames($file, '/c:chartSpace/c:chart/c:plotArea/' . $chartElementName . '/c:ser')
+        );
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * The schema names the separator of a data label block before the leader lines, and a block
+     * that names them the other way round is one PowerPoint has to repair before it opens.
+     */
+    public function testDoughnutSeparatorFollowsTheOtherLabels(): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->setSeparator(';');
+
+        $oDoughnut = new Doughnut();
+        $oDoughnut->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oDoughnut);
+
+        $file = 'ppt/charts/' . $oShape->getIndexedFilename();
+
+        self::assertSame(
+            [
+                'c:txPr',
+                'c:showLegendKey',
+                'c:showVal',
+                'c:showCatName',
+                'c:showSerName',
+                'c:showPercent',
+                'c:showBubbleSize',
+                'c:separator',
+                'c:showLeaderLines',
+            ],
+            $this->getChildElementNames($file, '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:dLbls')
+        );
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * The names of the children of an element, in the order they were written.
+     *
+     * @return list<string>
+     */
+    private function getChildElementNames(string $filePath, string $xPath): array
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+
+        $nodeList = (new DOMXPath($this->getXmlDom($filePath)))->query($xPath);
+        self::assertNotFalse($nodeList);
+        $element = $nodeList->item(0);
+        self::assertNotNull(
+            $element,
+            sprintf('The element "%s" doesn\'t exist in the file "%s"', $xPath, $filePath)
+        );
+
+        $names = [];
+        foreach ($element->childNodes as $child) {
+            if ($child instanceof DOMElement) {
+                $names[] = $child->nodeName;
+            }
+        }
+
+        return $names;
+    }
+
+    /**
+     * @return array<array<int, string>>
+     */
+    public static function dataProviderSeriesShapeProperties(): iterable
+    {
+        foreach ([
+            [Area::class, 'c:areaChart'],
+            [Bar::class, 'c:barChart'],
+            [Bar3D::class, 'c:bar3DChart'],
+        ] as $chartType) {
+            yield $chartType;
+        }
     }
 }
