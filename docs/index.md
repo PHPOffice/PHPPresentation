@@ -8,13 +8,13 @@ classes to write to different presentation file formats, i.e.
 (`.pptx`) and OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (`.odp`).
 
 PHPPresentation is an open source project licensed under the terms of [LGPL
-version 3](https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER).
+version 3](https://github.com/PHPOffice/PHPPresentation/blob/master/COPYING.LESSER).
 PHPPresentation is aimed to be a high quality software product by incorporating
 [continuous integration and unit testing](https://github.com/PHPOffice/PHPPresentation/actions/workflows/php.yml).
 You can learn more about PHPPresentation by reading this Developers'
 Documentation.
 <!---
--  and the `API Documentation <http://phpoffice.github.io/PHPPresentation/docs/develop/>`__
+-  and the `API Documentation <https://phpoffice.github.io/PHPPresentation/docs/>`__
 -->
 
 ## Features

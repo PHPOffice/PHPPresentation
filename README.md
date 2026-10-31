@@ -1,4 +1,4 @@
-# ![PHPPresentation](https://raw.githubusercontent.com/mvargasmoran/PHPPresentation/develop/docs/images/PHPPresentationLogo.png "PHPPresentation")
+# ![PHPPresentation](https://raw.githubusercontent.com/PHPOffice/PHPPresentation/master/docs/images/PHPPresentationLogo.png "PHPPresentation")
 
 [![Latest Stable Version](https://poser.pugx.org/phpoffice/phppresentation/v)](https://packagist.org/packages/phpoffice/phppresentation)
 [![Coverage Status](https://coveralls.io/repos/github/PHPOffice/PHPPresentation/badge.svg?branch=master)](https://coveralls.io/github/PHPOffice/PHPPresentation?branch=master)
@@ -9,7 +9,7 @@ Branch Master : [![PHPPresentation](https://github.com/PHPOffice/PHPPresentation
 
 PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF).
 
-PHPPresentation is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER). PHPPresentation is aimed to be a high quality software product by incorporating [continuous integration](https://github.com/PHPOffice/PHPPresentation/actions/workflows/php.yml) and [unit testing](https://coveralls.io/github/PHPOffice/PHPPresentation). You can learn more about PHPPresentation by reading the [Developers' Documentation](https://phpoffice.github.io/PHPPresentation) and the [API Documentation](https://phpoffice.github.io/PHPPresentation/docs/).
+PHPPresentation is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPresentation/blob/master/COPYING.LESSER). PHPPresentation is aimed to be a high quality software product by incorporating [continuous integration](https://github.com/PHPOffice/PHPPresentation/actions/workflows/php.yml) and [unit testing](https://coveralls.io/github/PHPOffice/PHPPresentation). You can learn more about PHPPresentation by reading the [Developers' Documentation](https://phpoffice.github.io/PHPPresentation) and the [API Documentation](https://phpoffice.github.io/PHPPresentation/docs/).
 
 Read more about PHPPresentation:
 

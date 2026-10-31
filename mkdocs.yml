@@ -2,7 +2,7 @@ site_name: PHPPresentation
 site_url: https://phpoffice.github.io/PHPPresentation
 repo_url: https://github.com/PHPOffice/PHPPresentation
 repo_name: PHPOffice/PHPPresentation
-edit_uri: edit/develop/docs/
+edit_uri: edit/master/docs/
 
 ## Theme
 theme:
