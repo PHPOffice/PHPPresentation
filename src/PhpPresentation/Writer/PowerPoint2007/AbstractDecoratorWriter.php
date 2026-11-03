@@ -190,18 +190,13 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
         // a:gsLst
         $objWriter->startElement('a:gsLst');
-        // a:gs
-        $objWriter->startElement('a:gs');
-        $objWriter->writeAttribute('pos', '0');
-        $this->writeColor($objWriter, $pFill->getStartColor());
-        $objWriter->endElement();
-
-        // a:gs
-        $objWriter->startElement('a:gs');
-        $objWriter->writeAttribute('pos', '100000');
-        $this->writeColor($objWriter, $pFill->getEndColor());
-        $objWriter->endElement();
-
+        foreach ($pFill->getGradientStops() as $stop) {
+            // a:gs
+            $objWriter->startElement('a:gs');
+            $objWriter->writeAttribute('pos', (string) $stop->getPosition());
+            $this->writeColor($objWriter, $stop->getColor());
+            $objWriter->endElement();
+        }
         $objWriter->endElement();
 
         // A path fill runs from the middle of the shape outwards, and the format says so with

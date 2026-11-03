@@ -232,6 +232,11 @@ class PptSlides extends AbstractSlide
                 $objWriter->endElement();
             }
 
+            if ($oBackground instanceof Slide\Background\Gradient) {
+                // a:gradFill
+                $this->writeGradientFill($objWriter, $oBackground->getFill());
+            }
+
             // > p:bgPr
             $objWriter->endElement();
 

@@ -50,12 +50,14 @@ use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Slide\Background\Gradient;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\GradientStop;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007 as PowerPoint2007Writer;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -737,6 +739,91 @@ class PowerPoint2007Test extends TestCase
         // a group given no name comes back with none, as every other shape does
         self::assertInstanceOf(Group::class, $arrayShape[2]);
         self::assertEquals('', $arrayShape[2]->getName());
+    }
+
+    /**
+     * A background painted with a gradient is read as one.
+     */
+    public function testLoadBackgroundGradient(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oFill = (new Fill())->setFillType(Fill::FILL_GRADIENT_LINEAR);
+        $oFill->setGradientStops([
+            new GradientStop(0, new Color('FFE06B20')),
+            new GradientStop(50000, new Color('FF12B3D6')),
+            new GradientStop(100000, new Color('FF000000')),
+        ]);
+        $oSlide->setBackground((new Gradient())->setFill($oFill));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $oBackground = $oPhpPresentationRead->getActiveSlide()->getBackground();
+        self::assertInstanceOf(Gradient::class, $oBackground);
+        $oReadFill = $oBackground->getFill();
+        self::assertEquals(Fill::FILL_GRADIENT_LINEAR, $oReadFill->getFillType());
+
+        // Every stop of the gradient is read, and not only the two that sit at either end of
+        // it: a gradient of three stops came back as two, with the one in the middle lost.
+        $arrayStops = $oReadFill->getGradientStops();
+        self::assertCount(3, $arrayStops);
+        self::assertEquals(0, $arrayStops[0]->getPosition());
+        self::assertEquals('E06B20', $arrayStops[0]->getColor()->getRGB());
+        self::assertEquals(50000, $arrayStops[1]->getPosition());
+        self::assertEquals('12B3D6', $arrayStops[1]->getColor()->getRGB());
+        self::assertEquals(100000, $arrayStops[2]->getPosition());
+        self::assertEquals('000000', $arrayStops[2]->getColor()->getRGB());
+    }
+
+    /**
+     * A background painted with a gradient that runs from the middle outwards is a path.
+     */
+    public function testLoadBackgroundGradientPath(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->setBackground((new Gradient())->setFill((new Fill())->setFillType(Fill::FILL_GRADIENT_PATH)));
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $oBackground = $oPhpPresentationRead->getActiveSlide()->getBackground();
+        self::assertInstanceOf(Gradient::class, $oBackground);
+        self::assertEquals(Fill::FILL_GRADIENT_PATH, $oBackground->getFill()->getFillType());
+    }
+
+    /**
+     * A shape painted with a gradient of more than two stops is read with all of them.
+     */
+    public function testLoadFillGradientStops(): void
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->createTextRun('AAA');
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_LINEAR);
+        $oFill->setGradientStops([
+            new GradientStop(0, new Color('FFE06B20')),
+            new GradientStop(50000, new Color('FF12B3D6')),
+            new GradientStop(100000, new Color('FF000000')),
+        ]);
+
+        $file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+        (new PowerPoint2007Writer($oPhpPresentation))->save($file);
+        $oPhpPresentationRead = (new PowerPoint2007())->load($file);
+        unlink($file);
+
+        $arrayShape = array_values((array) $oPhpPresentationRead->getActiveSlide()->getShapeCollection());
+        self::assertCount(1, $arrayShape);
+        $oReadFill = $arrayShape[0]->getFill();
+        self::assertEquals(Fill::FILL_GRADIENT_LINEAR, $oReadFill->getFillType());
+        self::assertCount(3, $oReadFill->getGradientStops());
     }
 
     /**

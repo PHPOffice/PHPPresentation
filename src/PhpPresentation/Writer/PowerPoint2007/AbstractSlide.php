@@ -1751,6 +1751,16 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             // > p:bgPr
             $objWriter->endElement();
         }
+        if ($oBackground instanceof Slide\Background\Gradient) {
+            // p:bgPr
+            $objWriter->startElement('p:bgPr');
+            // a:gradFill
+            $this->writeGradientFill($objWriter, $oBackground->getFill());
+            // p:bgPr/a:effectLst
+            $objWriter->writeElement('a:effectLst');
+            // > p:bgPr
+            $objWriter->endElement();
+        }
         // @link : http://www.officeopenxml.com/prSlide-background.php
         if ($oBackground instanceof Slide\Background\SchemeColor) {
             // p:bgRef

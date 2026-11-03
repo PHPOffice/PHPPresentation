@@ -2107,6 +2107,10 @@ class Content extends AbstractDecoratorWriter
                     $objWriter->writeAttribute('draw:fill-image-name', 'background_' . $incPage);
                     $objWriter->writeAttribute('style:repeat', 'stretch');
                 }
+                if ($oBackground instanceof Slide\Background\Gradient) {
+                    $objWriter->writeAttribute('draw:fill', 'gradient');
+                    $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $oBackground->getFill()->getHashCode());
+                }
             }
             $objWriter->endElement();
         }, $slide);

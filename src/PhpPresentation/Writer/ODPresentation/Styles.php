@@ -24,10 +24,12 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
+use PhpOffice\PhpPresentation\Exception\PhpPresentationException;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
+use PhpOffice\PhpPresentation\Slide\Background\Gradient;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
@@ -126,6 +128,11 @@ class Styles extends AbstractDecoratorWriter
         if ($oMasterBackground instanceof Image) {
             $this->writeBackgroundStyle($objWriter, $oMasterBackground, self::MASTER_PAGE_STYLE);
         }
+        // The gradient a master page is filled with, which the style below names
+        if ($oMasterBackground instanceof Gradient
+            && !in_array($oMasterBackground->getFill()->getHashCode(), $this->arrayGradient)) {
+            $this->writeGradientFill($objWriter, $oMasterBackground->getFill());
+        }
 
         foreach ($this->getPresentation()->getAllSlides() as $keySlide => $oSlide) {
             foreach ($oSlide->getShapeCollection() as $shape) {
@@ -140,6 +147,11 @@ class Styles extends AbstractDecoratorWriter
             $oBkgImage = $oSlide->getBackground();
             if ($oBkgImage instanceof Image) {
                 $this->writeBackgroundStyle($objWriter, $oBkgImage, (string) $keySlide);
+            }
+            // The gradient a slide is filled with, which the page names
+            if ($oBkgImage instanceof Gradient
+                && !in_array($oBkgImage->getFill()->getHashCode(), $this->arrayGradient)) {
+                $this->writeGradientFill($objWriter, $oBkgImage->getFill());
             }
         }
         // > office:styles
@@ -165,6 +177,10 @@ class Styles extends AbstractDecoratorWriter
             $objWriter->writeAttribute('draw:fill', 'bitmap');
             $objWriter->writeAttribute('draw:fill-image-name', 'background_' . self::MASTER_PAGE_STYLE);
             $objWriter->writeAttribute('style:repeat', 'stretch');
+        }
+        if ($oMasterBackground instanceof Gradient) {
+            $objWriter->writeAttribute('draw:fill', 'gradient');
+            $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $oMasterBackground->getFill()->getHashCode());
         }
         // > style:drawing-page-properties
         $objWriter->endElement();
@@ -347,6 +363,19 @@ class Styles extends AbstractDecoratorWriter
      */
     protected function writeGradientFill(XMLWriter $objWriter, Fill $oFill): void
     {
+        $stops = $oFill->getGradientStops();
+        if (count($stops) > 2) {
+            // OpenDocument has two colours in a gradient and no way of saying where a third
+            // one is, so a gradient of more stops is not written at all. A gradient that lost
+            // its middle would be another gradient from the one that was asked for, and a
+            // file that says another thing is worse than a file that says nothing.
+            throw new PhpPresentationException(
+                'OpenDocument has two colours in a gradient, and no way of saying where a third one is, '
+                . 'so a gradient of more than two stops cannot be written.'
+            );
+        }
+        $start = $stops[0];
+        $end = $stops[count($stops) - 1];
         $radial = Fill::FILL_GRADIENT_PATH == $oFill->getFillType();
 
         $objWriter->startElement('draw:gradient');
@@ -357,8 +386,8 @@ class Styles extends AbstractDecoratorWriter
         $objWriter->writeAttribute('draw:style', $radial ? 'radial' : 'linear');
         $objWriter->writeAttribute('draw:start-intensity', '100%');
         $objWriter->writeAttribute('draw:end-intensity', '100%');
-        $objWriter->writeAttribute('draw:start-color', '#' . $oFill->getStartColor()->getRGB());
-        $objWriter->writeAttribute('draw:end-color', '#' . $oFill->getEndColor()->getRGB());
+        $objWriter->writeAttribute('draw:start-color', '#' . $start->getColor()->getRGB());
+        $objWriter->writeAttribute('draw:end-color', '#' . $end->getColor()->getRGB());
         $objWriter->writeAttribute('draw:border', '0%');
         // The angle of a radial gradient is the direction its focus lies in, and a focus in
         // the middle of the shape is the one that is written.

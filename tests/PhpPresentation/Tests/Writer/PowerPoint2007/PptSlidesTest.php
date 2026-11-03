@@ -31,6 +31,7 @@ use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Field;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Animation;
+use PhpOffice\PhpPresentation\Slide\Background\Gradient;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
@@ -38,6 +39,7 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\GradientStop;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use ReflectionClass;
 
@@ -572,6 +574,73 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'b', '50000');
         // A path is not a line
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:lin');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A gradient of more than two stops is written with all of them.
+     */
+    public function testFillGradientStops(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_LINEAR);
+        $oFill->setGradientStops([
+            new GradientStop(0, new Color('FFE06B20')),
+            new GradientStop(50000, new Color('FF12B3D6')),
+            new GradientStop(100000, new Color('FF000000')),
+        ]);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', 'E06B20');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="50000"]/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', '12B3D6');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', '000000');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A background painted with a gradient is written as one.
+     */
+    public function testBackgroundGradient(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oFill = (new Fill())->setFillType(Fill::FILL_GRADIENT_LINEAR);
+        $oFill->setGradientStops([
+            new GradientStop(0, new Color('FFE06B20')),
+            new GradientStop(100000, new Color('FF12B3D6')),
+        ]);
+        $oSlide->setBackground((new Gradient())->setFill($oFill));
+
+        $element = '/p:sld/p:cSld/p:bg/p:bgPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', 'E06B20');
+        $element = '/p:sld/p:cSld/p:bg/p:bgPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', '12B3D6');
+        // A background is written before the shapes of the slide, which is where the schema
+        // wants it
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A background painted with a gradient that runs from the middle outwards is a path.
+     */
+    public function testBackgroundGradientPath(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oFill = (new Fill())->setFillType(Fill::FILL_GRADIENT_PATH);
+        $oSlide->setBackground((new Gradient())->setFill($oFill));
+
+        $element = '/p:sld/p:cSld/p:bg/p:bgPr/a:gradFill/a:path';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'path', 'circle');
         $this->assertIsSchemaECMA376Valid();
     }
 
