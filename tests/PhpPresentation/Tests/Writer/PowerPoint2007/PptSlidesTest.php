@@ -548,6 +548,33 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    /**
+     * A gradient that runs from the middle of the shape outwards is a path, and it is
+     * written as one: every gradient was written as a line, so a path came out linear.
+     */
+    public function testFillGradientPathIsWrittenAsAPath(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FFE06B20'))->setEndColor(new Color('FF12B3D6'));
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:path';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'path', 'circle');
+        // The focus of the gradient is the middle of the shape
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:path/a:fillToRect';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'l', '50000');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 't', '50000');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r', '50000');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'b', '50000');
+        // A path is not a line
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:lin');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testFillPatternTable(): void
     {
         $expected1 = 'E06B20';

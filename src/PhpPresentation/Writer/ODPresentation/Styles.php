@@ -347,16 +347,22 @@ class Styles extends AbstractDecoratorWriter
      */
     protected function writeGradientFill(XMLWriter $objWriter, Fill $oFill): void
     {
+        $radial = Fill::FILL_GRADIENT_PATH == $oFill->getFillType();
+
         $objWriter->startElement('draw:gradient');
         $objWriter->writeAttribute('draw:name', 'gradient_' . $oFill->getHashCode());
         $objWriter->writeAttribute('draw:display-name', 'gradient_' . $oFill->getHashCode());
-        $objWriter->writeAttribute('draw:style', 'linear');
+        // A gradient that runs from the middle of the shape outwards is a radial one, and it
+        // was written as a linear one, which is a different gradient altogether.
+        $objWriter->writeAttribute('draw:style', $radial ? 'radial' : 'linear');
         $objWriter->writeAttribute('draw:start-intensity', '100%');
         $objWriter->writeAttribute('draw:end-intensity', '100%');
         $objWriter->writeAttribute('draw:start-color', '#' . $oFill->getStartColor()->getRGB());
         $objWriter->writeAttribute('draw:end-color', '#' . $oFill->getEndColor()->getRGB());
         $objWriter->writeAttribute('draw:border', '0%');
-        $objWriter->writeAttribute('draw:angle', $oFill->getRotation() - 90);
+        // The angle of a radial gradient is the direction its focus lies in, and a focus in
+        // the middle of the shape is the one that is written.
+        $objWriter->writeAttribute('draw:angle', $radial ? '0' : $oFill->getRotation() - 90);
         $objWriter->endElement();
         $this->arrayGradient[] = $oFill->getHashCode();
     }

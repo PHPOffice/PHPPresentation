@@ -226,6 +226,19 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
+    public function testGradientPathIsRadial(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->createTextRun('AAA');
+        $oShape->getFill()->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
+
+        // A gradient that runs from the middle of the shape outwards is a radial one, and it
+        // was written as a linear one, which is a different gradient altogether.
+        $element = '/office:document-styles/office:styles/draw:gradient';
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:style', 'radial');
+    }
+
     public function testStrokeDash(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

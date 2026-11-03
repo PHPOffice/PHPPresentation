@@ -204,11 +204,31 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
         $objWriter->endElement();
 
-        // a:lin
-        $objWriter->startElement('a:lin');
-        $objWriter->writeAttribute('ang', CommonDrawing::degreesToAngle((int) $pFill->getRotation()));
-        $objWriter->writeAttribute('scaled', '0');
-        $objWriter->endElement();
+        // A path fill runs from the middle of the shape outwards, and the format says so with
+        // `a:path` where a gradient that runs from one side to the other says `a:lin`. Every
+        // gradient was written as `a:lin`, so a fill that named the path came out linear, and
+        // the shape it was on lost the very thing that made it a path.
+        if (Fill::FILL_GRADIENT_PATH == $pFill->getFillType()) {
+            // a:path
+            $objWriter->startElement('a:path');
+            $objWriter->writeAttribute('path', 'circle');
+
+            // a:fillToRect, the focus the gradient is measured from, in the middle of the shape
+            $objWriter->startElement('a:fillToRect');
+            $objWriter->writeAttribute('l', '50000');
+            $objWriter->writeAttribute('t', '50000');
+            $objWriter->writeAttribute('r', '50000');
+            $objWriter->writeAttribute('b', '50000');
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+        } else {
+            // a:lin
+            $objWriter->startElement('a:lin');
+            $objWriter->writeAttribute('ang', CommonDrawing::degreesToAngle((int) $pFill->getRotation()));
+            $objWriter->writeAttribute('scaled', '0');
+            $objWriter->endElement();
+        }
 
         $objWriter->endElement();
     }
