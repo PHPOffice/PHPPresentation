@@ -193,6 +193,13 @@ class Fill implements ComparableInterface
     private $endColor;
 
     /**
+     * The stops of the gradient, when it has more than the two its colours name.
+     *
+     * @var GradientStop[]
+     */
+    private $gradientStops = [];
+
+    /**
      * Hash index.
      *
      * @var int
@@ -287,17 +294,81 @@ class Fill implements ComparableInterface
     }
 
     /**
+     * Get the stops of the gradient.
+     *
+     * A gradient of two stops is what the start and end colours name, and they are what a
+     * fill has always held; a gradient of more stops is a list of its own, and the list is
+     * what is written. The two are never both there: a fill that names stops says so, and
+     * the colours it holds are then of no consequence to what is written.
+     *
+     * The stops a fill that names none has share the colour objects of the fill itself, so a
+     * colour that is changed after the fact is still the colour the gradient is written with.
+     *
+     * @return GradientStop[]
+     */
+    public function getGradientStops(): array
+    {
+        if ([] !== $this->gradientStops) {
+            return $this->gradientStops;
+        }
+
+        return [
+            new GradientStop(GradientStop::POSITION_START, $this->startColor),
+            new GradientStop(GradientStop::POSITION_END, $this->endColor),
+        ];
+    }
+
+    /**
+     * Set the stops of the gradient.
+     *
+     * An empty list is the two stops the start and end colours name, which is what a fill
+     * that names none is written as.
+     *
+     * @param GradientStop[] $stops
+     */
+    public function setGradientStops(array $stops): self
+    {
+        $this->gradientStops = array_values($stops);
+
+        return $this;
+    }
+
+    /**
+     * Add a stop to the gradient.
+     *
+     * A fill that names no stops has the two its colours name, and the stop added to it is
+     * a third one rather than a replacement of the two: a gradient of one stop is not a
+     * gradient, and the format asks for two at the very least.
+     */
+    public function addGradientStop(GradientStop $stop): self
+    {
+        if ([] === $this->gradientStops) {
+            $this->gradientStops = $this->getGradientStops();
+        }
+
+        $this->gradientStops[] = $stop;
+
+        return $this;
+    }
+
+    /**
      * Get hash code.
      *
      * @return string Hash code
      */
     public function getHashCode(): string
     {
+        $stops = '';
+        foreach ($this->getGradientStops() as $stop) {
+            $stops .= $stop->getHashCode();
+        }
+
         return md5(
             $this->getFillType()
             . $this->getRotation()
             . $this->getStartColor()->getHashCode()
             . $this->getEndColor()->getHashCode()
+            . $stops
             . __CLASS__
         );
     }

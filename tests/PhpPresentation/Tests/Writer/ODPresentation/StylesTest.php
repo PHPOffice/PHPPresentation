@@ -21,11 +21,14 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
+use PhpOffice\PhpPresentation\Exception\PhpPresentationException;
 use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
+use PhpOffice\PhpPresentation\Slide\Background\Gradient;
 use PhpOffice\PhpPresentation\Slide\Background\Image as BackgroundImage;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\GradientStop;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 /**
@@ -224,6 +227,59 @@ class StylesTest extends PhpPresentationTestCase
         $element = '/office:document-styles/office:styles/draw:gradient';
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', $gradientName);
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testGradientBackground(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oFill = (new Fill())->setFillType(Fill::FILL_GRADIENT_LINEAR);
+        $oFill->setGradientStops([
+            new GradientStop(0, new Color('FFFF7700')),
+            new GradientStop(100000, new Color('FFFFFFFF')),
+        ]);
+        $oSlide->setBackground((new Gradient())->setFill($oFill));
+
+        // the gradient defined in `styles.xml` is the one the page's own style names
+        $gradientName = $this->getZipXmlAttributeValue(
+            'content.xml',
+            '//style:drawing-page-properties[@draw:fill="gradient"]',
+            'draw:fill-gradient-name'
+        );
+        $element = '/office:document-styles/office:styles/draw:gradient';
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', $gradientName);
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:style', 'linear');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:start-color', '#FF7700');
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:end-color', '#FFFFFF');
+    }
+
+    public function testGradientBackgroundPathIsRadial(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->setBackground((new Gradient())->setFill((new Fill())->setFillType(Fill::FILL_GRADIENT_PATH)));
+
+        // A gradient that runs from the middle of the shape outwards is a radial one, and it
+        // was written as a linear one, which is a different gradient altogether.
+        $element = '/office:document-styles/office:styles/draw:gradient';
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:style', 'radial');
+    }
+
+    public function testGradientOfMoreThanTwoStopsIsRefused(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->createTextRun('AAA');
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_LINEAR);
+        $oFill->setGradientStops([
+            new GradientStop(0, new Color('FFFF7700')),
+            new GradientStop(50000, new Color('FF00FF00')),
+            new GradientStop(100000, new Color('FFFFFFFF')),
+        ]);
+
+        // OpenDocument has two colours in a gradient and no way of saying where a third one
+        // is, so a gradient of more stops is refused rather than written as another gradient
+        $this->expectException(PhpPresentationException::class);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
     }
 
     public function testStrokeDash(): void

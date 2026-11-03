@@ -114,7 +114,7 @@ notes list.
 | **Slides** | Slides | :material-alert-outline:<sup>3</sup> | :material-check: | :material-check: | :material-check: | :material-check: | :material-check: |
 |  | Slide name | :material-close: |  | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Hidden slide | :material-close: | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Background (colour, image) | :material-close: | :material-close: | :material-check: | :material-close: | :material-check: | :material-alert-outline:<sup>4</sup> |
+|  | Background (colour, image, gradient) | :material-close: | :material-close: | :material-check: | :material-close: | :material-check: | :material-alert-outline:<sup>4</sup> |
 |  | Transition | :material-close: | :material-close: | :material-alert-outline:<sup>5</sup> | :material-close: | :material-check: | :material-check: |
 |  | Animation | :material-close: | :material-close: | :material-close: | :material-close: | :material-check: | :material-check: |
 |  | Speaker notes | :material-close: | :material-alert-outline:<sup>6</sup> | :material-check: | :material-close: | :material-check: | :material-check: |
