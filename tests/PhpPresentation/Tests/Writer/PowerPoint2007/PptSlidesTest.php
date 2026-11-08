@@ -371,6 +371,37 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    /**
+     * A picture is drawn in a rectangle, and a picture cropped to a shape is drawn in the shape
+     * it was cropped to: the name of a preset, which is what the format calls it.
+     */
+    public function testDrawingShapeGeometry(): void
+    {
+        $shape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $shape->setHeight(10)->setWidth(10);
+        $shape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        $shape->setGeometry(AutoShape::TYPE_OVAL);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:prstGeom';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'prst', AutoShape::TYPE_OVAL);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * A picture that was told no geometry is drawn in a rectangle, which is what it was drawn in
+     * before it could be told otherwise.
+     */
+    public function testDrawingShapeGeometryDefaultsToARectangle(): void
+    {
+        $shape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $shape->setHeight(10)->setWidth(10);
+        $shape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:prstGeom';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'prst', 'rect');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testDrawingShapeMimetypeSVG(): void
     {
         $shape = $this->oPresentation->getActiveSlide()->createDrawingShape();
