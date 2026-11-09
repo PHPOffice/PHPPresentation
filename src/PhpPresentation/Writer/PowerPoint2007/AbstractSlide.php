@@ -1286,6 +1286,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:notes/p:cSld
         $objWriter->endElement();
 
+        // p:notes/p:clrMapOvr: optional in the schema, but Keynote does not import the file without it
+        $objWriter->startElement('p:clrMapOvr');
+        $objWriter->writeElement('a:masterClrMapping', null);
+        $objWriter->endElement();
+
         // p:notes
         $objWriter->endElement();
 
