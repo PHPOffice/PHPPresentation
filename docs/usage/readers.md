@@ -115,6 +115,19 @@ $reader = IOFactory::createReader('Serialized');
 $reader->load(__DIR__ . '/sample.phppt');
 ```
 
+The Serialized reader accepts only explicitly supported presentation model classes.
+Other objects, including custom subclasses, are rejected with `InvalidFileFormatException`.
+`ArrayObject` collections must use array storage and the standard `ArrayIterator`.
+Legacy custom-serialization (`C:`) payloads and serialized enums are rejected.
+GD drawings may use only the built-in `imagepng`, `imagegif`, `imagejpeg`, `imagebmp`,
+or `imagewebp` rendering functions. These checks prevent serialized data from selecting
+arbitrary application classes, iterator classes, or rendering callbacks.
+
+Validation limits nesting to 512 levels and the serialized payload to 100,000 values;
+graph inspection stops after one million values, including repeated array references.
+This fixes object injection; it does not make the format a sandbox for untrusted media
+paths or impose limits on ZIP decompression or image decoding.
+
 ## Supported features
 
 Keynote reads Keynote '09 (APXL) and Keynote '13+ (IWA). WMF and EMF (EMF+ too) images need
