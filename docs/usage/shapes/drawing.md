@@ -15,6 +15,29 @@ You can add multiples formats of image :
 - SVG
 - WMF, EMF & EMF+ (Windows metafiles), if the optional library [phpoffice/wmf](https://github.com/PHPOffice/WMF) and the GD extension are installed
 
+## Geometry
+
+A drawing is drawn in a rectangle, and it can be drawn in another shape instead: the name of a
+preset shape, which is what a picture cropped to a shape is written with.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\AutoShape;
+
+$shape = $slide->createDrawingShape();
+$shape->setPath('/path/to/drawing.filename');
+$shape->setGeometry(AutoShape::TYPE_OVAL);
+```
+
+The presets are the ones of the `AutoShape` class, so `AutoShape::TYPE_OVAL` is `ellipse` and
+`AutoShape::TYPE_HEART` is `heart`. The geometry a drawing is drawn in is the name of the shape
+and nothing else: the picture keeps its own size and its own place, and the shape is drawn
+around it.
+
+The PowerPoint2007 Writer writes the geometry and its Reader reads it back. The ODPresentation
+Writer has no geometry for a drawing and writes the picture as it is.
+
 ## Windows metafiles
 
 To add a WMF, an EMF or an EMF+ file, install the optional library [phpoffice/wmf](https://github.com/PHPOffice/WMF) :

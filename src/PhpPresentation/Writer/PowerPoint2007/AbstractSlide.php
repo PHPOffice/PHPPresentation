@@ -26,7 +26,6 @@ use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\Exception\UndefinedChartTypeException;
-use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
@@ -205,7 +204,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeShapeLine($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof ShapeChart) {
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof AbstractGraphic) {
+            } elseif ($shape instanceof AbstractDrawingAdapter) {
                 $this->writeShapePic($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof AutoShape) {
                 $this->writeShapeAutoShape($objWriter, $shape, $shapeId);
@@ -1479,7 +1478,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      *
      * @param XMLWriter $objWriter XML Writer
      */
-    protected function writeShapePic(XMLWriter $objWriter, AbstractGraphic $shape, int $shapeId): void
+    protected function writeShapePic(XMLWriter $objWriter, AbstractDrawingAdapter $shape, int $shapeId): void
     {
         // p:pic
         $objWriter->startElement('p:pic');
@@ -1498,7 +1497,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $this->writeHyperlink($objWriter, $shape);
         }
 
-        $hasCreationId = $shape instanceof AbstractDrawingAdapter && $shape->getExtension() == 'svg';
+        $hasCreationId = $shape->getExtension() == 'svg';
         if ($hasCreationId || $shape->isDecorative()) {
             $objWriter->startElement('a:extLst');
             if ($hasCreationId) {
@@ -1568,7 +1567,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('a:blip');
         $objWriter->writeAttribute('r:embed', $shape->relationId);
 
-        if ($shape instanceof AbstractDrawingAdapter && $shape->getExtension() == 'svg') {
+        if ($shape->getExtension() == 'svg') {
             // a:extLst
             $objWriter->startElement('a:extLst');
 
@@ -1631,7 +1630,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // a:prstGeom
         $objWriter->startElement('a:prstGeom');
-        $objWriter->writeAttribute('prst', 'rect');
+        $objWriter->writeAttribute('prst', $shape->getGeometry());
         // // a:prstGeom/a:avLst
         $objWriter->writeElement('a:avLst', null);
         // ##a:prstGeom

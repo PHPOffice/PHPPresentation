@@ -24,6 +24,18 @@ use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 
 abstract class AbstractDrawingAdapter extends AbstractGraphic
 {
+    /**
+     * The geometry the drawing is drawn in.
+     *
+     * The name of a preset shape, as the format calls it: `rect` for the rectangle a
+     * drawing is drawn in unless it is told otherwise, and `ellipse` for the one a
+     * picture cropped to a shape is drawn in. The presets of
+     * {@see \PhpOffice\PhpPresentation\Shape\AutoShape} are the same names.
+     *
+     * @var string
+     */
+    protected $geometry = 'rect';
+
     abstract public function getContents(): string;
 
     abstract public function getExtension(): string;
@@ -38,4 +50,16 @@ abstract class AbstractDrawingAdapter extends AbstractGraphic
      * @return self
      */
     abstract public function setPath(string $path);
+
+    public function getGeometry(): string
+    {
+        return $this->geometry;
+    }
+
+    public function setGeometry(string $geometry): self
+    {
+        $this->geometry = $geometry;
+
+        return $this;
+    }
 }
