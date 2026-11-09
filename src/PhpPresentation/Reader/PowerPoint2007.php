@@ -257,9 +257,25 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected function relsOf(string $part): string
     {
-        $folder = trim(dirname('/' . ltrim($part, '/')), '/');
+        $folder = $this->folderOf($part);
 
         return ('' === $folder ? '' : $folder . '/') . '_rels/' . basename($part) . '.rels';
+    }
+
+    /**
+     * Folder of a part of the package, or an empty string for a part at its root.
+     *
+     * The parts of a package are separated by forward slashes, and their names are not paths of
+     * a file system. `dirname()` is a function of the file system, and on Windows it answers
+     * with backslashes: the folder of a part at the root of a package is named `\` there, and
+     * no part of a package is named by one.
+     */
+    protected function folderOf(string $part): string
+    {
+        $part = ltrim($part, '/');
+        $position = strrpos($part, '/');
+
+        return false === $position ? '' : substr($part, 0, $position);
     }
 
     /**
@@ -272,7 +288,7 @@ class PowerPoint2007 implements ReaderInterface
     {
         $path = 0 === strncmp($target, '/', 1)
             ? $target
-            : dirname('/' . ltrim($relsPart, '/'), 2) . '/' . $target;
+            : $this->folderOf($this->folderOf($relsPart)) . '/' . $target;
 
         $segments = [];
         foreach (explode('/', $path) as $segment) {
