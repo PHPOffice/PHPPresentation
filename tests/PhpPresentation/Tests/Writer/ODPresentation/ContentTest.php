@@ -2946,4 +2946,55 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'office:title', 'A cell tooltip');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
+
+    public function testShapeName(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->createRichTextShape()->setName('Text');
+        $oSlide->createTableShape(1)->setName('Table')->createRow()->getCell()->createTextRun('Cell');
+        $oSlide->createLineShape(0, 0, 10, 10)->setName('Line');
+        $oGroup = $oSlide->createGroup();
+        $oGroup->setName('Group');
+        $oGroup->createRichTextShape();
+        $oChart = $oSlide->createChartShape()->setName('Chart');
+        $oChart->getTitle()->setText('Title');
+        $oChart->getPlotArea()->setType((new ChartTypeLine())->addSeries(new Series('Serie', ['A' => '1'])));
+        $oUntitled = $oSlide->createChartShape();
+        $oUntitled->getTitle()->setText('Untitled');
+        $oUntitled->getPlotArea()->setType((new ChartTypeLine())->addSeries(new Series('Serie', ['A' => '1'])));
+
+        // only a picture and a media shape were named, and a chart by the text of its title
+        $element = '/office:document-content/office:body/office:presentation/draw:page';
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:text-box]', 'draw:name', 'Text');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[table:table]', 'draw:name', 'Table');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:line', 'draw:name', 'Line');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:g', 'draw:name', 'Group');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '/draw:g/draw:frame', 'draw:name');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:object][1]', 'draw:name', 'Chart');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:object][2]', 'draw:name', 'Untitled');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testShapeNameOnlyWhenGiven(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        foreach (['Picture', ''] as $name) {
+            $oSlide->createDrawingShape()->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png')->setName($name);
+            $oSlide->addShape((new AutoShape())->setName($name));
+        }
+        $oMedia = new Media();
+        $oMedia->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/videos/sintel_trailer-480p.ogv')->setName('');
+        $oSlide->addShape($oMedia);
+
+        // a picture, a media shape and an AutoShape wrote `draw:name` even when it was empty
+        $element = '/office:document-content/office:body/office:presentation/draw:page';
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:frame[draw:image][1]', 'draw:name', 'Picture');
+        $this->assertZipXmlAttributeEquals('content.xml', $element . '/draw:custom-shape[1]', 'draw:name', 'Picture');
+        $this->assertZipXmlElementExists('content.xml', $element . '/draw:frame[draw:image][2]');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '/draw:frame[draw:image][2]', 'draw:name');
+        $this->assertZipXmlElementExists('content.xml', $element . '/draw:custom-shape[2]');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '/draw:custom-shape[2]', 'draw:name');
+        $this->assertZipXmlElementExists('content.xml', $element . '/draw:frame[draw:plugin]');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element . '/draw:frame[draw:plugin]', 'draw:name');
+    }
 }
