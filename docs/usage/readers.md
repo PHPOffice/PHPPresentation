@@ -144,8 +144,8 @@ model, with the exceptions its notes list.
 | **Shape (all)** | Name |  | :material-alert-outline:<sup>11</sup> | :material-close: | :material-check: | :material-check: |
 |  | Description (alternative text) | :material-close: | :material-alert-outline:<sup>12</sup> | :material-close: | :material-check: | :material-check: |
 |  | Decorative flag |  | :material-check: |  | :material-check: | :material-check: |
-|  | Hyperlink on the shape | :material-close: | :material-close: | :material-close: | :material-check: | :material-check: |
-|  | Hyperlink tooltip |  | :material-close: | :material-close: | :material-check: | :material-check: |
+|  | Hyperlink on the shape | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
+|  | Hyperlink tooltip |  | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Position and size | :material-alert-outline:<sup>13</sup> | :material-check: | :material-check: | :material-check: | :material-check: |
 |  | Rotation | :material-close: | :material-check: | :material-alert-outline:<sup>14</sup> | :material-alert-outline:<sup>15</sup> | :material-check: |
 |  | Fill | :material-close: | :material-alert-outline:<sup>16</sup> | :material-close: | :material-alert-outline:<sup>17</sup> | :material-check: |

@@ -124,7 +124,7 @@ notes list.
 |  | Description (alternative text) | :material-alert-outline:<sup>15</sup> | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Decorative flag | :material-close: |  | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Hyperlink on the shape | :material-close: | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Hyperlink tooltip | :material-close: |  | :material-close: | :material-close: | :material-check: | :material-check: |
+|  | Hyperlink tooltip | :material-close: |  | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Position and size | :material-check: | :material-check: | :material-check: | :material-check: | :material-check: | :material-check: |
 |  | Rotation | :material-close: | :material-close: | :material-alert-outline:<sup>16</sup> | :material-close: | :material-alert-outline:<sup>17</sup> | :material-check: |
 |  | Fill | :material-close: | :material-close: | :material-alert-outline:<sup>18</sup> | :material-close: | :material-check: | :material-check: |
