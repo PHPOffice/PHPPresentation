@@ -1905,6 +1905,23 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testTableWithFractionalColumnWidth(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape(7);
+        $oShape->setHeight(200)->setWidth(1200);
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oCell->createTextRun('AAA');
+        $oCell->getActiveParagraph()->getAlignment()->setMarginLeft(10.5);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblGrid/a:gridCol';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'w', '1632857');
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:txBody/a:p/a:pPr';
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marL', '100013');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testTableWithBorder(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

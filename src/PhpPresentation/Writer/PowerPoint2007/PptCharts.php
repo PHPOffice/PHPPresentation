@@ -200,8 +200,8 @@ class PptCharts extends AbstractDecoratorWriter
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($chart->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', CommonDrawing::pixelsToEmu($chart->getShadow()->getDistance()));
+            $objWriter->writeAttribute('blurRad', $this->pixelsToEmu($chart->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', $this->pixelsToEmu($chart->getShadow()->getDistance()));
             $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle((int) $chart->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $chart->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
@@ -472,9 +472,9 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('a:pPr');
         $objWriter->writeAttribute('algn', $subject->getAlignment()->getHorizontal());
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', (int) CommonDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('marL', $this->pixelsToEmu($subject->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', $this->pixelsToEmu($subject->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', $this->pixelsToEmu($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr
@@ -636,9 +636,9 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('a:pPr');
         $objWriter->writeAttribute('algn', $subject->getAlignment()->getHorizontal());
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', (int) CommonDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('marL', $this->pixelsToEmu($subject->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', $this->pixelsToEmu($subject->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', $this->pixelsToEmu($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr
