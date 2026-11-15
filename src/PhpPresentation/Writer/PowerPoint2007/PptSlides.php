@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
-use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
@@ -267,26 +266,26 @@ class PptSlides extends AbstractSlide
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($pSlide->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($pSlide->getOffsetY()));
         $objWriter->endElement(); // a:off
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($pSlide->getExtentX()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($pSlide->getExtentY()));
         $objWriter->endElement(); // a:ext
 
         // a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($pSlide->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($pSlide->getOffsetY()));
         $objWriter->endElement(); // a:chOff
 
         // a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($pSlide->getExtentX()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($pSlide->getExtentY()));
         $objWriter->endElement(); // a:chExt
 
         $objWriter->endElement();

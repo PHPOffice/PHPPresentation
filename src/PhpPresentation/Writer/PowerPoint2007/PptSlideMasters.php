@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
-use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
@@ -203,17 +202,17 @@ class PptSlideMasters extends AbstractSlide
                 $objWriter->writeAttributeIf(
                     0 != $oParagraph->getAlignment()->getMarginLeft(),
                     'marL',
-                    CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getMarginLeft())
+                    $this->pixelsToEmu($oParagraph->getAlignment()->getMarginLeft())
                 );
                 $objWriter->writeAttributeIf(
                     0 != $oParagraph->getAlignment()->getMarginRight(),
                     'marR',
-                    CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getMarginRight())
+                    $this->pixelsToEmu($oParagraph->getAlignment()->getMarginRight())
                 );
                 $objWriter->writeAttributeIf(
                     0 != $oParagraph->getAlignment()->getIndent(),
                     'indent',
-                    (int) CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getIndent())
+                    $this->pixelsToEmu($oParagraph->getAlignment()->getIndent())
                 );
                 $objWriter->startElement('a:defRPr');
                 $objWriter->writeAttributeIf(10 != $oParagraph->getFont()->getSize(), 'sz', $oParagraph->getFont()->getSize() * 100);

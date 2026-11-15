@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
-use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
@@ -134,23 +133,23 @@ class PptSlideLayouts extends AbstractSlide
         $objWriter->startElement('a:xfrm');
         // p:sldLayout\p:cSld\p:spTree\p:grpSpPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlideLayout->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlideLayout->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($pSlideLayout->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($pSlideLayout->getOffsetY()));
         $objWriter->endElement();
         // p:sldLayout\p:cSld\p:spTree\p:grpSpPr\a:xfrm\a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlideLayout->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlideLayout->getExtentY()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($pSlideLayout->getExtentX()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($pSlideLayout->getExtentY()));
         $objWriter->endElement();
         // p:sldLayout\p:cSld\p:spTree\p:grpSpPr\a:xfrm\a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlideLayout->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlideLayout->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($pSlideLayout->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($pSlideLayout->getOffsetY()));
         $objWriter->endElement();
         // p:sldLayout\p:cSld\p:spTree\p:grpSpPr\a:xfrm\a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlideLayout->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlideLayout->getExtentY()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($pSlideLayout->getExtentX()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($pSlideLayout->getExtentY()));
         $objWriter->endElement();
         // p:sldLayout\p:cSld\p:spTree\p:grpSpPr\a:xfrm\
         $objWriter->endElement();

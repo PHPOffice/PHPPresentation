@@ -30,6 +30,14 @@ use PhpOffice\PhpPresentation\Style\Outline;
 abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer\AbstractDecoratorWriter
 {
     /**
+     * OOXML coordinates must be integers, so EMU values are rounded.
+     */
+    protected function pixelsToEmu(float $value): int
+    {
+        return (int) round(CommonDrawing::pixelsToEmu($value));
+    }
+
+    /**
      * Write relationship.
      *
      * @param XMLWriter $objWriter XML Writer
@@ -74,7 +82,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
         // a:ln $pElementName
         $objWriter->startElement('a:ln' . $pElementName);
-        $objWriter->writeAttribute('w', (int) CommonDrawing::pixelsToEmu($pBorder->getLineWidth()));
+        $objWriter->writeAttribute('w', $this->pixelsToEmu($pBorder->getLineWidth()));
         $objWriter->writeAttribute('cap', 'flat');
         $objWriter->writeAttribute('cmpd', $lineStyle);
         $objWriter->writeAttribute('algn', 'ctr');
@@ -249,7 +257,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
             return;
         }
         // Width : pixels
-        $width = CommonDrawing::pixelsToEmu($oOutline->getWidth());
+        $width = $this->pixelsToEmu($oOutline->getWidth());
 
         // a:ln
         $objWriter->startElement('a:ln');

@@ -314,13 +314,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
         // p:sp\p:spPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
         // p:sp\p:spPr\a:xfrm\a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
         // > p:sp\p:spPr\a:xfrm
         $objWriter->endElement();
@@ -365,13 +365,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('upright', '1');
             }
             $objWriter->writeAttribute('vert', $shape->isVertical() ? 'vert' : 'horz');
-            $objWriter->writeAttribute('bIns', CommonDrawing::pixelsToEmu($shape->getInsetBottom()));
-            $objWriter->writeAttribute('lIns', CommonDrawing::pixelsToEmu($shape->getInsetLeft()));
-            $objWriter->writeAttribute('rIns', CommonDrawing::pixelsToEmu($shape->getInsetRight()));
-            $objWriter->writeAttribute('tIns', CommonDrawing::pixelsToEmu($shape->getInsetTop()));
+            $objWriter->writeAttribute('bIns', $this->pixelsToEmu($shape->getInsetBottom()));
+            $objWriter->writeAttribute('lIns', $this->pixelsToEmu($shape->getInsetLeft()));
+            $objWriter->writeAttribute('rIns', $this->pixelsToEmu($shape->getInsetRight()));
+            $objWriter->writeAttribute('tIns', $this->pixelsToEmu($shape->getInsetTop()));
             if ($shape->getColumns() != 1) {
                 $objWriter->writeAttribute('numCol', $shape->getColumns());
-                $objWriter->writeAttribute('spcCol', CommonDrawing::pixelsToEmu($shape->getColumnSpacing()));
+                $objWriter->writeAttribute('spcCol', $this->pixelsToEmu($shape->getColumnSpacing()));
             }
             // a:spAutoFit
             $objWriter->startElement('a:' . $shape->getAutoFit());
@@ -471,13 +471,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:xfrm');
         // p:graphicFrame/p:xfrm/a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
         // p:graphicFrame/p:xfrm/a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
         // p:graphicFrame/p:xfrm/
         $objWriter->endElement();
@@ -507,7 +507,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $totalWidth = $shape->getWidth();
                 $width = $totalWidth / $colCount;
             }
-            $objWriter->writeAttribute('w', CommonDrawing::pixelsToEmu($width));
+            $objWriter->writeAttribute('w', $this->pixelsToEmu($width));
             $objWriter->endElement();
         }
         // p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblGrid/
@@ -521,7 +521,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         for ($row = 0; $row < $countRows; ++$row) {
             // p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr
             $objWriter->startElement('a:tr');
-            $objWriter->writeAttribute('h', CommonDrawing::pixelsToEmu($shape->getRow($row)->getHeight()));
+            $objWriter->writeAttribute('h', $this->pixelsToEmu($shape->getRow($row)->getHeight()));
             // Write cells
             $countCells = count($shape->getRow($row)->getCells());
             for ($cell = 0; $cell < $countCells; ++$cell) {
@@ -581,10 +581,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 }
 
                 // Margins
-                $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($firstParagraphAlignment->getMarginLeft()));
-                $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($firstParagraphAlignment->getMarginRight()));
-                $objWriter->writeAttribute('marT', CommonDrawing::pixelsToEmu($firstParagraphAlignment->getMarginTop()));
-                $objWriter->writeAttribute('marB', CommonDrawing::pixelsToEmu($firstParagraphAlignment->getMarginBottom()));
+                $objWriter->writeAttribute('marL', $this->pixelsToEmu($firstParagraphAlignment->getMarginLeft()));
+                $objWriter->writeAttribute('marR', $this->pixelsToEmu($firstParagraphAlignment->getMarginRight()));
+                $objWriter->writeAttribute('marT', $this->pixelsToEmu($firstParagraphAlignment->getMarginTop()));
+                $objWriter->writeAttribute('marB', $this->pixelsToEmu($firstParagraphAlignment->getMarginBottom()));
 
                 // Determine borders
                 $borderLeft = $currentCell->getBorders()->getLeft();
@@ -713,9 +713,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('algn', $paragraph->getAlignment()->getHorizontal());
         $objWriter->writeAttribute('rtl', $paragraph->getAlignment()->isRTL() ? '1' : '0');
         $objWriter->writeAttribute('fontAlgn', $paragraph->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', (int) CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('marL', $this->pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', $this->pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', $this->pixelsToEmu($paragraph->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $paragraph->getAlignment()->getLevel());
 
         $objWriter->startElement('a:lnSpc');
@@ -887,50 +887,50 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', $this->pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', $this->pixelsToEmu($shape->getOffsetY()));
             $objWriter->endElement();
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->writeAttribute('cx', $this->pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', $this->pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
             $objWriter->writeAttribute('flipH', 1);
             $objWriter->writeAttribute('flipV', 1);
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->writeAttribute('x', $this->pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', $this->pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
             $objWriter->endElement();
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', $this->pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', $this->pixelsToEmu(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getHeight() < 0) {
             $objWriter->writeAttribute('flipV', 1);
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->writeAttribute('x', $this->pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', $this->pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
             $objWriter->endElement();
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', $this->pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', $this->pixelsToEmu(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0) {
             $objWriter->writeAttribute('flipH', 1);
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', $this->pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', $this->pixelsToEmu($shape->getOffsetY()));
             $objWriter->endElement();
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->writeAttribute('cx', $this->pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', $this->pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         }
         $objWriter->endElement();
@@ -962,8 +962,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // a:outerShdw
         $objWriter->startElement('a:' . $oShadow->getType());
-        $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($oShadow->getBlurRadius()));
-        $objWriter->writeAttribute('dist', CommonDrawing::pixelsToEmu($oShadow->getDistance()));
+        $objWriter->writeAttribute('blurRad', $this->pixelsToEmu($oShadow->getBlurRadius()));
+        $objWriter->writeAttribute('dist', $this->pixelsToEmu($oShadow->getDistance()));
         $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle((int) $oShadow->getDirection()));
         $objWriter->writeAttribute('algn', $oShadow->getAlignment());
         $objWriter->writeAttribute('rotWithShape', '0');
@@ -1058,26 +1058,26 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm/a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($pNote->getOffsetY()));
         $objWriter->endElement(); // a:off
 
         // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm/a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($pNote->getExtentX()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($pNote->getExtentY()));
         $objWriter->endElement(); // a:ext
 
         // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm/a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($pNote->getOffsetY()));
         $objWriter->endElement(); // a:chOff
 
         // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm/a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($pNote->getExtentX()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($pNote->getExtentY()));
         $objWriter->endElement(); // a:chExt
 
         // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm
@@ -1139,8 +1139,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm/a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(round($pNote->getExtentX() / 2)));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(round($pNote->getExtentY() / 2)));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu(round($pNote->getExtentX() / 2)));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu(round($pNote->getExtentY() / 2)));
         $objWriter->endElement();
 
         // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm
@@ -1230,8 +1230,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm/a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu(round($pNote->getExtentY() / 2) + $pNote->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu(round($pNote->getExtentY() / 2) + $pNote->getOffsetY()));
         $objWriter->endElement();
 
         // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm/a:ext
@@ -1329,13 +1329,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
         // p:sp\p:spPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
         // p:sp\p:spPr\a:xfrm\a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
         // p:sp\p:spPr\a:xfrm\
         $objWriter->endElement();
@@ -1449,13 +1449,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttributeIf(0 != $shape->getRotation(), 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
         $objWriter->endElement();
         // a:graphic
@@ -1617,14 +1617,14 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -1677,23 +1677,23 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttributeIf(0 != $group->getRotation(), 'rot', CommonDrawing::degreesToAngle($group->getRotation()));
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($group->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($group->getOffsetY()));
         $objWriter->endElement(); // a:off
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($group->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($group->getExtentY()));
         $objWriter->endElement(); // a:ext
         // a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($group->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->writeAttribute('x', $this->pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', $this->pixelsToEmu($group->getOffsetY()));
         $objWriter->endElement(); // a:chOff
         // a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($group->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->writeAttribute('cx', $this->pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', $this->pixelsToEmu($group->getExtentY()));
         $objWriter->endElement(); // a:chExt
         $objWriter->endElement(); // a:xfrm
         $this->writeShadow($objWriter, $group->getShadow());
