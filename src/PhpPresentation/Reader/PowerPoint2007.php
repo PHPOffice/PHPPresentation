@@ -59,6 +59,7 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\GradientStop;
 use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\Shadow;
@@ -743,6 +744,12 @@ class PowerPoint2007 implements ReaderInterface
                         $oSlide->setBackground($oBackground);
                     }
                 }
+                $oBackgroundGradient = $this->loadBackgroundGradient($xmlReader, $oElement);
+                if ($oBackgroundGradient instanceof Slide\Background\Gradient) {
+                    // Slide Background
+                    $oSlide = $this->oPhpPresentation->getActiveSlide();
+                    $oSlide->setBackground($oBackgroundGradient);
+                }
             }
 
             // The fonts of the theme of the master the layout of the slide belongs to
@@ -1083,6 +1090,42 @@ class PowerPoint2007 implements ReaderInterface
                 $oSlide->setBackground($oBackground);
             }
         }
+
+        // Background gradient
+        $oElementBackground = $xmlReader->getElement('p:bgPr', $oElement);
+        if ($oElementBackground instanceof DOMElement) {
+            $oBackgroundGradient = $this->loadBackgroundGradient($xmlReader, $oElementBackground);
+            if ($oBackgroundGradient instanceof Slide\Background\Gradient) {
+                // Slide Background
+                $oSlide->setBackground($oBackgroundGradient);
+            }
+        }
+    }
+
+    /**
+     * Read the gradient a background is painted with.
+     *
+     * The gradient is a fill, and it is read by the reader that reads the fills, so that a
+     * background and a shape painted with the same gradient are the same thing on the way
+     * back in as they were on the way out.
+     *
+     * @param DOMElement $oElement the `p:bgPr` element of the background
+     */
+    protected function loadBackgroundGradient(XMLReader $xmlReader, DOMElement $oElement): ?Slide\Background\Gradient
+    {
+        if (!($xmlReader->getElement('a:gradFill', $oElement) instanceof DOMElement)) {
+            return null;
+        }
+
+        $oFill = $this->loadStyleFill($xmlReader, $oElement);
+        if (!($oFill instanceof Fill)) {
+            return null;
+        }
+
+        $oBackground = new Slide\Background\Gradient();
+        $oBackground->setFill($oFill);
+
+        return $oBackground;
     }
 
     protected function loadSlideNote(string $partName, Slide $oSlide): void
@@ -2467,19 +2510,44 @@ class PowerPoint2007 implements ReaderInterface
             $oFill = new Fill();
             $oFill->setFillType(Fill::FILL_GRADIENT_LINEAR);
 
-            $oElementColor = $xmlReader->getElement('a:gsLst/a:gs[@pos="0"]/a:srgbClr', $oElementFill);
-            if ($oElementColor instanceof DOMElement && $oElementColor->hasAttribute('val')) {
-                $oFill->setStartColor($this->loadStyleColor($xmlReader, $oElementColor));
+            // Every stop of the gradient is read, and not only the two that sit at either end
+            // of it: a gradient of three stops came back as two, with the one in the middle
+            // lost, and a gradient of three stops is what PowerPoint writes for a gradient
+            // that has three colours in it.
+            $stops = [];
+            foreach ($xmlReader->getElements('a:gsLst/a:gs', $oElementFill) as $oElementStop) {
+                if (!($oElementStop instanceof DOMElement)) {
+                    continue;
+                }
+                $oElementColor = $xmlReader->getElement('a:srgbClr', $oElementStop);
+                if (!($oElementColor instanceof DOMElement) || !$oElementColor->hasAttribute('val')) {
+                    continue;
+                }
+                $stops[] = new GradientStop(
+                    $oElementStop->hasAttribute('pos') ? (int) $oElementStop->getAttribute('pos') : GradientStop::POSITION_START,
+                    $this->loadStyleColor($xmlReader, $oElementColor)
+                );
+            }
+            if (count($stops) > 0) {
+                $oFill->setGradientStops($stops);
+                // The colours of the first and the last stop are the start and the end colour
+                // of the fill, which is what a fill of two stops is.
+                $oFill->setStartColor($stops[0]->getColor());
+                $oFill->setEndColor($stops[count($stops) - 1]->getColor());
             }
 
-            $oElementColor = $xmlReader->getElement('a:gsLst/a:gs[@pos="100000"]/a:srgbClr', $oElementFill);
-            if ($oElementColor instanceof DOMElement && $oElementColor->hasAttribute('val')) {
-                $oFill->setEndColor($this->loadStyleColor($xmlReader, $oElementColor));
-            }
-
-            $oRotation = $xmlReader->getElement('a:lin', $oElementFill);
-            if ($oRotation instanceof DOMElement && $oRotation->hasAttribute('ang')) {
-                $oFill->setRotation(CommonDrawing::angleToDegrees((int) $oRotation->getAttribute('ang')));
+            // A gradient that runs from the middle of the shape outwards is a path, and the
+            // format says so with `a:path` where a gradient that runs from one side to the
+            // other says `a:lin`. It was read as a line whatever it was, so a path came back
+            // as a line.
+            $oElementPath = $xmlReader->getElement('a:path', $oElementFill);
+            if ($oElementPath instanceof DOMElement) {
+                $oFill->setFillType(Fill::FILL_GRADIENT_PATH);
+            } else {
+                $oRotation = $xmlReader->getElement('a:lin', $oElementFill);
+                if ($oRotation instanceof DOMElement && $oRotation->hasAttribute('ang')) {
+                    $oFill->setRotation(CommonDrawing::angleToDegrees((int) $oRotation->getAttribute('ang')));
+                }
             }
 
             return $oFill;

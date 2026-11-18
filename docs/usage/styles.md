@@ -20,12 +20,44 @@ Properties:
 - `rotation`
 - `startColor`
 - `endColor`
+- `gradientStops`
 
 A shape always has a fill, so `getFill()` never hands back a null. A shape starts at
 `Fill::FILL_NONE` — no fill, and none inherited — and `setFill(null)` puts it at
 `Fill::FILL_UNSET` instead, which says nothing at all and lets the theme or the placeholder behind
 the shape paint it. `setFill(null)` is deprecated; pass a `Fill` of type `Fill::FILL_UNSET` to say
 the same thing outright.
+
+### Gradients
+
+A gradient is a fill of type `Fill::FILL_GRADIENT_LINEAR`, which runs from one side of the shape
+to the other, or of type `Fill::FILL_GRADIENT_PATH`, which runs from the middle of it outwards.
+The rotation is the angle it runs at, in degrees.
+
+The two colours a fill holds are the ends of a gradient of two stops. A gradient of more stops is
+a list of its own, and the list is what is written:
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\GradientStop;
+
+$shape->getFill()
+    ->setFillType(Fill::FILL_GRADIENT_LINEAR)
+    ->setRotation(90)
+    ->setGradientStops([
+        new GradientStop(0, new Color('FFCCCCCC')),
+        new GradientStop(50000, new Color('FF888888')),
+        new GradientStop(100000, new Color('FFFFFFFF')),
+    ]);
+```
+
+The position of a stop is the one `a:gs/@pos` counts, from 0 to 100000, which is a percentage of
+the gradient. A fill that names no stop has the two its colours name, at either end of it, and a
+stop added to it is a third one rather than a replacement of the two.
+
+The stops are part of what a fill is compared by, so two gradients that differ only in their
+stops are two gradients the library can tell apart.
 
 ### Patterns
 

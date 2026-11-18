@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\GradientStop;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -101,5 +102,51 @@ class FillTest extends TestCase
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         self::assertEquals($value, $object->getHashIndex());
+    }
+
+    /**
+     * Test get/set gradient stops.
+     */
+    public function testSetGetGradientStops(): void
+    {
+        $object = new Fill();
+
+        // A fill that names no stops is the two its colours name, and the colours are the
+        // very objects the fill holds, so that a colour changed afterwards is still the
+        // colour the gradient is written with.
+        $stops = $object->getGradientStops();
+        self::assertCount(2, $stops);
+        self::assertEquals(GradientStop::POSITION_START, $stops[0]->getPosition());
+        self::assertEquals(GradientStop::POSITION_END, $stops[1]->getPosition());
+        self::assertSame($object->getStartColor(), $stops[0]->getColor());
+        self::assertSame($object->getEndColor(), $stops[1]->getColor());
+
+        $middle = new GradientStop(50000, new Color(Color::COLOR_RED));
+        self::assertInstanceOf(Fill::class, $object->addGradientStop($middle));
+        $stops = $object->getGradientStops();
+        self::assertCount(3, $stops);
+        self::assertSame($middle, $stops[2]);
+
+        self::assertInstanceOf(Fill::class, $object->setGradientStops([$middle]));
+        self::assertCount(1, $object->getGradientStops());
+
+        // An empty list is the two stops the colours name again
+        self::assertInstanceOf(Fill::class, $object->setGradientStops([]));
+        self::assertCount(2, $object->getGradientStops());
+    }
+
+    /**
+     * Test that the stops of a gradient are in its hash code.
+     */
+    public function testGradientStopsAreInTheHashCode(): void
+    {
+        $object = new Fill();
+        $same = new Fill();
+        self::assertEquals($object->getHashCode(), $same->getHashCode());
+
+        // Two gradients that differ only in their stops are two gradients the library has
+        // to be able to tell apart
+        $same->addGradientStop(new GradientStop(50000, new Color(Color::COLOR_RED)));
+        self::assertNotEquals($object->getHashCode(), $same->getHashCode());
     }
 }

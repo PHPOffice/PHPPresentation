@@ -135,7 +135,7 @@ model, with the exceptions its notes list.
 | **Slides** | Slides | :material-alert-outline:<sup>5</sup> | :material-check: | :material-check: | :material-check: | :material-check: |
 |  | Slide name |  | :material-check: | :material-close: | :material-check: | :material-check: |
 |  | Hidden slide | :material-close: | :material-check: | :material-close: | :material-check: | :material-check: |
-|  | Background (colour, image) | :material-close: | :material-check: | :material-close: | :material-check: | :material-alert-outline:<sup>6</sup> |
+|  | Background (colour, image, gradient) | :material-close: | :material-alert-outline:<sup>64</sup> | :material-close: | :material-check: | :material-alert-outline:<sup>6</sup> |
 |  | Transition | :material-close: | :material-close: | :material-close: | :material-close: | :material-check: |
 |  | Animation | :material-close: | :material-close: | :material-close: | :material-close: | :material-check: |
 |  | Speaker notes | :material-alert-outline:<sup>7</sup> | :material-check: | :material-alert-outline:<sup>8</sup> | :material-check: | :material-check: |
@@ -253,3 +253,4 @@ model, with the exceptions its notes list.
 61. No min/max, units, gridlines, number format.
 62. No label position or series-name label.
 63. No markers, label position, font.
+64. A gradient background is not read.

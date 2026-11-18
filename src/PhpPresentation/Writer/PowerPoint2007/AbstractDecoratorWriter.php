@@ -190,25 +190,40 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
         // a:gsLst
         $objWriter->startElement('a:gsLst');
-        // a:gs
-        $objWriter->startElement('a:gs');
-        $objWriter->writeAttribute('pos', '0');
-        $this->writeColor($objWriter, $pFill->getStartColor());
+        foreach ($pFill->getGradientStops() as $stop) {
+            // a:gs
+            $objWriter->startElement('a:gs');
+            $objWriter->writeAttribute('pos', (string) $stop->getPosition());
+            $this->writeColor($objWriter, $stop->getColor());
+            $objWriter->endElement();
+        }
         $objWriter->endElement();
 
-        // a:gs
-        $objWriter->startElement('a:gs');
-        $objWriter->writeAttribute('pos', '100000');
-        $this->writeColor($objWriter, $pFill->getEndColor());
-        $objWriter->endElement();
+        // A path fill runs from the middle of the shape outwards, and the format says so with
+        // `a:path` where a gradient that runs from one side to the other says `a:lin`. Every
+        // gradient was written as `a:lin`, so a fill that named the path came out linear, and
+        // the shape it was on lost the very thing that made it a path.
+        if (Fill::FILL_GRADIENT_PATH == $pFill->getFillType()) {
+            // a:path
+            $objWriter->startElement('a:path');
+            $objWriter->writeAttribute('path', 'circle');
 
-        $objWriter->endElement();
+            // a:fillToRect, the focus the gradient is measured from, in the middle of the shape
+            $objWriter->startElement('a:fillToRect');
+            $objWriter->writeAttribute('l', '50000');
+            $objWriter->writeAttribute('t', '50000');
+            $objWriter->writeAttribute('r', '50000');
+            $objWriter->writeAttribute('b', '50000');
+            $objWriter->endElement();
 
-        // a:lin
-        $objWriter->startElement('a:lin');
-        $objWriter->writeAttribute('ang', CommonDrawing::degreesToAngle((int) $pFill->getRotation()));
-        $objWriter->writeAttribute('scaled', '0');
-        $objWriter->endElement();
+            $objWriter->endElement();
+        } else {
+            // a:lin
+            $objWriter->startElement('a:lin');
+            $objWriter->writeAttribute('ang', CommonDrawing::degreesToAngle((int) $pFill->getRotation()));
+            $objWriter->writeAttribute('scaled', '0');
+            $objWriter->endElement();
+        }
 
         $objWriter->endElement();
     }

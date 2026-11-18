@@ -89,6 +89,32 @@ Both Writers keep the background of a master: the PowerPoint2007 Writer as the `
 slide, the ODPresentation Writer as the drawing-page style of the master page. A colour and an
 image are both carried.
 
+A background may also be a gradient, which is a fill of its own:
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Slide\Background\Gradient;
+use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\GradientStop;
+
+$fill = (new Fill())->setFillType(Fill::FILL_GRADIENT_LINEAR);
+$fill->setGradientStops([
+    new GradientStop(0, new Color('FFCCCCCC')),
+    new GradientStop(100000, new Color('FFFFFFFF')),
+]);
+
+$background = new Gradient();
+$background->setFill($fill);
+
+$slide->setBackground($background);
+```
+
+The gradient is the same fill a shape is painted with. The PowerPoint2007 Writer writes it as the
+`p:bgPr/a:gradFill` of the slide, of the master or of the layout, and the ODPresentation Writer as
+the gradient of the drawing-page style. The PowerPoint2007 Reader reads it back, with every stop it
+holds.
+
 ### Visibility
 
 By default, a slide is visible.
