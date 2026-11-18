@@ -180,7 +180,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * @var string
      */
-    protected $path;
+    protected $path = '';
 
     /**
      * Get Path.

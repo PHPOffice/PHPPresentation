@@ -15,6 +15,8 @@ You can add multiples formats of image :
 - SVG
 - WMF, EMF & EMF+ (Windows metafiles), if the optional library [phpoffice/wmf](https://github.com/PHPOffice/WMF) and the GD extension are installed
 
+A drawing that was given no path answers with an empty path: `getPath()` is typed `string`, and a drawing that was made rather than read has no path until one is set on it.
+
 ## Windows metafiles
 
 To add a WMF, an EMF or an EMF+ file, install the optional library [phpoffice/wmf](https://github.com/PHPOffice/WMF) :

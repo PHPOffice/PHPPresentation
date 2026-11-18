@@ -42,6 +42,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Drawing\ZipFile;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line as LineShape;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
@@ -106,6 +107,58 @@ class PowerPoint2007Test extends TestCase
 
         $object = new PowerPoint2007();
         $object->load($file);
+    }
+
+    /**
+     * A picture read out of a package says where it came from.
+     *
+     * The path is a `zip://` URL, so it names the part of the package the picture was read
+     * from and it reads: the bytes behind it are the ones the file holds, rather than an
+     * encoding of them made again on the way out.
+     */
+    public function testPictureHasThePathItWasReadFrom(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.pptx';
+        $oPhpPresentation = (new PowerPoint2007())->load($file);
+
+        $oPicture = null;
+        foreach ((array) $oPhpPresentation->getSlide(0)->getShapeCollection() as $oShape) {
+            if ($oShape instanceof Gd) {
+                $oPicture = $oShape;
+
+                break;
+            }
+        }
+
+        self::assertInstanceOf(Gd::class, $oPicture);
+
+        $path = $oPicture->getPath();
+
+        self::assertStringStartsWith('zip://', $path);
+
+        $part = substr($path, (int) strpos($path, '#') + 1);
+        self::assertStringEndsWith('.gif', $part);
+
+        $zip = new ZipArchive();
+        $zip->open($file);
+        $original = $zip->getFromName($part);
+        $zip->close();
+
+        self::assertNotFalse($original);
+        self::assertSame($original, file_get_contents($path));
+    }
+
+    /**
+     * A picture that was made rather than read has no path, and says so.
+     *
+     * The property is a string, so an empty one is what it holds until something is read
+     * into it, and the accessor answers rather than throwing.
+     */
+    public function testPictureWithoutAPathSaysSo(): void
+    {
+        self::assertSame('', (new Gd())->getPath());
+        self::assertSame('', (new Base64())->getPath());
+        self::assertSame('', (new ZipFile())->getPath());
     }
 
     public function testFileSupportsNotExists(): void
